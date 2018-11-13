@@ -1,0 +1,328 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProjectGuid>{1993ADF0-8059-458A-9D9A-75BF01BD98F5}</ProjectGuid>
+    <OutputType>AppContainerExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Integra_7_Xamarin.UWP</RootNamespace>
+    <AssemblyName>Integra-7_Xamarin.UWP</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
+    <TargetPlatformVersion>10.0.15063.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.10586.0</TargetPlatformMinVersion>
+    <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
+    <EnableDotNetNativeCompatibleProfile>true</EnableDotNetNativeCompatibleProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <PackageCertificateKeyFile>Integra-7_Xamarin_UWP_StoreKey.pfx</PackageCertificateKeyFile>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <AppxBundle>Always</AppxBundle>
+    <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
+    <PackageCertificateThumbprint>FDA30E3BE19BB31DA06DADC39FA8F5B18E1A0E3C</PackageCertificateThumbprint>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\ARM\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>ARM</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM'">
+    <OutputPath>bin\ARM\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>ARM</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
+    <None Include="Integra-7_Xamarin_UWP_StoreKey.pfx" />
+    <None Include="INTEGRA_7_Xamarin.UWP_TemporaryKey.pfx" />
+    <None Include="project.json" />
+    <None Include="Integra-7_Xamarin.UWP_TemporaryKey.pfx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MainPage.xaml.cs">
+      <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MIDI.cs" />
+    <Compile Include="MidiDeviceWatcher.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppxManifest Include="Package.appxmanifest">
+      <SubType>Designer</SubType>
+    </AppxManifest>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Package.StoreAssociation.xml" />
+    <Content Include="_MFX_01_Eqalizer_00.png" />
+    <Content Include="_MFX_01_Eqalizer_00_.png" />
+    <Content Include="_MFX_2VoicePitchShifter.png" />
+    <Content Include="_MFX_3TapPanDelay.png" />
+    <Content Include="_MFX_4TapPanDelay.png" />
+    <Content Include="_MFX_AutoPan.png" />
+    <Content Include="_MFX_AutoWah.png" />
+    <Content Include="_MFX_BitCrasher.png" />
+    <Content Include="_MFX_Chorus.png" />
+    <Content Include="_MFX_ChorusToDelay.png" />
+    <Content Include="_MFX_ChorusToFlanger.png" />
+    <Content Include="_MFX_Common_01.png" />
+    <Content Include="_MFX_Common_02.png" />
+    <Content Include="_MFX_Common_03.png" />
+    <Content Include="_MFX_Compressor.png" />
+    <Content Include="_MFX_Delay.png" />
+    <Content Include="_MFX_Distorsion.png" />
+    <Content Include="_MFX_DistorsionToChorus.png" />
+    <Content Include="_MFX_DistorsionToDelay.png" />
+    <Content Include="_MFX_DistortionToFlanger.png" />
+    <Content Include="_MFX_EnhancerToChorus.png" />
+    <Content Include="_MFX_EnhancerToDelay.png" />
+    <Content Include="_MFX_EnhancerToFlanger.png" />
+    <Content Include="_MFX_EpAmpSimToChorus.png" />
+    <Content Include="_MFX_EpAmpSimToDelay.png" />
+    <Content Include="_MFX_EpAmpSimToFlanger.png" />
+    <Content Include="_MFX_EpAmpSimToPhaser.png" />
+    <Content Include="_MFX_EpAmpSimToTremolo.png" />
+    <Content Include="_MFX_Flanger.png" />
+    <Content Include="_MFX_FlangerToDelay.png" />
+    <Content Include="_MFX_Gate.png" />
+    <Content Include="_MFX_GuitarAmpSimToChorus.png" />
+    <Content Include="_MFX_GuitarAmpSimToDelay.png" />
+    <Content Include="_MFX_GuitarAmpSimToFhaser.png" />
+    <Content Include="_MFX_GuitarAmpSimToFlanger.png" />
+    <Content Include="_MFX_GuitarAmpSimulator.png" />
+    <Content Include="_MFX_HexaChorus.png" />
+    <Content Include="_MFX_Humanizer.png" />
+    <Content Include="_MFX_InfinitePhaser.png" />
+    <Content Include="_MFX_Limiter.png" />
+    <Content Include="_MFX_LoFiCompress.png" />
+    <Content Include="_MFX_MFX.png" />
+    <Content Include="_MFX_ModulationDelay.png" />
+    <Content Include="_MFX_MultiStagePhaser.png" />
+    <Content Include="_MFX_MultiTapDelay.png" />
+    <Content Include="_MFX_OdDsToAutoWah.png" />
+    <Content Include="_MFX_OdDsToTouchWah.png" />
+    <Content Include="_MFX_Overdrive.png" />
+    <Content Include="_MFX_OverdriveToChorus.png" />
+    <Content Include="_MFX_OverdriveToDelay.png" />
+    <Content Include="_MFX_OverdriveToFlanger.png" />
+    <Content Include="_MFX_Phaser1.png" />
+    <Content Include="_MFX_Phaser2And3.png" />
+    <Content Include="_MFX_PitchShifter.png" />
+    <Content Include="_MFX_ReverseDelay.png" />
+    <Content Include="_MFX_RingModulator.png" />
+    <Content Include="_MFX_Rotary1.png" />
+    <Content Include="_MFX_Rotary2.png" />
+    <Content Include="_MFX_Rotary3.png" />
+    <Content Include="_MFX_Slicer.png" />
+    <Content Include="_MFX_SpaceD.png" />
+    <Content Include="_MFX_SpeakerSimulator.png" />
+    <Content Include="_MFX_Spectrum.png" />
+    <Content Include="_MFX_StepFlanger.png" />
+    <Content Include="_MFX_StepPhaser.png" />
+    <Content Include="_MFX_TimeCtrlDelay.png" />
+    <Content Include="_MFX_Tremolo.png" />
+    <Content Include="_MFX_TremoloChorus.png" />
+    <Content Include="_MissingImage.png" />
+    <Content Include="_PCM-D_01.png" />
+    <Content Include="_PCM-D_WMT_01.png" />
+    <Content Include="_PCM-D_WMT_02.png" />
+    <Content Include="_PCM-D_WMT_03.png" />
+    <Content Include="_PCM-D_WMT_04.png" />
+    <Content Include="_PCM_01.png" />
+    <Content Include="_PCM_LFO_01.png" />
+    <Content Include="_PCM_TVF_10.png" />
+    <Content Include="_PCM_TVF_11.png" />
+    <Content Include="_PCM_TVF_12.png" />
+    <Content Include="_PCM_TVF_13.png" />
+    <Content Include="_PCM_TVF_14.png" />
+    <Content Include="_PCM_TVF_15.png" />
+    <Content Include="_PCM_TVF_16.png" />
+    <Content Include="_PCM_TVF_17.png" />
+    <Content Include="__PCM_Common_01.png" />
+    <Content Include="__PCM_CutOffFreqEnv_02.png" />
+    <Content Include="__PCM_PitchEnv_01.png" />
+    <Content Include="__PCM_PitchEnv_02.png" />
+    <Content Include="__PCM_Pitch_01.png" />
+    <Content Include="__PCM_Pitch_Pan_01.png" />
+    <Content Include="__PCM_Pitch_Time_01.png" />
+    <Content Include="__PCM_TVALevelEnv_02.png" />
+    <Content Include="__PCM_TVF_00.png" />
+    <Content Include="__PCM_TVF_01.png" />
+    <Content Include="__PCM_TVF_02.png" />
+    <Content Include="__PCM_TVF_03.png" />
+    <Content Include="__PCM_TVF_04.png" />
+    <Content Include="__PCM_TVF_05.png" />
+    <Content Include="__PCM_TVF_06.png" />
+    <Content Include="__PCM_Wave_01.png" />
+    <Content Include="__PCM_Wave_02.png" />
+    <Content Include="__PCM_Wave_03.png" />
+    <Content Include="__PCM_Wave_04.png" />
+    <Content Include="_PMT_01.png" />
+    <Content Include="_PMT_02.png" />
+    <Content Include="_PMT_03.png" />
+    <Content Include="_PMT_04.png" />
+    <Content Include="_PMT_05.png" />
+    <Content Include="_PMT_06.png" />
+    <Content Include="_PMT_07.png" />
+    <Content Include="_PMT_08.png" />
+    <Content Include="_PMT_09.png" />
+    <Content Include="_PMT_10.png" />
+    <Content Include="__PMT_11.png" />
+    <Content Include="_Settings.png" />
+    <Content Include="_SN-A_01.png" />
+    <Content Include="_SN-D_01.png" />
+    <Content Include="_SNS_01.png" />
+    <Content Include="_SNS_Filter_00.png" />
+    <Content Include="_SNS_Filter_03.png" />
+    <Content Include="_SNS_Filter_04.png" />
+    <Content Include="__SNS_Filter_01.png" />
+    <Content Include="__SNS_Filter_02.png" />
+    <Content Include="__SNS_Misc_01.png" />
+    <Content Include="_SNS_Osc_01.png" />
+    <Content Include="_SNS_Osc_02.png" />
+    <Content Include="_SNS_Osc_03.png" />
+    <Content Include="_SNS_Osc_04.png" />
+    <Content Include="_SNS_Osc_05.png" />
+    <Content Include="_SNS_Osc_06.png" />
+    <Content Include="_SNS_Osc_07.png" />
+    <Content Include="_SNS_Osc_09.png" />
+    <Content Include="_SNS_Osc_10.png" />
+    <Content Include="_SNS_Osc_11.png" />
+    <Content Include="_SNS_Osc_12.png" />
+    <Content Include="__SNS_Osc_08.png" />
+    <Content Include="MissingImage.png" />
+    <Content Include="Properties\Default.rd.xml" />
+    <Content Include="Assets\LockScreenLogo.scale-100.png" />
+    <Content Include="Assets\LockScreenLogo.scale-125.png" />
+    <Content Include="Assets\LockScreenLogo.scale-150.png" />
+    <Content Include="Assets\LockScreenLogo.scale-200.png" />
+    <Content Include="Assets\LockScreenLogo.scale-400.png" />
+    <Content Include="Assets\SplashScreen.scale-100.png" />
+    <Content Include="Assets\SplashScreen.scale-125.png" />
+    <Content Include="Assets\SplashScreen.scale-150.png" />
+    <Content Include="Assets\SplashScreen.scale-200.png" />
+    <Content Include="Assets\SplashScreen.scale-400.png" />
+    <Content Include="Assets\Square150x150Logo.scale-100.png" />
+    <Content Include="Assets\Square150x150Logo.scale-125.png" />
+    <Content Include="Assets\Square150x150Logo.scale-150.png" />
+    <Content Include="Assets\Square150x150Logo.scale-200.png" />
+    <Content Include="Assets\Square150x150Logo.scale-400.png" />
+    <Content Include="Assets\Square44x44Logo.scale-100.png" />
+    <Content Include="Assets\Square44x44Logo.scale-125.png" />
+    <Content Include="Assets\Square44x44Logo.scale-150.png" />
+    <Content Include="Assets\Square44x44Logo.scale-200.png" />
+    <Content Include="Assets\Square44x44Logo.scale-400.png" />
+    <Content Include="Assets\Square44x44Logo.targetsize-16_altform-unplated.png" />
+    <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
+    <Content Include="Assets\Square44x44Logo.targetsize-32_altform-unplated.png" />
+    <Content Include="Assets\Square44x44Logo.targetsize-48_altform-unplated.png" />
+    <Content Include="Assets\Square44x44Logo.targetsize-256_altform-unplated.png" />
+    <Content Include="Assets\StoreLogo.png" />
+    <Content Include="Assets\Wide310x150Logo.scale-100.png" />
+    <Content Include="Assets\Wide310x150Logo.scale-125.png" />
+    <Content Include="Assets\Wide310x150Logo.scale-150.png" />
+    <Content Include="Assets\Wide310x150Logo.scale-200.png" />
+    <Content Include="Assets\Wide310x150Logo.scale-400.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Page Include="MainPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <!-- <SDKReference Include="WindowsMobile, Version=10.0.10586.0"> -->
+    <SDKReference Include="WindowsMobile, Version=10.0.16299.0">
+      <Name>Windows Mobile Extensions for the UWP</Name>
+    </SDKReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Integra-7_Xamarin\Integra-7_Xamarin.csproj">
+      <Project>{9d5ff2de-9b76-4cdc-9061-864469c7d862}</Project>
+      <Name>Integra-7_Xamarin</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
+    <VisualStudioVersion>14.0</VisualStudioVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>INTEGRA_7_Xamarin.UWP_TemporaryKey.pfx</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
+</Project>
