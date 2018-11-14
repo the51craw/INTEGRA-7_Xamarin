@@ -1,7 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="0.1" package="se.masterberg.Integra7Random_Xamarin" android:installLocation="auto">
-	<uses-feature android:name="android.hardware.usb.host" />
-	<uses-configuration android:reqTouchScreen="finger" />
-	<uses-sdk android:minSdkVersion="12" android:targetSdkVersion="27" />
-	<application android:label="Integra7Random_Xamarin.Android"></application>
-</manifest>
