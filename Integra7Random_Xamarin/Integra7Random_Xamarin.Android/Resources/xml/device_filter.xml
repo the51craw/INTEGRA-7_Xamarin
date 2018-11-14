@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-
-<resources>
-  <usb-device vendor-id="1410" product-id="348" class="255" subclass="2" protocol="2" />
-</resources>
-<!-- 		DeviceClass	Android.Hardware.Usb.UsbClass.PerInterface	Android.Hardware.Usb.UsbClass -->
