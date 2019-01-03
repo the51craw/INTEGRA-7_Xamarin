@@ -63,7 +63,8 @@ namespace Integra_7_Xamarin
         Button Librarian_btnMinus12keys;
         MyLabel Librarian_lblKeys;
         Boolean usingSearchResults = false;
-        Int32 headingHeight;
+        Int32 rowHeight;
+        Int32 listingHeight;
         byte keyTranspose = 0;
         private Int32 lowKey = 36;
 
@@ -358,11 +359,13 @@ namespace Integra_7_Xamarin
 
             // Assemble grids with controls ---------------------------------------------------------------
 
-            headingHeight = 30;
+            rowHeight = 1;
             if (appType == _appType.ANDROID)
             {
-                headingHeight = 64;
+                rowHeight = 2;
             }
+
+            listingHeight = 16;
 
             // Assemble column 0:
             Librarian_gridGroups.Children.Add((new GridRow(0, new View[] { Librarian_lblGroups }, null, false, false)).Row);
@@ -380,13 +383,13 @@ namespace Integra_7_Xamarin
             Librarian_gridGroups.Children.Add((new GridRow(4, new View[] { Librarian_ltToneName }, null, false)).Row);
             Librarian_gridGroups.Children.Add((new GridRow(5, new View[] { Librarian_ltType }, null, false)).Row);
             Librarian_gridGroups.Children.Add((new GridRow(6, new View[] { Librarian_ltToneNumber }, null, false)).Row);
-            Librarian_gridGroups.RowDefinitions[0].Height = new GridLength(headingHeight, GridUnitType.Absolute);
-            Librarian_gridGroups.RowDefinitions[1].Height = new GridLength(0, GridUnitType.Auto);
-            Librarian_gridGroups.RowDefinitions[2].Height = new GridLength(headingHeight, GridUnitType.Absolute);
-            Librarian_gridGroups.RowDefinitions[3].Height = new GridLength(headingHeight, GridUnitType.Absolute);
-            Librarian_gridGroups.RowDefinitions[4].Height = new GridLength(headingHeight, GridUnitType.Absolute);
-            Librarian_gridGroups.RowDefinitions[5].Height = new GridLength(headingHeight, GridUnitType.Absolute);
-            Librarian_gridGroups.RowDefinitions[6].Height = new GridLength(headingHeight, GridUnitType.Absolute);
+            Librarian_gridGroups.RowDefinitions[0].Height = new GridLength(rowHeight, GridUnitType.Star);
+            Librarian_gridGroups.RowDefinitions[1].Height = new GridLength(listingHeight, GridUnitType.Star);
+            Librarian_gridGroups.RowDefinitions[2].Height = new GridLength(rowHeight, GridUnitType.Star);
+            Librarian_gridGroups.RowDefinitions[3].Height = new GridLength(rowHeight, GridUnitType.Star);
+            Librarian_gridGroups.RowDefinitions[4].Height = new GridLength(rowHeight, GridUnitType.Star);
+            Librarian_gridGroups.RowDefinitions[5].Height = new GridLength(rowHeight, GridUnitType.Star);
+            Librarian_gridGroups.RowDefinitions[6].Height = new GridLength(rowHeight, GridUnitType.Star);
 
             // Assemble column 1:
             Librarian_gridCategories.Children.Add((new GridRow(0, new View[] { Librarian_lblCategories }, null, false, false)).Row);
@@ -404,13 +407,13 @@ namespace Integra_7_Xamarin
             Librarian_gridCategories.Children.Add((new GridRow(4, new View[] { Librarian_ltPatchLSB }, null, false)).Row);
             Librarian_gridCategories.Children.Add((new GridRow(5, new View[] { Librarian_ltProgramNumber }, null, false)).Row);
             Librarian_gridCategories.Children.Add((new GridRow(6, new View[] { Librarian_btnPlay }, null, false)).Row);
-            Librarian_gridCategories.RowDefinitions[0].Height = new GridLength(headingHeight, GridUnitType.Absolute);
-            Librarian_gridCategories.RowDefinitions[1].Height = new GridLength(0, GridUnitType.Auto);
-            Librarian_gridCategories.RowDefinitions[2].Height = new GridLength(headingHeight, GridUnitType.Absolute);
-            Librarian_gridCategories.RowDefinitions[3].Height = new GridLength(headingHeight, GridUnitType.Absolute);
-            Librarian_gridCategories.RowDefinitions[4].Height = new GridLength(headingHeight, GridUnitType.Absolute);
-            Librarian_gridCategories.RowDefinitions[5].Height = new GridLength(headingHeight, GridUnitType.Absolute);
-            Librarian_gridCategories.RowDefinitions[6].Height = new GridLength(headingHeight, GridUnitType.Absolute);
+            Librarian_gridCategories.RowDefinitions[0].Height = new GridLength(rowHeight, GridUnitType.Star);
+            Librarian_gridCategories.RowDefinitions[1].Height = new GridLength(listingHeight, GridUnitType.Star);
+            Librarian_gridCategories.RowDefinitions[2].Height = new GridLength(rowHeight, GridUnitType.Star);
+            Librarian_gridCategories.RowDefinitions[3].Height = new GridLength(rowHeight, GridUnitType.Star);
+            Librarian_gridCategories.RowDefinitions[4].Height = new GridLength(rowHeight, GridUnitType.Star);
+            Librarian_gridCategories.RowDefinitions[5].Height = new GridLength(rowHeight, GridUnitType.Star);
+            Librarian_gridCategories.RowDefinitions[6].Height = new GridLength(rowHeight, GridUnitType.Star);
 
             // Assemble column 2:
             Librarian_gridTones.Children.Add((new GridRow(0, new View[] { Librarian_filterPresetAndUser }, null, false, false)).Row);
@@ -429,20 +432,20 @@ namespace Integra_7_Xamarin
             Librarian_gridTones.Children.Add((new GridRow(4, new View[] { Librarian_btnShowFavorites, Librarian_btnAddFavorite, Librarian_btnRemoveFavorite }, new byte[] { 1, 1, 1 }, false)).Row);
             Librarian_gridTones.Children.Add((new GridRow(5, new View[] { Librarian_btnResetHangingNotes, Librarian_btnResetVolume }, new byte[] { 2, 1 }, false)).Row);
             Librarian_gridTones.Children.Add((new GridRow(6, new View[] { Librarian_lblKeys, Librarian_btnMinus12keys, Librarian_btnPlus12keys }, new byte[] { 1, 1, 1 }, false)).Row);
-            Librarian_gridTones.RowDefinitions[0].Height = new GridLength(headingHeight, GridUnitType.Absolute);
-            Librarian_gridTones.RowDefinitions[1].Height = new GridLength(0, GridUnitType.Auto);
-            Librarian_gridTones.RowDefinitions[2].Height = new GridLength(headingHeight, GridUnitType.Absolute);
-            Librarian_gridTones.RowDefinitions[3].Height = new GridLength(headingHeight, GridUnitType.Absolute);
-            Librarian_gridTones.RowDefinitions[4].Height = new GridLength(headingHeight, GridUnitType.Absolute);
-            Librarian_gridTones.RowDefinitions[5].Height = new GridLength(headingHeight, GridUnitType.Absolute);
-            Librarian_gridTones.RowDefinitions[6].Height = new GridLength(headingHeight, GridUnitType.Absolute);
+            Librarian_gridTones.RowDefinitions[0].Height = new GridLength(rowHeight, GridUnitType.Star);
+            Librarian_gridTones.RowDefinitions[1].Height = new GridLength(listingHeight, GridUnitType.Star);
+            Librarian_gridTones.RowDefinitions[2].Height = new GridLength(rowHeight, GridUnitType.Star);
+            Librarian_gridTones.RowDefinitions[3].Height = new GridLength(rowHeight, GridUnitType.Star);
+            Librarian_gridTones.RowDefinitions[4].Height = new GridLength(rowHeight, GridUnitType.Star);
+            Librarian_gridTones.RowDefinitions[5].Height = new GridLength(rowHeight, GridUnitType.Star);
+            Librarian_gridTones.RowDefinitions[6].Height = new GridLength(rowHeight, GridUnitType.Star);
 
             // Assemble LibrarianStackLayout --------------------------------------------------------------
 
-            LibrarianStackLayout = new StackLayout();
-            LibrarianStackLayout.Children.Add((new GridRow(0, new View[] { Librarian_gridGroups, Librarian_gridCategories, Librarian_gridTones, Librarian_gridKeyboard }, new byte[] { 5, 5, 5, 5 })).Row);
+            Librarian_StackLayout = new StackLayout();
+            Librarian_StackLayout.Children.Add((new GridRow(0, new View[] { Librarian_gridGroups, Librarian_gridCategories, Librarian_gridTones, Librarian_gridKeyboard }, new byte[] { 5, 5, 5, 5 })).Row);
             // Make the entire grid background black to show as borders around controls by using margins:
-            LibrarianStackLayout.BackgroundColor = Color.Black;
+            Librarian_StackLayout.BackgroundColor = Color.Black;
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1208,14 +1211,14 @@ namespace Integra_7_Xamarin
         private void Librarian_BtnEditTone_Clicked(object sender, EventArgs e)
         {
             //mainStackLayout.Children.RemoveAt(0);
-            LibrarianStackLayout.IsVisible = false;
+            Librarian_StackLayout.IsVisible = false;
             ShowToneEditorPage();
         }
 
         private void Librarian_btnEditStudioSet_Clicked(object sender, EventArgs e)
         {
             //mainStackLayout.Children.RemoveAt(0);
-            LibrarianStackLayout.IsVisible = false;
+            Librarian_StackLayout.IsVisible = false;
             ShowStudioSetEditorPage();
         }
 
@@ -1229,25 +1232,25 @@ namespace Integra_7_Xamarin
 
         private void Librarian_btnMotionalSurround_Clicked(object sender, EventArgs e)
         {
-            LibrarianStackLayout.IsVisible = false;
+            Librarian_StackLayout.IsVisible = false;
             //ShowMotionalSurroundPage();
         }
 
         private void Librarian_btnFavorites_Clicked(object sender, EventArgs e)
         {
-            LibrarianStackLayout.IsVisible = false;
+            Librarian_StackLayout.IsVisible = false;
             ShowFavoritesPage(FavoritesAction.SHOW);
         }
 
         private void Librarian_btnAddFavorite_Clicked(object sender, EventArgs e)
         {
-            LibrarianStackLayout.IsVisible = false;
+            Librarian_StackLayout.IsVisible = false;
             ShowFavoritesPage(FavoritesAction.ADD);
         }
 
         private void Librarian_btnRemoveFavorite_Clicked(object sender, EventArgs e)
         {
-            LibrarianStackLayout.IsVisible = false;
+            Librarian_StackLayout.IsVisible = false;
             ShowFavoritesPage(FavoritesAction.REMOVE);
         }
 
@@ -1523,15 +1526,15 @@ namespace Integra_7_Xamarin
 
         public void ShowLibrarianPage()
         {
-            if (!LibrarianIsCreated)
+            if (!Librarian_IsCreated)
             {
                 DrawLibrarianPage();
-                mainStackLayout.Children.Add(LibrarianStackLayout);
-                LibrarianIsCreated = true;
+                mainStackLayout.Children.Add(Librarian_StackLayout);
+                Librarian_IsCreated = true;
             }
             page = _page.LIBRARIAN;
             //mainStackLayout.Children.Add(LibrarianStackLayout);
-            LibrarianStackLayout.IsVisible = true;
+            Librarian_StackLayout.IsVisible = true;
             if (Librarian_Groups.Count == 0)
             {
                 PopulateGroups();
@@ -1545,7 +1548,7 @@ namespace Integra_7_Xamarin
             }
 
             // Set font size:
-            SetFontSizes(LibrarianStackLayout);
+            SetFontSizes(Librarian_StackLayout);
         }
 
         private void PopulateGroups()

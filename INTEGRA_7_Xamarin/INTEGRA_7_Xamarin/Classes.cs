@@ -276,7 +276,7 @@ namespace Integra_7_Xamarin
         public FavoritesList favoritesList { get; set; }
         public Player player { get; set; }
         public List<String> studioSetNames { get; set; }
-        //*** public StudioSet studioSet { get; set; }
+        public StudioSet studioSet { get; set; }
         public ToneTypes ToneType { get; set; }
         public SimpleToneTypes SimpleToneType { get; set; }
         public String ToneSource {get;set;}
@@ -2642,24 +2642,104 @@ namespace Integra_7_Xamarin
         {
             t.Trace("public NumberedParametersContent()");
             // All type names (same for all 5 tone types [PCM tone, PCM drum kit, SuperNatural tone etc] of MFX)
-            TypeNames = new String[] {"00:Thru","01:Equalizer","02:Spectrum","03:Low boost",
-                "04:Step filter band 1 - 8","        04:Step filter band 9 - 16","        04:Step filter settings","05:Enhancer",
-                "06:Auto wah","07:Humanizer","08:Speaker simulator","09:Phaser 1","10:Phaser 2","11:Phaser 3","12:Step phaser",
-                "13:Multi stage phaser","14:Infinite phaser","15:Ring modulator","16:Tremolo","17:Auto pan",
-                "18:Slicer band 1 - 8","        18:Slicer band 9 - 16","        18:Slicer settings",
-                "19:Rotary 1","20:Rotary 2, Speed to Woofer","        20:Rotary 2, Tweeter to Level","21:Rotary 3, Speed to Woofer",
-                "        21:Rotary 3, Tweeter to Level","22:Chorus","23:Flanger","24:Step flanger","25:Hexa-chorus","26:Tremolo chorus",
-                "27:Space-D","28:Overdrive","29:Distorsion","30:Guitar amp simulator, Amplifier","        30:Guitar amp simulator, Speaker and Mic",
-                "31:Compressor","32:Limiter","33:Gate","34:Delay",
-                "35:Modulation delay","36:3Tap pan delay","37:4Tap pan delay, delays","        37:4Tap pan delay, levels","38:Multi tap delay, delays",
-                "        38:Multi tap delay, levels","39:Reverse delay, reverse","        39:Reverse delay, delays","        39:Reverse delay, levels","40:Time control delay",
-                "41:Lo-Fi compress","42:Bit crasher","43:Pitch shifter","44:2Voice shift pitcher","        44:2Voice shift pitcher, output","45:Overdrive->chorus","46:Overdrive->Flanger",
-                "47:Overdirve->delay","48:Distorsion->chorus","49:Distorsion->Flanger","50:Distorsion->delay","51:OD/DS->TouchWah, Drive, Amp and TouchWah","        51:OD/DS->TouchWah, TouchWah and Levels",
-                "52:DS/OD->AutoWah, amplifier","        52:DS/OD->AutoWah, AutoWah and levels","53:GuitarAmpSim->Chorus, Amplifier","        53:GuitarAmpSim->Chorus, Chorus",
-                "54:GuitarAmpSim->Flanger, Amplifier","        54:GuitarAmpSim->Flanger, Flanger, speaker and level","55:GuitarAmpSim->Phaser, Amplifier",
-                "        55:GuitarAmpSim->Phaser, Phaser, speaker and level","56:GuitarAmpSim->Delay, Amplifier","        56:GuitarAmpSim->Delay, Delay, speaker and level",
-                "57:EP AmpSim->Tremolo","58:EP AmpSim->Chorus","59:EP AmpSim->Flanger","60:EP AmpSim->Phaser","61:EP AmpSim->Delay",
-                "62:Enhancer->Chorus","63:Enhancer->Flanger","64:Enhancer->Delay","65:Chorus->Delay","66:Flanger->Delay","67:Chorus->Flanger"};
+            TypeNames = new String[] {
+                "00:Thru",
+                "01:Equalizer",
+                "02:Spectrum",
+                "03:Low boost",
+                "04:Step filter band 1 - 8",
+                "        04:Step filter band 9 - 16",
+                "        04:Step filter settings",
+                "05:Enhancer",
+                "06:Auto wah",
+                "07:Humanizer",
+                "        07:Humanizer pan and levels",
+                "08:Speaker simulator",
+                "09:Phaser 1",
+                "10:Phaser 2",
+                "11:Phaser 3",
+                "12:Step phaser",
+                "        12:Step phaser levels",
+                "13:Multi stage phaser",
+                "14:Infinite phaser",
+                "15:Ring modulator",
+                "16:Tremolo",
+                "17:Auto pan",
+                "18:Slicer band 1 - 8",
+                "        18:Slicer band 9 - 16",
+                "        18:Slicer settings",
+                "19:Rotary 1",
+                "20:Rotary 2, Speed to Woofer",
+                "        20:Rotary 2, Tweeter to Level",
+                "21:Rotary 3, Speed to Woofer",
+                "        21:Rotary 3, Tweeter to Level",
+                "22:Chorus",
+                "23:Flanger",
+                "24:Step flanger",
+                "        24:Step flanger levels",
+                "25:Hexa-chorus",
+                "26:Tremolo chorus",
+                "27:Space-D",
+                "28:Overdrive",
+                "29:Distorsion",
+                "30:Guitar amp simulator, Amplifier",
+                "        30:Guitar amp simulator, Speaker and Mic",
+                "31:Compressor",
+                "32:Limiter",
+                "33:Gate",
+                "34:Delay",
+                "35:Modulation delay",
+                "        35:Modulation delay levels",
+                "36:3Tap pan delay",
+                "        36:3Tap pan delay levels",
+                "37:4Tap pan delay, delays",
+                "        37:4Tap pan delay, levels",
+                "38:Multi tap delay, delays",
+                "        38:Multi tap delay, levels",
+                "39:Reverse delay, reverse",
+                "        39:Reverse delay, delays",
+                "        39:Reverse delay, levels",
+                "40:Time control delay",
+                "41:Lo-Fi compress",
+                "42:Bit crasher",
+                "43:Pitch shifter",
+                "44:2Voice shift pitcher",
+                "        44:2Voice shift pitcher, output",
+                "45:Overdrive->chorus",
+                "46:Overdrive->Flanger",
+                "47:Overdirve->delay",
+                "48:Distorsion->chorus",
+                "49:Distorsion->Flanger",
+                "50:Distorsion->delay",
+                "51:OD/DS->TouchWah, Drive, Amp and TouchWah",
+                "        51:OD/DS->TouchWah, TouchWah and Levels",
+                "52:DS/OD->AutoWah, amplifier",
+                "        52:DS/OD->AutoWah, AutoWah and levels",
+                "53:GuitarAmpSim->Chorus, Amplifier",
+                "        53:GuitarAmpSim->Chorus, Chorus",
+                "54:GuitarAmpSim->Flanger, Amplifier",
+                "        54:GuitarAmpSim->Flanger, Flanger, speaker and level",
+                "55:GuitarAmpSim->Phaser, Amplifier",
+                "        55:GuitarAmpSim->Phaser, Phaser, speaker and level",
+                "56:GuitarAmpSim->Delay, Amplifier",
+                "        56:GuitarAmpSim->Delay, Delay, speaker and level",
+                "57:EP AmpSim->Tremolo",
+                "58:EP AmpSim->Chorus",
+                "        58:EP AmpSim->Chorus levels",
+                "59:EP AmpSim->Flanger",
+                "        59:EP AmpSim->Flanger levels",
+                "60:EP AmpSim->Phaser",
+                "        60:EP AmpSim->Phaser levels",
+                "61:EP AmpSim->Delay",
+                "        61:EP AmpSim->Delay levels",
+                "62:Enhancer->Chorus",
+                "63:Enhancer->Flanger",
+                "64:Enhancer->Delay",
+                "65:Chorus->Delay",
+                "66:Flanger->Delay",
+                "67:Chorus->Flanger"
+            };
+
             ParameterNames = new String[TypeNames.Length][];
             ParameterTypes = new PARAMETER_TYPE[TypeNames.Length][];
             //NonMFXParameters = new byte[TypeNames.Length][];
@@ -2671,7 +2751,7 @@ namespace Integra_7_Xamarin
             ParameterTypes[i++] = new PARAMETER_TYPE[0];
             // Parameter 01:Equalizer
             ParameterNames[i] = new String[] { "Low freq", "Low gain", "Mid1 freq", "Mid1 gain", "Mid1 Q",
-                "Mid2 freq", "Mid2 gain", "Mid2 Q", "High freq", "High gain", "Output level" };
+                "Mid2 freq", "Mid2 gain", "Mid2 Q", "High freq", "High gain", "Output level", "MFX Chorus send level", "MFX Reverb send level" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.COMBOBOX_LOW_FREQ,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
@@ -2683,10 +2763,12 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.COMBOBOX_Q,
                 PARAMETER_TYPE.COMBOBOX_HIGH_FREQ,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127};
             // Parameter 02:Spectrum
             ParameterNames[i] = new String[] { "Band 1", "Band 2", "Band 3", "Band 4", "Band 5", "Band 6",
-                "Band 7", "Band 8", "Q", "Output level" };
+                "Band 7", "Band 8", "Q", "Output level", "MFX Chorus send level", "MFX Reverb send level" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
@@ -2697,15 +2779,19 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
                 PARAMETER_TYPE.COMBOBOX_Q,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127 };
             // Parameter 03:Low boost
-            ParameterNames[i] = new String[] { "Freq", "Gain", "Width", "Low gain", "High gain", "Output level" };
+            ParameterNames[i] = new String[] { "Freq", "Gain", "Width", "Low gain", "High gain", "Output level", "MFX Chorus send level", "MFX Reverb send level" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.COMBOBOX_LOW_BOOST_FREQUENCY,
                 PARAMETER_TYPE.SLIDER_0_TO_12,
                 PARAMETER_TYPE.COMBOBOX_LOW_BOOST_WIDTH,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127 };
             // Parameter 04:Step filter Steps 01 - 08
             ParameterNames[i] = new String[] { "Step 01", "Step 02", "Step 03", "Step 04", "Step 05", "Step 06",
@@ -2737,7 +2823,7 @@ namespace Integra_7_Xamarin
             // They also occupy 2 memory positions in the Integra-7, so we must make two controls.
             // One slider for Hz and one combobox for Note.
             ParameterNames[i] = new String[] { "Rate (Hz/Note)", "Rate (Hz)", "Note length", "Attack", "Filter type",
-                "Filter slope", "Filter resonance", "Filter gain", "Output level" };
+                "Filter slope", "Filter resonance", "Filter gain", "Output level", "MFX Chorus send level", "MFX Reverb send level" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.COMBOBOX_HZ_AND_NOTE_LENGTHS,
                     PARAMETER_TYPE.SLIDER_0_05_TO_10_00_STEP_0_05,
@@ -2745,20 +2831,28 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.COMBOBOX_FILTER_TYPE_4,
                 PARAMETER_TYPE.COMBOBOX_FILTER_SLOPE,
-                PARAMETER_TYPE.SLIDER_0_TO_127 ,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_12,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127};
             // Parameter 05:Enhancer
-            ParameterNames[i] = new String[] { "Sens", "Mix", "Low gain", "High gain", "Output level" };
+            ParameterNames[i] = new String[] { "Sens", "Mix", "Low gain", "High gain", "Output level",
+                "MFX Chorus send level", "MFX Reverb send level" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_12,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127};
             // Parameter 06:Auto wah
             ParameterNames[i] = new String[] { "Filter type", "Manual", "Peak", "Sens", "Polarity",
-                "Rate (Hz/Note)", "Rate (Hz)", "Note length", "Depth", "Phase", "Low gain", "High gain", "Output level" };
+                "Rate (Hz/Note)", "Rate (Hz)", "Note length", "Depth", "Phase", "Low gain", "High gain",
+                "Output level", "MFX Chorus send level", "MFX Reverb send level" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.COMBOBOX_FILTER_TYPE_2,
                 PARAMETER_TYPE.SLIDER_0_TO_127,
@@ -2772,12 +2866,15 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.SLIDER_0_TO_180_STEP_2,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_12,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127 };
             // Parameter 07:Humanizer
             ParameterNames[i] = new String[] { "Overdrive switch", "Overdrive", "Vowel 1", "Vowel 2",
                 "Rate (Hz/Note)", "Rate (Hz)", "Note length", "Depth", "Input sync",
-                "Input sync threshold: ", "Manual", "Low gain", "High gain",
-                "Pan", "Output level" };
+                "Input sync threshold ", "Manual", "Low gain", "High gain" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.CHECKBOX,
                 PARAMETER_TYPE.SLIDER_0_TO_127,
@@ -2791,22 +2888,29 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_100,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
-                PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
+                PARAMETER_TYPE.SLIDER_MINUS_15_TO_15};
+            // Parameter 07:Humanizer pan and levels
+            ParameterNames[i] = new String[] { "Pan", "Output level", "MFX Chorus send level", "MFX Reverb send level" };
+            ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.SLIDER_MINUS_L64_TO_R63,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127};
             // Parameter 08:Speaker simulator
             ParameterNames[i] = new String[] { "Speaker type", "Mic setting", "Mic level",
-                "Direct sound level", "Output level" };
+                "Direct sound level", "Output level", "MFX Chorus send level", "MFX Reverb send level" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.COMBOBOX_SPEAKER_TYPES,
                 PARAMETER_TYPE.COMBOBOX_MICROPHONE_DISTANCE,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127 };
             // Parameter 09:Phaser 1
             ParameterNames[i] = new String[] { "Mode", "Manual", "Rate (Hz/Note)", "Rate (Hz)",
                 "Note length", "Depth", "Polarity", "Resonance", "Cross feedback", "Mix",
-                "Low gain", "High gain", "Output level"};
+                "Low gain", "High gain", "Output level", "MFX Chorus send level", "MFX Reverb send level"};
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.COMBOBOX_PHASER_MODE_3,
                 PARAMETER_TYPE.SLIDER_0_TO_127,
@@ -2820,26 +2924,34 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127 };
             // Parameter 10Phaser 2
-            ParameterNames[i] = new String[] { "Rate", "Color", "Low gain", "High gain", "Output level" };
+            ParameterNames[i] = new String[] { "Rate", "Color", "Low gain", "High gain",
+                "Output level", "MFX Chorus send level", "MFX Reverb send level" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.SLIDER_0_TO_100,
                 PARAMETER_TYPE.COMBOBOX_PHASER_COLOR,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127};
             // Parameter 11:Phaser 3
-            ParameterNames[i] = new String[] { "Speed", "Low gain", "High gain", "Output level" };
+            ParameterNames[i] = new String[] { "Speed", "Low gain", "High gain", "Output level",
+                "MFX Chorus send level", "MFX Reverb send level" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.SLIDER_0_TO_100,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127};
             // Parameter 12:Step phaser
             ParameterNames[i] = new String[] { "Mode", "Manual", "Rate(Hz/Note)", "Rate(Hz)", "Note length",
                 "Depth", "Polarity", "Resonance", "Cross Feedback", "Step Rate(Hz/Note)", "Rate(Hz)",
-                "Note length", "Mix", "Low gain", "High gain", "Output level" };
+                "Note length" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.COMBOBOX_PHASER_MODE_3,
                 PARAMETER_TYPE.SLIDER_0_TO_127,
@@ -2852,14 +2964,21 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.SLIDER_MINUS_98_TO_98_STEP_2,
                 PARAMETER_TYPE.COMBOBOX_HZ_AND_NOTE_LENGTHS,
                     PARAMETER_TYPE.SLIDER_0_10_TO_20_00_STEP_0_10,
-                    PARAMETER_TYPE.COMBOBOX_NOTE_LENGTH,
+                    PARAMETER_TYPE.COMBOBOX_NOTE_LENGTH};
+            // Parameter 12:Step phaser levels
+            ParameterNames[i] = new String[] { "Mix", "Low gain", "High gain", "Output level",
+                "MFX Chorus send level", "MFX Reverb send level" };
+            ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127};
             // Parameter 13:Multi stage phaser
             ParameterNames[i] = new String[] { "Mode", "Manual", "Rate(Hz/Note)", "Rate(Hz)",
-                "Note length", "Depth", "Resonance", "Mix", "Pan", "Low gain", "High gain", "Output level" };
+                "Note length", "Depth", "Resonance", "Mix", "Pan", "Low gain", "High gain", "Output level",
+                "MFX Chorus send level", "MFX Reverb send level" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.COMBOBOX_PHASER_MODE_6,
                 PARAMETER_TYPE.SLIDER_0_TO_127,
@@ -2872,10 +2991,12 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.SLIDER_MINUS_L64_TO_R63,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
-                PARAMETER_TYPE.SLIDER_0_TO_127 };
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+               PARAMETER_TYPE.SLIDER_0_TO_127 };
             // Parameter 14:Infinite phaser
             ParameterNames[i] = new String[] { "Mode", "Speed", "Resonance", "Mix", "Pan", "Low gain",
-                "High gain", "Output level" };
+                "High gain", "Output level", "MFX Chorus send level", "MFX Reverb send level" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.COMBOBOX_PHASER_MODE_4,
                 PARAMETER_TYPE.SLIDER_MINUS_100_TO_100_STEP_2,
@@ -2884,10 +3005,13 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.SLIDER_MINUS_L64_TO_R63,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127 };
             // Parameter 15:Ring modulator
             ParameterNames[i] = new String[] { "Frequency", "Sens", "Polarity", "Low gain", "High gain",
-                "FX/Direct sound balance", "Output level" };
+                "FX/Direct sound balance", "Output level",
+                "MFX Chorus send level", "MFX Reverb send level" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127,
@@ -2895,10 +3019,13 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
                 PARAMETER_TYPE.SLIDER_MINUS_W100_TO_D100_STEP_2,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127 };
             // Parameter 16:Tremolo
             ParameterNames[i] = new String[] { "Modulation wave", "Rate(Hz/Note)", "Rate(Hz)", "Note length",
-                "Depth", "Low gain", "High gain", "Output level" };
+                "Depth", "Low gain", "High gain", "Output level",
+                "MFX Chorus send level", "MFX Reverb send level" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.COMBOBOX_WAVE_SHAPE,
                 PARAMETER_TYPE.COMBOBOX_HZ_AND_NOTE_LENGTHS,
@@ -2907,10 +3034,13 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127 };
             // Parameter 17:Auto pan
             ParameterNames[i] = new String[] { "Modulation wave", "Rate(Hz/Note)", "Rate(Hz)", "Note length",
-                "Depth", "Low gain", "High gain", "Output level" };
+                "Depth", "Low gain", "High gain", "Output level",
+                "MFX Chorus send level", "MFX Reverb send level" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.COMBOBOX_WAVE_SHAPE,
                 PARAMETER_TYPE.COMBOBOX_HZ_AND_NOTE_LENGTHS,
@@ -2919,6 +3049,8 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127 };
             // Parameter 18:Slicer step 1 - 8
             ParameterNames[i] = new String[] { "Band 01", "Band 02", "Band 03", "Band 04", "Band 05",
@@ -2947,7 +3079,8 @@ namespace Integra_7_Xamarin
             // Parameter 18:Slicer parameters
             ParameterNames[i] = new String[] { "Rate(Hz/Note)", "Rate(Hz)", "Note length", "Attack",
                 "Input sync", "Input sync threshold",
-                "Mode", "Shuffle", "Level" };
+                "Mode", "Shuffle", "Level",
+                "MFX Chorus send level", "MFX Reverb send level" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.COMBOBOX_HZ_AND_NOTE_LENGTHS,
                     PARAMETER_TYPE.SLIDER_0_05_TO_10_00_STEP_0_05,
@@ -2957,11 +3090,14 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.SLIDER_0_TO_127_R,
                 PARAMETER_TYPE.COMBOBOX_LEGATO_SLASH,
                 PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127 };
             // Parameter 19:Rotary 1
             ParameterNames[i] = new String[] { "Speed", "Woofer slow speed", "Woofer fast speed",
                 "Woofer acceleration", "Woofer level", "Tweeter slow speed", "Tweeter fast speed",
-                "Tweeter acceleration", "Tweeter level", "Separation", "Output level" };
+                "Tweeter acceleration", "Tweeter level", "Separation", "Output level",
+                "MFX Chorus send level", "MFX Reverb send level" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.COMBOBOX_ROTARY_SPEED,
                 PARAMETER_TYPE.SLIDER_0_05_TO_10_00_STEP_0_05,
@@ -2971,6 +3107,8 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.SLIDER_0_05_TO_10_00_STEP_0_05,
                 PARAMETER_TYPE.SLIDER_0_05_TO_10_00_STEP_0_05,
                 PARAMETER_TYPE.SLIDER_0_TO_15,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127 };
@@ -2987,7 +3125,8 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.SLIDER_0_TO_127 };
             // Parameter 20:Rotary 2, Tweeter - Level
             ParameterNames[i] = new String[] {  "Tweeter slow speed", "Tweeter fast speed", "Tweeter trans up",
-                "Tweeter trans down", "Tweeter level", "Spread", "Low gain", "High gain", "Output level" };
+                "Tweeter trans down", "Tweeter level", "Spread", "Low gain", "High gain", "Output level",
+                "MFX Chorus send level", "MFX Reverb send level" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.SLIDER_0_05_TO_10_00_STEP_0_05,
                 PARAMETER_TYPE.SLIDER_0_05_TO_10_00_STEP_0_05,
@@ -2997,6 +3136,8 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.SLIDER_0_TO_10,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127 };
             // Parameter 21:Rotary3, Speed - Overdrive
             ParameterNames[i] = new String[] { "Speed", "Brake", "Woofer slow speed", "Woofer fast speed",
@@ -3012,7 +3153,8 @@ namespace Integra_7_Xamarin
             // Parameter 21:Rotary3, Tweeter - Level
             ParameterNames[i] = new String[] { "Tweeter slow speed", "Tweeter fast speed", "Tweeter trans up",
                 "Tweeter trans down", "Tweeter level", "Spread", "Low gain", "High gain", "Level", "Overdrive",
-                "Overdrive gain", "Overdrive drive", "Overdrive level" }; 
+                "Overdrive gain", "Overdrive drive", "Overdrive level",
+                "MFX Chorus send level", "MFX Reverb send level" }; 
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.SLIDER_0_05_TO_10_00_STEP_0_05,
                 PARAMETER_TYPE.SLIDER_0_05_TO_10_00_STEP_0_05,
@@ -3026,10 +3168,13 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.CHECKBOX,
                 PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127 }; //,
             // Parameter 22:Chorus
             ParameterNames[i] = new String[] { "Filter Type", "Cutoff Freq", "Pre Delay", "Rate(Hz/Note)",
-                "Rate", "Note length", "Depth", "Phase", "Low Gain", "High Gain", "Balance", "Level" };
+                "Rate", "Note length", "Depth", "Phase", "Low Gain", "High Gain", "Balance", "Level",
+                "MFX Chorus send level", "MFX Reverb send level" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.COMBOBOX_FILTER_TYPE_OFF_2,
                 PARAMETER_TYPE.COMBOBOX_MID_FREQ,
@@ -3042,11 +3187,14 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
                 PARAMETER_TYPE.SLIDER_MINUS_100_TO_100_STEP_2,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127 };
             // Parameter 23:Flanger
             ParameterNames[i] = new String[] { "Filter type", "Cutoff frequency", "Pre Delay", "Rate(Hz/Note)",
                 "Rate", "Note length", "Depth", "Phase", "Feedback",
-                "Low Gain", "High Gain", "Balance", "Level" };
+                "Low Gain", "High Gain", "Balance", "Level",
+                "MFX Chorus send level", "MFX Reverb send level" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.COMBOBOX_FILTER_TYPE_OFF_2,
                 PARAMETER_TYPE.COMBOBOX_MID_FREQ,
@@ -3060,11 +3208,13 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
                 PARAMETER_TYPE.SLIDER_MINUS_100_TO_100_STEP_2,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127 };
             // Parameter 24:Step flanger
             ParameterNames[i] = new String[] { "Filter type", "Cutoff frequency", "Pre Delay", "Rate(Hz/Note)",
                 "Rate", "Note length", "Depth", "Phase", "Feedback", "Rate(Hz/Note)", "Step Rate", "Note length",
-                "Low Gain", "High Gain", "Balance", "Level" };
+                "Low Gain", "High Gain" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.COMBOBOX_FILTER_TYPE_OFF_2,
                 PARAMETER_TYPE.COMBOBOX_MID_FREQ,
@@ -3079,12 +3229,19 @@ namespace Integra_7_Xamarin
                     PARAMETER_TYPE.SLIDER_0_10_TO_20_00_STEP_0_10,
                     PARAMETER_TYPE.COMBOBOX_NOTE_LENGTH,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
-                PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
+                PARAMETER_TYPE.SLIDER_MINUS_15_TO_15 };
+            // Parameter 24:Step flanger blance and levels
+            ParameterNames[i] = new String[] { "Balance", "Level",
+                "MFX Chorus send level", "MFX Reverb send level" };
+            ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.SLIDER_MINUS_100_TO_100_STEP_2,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127 };
             // Parameter 25:Hexa-chorus
             ParameterNames[i] = new String[] { "Pre Delay", "Rate(Hz/Note)", "Rate", "Note length", "Depth",
-                "Pre Delay Deviation", "Depth Deviation", "Pan Deviation", "Balance", "Level" };
+                "Pre Delay Deviation", "Depth Deviation", "Pan Deviation", "Balance", "Level",
+                "MFX Chorus send level", "MFX Reverb send level" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.COMBOBOX_0_TO_100_STEP_0_1_TO_2,
                 PARAMETER_TYPE.COMBOBOX_HZ_AND_NOTE_LENGTHS,
@@ -3095,11 +3252,14 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.SLIDER_MINUS_20_TO_20,
                 PARAMETER_TYPE.SLIDER_0_TO_20,
                 PARAMETER_TYPE.SLIDER_MINUS_100_TO_100_STEP_2,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127 };
             // Parameter 26:Tremolo chorus
             ParameterNames[i] = new String[] { "Pre Delay", "Rate(Hz/Note)", "Chorus Rate", "Note length",
                 "Chorus Depth", "Rate(Hz/Note)", "Tremolo Rate", "Note length", "Tremolo separation",
-                "Tremolo phase", "Balance", "Level" };
+                "Tremolo phase", "Balance", "Level",
+                "MFX Chorus send level", "MFX Reverb send level" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.COMBOBOX_0_TO_100_STEP_0_1_TO_2,
                 PARAMETER_TYPE.COMBOBOX_HZ_AND_NOTE_LENGTHS,
@@ -3112,10 +3272,13 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_180_STEP_2,
                 PARAMETER_TYPE.SLIDER_MINUS_100_TO_100_STEP_2,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127};
             // Parameter 27:Space-D
             ParameterNames[i] = new String[] { "Pre Delay", "Rate(Hz/Note)", "Rate", "Note length", "Depth",
-                "Phase", "Low Gain", "High Gain", "Balance", "Level" };
+                "Phase", "Low Gain", "High Gain", "Balance", "Level",
+                "MFX Chorus send level", "MFX Reverb send level" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.COMBOBOX_0_TO_100_STEP_0_1_TO_2,
                 PARAMETER_TYPE.COMBOBOX_HZ_AND_NOTE_LENGTHS,
@@ -3126,10 +3289,13 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
                 PARAMETER_TYPE.SLIDER_MINUS_100_TO_100_STEP_2,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127};
             // Parameter 28:Overdrive
             ParameterNames[i] = new String[] { "Drive", "Tone", "Amplifier switch", "Amplifier type",
-                "Low gain", "High gain", "Pan", "Level" };
+                "Low gain", "High gain", "Pan", "Level",
+                "MFX Chorus send level", "MFX Reverb send level" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127,
@@ -3138,10 +3304,13 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
                 PARAMETER_TYPE.SLIDER_MINUS_L64_TO_R63,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127};
             // Parameter 29:Distorsion
             ParameterNames[i] = new String[] { "Drive", "Tone", "Amplifier switch", "Amplifier type",
-                "Low gain", "High gain", "Pan", "Level" };
+                "Low gain", "High gain", "Pan", "Level",
+                "MFX Chorus send level", "MFX Reverb send level" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127,
@@ -3150,6 +3319,8 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
                 PARAMETER_TYPE.SLIDER_MINUS_L64_TO_R63,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127};
             // Parameter 30:Guitar amp simulator Amp
             ParameterNames[i] = new String[] { "Amplifier switch", "Type", "Volume", "Master", "Gain",
@@ -3166,7 +3337,8 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.CHECKBOX};
             // Parameter 30:Guitar amp simulator Speaker and Mic
-            ParameterNames[i] = new String[] { "Speaker switch", "Speaker type", "Mic setting", "Mic level", "Direct level", "Pan", "Level" };
+            ParameterNames[i] = new String[] { "Speaker switch", "Speaker type", "Mic setting", "Mic level", "Direct level", "Pan", "Level",
+                "MFX Chorus send level", "MFX Reverb send level" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.CHECKBOX,
                 PARAMETER_TYPE.COMBOBOX_SPEAKER_TYPES,
@@ -3174,18 +3346,24 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_MINUS_L64_TO_R63,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127};
             // Parameter 31:Compressor
-            ParameterNames[i] = new String[] { "Attack", "Threshold", "Post gain", "Low gain", "High gain", "Level" };
+            ParameterNames[i] = new String[] { "Attack", "Threshold", "Post gain", "Low gain", "High gain", "Level",
+                "MFX Chorus send level", "MFX Reverb send level" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_18_DB,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127};
             // Parameter 32:Limiter
-            ParameterNames[i] = new String[] { "Release", "Threshold", "Ratio", "Post gain", "Low gain", "High gain", "Level" };
+            ParameterNames[i] = new String[] { "Release", "Threshold", "Ratio", "Post gain", "Low gain", "High gain", "Level",
+                "MFX Chorus send level", "MFX Reverb send level" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127,
@@ -3193,9 +3371,12 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.SLIDER_0_TO_18_DB,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127};
             // Parameter 33:Gate
-            ParameterNames[i] = new String[] { "Threshold", "Mode", "Attack", "Hold", "Release", "Balance", "Level" };
+            ParameterNames[i] = new String[] { "Threshold", "Mode", "Attack", "Hold", "Release", "Balance", "Level",
+                "MFX Chorus send level", "MFX Reverb send level" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.COMBOBOX_GATE_MODE,
@@ -3203,11 +3384,14 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_MINUS_W100_TO_D100_STEP_2,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127};
             // Parameter 34:Delay
             ParameterNames[i] = new String[] { "Delay left(Ms/Note)", "Delay left", "Note", "Delay left(Ms/Note)",
                 "Delay right", "Note", "Phase left", "Phase right", "Feedback mode", "Feedback", "HF damp", "Low gain",
-                "High gain", "Balance", "Level" };
+                "High gain", "Balance", "Level",
+                "MFX Chorus send level", "MFX Reverb send level" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.COMBOBOX_MS_AND_NOTE_LENGTHS,
                     PARAMETER_TYPE.SLIDER_0_TO_1300_MS,
@@ -3223,11 +3407,13 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
                 PARAMETER_TYPE.SLIDER_MINUS_W100_TO_D100_STEP_2,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127};
             // Parameter 35:Modulation delay
             ParameterNames[i] = new String[] { "Delay left(Ms/Note)", "Delay left", "Note", "Delay right(Ms/Note)",
                 "Delay right", "Note", "Feedback mode", "Feedback", "HF damp", "Rate(Hz/Note)", "Rate", "Note",
-                "Depth", "Phase", "Low gain", "High gain", "Balance", "Level" };
+                "Depth", "Phase" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.COMBOBOX_MS_AND_NOTE_LENGTHS,
                     PARAMETER_TYPE.SLIDER_0_TO_1300_MS,
@@ -3242,15 +3428,20 @@ namespace Integra_7_Xamarin
                     PARAMETER_TYPE.SLIDER_0_05_TO_10_00_STEP_0_05,
                     PARAMETER_TYPE.COMBOBOX_NOTE_LENGTH,
                 PARAMETER_TYPE.SLIDER_0_TO_127,
-                PARAMETER_TYPE.SLIDER_0_TO_180_STEP_2,
+                PARAMETER_TYPE.SLIDER_0_TO_180_STEP_2};
+            // Parameter 35:Modulation delay levels
+            ParameterNames[i] = new String[] { "Low gain", "High gain", "Balance", "Level",
+                "MFX Chorus send level", "MFX Reverb send level" };
+            ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
                 PARAMETER_TYPE.SLIDER_MINUS_W100_TO_D100_STEP_2,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127};
             // Parameter 36:3Tap pan delay
             ParameterNames[i] = new String[] { "Delay left(Ms/Note)", "Delay left", "Note", "Delay right(Ms/Note)",
-                "Delay right", "Note", "Delay center(Ms/Note)", "Delay center", "Note", "Center feedback", "HF damp",
-                "Left level", "Right level", "Center level", "Low gain", "High gain", "Balance", "Level" };
+                "Delay right", "Note", "Delay center(Ms/Note)", "Delay center", "Note", "Center feedback", "HF damp" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.COMBOBOX_MS_AND_NOTE_LENGTHS,
                     PARAMETER_TYPE.SLIDER_0_TO_1300_MS,
@@ -3262,13 +3453,19 @@ namespace Integra_7_Xamarin
                     PARAMETER_TYPE.SLIDER_0_TO_1300_MS,
                     PARAMETER_TYPE.COMBOBOX_NOTE_LENGTH,
                 PARAMETER_TYPE.SLIDER_MINUS_98_TO_98_STEP_2,
-                PARAMETER_TYPE.COMBOBOX_HF_DAMP,
+                PARAMETER_TYPE.COMBOBOX_HF_DAMP };
+            // Parameter 36:3Tap pan delay levels
+            ParameterNames[i] = new String[] { "Left level", "Right level", "Center level", "Low gain", "High gain", "Balance", "Level",
+                "MFX Chorus send level", "MFX Reverb send level" };
+            ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
                 PARAMETER_TYPE.SLIDER_MINUS_W100_TO_D100_STEP_2,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127};
             // Parameter 37:4Tap pan delay, delays
             ParameterNames[i] = new String[] { "Delay 1(Ms/Note)", "Delay 1", "Note", "Delay 2(Ms/Note)", "Delay 2",
@@ -3290,7 +3487,8 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.SLIDER_MINUS_98_TO_98_STEP_2};
             // Parameter 37:4Tap pan delay, levels
             ParameterNames[i] = new String[] { "HF Damp", "Delay 1 level", "Delay 2 level", "Delay 3 level",
-                "Delay 4 level", "Low gain", "High gain", "Balance", "Level" };
+                "Delay 4 level", "Low gain", "High gain", "Balance", "Level",
+                "MFX Chorus send level", "MFX Reverb send level" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.COMBOBOX_HF_DAMP,
                 PARAMETER_TYPE.SLIDER_0_TO_127,
@@ -3300,6 +3498,8 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
                 PARAMETER_TYPE.SLIDER_MINUS_W100_TO_D100_STEP_2,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127};
             // Parameter 38:Multi tap delay
             ParameterNames[i] = new String[] { "Delay 1(Ms/Note)", "Delay 1", "Note", "Delay 2(Ms/Note)", "Delay 2",
@@ -3321,7 +3521,8 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.SLIDER_MINUS_98_TO_98_STEP_2};
             // Parameter 38:Multi tap delay
             ParameterNames[i] = new String[] { "HF Damp", "Delay 1 pan", "Delay 2 pan", "Delay 3 pan", "Delay 4 pan",
-                "Delay 1 level", "Delay 2 level", "Delay 3 level", "Delay 4 level", "Low gain", "High gain", "Balance", "Level" };
+                "Delay 1 level", "Delay 2 level", "Delay 3 level", "Delay 4 level", "Low gain", "High gain", "Balance", "Level",
+                "MFX Chorus send level", "MFX Reverb send level" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.COMBOBOX_HF_DAMP,
                 PARAMETER_TYPE.SLIDER_MINUS_L64_TO_R63,
@@ -3335,6 +3536,8 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
                 PARAMETER_TYPE.SLIDER_MINUS_W100_TO_D100_STEP_2,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127};
             // Parameter 39:Reverse delay, reverse
             ParameterNames[i] = new String[] { "Threshold", "Reverse delay time(Ms/Note)", "Reverse delay time",
@@ -3347,6 +3550,8 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.SLIDER_MINUS_98_TO_98_STEP_2,
                 PARAMETER_TYPE.COMBOBOX_HF_DAMP,
                 PARAMETER_TYPE.SLIDER_MINUS_L64_TO_R63,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127};
             // Parameter 39:Reverse delay, delays
             ParameterNames[i] = new String[] { "Delay 1(Ms/Note)", "Delay 1", "Note", "Delay 2(Ms/Note)", "Delay 2",
@@ -3364,7 +3569,8 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.SLIDER_MINUS_98_TO_98_STEP_2};
             // Parameter 39:Reverse delay, levels
             ParameterNames[i] = new String[] { "Delay HF damp", "Delay 1 pan", "Delay 2 pan", "Delay 1 level",
-                "Delay 2 level", "Low gain", "High gain", "Balance", "Level" };
+                "Delay 2 level", "Low gain", "High gain", "Balance", "Level",
+                "MFX Chorus send level", "MFX Reverb send level" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.COMBOBOX_HF_DAMP,
                 PARAMETER_TYPE.SLIDER_MINUS_L64_TO_R63,
@@ -3374,10 +3580,13 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
                 PARAMETER_TYPE.SLIDER_MINUS_W100_TO_D100_STEP_2,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127};
             // Parameter 40:Time control delay
             ParameterNames[i] = new String[] { "Delay time(Ms/Note)", "Delay time", "Tone", "Acceleration",
-                "Feedback", "HF damp", "Low gain", "High gain", "Balance", "Level" };
+                "Feedback", "HF damp", "Low gain", "High gain", "Balance", "Level",
+                "MFX Chorus send level", "MFX Reverb send level" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.COMBOBOX_MS_AND_NOTE_LENGTHS,
                     PARAMETER_TYPE.SLIDER_0_TO_1300_MS,
@@ -3388,10 +3597,13 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
                 PARAMETER_TYPE.SLIDER_MINUS_W100_TO_D100_STEP_2,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127};
             // Parameter 41:LOFI compress
             ParameterNames[i] = new String[] { "Pre-filter type", "Lo-Fi type", "Post-filter type",
-                "Post-filter Cof", "Low gain", "High gain", "Balance", "Level" };
+                "Post-filter Cof", "Low gain", "High gain", "Balance", "Level",
+                "MFX Chorus send level", "MFX Reverb send level" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.COMBOBOX_PREFILTER_TYPE,
                 PARAMETER_TYPE.COMBOBOX_LOFI_TYPE,
@@ -3400,20 +3612,26 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
                 PARAMETER_TYPE.SLIDER_MINUS_W100_TO_D100_STEP_2,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127};
             // Parameter 42:Bit crasher
             ParameterNames[i] = new String[] { "Sample rate", "Bit down depth", "Filter depth",
-                "Low gain", "High gain", "Level" };
+                "Low gain", "High gain", "Level",
+                "MFX Chorus send level", "MFX Reverb send level" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_20,
                 PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127};
             // Parameter 43:Pitch shifter
             ParameterNames[i] = new String[] { "Coarse", "Fine", "Delay time(Ms/Tone)", "Delay time",
-                "Tone", "Feedback", "Low gain", "High gain", "Balance", "Level" };
+                "Tone", "Feedback", "Low gain", "High gain", "Balance", "Level",
+                "MFX Chorus send level", "MFX Reverb send level" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.SLIDER_MINUS_24_TO_24,
                 PARAMETER_TYPE.SLIDER_MINUS_100_TO_100_STEP_2,
@@ -3424,6 +3642,8 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
                 PARAMETER_TYPE.SLIDER_MINUS_W100_TO_D100_STEP_2,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127};
             // Parameter 44:2Voice shift pitcher
             ParameterNames[i] = new String[] { "Coarse 1", "Fine 1", "Delay time 1(Ms/Tone)", "Delay time 1",
@@ -3447,15 +3667,19 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.SLIDER_MINUS_L64_TO_R63,
                 PARAMETER_TYPE.SLIDER_0_TO_127};
             // Parameter 44:2Voice shift pitcher, output
-            ParameterNames[i] = new String[] { "Low gain", "High gain", "Balance", "Level" };
+            ParameterNames[i] = new String[] { "Low gain", "High gain", "Balance", "Level",
+                "MFX Chorus send level", "MFX Reverb send level" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
                 PARAMETER_TYPE.SLIDER_MINUS_W100_TO_D100_STEP_2,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127};
             // Parameter 45:Overdrive->chorus
             ParameterNames[i] = new String[] { "Overdrive drive", "Overdrive pan", "Chorus pre-delay",
-                "Chorus rate(Hz/Note)", "Chorus rate", "Note", "Chorus depth", "Chorus balance", "Level" };
+                "Chorus rate(Hz/Note)", "Chorus rate", "Note", "Chorus depth", "Chorus balance", "Level",
+                "MFX Chorus send level", "MFX Reverb send level" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_MINUS_L64_TO_R63,
@@ -3465,11 +3689,14 @@ namespace Integra_7_Xamarin
                     PARAMETER_TYPE.COMBOBOX_NOTE_LENGTH,
                 PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_MINUS_W100_TO_D100_STEP_2,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127};
             // Parameter 46:Overdrive->Flanger
             ParameterNames[i] = new String[] { "Overdrive drive", "Overdrive pan", "Flanger pre-delay",
                 "Flanger rate(Hz/Note)", "Flanger rate", "Note", "Flanger depth", "Flanger feedback",
-                "Flanger balance", "Level" };
+                "Flanger balance", "Level",
+                "MFX Chorus send level", "MFX Reverb send level" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_MINUS_L64_TO_R63,
@@ -3480,10 +3707,13 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_MINUS_98_TO_98_STEP_2,
                 PARAMETER_TYPE.SLIDER_MINUS_W100_TO_D100_STEP_2,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127};
             // Parameter 47:Overdirve->delay
             ParameterNames[i] = new String[] { "Overdrive drive", "Overdrive pan", "Delay time(Ms/Note)",
-                "Delay time", "Note", "Delay feedback", "Delay HF damp", "Delay balance", "Level" };
+                "Delay time", "Note", "Delay feedback", "Delay HF damp", "Delay balance", "Level",
+                "MFX Chorus send level", "MFX Reverb send level" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_MINUS_L64_TO_R63,
@@ -3493,10 +3723,13 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.SLIDER_MINUS_98_TO_98_STEP_2,
                 PARAMETER_TYPE.COMBOBOX_HF_DAMP,
                 PARAMETER_TYPE.SLIDER_MINUS_W100_TO_D100_STEP_2,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127};
             // Parameter 48:Distorsion->chorus
             ParameterNames[i] = new String[] { "Distortion drive", "Distortion pan", "Chorus pre-delay",
-                "Chorus rate(Hz/Note)", "Chorus rate", "Note", "Chorus depth", "Chorus balance", "Level" };
+                "Chorus rate(Hz/Note)", "Chorus rate", "Note", "Chorus depth", "Chorus balance", "Level",
+                "MFX Chorus send level", "MFX Reverb send level" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_MINUS_L64_TO_R63,
@@ -3506,11 +3739,14 @@ namespace Integra_7_Xamarin
                     PARAMETER_TYPE.COMBOBOX_NOTE_LENGTH,
                 PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_MINUS_W100_TO_D100_STEP_2,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127};
             // Parameter 49:Distorsion->Flanger
             ParameterNames[i] = new String[] { "Distortion drive", "Distortion pan", "Flanger pre-delay",
                 "Flanger rate(Hz/Note)", "Flanger rate", "Note", "Modulation depth", "Flanger feedback",
-                "Flanger balance", "Level" };
+                "Flanger balance", "Level",
+                "MFX Chorus send level", "MFX Reverb send level" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_MINUS_L64_TO_R63,
@@ -3521,10 +3757,13 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_MINUS_98_TO_98_STEP_2,
                 PARAMETER_TYPE.SLIDER_MINUS_W100_TO_D100_STEP_2,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127};
             // Parameter 50:Distorsion->delay
             ParameterNames[i] = new String[] { "Distortion drive", "Distortion pan", "Delay time(Ms/Note)",
-                "Delay time rate", "Note", "Delay feedback", "Delay HF damp", "Delay balance", "Level" };
+                "Delay time rate", "Note", "Delay feedback", "Delay HF damp", "Delay balance", "Level",
+                "MFX Chorus send level", "MFX Reverb send level" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_MINUS_L64_TO_R63,
@@ -3534,6 +3773,8 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.SLIDER_MINUS_98_TO_98_STEP_2,
                 PARAMETER_TYPE.COMBOBOX_HF_DAMP,
                 PARAMETER_TYPE.SLIDER_MINUS_W100_TO_D100_STEP_2,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127};
             // Parameter 51:OD/DS->TouchWah, Drive, Amp and TouchWah
             ParameterNames[i] = new String[] { "Drive switch", "Drive type", "Drive", "Tone",
@@ -3548,7 +3789,8 @@ namespace Integra_7_Xamarin
             // Parameter 51:OD/DS->TouchWah, TouchWah and Levels
             ParameterNames[i] = new String[] { "Touch wah switch", "Touch wah filter type", "Touch wah polarity",
                 "Touch wah Sens", "Touch wah manual", "Touch wah peak", "Touch wah balance", "Low gain",
-                "High gain", "Level" };
+                "High gain", "Level",
+                "MFX Chorus send level", "MFX Reverb send level" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.CHECKBOX,
                 PARAMETER_TYPE.COMBOBOX_FILTER_TYPE_2,
@@ -3559,6 +3801,8 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.SLIDER_MINUS_W100_TO_D100_STEP_2,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127};
             // Parameter 52:DS/OD->AutoWah, amplifier
             ParameterNames[i] = new String[] { "Drive switch", "Drive type", "Drive", "Tone",
@@ -3573,7 +3817,8 @@ namespace Integra_7_Xamarin
             // Parameter 52:DS/OD->AutoWah, amplifier, AutoWah and levels
             ParameterNames[i] = new String[] { "Auto wah switch", "Auto wah filter type", "Auto wah manual",
                 "Auto wah peak", "Auto wah rate(Hz/Note)", "Auto wah rate", "Tone", "Auto wah depth",
-                "Auto wah balance", "Low gain", "High gain", "Level" };
+                "Auto wah balance", "Low gain", "High gain", "Level",
+                "MFX Chorus send level", "MFX Reverb send level" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.CHECKBOX,
                 PARAMETER_TYPE.COMBOBOX_FILTER_TYPE_2,
@@ -3586,6 +3831,8 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.SLIDER_MINUS_W100_TO_D100_STEP_2,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
                 PARAMETER_TYPE.SLIDER_MINUS_15_TO_15,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127};
             // Parameter 53:GuitarAmpSim->Chorus, Amplifier
             ParameterNames[i] = new String[] { "Amplifier switch", "Amplifier type", "Amplifier volume",
@@ -3602,7 +3849,8 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.SLIDER_0_TO_127};
             // Parameter 53:GuitarAmpSim->Chorus, Chorus
             ParameterNames[i] = new String[] { "Chorus switch", "Chorus pre-delay", "Chorus rate",
-                "Chorus depth", "Chorus balance", "Speaker switch", "Speaker type", "Level" };
+                "Chorus depth", "Chorus balance", "Speaker switch", "Speaker type", "Level",
+                "MFX Chorus send level", "MFX Reverb send level" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.CHECKBOX,
                 PARAMETER_TYPE.SLIDER_0_TO_100_MS,
@@ -3611,6 +3859,8 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.SLIDER_MINUS_W100_TO_D100_STEP_2,
                 PARAMETER_TYPE.CHECKBOX,
                 PARAMETER_TYPE.COMBOBOX_SPEAKER_TYPES,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127};
             // Parameter 54:GuitarAmpSim->Flanger, Amplifier
             ParameterNames[i] = new String[] { "Amplifier switch", "Amplifier type", "Amplifier volume",
@@ -3628,7 +3878,8 @@ namespace Integra_7_Xamarin
             // Parameter 54:GuitarAmpSim->Flanger, Flanger, speaker and level
             ParameterNames[i] = new String[] { "Flanger switch", "Flanger pre-delay", "Flanger Rate",
                 "Flanger Depth", "Flanger feedback", "Flanger balance", "Speaker switch",
-                "Speaker type", "Level" };
+                "Speaker type", "Level",
+                "MFX Chorus send level", "MFX Reverb send level" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.CHECKBOX,
                 PARAMETER_TYPE.SLIDER_0_TO_100_MS,
@@ -3638,6 +3889,8 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.SLIDER_MINUS_W100_TO_D100_STEP_2,
                 PARAMETER_TYPE.CHECKBOX,
                 PARAMETER_TYPE.COMBOBOX_SPEAKER_TYPES,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127};
             // Parameter 55:GuitarAmpSim->Phaser, Amplifier
             ParameterNames[i] = new String[] { "Amplifier switch", "Amplifier type", "Amplifier volume",
@@ -3653,7 +3906,9 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127};
             // Parameter 55:GuitarAmpSim->Phaser, Phaser, speaker and level
-            ParameterNames[i] = new String[] { "Phaser switch", "Phaser Manual", "Phaser resonance", "Phaser mix", "Phaser rate", "Phaser depth", "Speaker switch", "Speaker type", "Level" };
+            ParameterNames[i] = new String[] { "Phaser switch", "Phaser Manual", "Phaser resonance",
+                "Phaser mix", "Phaser rate", "Phaser depth", "Speaker switch", "Speaker type", "Level",
+                "MFX Chorus send level", "MFX Reverb send level" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.CHECKBOX,
                 PARAMETER_TYPE.SLIDER_0_TO_127,
@@ -3663,6 +3918,8 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.CHECKBOX,
                 PARAMETER_TYPE.COMBOBOX_SPEAKER_TYPES,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127};
             // Parameter 56:GuitarAmpSim->Delay, Amplifier
             ParameterNames[i] = new String[] { "Amplifier switch", "Amplifier type", "Amplifier volume",
@@ -3679,7 +3936,8 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.SLIDER_0_TO_127};
             // Parameter 56:GuitarAmpSim->Delay, Delay, speaker and level
             ParameterNames[i] = new String[] { "Delay switch", "Delay Manual", "Delay resonance",
-                "Delay mix", "Delay rate", "Delay depth", "Speaker switch", "Speaker type", "Level" };
+                "Delay mix", "Delay rate", "Delay depth", "Speaker switch", "Speaker type", "Level",
+                "MFX Chorus send level", "MFX Reverb send level" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.CHECKBOX,
                 PARAMETER_TYPE.SLIDER_0_TO_127,
@@ -3689,11 +3947,14 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.CHECKBOX,
                 PARAMETER_TYPE.COMBOBOX_SPEAKER_TYPES,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127};
             // Parameter 57:EP AmpSim->Tremolo
             ParameterNames[i] = new String[] { "Type", "Bass", "Treble", "Tremolo switch", "Tremolo rate(Hz/Note)",
                 "Tremolo rate", "Note", "Tremolo depth", "Tremolo duty", "Speaker type", "Overdrive switch",
-                "Overdrive gain", "Overdrive drive", "Level" };
+                "Overdrive gain", "Overdrive drive", "Level",
+                "MFX Chorus send level", "MFX Reverb send level" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.COMBOBOX_AMPLIFIER_TYPE_3,
                 PARAMETER_TYPE.SLIDER_MINUS_50_TO_50,
@@ -3708,11 +3969,13 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.CHECKBOX,
                 PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127};
             // Parameter 58:EP AmpSim->Chorus
             ParameterNames[i] = new String[] { "Type", "Bass", "Treble", "Chorus switch", "Chorus pre-delay",
                 "Chorus rate(Hz/Note)", "Chorus rate", "Note", "Chorus depth", "Chorus balance", "Speaker type",
-                "Overdrive switch", "Overdrive gain", "Overdrive drive", "Level" };
+                "Overdrive switch", "Overdrive gain", "Overdrive drive" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.COMBOBOX_AMPLIFIER_TYPE_3,
                 PARAMETER_TYPE.SLIDER_MINUS_50_TO_50,
@@ -3727,12 +3990,18 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.COMBOBOX_SPEAKER_TYPES_5,
                 PARAMETER_TYPE.CHECKBOX,
                 PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127};
+            // Parameter 58:EP AmpSim->Chorus levels
+            ParameterNames[i] = new String[] { "Level",
+                "MFX Chorus send level", "MFX Reverb send level" };
+            ParameterTypes[i++] = new PARAMETER_TYPE[] {
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127};
             // Parameter 59:EP AmpSim->Flanger
             ParameterNames[i] = new String[] { "Type", "Bass", "Treble", "Flanger switch", "Flanger pre-delay", "Flanger rate(Hz/Note)",
                 "Flanger rate", "Note", "Flanger depth", "Flanger feedback", "Flanger balance", "Speaker type",
-                "Overdrive switch", "Overdrive gain", "Overdrive drive", "Level" };
+                "Overdrive switch", "Overdrive gain", "Overdrive drive" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.COMBOBOX_AMPLIFIER_TYPE_3,
                 PARAMETER_TYPE.SLIDER_MINUS_50_TO_50,
@@ -3748,12 +4017,18 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.COMBOBOX_SPEAKER_TYPES_5,
                 PARAMETER_TYPE.CHECKBOX,
                 PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127};
+            // Parameter 59:EP AmpSim->Flanger
+            ParameterNames[i] = new String[] { "Level",
+                "MFX Chorus send level", "MFX Reverb send level" };
+            ParameterTypes[i++] = new PARAMETER_TYPE[] {
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127};
             // Parameter 60:EP AmpSim->Phaser
             ParameterNames[i] = new String[] { "Type", "Bass", "Treble", "Phaser switch", "Phaser manual",
                 "Phaser resonance", "Phaser mix", "Phaser rate(Hz/Note)", "Phaser rate", "Note", "Phaser depth",
-                "Speaker type", "Overdrive switch", "Overdrive gain", "Overdrive drive", "Level" };
+                "Speaker type", "Overdrive switch", "Overdrive gain", "Overdrive drive" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.COMBOBOX_AMPLIFIER_TYPE_3,
                 PARAMETER_TYPE.SLIDER_MINUS_50_TO_50,
@@ -3769,12 +4044,18 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.COMBOBOX_SPEAKER_TYPES_5,
                 PARAMETER_TYPE.CHECKBOX,
                 PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127};
+            // Parameter 60:EP AmpSim->Phaser levels
+            ParameterNames[i] = new String[] { "Level",
+                "MFX Chorus send level", "MFX Reverb send level" };
+            ParameterTypes[i++] = new PARAMETER_TYPE[] {
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127};
             // Parameter 61:EP AmpSim->Delay
             ParameterNames[i] = new String[] { "Type", "Bass", "Treble", "Delay switch", "Delay time(Ms/Note)",
                 "Delay time", "Note", "Delay acceleration", "Delay feedback", "Delay HF damp", "Delay balance",
-                "Speaker type", "Overdrive switch", "Overdrive gain", "Overdrive drive", "Level" };
+                "Speaker type", "Overdrive switch", "Overdrive gain", "Overdrive drive" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.COMBOBOX_AMPLIFIER_TYPE_3,
                 PARAMETER_TYPE.SLIDER_MINUS_50_TO_50,
@@ -3790,11 +4071,18 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.COMBOBOX_SPEAKER_TYPES_5,
                 PARAMETER_TYPE.CHECKBOX,
                 PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127};
+            // Parameter 61:EP AmpSim->Delay levels
+            ParameterNames[i] = new String[] { "Level",
+                "MFX Chorus send level", "MFX Reverb send level" };
+            ParameterTypes[i++] = new PARAMETER_TYPE[] {
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127};
             // Parameter 62:Enhancer->Chorus
             ParameterNames[i] = new String[] { "Enhancer sens", "Enhancer mix", "Chorus pre-delay",
-                "Chorus rate(Hz/Note)", "Chorus rate", "Note", "Chorus depth", "Chorus balance", "Level" };
+                "Chorus rate(Hz/Note)", "Chorus rate", "Note", "Chorus depth", "Chorus balance", "Level",
+                "MFX Chorus send level", "MFX Reverb send level" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127,
@@ -3804,11 +4092,14 @@ namespace Integra_7_Xamarin
                     PARAMETER_TYPE.COMBOBOX_NOTE_LENGTH,
                 PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_MINUS_W100_TO_D100_STEP_2,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127};
             // Parameter 63:Enhancer->Flanger
             ParameterNames[i] = new String[] { "Enhancer sens", "Enhancer mix", "Flanger pre-delay",
                 "Flanger rate(Hz/Note)", "Flanger rate", "Note", "Flanger depth", "Flanger feedback",
-                "Flanger balance", "Level" };
+                "Flanger balance", "Level",
+                "MFX Chorus send level", "MFX Reverb send level" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127,
@@ -3819,11 +4110,14 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_MINUS_98_TO_98_STEP_2,
                 PARAMETER_TYPE.SLIDER_MINUS_W100_TO_D100_STEP_2,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127};
             // Parameter 64Enhancer->Delay
             ParameterNames[i] = new String[] { "Enhancer sens", "Enhancer mix",
                 "Delay time(Ms/Note)", "Delay time", "Note", "Delay feedback",
-                "Delay HF damp", "Delay balance", "Level" };
+                "Delay HF damp", "Delay balance", "Level",
+                "MFX Chorus send level", "MFX Reverb send level" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127,
@@ -3833,11 +4127,14 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.SLIDER_MINUS_98_TO_98_STEP_2,
                 PARAMETER_TYPE.COMBOBOX_HF_DAMP,
                 PARAMETER_TYPE.SLIDER_MINUS_W100_TO_D100_STEP_2,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127};
             // Parameter 65:Chorus->Delay
             ParameterNames[i] = new String[] { "Chorus pre-delay", "Chorus rate(Hz/Note)", "Chorus rate",
                 "Note", "Chorus depth", "Chorus balance", "Delay time(Ms/Note)", "Delay time", "Note",
-                "Delay feedback", "Delay HF damp", "Delay balance", "Level" };
+                "Delay feedback", "Delay HF damp", "Delay balance", "Level",
+                "MFX Chorus send level", "MFX Reverb send level" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.SLIDER_0_TO_100_MS,
                 PARAMETER_TYPE.COMBOBOX_HZ_AND_NOTE_LENGTHS,
@@ -3851,11 +4148,14 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.SLIDER_MINUS_98_TO_98_STEP_2,
                 PARAMETER_TYPE.COMBOBOX_HF_DAMP,
                 PARAMETER_TYPE.SLIDER_MINUS_W100_TO_D100_STEP_2,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127};
             // Parameter 66:Flanger->Delay
             ParameterNames[i] = new String[] { "Flanger pre-delay", "Flanger rate(Hz/Note)", "Flanger rate",
                 "Note", "Flanger depth", "Flanger feedback", "Flanger balance", "Delay time(Ms/Note)",
-                "Delay time", "Note", "Delay feedback", "Delay HF damp", "Delay balance", "Level" };
+                "Delay time", "Note", "Delay feedback", "Delay HF damp", "Delay balance", "Level",
+                "MFX Chorus send level", "MFX Reverb send level" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.SLIDER_0_TO_100_MS,
                 PARAMETER_TYPE.COMBOBOX_HZ_AND_NOTE_LENGTHS,
@@ -3870,11 +4170,14 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.SLIDER_MINUS_98_TO_98_STEP_2,
                 PARAMETER_TYPE.COMBOBOX_HF_DAMP,
                 PARAMETER_TYPE.SLIDER_MINUS_W100_TO_D100_STEP_2,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127};
             // Parameter 67:Chorus->Flanger
             ParameterNames[i] = new String[] { "Chorus pre-delay", "Chorus rate(Hz/Note)", "Chorus rate",
                 "Note", "Chorus depth", "Chorus balance", "Flanger pre-delay", "Flanger rate(Hz/Note)",
-                "Flanger rate", "Note", "Flanger depth", "Flanger feedback", "Flanger balance", "Level" };
+                "Flanger rate", "Note", "Flanger depth", "Flanger feedback", "Flanger balance", "Level",
+                "MFX Chorus send level", "MFX Reverb send level" };
             ParameterTypes[i++] = new PARAMETER_TYPE[] {
                 PARAMETER_TYPE.SLIDER_0_TO_100_MS,
                 PARAMETER_TYPE.COMBOBOX_HZ_AND_NOTE_LENGTHS,
@@ -3889,12 +4192,14 @@ namespace Integra_7_Xamarin
                 PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_MINUS_98_TO_98_STEP_2,
                 PARAMETER_TYPE.SLIDER_MINUS_W100_TO_D100_STEP_2,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
+                PARAMETER_TYPE.SLIDER_0_TO_127,
                 PARAMETER_TYPE.SLIDER_0_TO_127};
 
             // MFX offsets depending on splitted pages:
             byte mfxCount = i;
             MFXPageCount = new byte[mfxCount];            // Number of pages current MFX type occupies (normally 1)
-            MFXTypeOffset = new byte[mfxCount];           // Offset in parameter pages that differs from MFXType due to preceeding multiple page types
+            MFXTypeOffset = new byte[mfxCount];           // Offset in parameter pages that differs from MFXType due to preceeding multiple page types. 2-type controls (e.g. Note/Hz) counts as 3 controls together.
             MFXPageParameterOffset = new byte[mfxCount];  // Offset to first parameter in a page. Always 0 for first page, number of preceeding controls for following pages
             MFXIndexFromType = new byte[mfxCount];        // Index to a ParameterType entry from a given MFXType. To get correct parameters use e.g. ParameterNames[MFXIndexFromType[MFXType](+ parameter number)]
             byte mfxPages = 1;
@@ -3906,184 +4211,283 @@ namespace Integra_7_Xamarin
                 switch (i)
                 {
                     // 04:Step filter is splitted into 3 pages and occupies indexes 4 through 6:
-                    case 4:
-                        mfxPages = 3;
-                        mfxOffset = 0;
-                        mfxParameterOffset = 0;
+                    case 4:                     // Case numbers are always MFX type number plus mfxOffset plus zero-based subpage number!
+                        mfxPages = 3;           // Always number of pages for current MFX type.
+                        mfxOffset = 0;          // When this and previous pages contains subpages, this is the extra offset to add to find this page.
+                        mfxParameterOffset = 0; // This is the offset within the MFX type when a previous page for this type exists.
                         break;
                     case 5:
                         mfxPages = 3;
                         mfxOffset = 1;
-                        mfxParameterOffset = 8;
+                        mfxParameterOffset = 8; // First page of 04: Step filter contains 8 controls, thus we start at 8 here.
                         break;
                     case 6:
                         mfxPages = 3;
                         mfxOffset = 2;
-                        mfxParameterOffset = 16;
+                        mfxParameterOffset = 16; // First two pages of 04: Step filter contains 16 controls together, thus we start at 16 here.
                         break;
-                    // 18: Slicer is splitted into 3 pages and occupies indexes 20 through 22:
-                    case 20:
-                        mfxPages = 3;
+                    // 07:Humanizer is splitted into 2 pages and occupies indexes 9 through 10:
+                    case 9:
+                        mfxPages = 2;
                         mfxOffset = 2;
                         mfxParameterOffset = 0;
                         break;
-                    case 21:
-                        mfxPages = 3;
+                    case 10:
+                        mfxPages = 2;
                         mfxOffset = 3;
-                        mfxParameterOffset = 8;
+                        mfxParameterOffset = 13;
                         break;
+                    // Parameter 12:Step phaser is splitted into 2 pages and occupies indexes 15 through 16:
+                    case 15:
+                        mfxPages = 2;
+                        mfxOffset = 3;
+                        mfxParameterOffset = 0;
+                        break;
+                    case 16:
+                        mfxPages = 2;
+                        mfxOffset = 4;
+                        mfxParameterOffset = 12;
+                        break;
+                    // 18: Slicer is splitted into 3 pages and occupies indexes 22 through 24:
                     case 22:
                         mfxPages = 3;
                         mfxOffset = 4;
-                        mfxParameterOffset = 16;
-                        break;
-                    // 20: Rotary 2 occupies 2 indexes, 24 and 25:
-                    case 24:
-                        mfxPages = 2;
-                        mfxOffset = 4;
                         mfxParameterOffset = 0;
                         break;
-                    case 25:
-                        mfxPages = 2;
+                    case 23:
+                        mfxPages = 3;
                         mfxOffset = 5;
-                        mfxParameterOffset = 7;
+                        mfxParameterOffset = 8;
                         break;
-                    // 21: Rotary 3 occupies 2 indexes, 26 and 27:
+                    case 24:
+                        mfxPages = 3;
+                        mfxOffset = 6;
+                        mfxParameterOffset = 16;
+                        break;
+                    // 20: Rotary 2 occupies 2 indexes, 26 and 27:
                     case 26:
                         mfxPages = 2;
-                        mfxOffset = 5;
+                        mfxOffset = 6;
                         mfxParameterOffset = 0;
                         break;
                     case 27:
                         mfxPages = 2;
-                        mfxOffset = 6;
+                        mfxOffset = 7;
                         mfxParameterOffset = 7;
                         break;
-                    // 30: Guitar Amp Simulator occupies 2 indexes, 36 and 37:
-                    case 36:
-                        mfxPages = 2;
-                        mfxOffset = 6;
-                        mfxParameterOffset = 0;
-                        break;
-                    case 37:
-                        mfxPages = 2;
-                        mfxOffset = 7;
-                        mfxParameterOffset = 10;
-                        break;
-                    // 37: 4Tap Pan Delay occupies 2 indexes, 44 and 45:
-                    case 44:
+                    // 21: Rotary 3 occupies 2 indexes, 28 and 29:
+                    case 28:
                         mfxPages = 2;
                         mfxOffset = 7;
                         mfxParameterOffset = 0;
                         break;
-                    case 45:
+                    case 29:
                         mfxPages = 2;
                         mfxOffset = 8;
-                        mfxParameterOffset = 13;
+                        mfxParameterOffset = 7;
                         break;
-                    // 38: Multi Tap Delay occupies 2 indexes, 46 and 47:
-                    case 46:
+                    // 24:Step flanger occupies 2 indexes, 32 and 33:
+                    case 32:
                         mfxPages = 2;
                         mfxOffset = 8;
                         mfxParameterOffset = 0;
                         break;
-                    case 47:
+                    case 33:
                         mfxPages = 2;
                         mfxOffset = 9;
-                        mfxParameterOffset = 13;
-                        break;
-                    // 39: Reverse Delay occupies 3 indexes, 48 - 50:
-                    case 48:
-                        mfxPages = 3;
-                        mfxOffset = 9;
-                        mfxParameterOffset = 0;
-                        break;
-                    case 49:
-                        mfxPages = 3;
-                        mfxOffset = 10;
-                        mfxParameterOffset = 8;
-                        break;
-                    case 50:
-                        mfxPages = 3;
-                        mfxOffset = 11;
-                        mfxParameterOffset = 18;
-                        break;
-                    // 44:2Voice shift pitcher occupies 2 indexes, 55 - 56:
-                    case 55:
-                        mfxPages = 2;
-                        mfxOffset = 11;
-                        mfxParameterOffset = 0;
-                        break;
-                    case 56:
-                        mfxPages = 2;
-                        mfxOffset = 12;
                         mfxParameterOffset = 14;
                         break;
-                    // 51:OD/DS->TouchWah occupies 2 indexes, 63 - 64:
-                    case 63:
+                    // 30: Guitar Amp Simulator occupies 2 indexes, 39 and 40:
+                    case 39:
+                        mfxPages = 2;
+                        mfxOffset = 9;
+                        mfxParameterOffset = 0;
+                        break;
+                    case 40:
+                        mfxPages = 2;
+                        mfxOffset = 10;
+                        mfxParameterOffset = 10;
+                        break;
+                    // 35:Modulation delay occupies 2 indexes, 45 and 46:
+                    case 45:
+                        mfxPages = 2;
+                        mfxOffset = 10;
+                        mfxParameterOffset = 0;
+                        break;
+                    case 46:
+                        mfxPages = 2;
+                        mfxOffset = 11;
+                        mfxParameterOffset = 14;
+                        break;
+                    // 36:3Tap pan delay occupies 2 indexes, 47 and 48:
+                    case 47:
+                        mfxPages = 2;
+                        mfxOffset = 11;
+                        mfxParameterOffset = 0;
+                        break;
+                    case 48:
+                        mfxPages = 2;
+                        mfxOffset = 12;
+                        mfxParameterOffset = 11;
+                        break;
+                    // 37: 4Tap Pan Delay occupies 2 indexes, 49 and 50:
+                    case 49:
                         mfxPages = 2;
                         mfxOffset = 12;
                         mfxParameterOffset = 0;
                         break;
-                    case 64:
+                    case 50:
                         mfxPages = 2;
                         mfxOffset = 13;
-                        mfxParameterOffset = 6;
+                        mfxParameterOffset = 13;
                         break;
-                    // 52:DS/OD->AutoWah occupies 2 indexes, 65 - 66:
-                    case 65:
+                    // 38: Multi Tap Delay occupies 2 indexes, 51 and 52:
+                    case 51:
                         mfxPages = 2;
                         mfxOffset = 13;
                         mfxParameterOffset = 0;
                         break;
-                    case 66:
+                    case 52:
                         mfxPages = 2;
                         mfxOffset = 14;
-                        mfxParameterOffset = 6;
+                        mfxParameterOffset = 13;
                         break;
-                    // 53:GuitarAmpSim->Chorus occupies 2 indexes, 67 and 68:
-                    case 67:
-                        mfxPages = 2;
+                    // 39: Reverse Delay occupies 3 indexes, 53 - 55:
+                    case 53:
+                        mfxPages = 3;
                         mfxOffset = 14;
                         mfxParameterOffset = 0;
                         break;
+                    case 54:
+                        mfxPages = 3;
+                        mfxOffset = 15;
+                        mfxParameterOffset = 8;
+                        break;
+                    case 55:
+                        mfxPages = 3;
+                        mfxOffset = 16;
+                        mfxParameterOffset = 18;
+                        break;
+                    // 44:2Voice shift pitcher occupies 2 indexes, 60 - 61:
+                    case 60:
+                        mfxPages = 2;
+                        mfxOffset = 16;
+                        mfxParameterOffset = 0;
+                        break;
+                    case 61:
+                        mfxPages = 2;
+                        mfxOffset = 17;
+                        mfxParameterOffset = 14;
+                        break;
+                    // 51:OD/DS->TouchWah occupies 2 indexes, 68 - 69:
                     case 68:
                         mfxPages = 2;
-                        mfxOffset = 15;
-                        mfxParameterOffset = 8;
+                        mfxOffset = 17;
+                        mfxParameterOffset = 0;
                         break;
-                    // 54:GuitarAmpSim->Flanger occupies 2 indexes, 69 and 70:
                     case 69:
                         mfxPages = 2;
-                        mfxOffset = 15;
-                        mfxParameterOffset = 0;
+                        mfxOffset = 18;
+                        mfxParameterOffset = 6;
                         break;
+                    // 52:DS/OD->AutoWah occupies 2 indexes, 70 - 71:
                     case 70:
                         mfxPages = 2;
-                        mfxOffset = 16;
-                        mfxParameterOffset = 8;
+                        mfxOffset = 18;
+                        mfxParameterOffset = 0;
                         break;
-                    // 55:GuitarAmpSim->Phaser occupies 2 indexes, 71 and 72:
                     case 71:
                         mfxPages = 2;
-                        mfxOffset = 16;
-                        mfxParameterOffset = 0;
+                        mfxOffset = 19;
+                        mfxParameterOffset = 6;
                         break;
+                    // 53:GuitarAmpSim->Chorus occupies 2 indexes, 72 and 73:
                     case 72:
                         mfxPages = 2;
-                        mfxOffset = 17;
-                        mfxParameterOffset = 8;
-                        break;
-                    // 56:GuitarAmpSim->Delay occupies 2 indexes, 73 and 74:
-                    case 73:
-                        mfxPages = 2;
-                        mfxOffset = 17;
+                        mfxOffset = 19;
                         mfxParameterOffset = 0;
                         break;
+                    case 73:
+                        mfxPages = 2;
+                        mfxOffset = 20;
+                        mfxParameterOffset = 8;
+                        break;
+                    // 54:GuitarAmpSim->Flanger occupies 2 indexes, 74 and 75:
                     case 74:
                         mfxPages = 2;
-                        mfxOffset = 18;
+                        mfxOffset = 20;
+                        mfxParameterOffset = 0;
+                        break;
+                    case 75:
+                        mfxPages = 2;
+                        mfxOffset = 21;
                         mfxParameterOffset = 8;
+                        break;
+                    // 55:GuitarAmpSim->Phaser occupies 2 indexes, 76 and 77:
+                    case 76:
+                        mfxPages = 2;
+                        mfxOffset = 21;
+                        mfxParameterOffset = 0;
+                        break;
+                    case 77:
+                        mfxPages = 2;
+                        mfxOffset = 22;
+                        mfxParameterOffset = 11;
+                        break;
+                    // 56:GuitarAmpSim->Delay occupies 2 indexes, 78 and 79:
+                    case 78:
+                        mfxPages = 2;
+                        mfxOffset = 22;
+                        mfxParameterOffset = 0;
+                        break;
+                    case 79:
+                        mfxPages = 2;
+                        mfxOffset = 23;
+                        mfxParameterOffset = 8;
+                        break;
+                    // 58:EP AmpSim->Chorus occupies 2 indexes, 81 and 82:
+                    case 81:
+                        mfxPages = 2;
+                        mfxOffset = 23;
+                        mfxParameterOffset = 0;
+                        break;
+                    case 82:
+                        mfxPages = 2;
+                        mfxOffset = 24;
+                        mfxParameterOffset = 15;
+                        break;
+                    // 59:EP AmpSim->Flanger occupies 2 indexes, 83 and 84:
+                    case 83:
+                        mfxPages = 2;
+                        mfxOffset = 24;
+                        mfxParameterOffset = 0;
+                        break;
+                    case 84:
+                        mfxPages = 2;
+                        mfxOffset = 25;
+                        mfxParameterOffset = 15;
+                        break;
+                    // 60:EP AmpSim->Phaser occupies 2 indexes, 85 and 86:
+                    case 85:
+                        mfxPages = 2;
+                        mfxOffset = 25;
+                        mfxParameterOffset = 0;
+                        break;
+                    case 86:
+                        mfxPages = 2;
+                        mfxOffset = 26;
+                        mfxParameterOffset = 15;
+                        break;
+                    // 61:EP AmpSim->Delay occupies 2 indexes, 87 and 88:
+                    case 87:
+                        mfxPages = 2;
+                        mfxOffset = 26;
+                        mfxParameterOffset = 0;
+                        break;
+                    case 88:
+                        mfxPages = 2;
+                        mfxOffset = 27;
+                        mfxParameterOffset = 15;
                         break;
 
                     // Add cases above when more pages are splitted!
@@ -4104,11 +4508,20 @@ namespace Integra_7_Xamarin
             }
             for (i = 0; i < mfxCount; i++)
             {
+                // In this switch we add indesFromTypeOffset to the selection _after_ a multipage control set:
                 switch (i)
                 {
                     // 04:Step filter is splitted into 3 pages and occupies indexes 4 through 6:
                     case 5:
                         indexFromTypeOffset += 3;
+                        break;
+                    // 07:Humanizer is splitted into 2 pages and occupies indexes 9 through 10:
+                    case 8:
+                        indexFromTypeOffset += 2;
+                        break;
+                    // 12:Step phaser is splitted into 2 pages and occupies indexes 9 through 10:
+                    case 13:
+                        indexFromTypeOffset += 2;
                         break;
                     // 18: Slicer is splitted into 3 pages and occupies indexes 20 through 22:
                     case 19:
@@ -4122,9 +4535,21 @@ namespace Integra_7_Xamarin
                     case 22:
                         indexFromTypeOffset += 2;
                         break;
+                    // 24:Step flanger occupies 2 indexes:
+                    case 25:
+                        indexFromTypeOffset += 2;
+                        break;
                     // 30: Guitar Amp Simulator occupiew 2 indexes, 36 and 37:
                     case 31:
                         indexFromTypeOffset += 2;
+                        break;
+                    // 35:Modulation delay occupies 2 indexes, 45 and 46:
+                    case 36:
+                        indexFromTypeOffset += 3;
+                        break;
+                    // 36:3Tap pan delay occupies 2 indexes, 47 and 48:
+                    case 37:
+                        indexFromTypeOffset += 3;
                         break;
                     // 37: 4Tap Pan Delay occupies 2 indexes, 44 and 45:
                     case 38:
@@ -4164,6 +4589,22 @@ namespace Integra_7_Xamarin
                         break;
                     // 56:GuitarAmpSim->Delay occupies 2 indexes, 73 and 74:
                     case 57:
+                        indexFromTypeOffset += 2;
+                        break;
+                    // 58:EP AmpSim->Chorus occupies 2 indexes, 81 and 82:
+                    case 59:
+                        indexFromTypeOffset += 2;
+                        break;
+                    // 59:EP AmpSim->Flanger occupies 2 indexes, 83 and 84:
+                    case 60:
+                        indexFromTypeOffset += 2;
+                        break;
+                    // 60:EP AmpSim->Phaser occupies 2 indexes, 85 and 86:
+                    case 61:
+                        indexFromTypeOffset += 2;
+                        break;
+                    // 61:EP AmpSim->Delay occupies 2 indexes, 87 and 88:
+                    case 62:
                         indexFromTypeOffset += 2;
                         break;
 
@@ -4216,11 +4657,23 @@ namespace Integra_7_Xamarin
                     Parameters.Parameters[i] = new NumberedParameter();
                     Parameters.Parameters[i].Type = content.ParameterTypes[content.MFXIndexFromType[MFXType]][i];
                     Parameters.Parameters[i].Name = content.ParameterNames[content.MFXIndexFromType[MFXType]][i];
-                    if (i < content.ParameterTypes[content.MFXIndexFromType[MFXType]].Length)// && content.ParameterTypes[MFXType][i] != SETS.NOT_A_SET)
+                    // The MFX send levels are handled as numbered parameters but are actually located at addresses 2 and 3 as bytes:
+                    if (i < content.ParameterTypes[content.MFXIndexFromType[MFXType]].Length)
                     {
                         Parameters.Parameters[i].Value.Text = sets.GetNumberedParameter(content.ParameterTypes[content.MFXIndexFromType[MFXType]][i]);
                     }
-                    Parameters.Parameters[i].Value.Value = Data.Get2Of4Byte(Parameters.Offset + 4 * i); // This gets the value to set selected index.
+                    if (Parameters.Parameters[i].Name == "MFX Chorus send level")
+                    {
+                        Parameters.Parameters[i].Value.Value = Data.GetByte(2); // This gets the value to MFX Chorus send level.
+                    }
+                    else if (Parameters.Parameters[i].Name == "MFX Reverb send level")
+                    {
+                        Parameters.Parameters[i].Value.Value = Data.GetByte(3); // This gets the value to MFX Reverb send level.
+                    }
+                    else
+                    {
+                        Parameters.Parameters[i].Value.Value = Data.Get2Of4Byte(Parameters.Offset + 4 * i); // This gets the value to set selected index.
+                    }
                 }
 
                 // Now, handle any pages that belongs to the same MFXType (splitted pages)

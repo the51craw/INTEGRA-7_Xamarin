@@ -16,7 +16,7 @@ namespace Integra_7_Xamarin
      */
     public partial class UIHandler
     {
-        //private HBTrace t = new HBTrace("UIHandler public sealed partial class MainPage : Page");
+        private HBTrace t = new HBTrace("UIHandler public sealed partial class MainPage : Page");
         Boolean handleControlEvents = true;            // Some control events re-creates the control, and that will cause a loop. Use handleControlEvents to prevent that.
         Boolean previousHandleControlEvents = true;
 
@@ -112,14 +112,14 @@ namespace Integra_7_Xamarin
 
         Integra_7_Xamarin.MainPage mainPage;
         public StackLayout mainStackLayout { get; set; }
-        public StackLayout LibrarianStackLayout = null;
-        public Boolean LibrarianIsCreated = false;
-        public StackLayout EditorStackLayout = null;
-        public StackLayout StudioSetEditorStackLayout = null;
-        public StackLayout FavoritesStackLayout = null;
-        public Boolean EditorIsCreated = false;
-        public Boolean StudioSetEditorIsCreated = false;
-        public Boolean FavoritesIsCreated = false;
+        public StackLayout Librarian_StackLayout = null;
+        public Boolean Librarian_IsCreated = false;
+        public StackLayout Edit_StackLayout = null;
+        public StackLayout StudioSetEditor_StackLayout = null;
+        public StackLayout Favorites_StackLayout = null;
+        public Boolean Edit_IsCreated = false;
+        public Boolean EditStudioSet_IsCreated = false;
+        public Boolean Favorites_IsCreated = false;
 
 
         public static _appType appType;
@@ -151,6 +151,10 @@ namespace Integra_7_Xamarin
             initDone = true;
         }
 
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // Handlers common to all pages
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
         /// <summary>
         /// Device-specific classes fills out rawData and then calls MidiInPort_MessageRecceived().
         /// </summary>
@@ -166,10 +170,17 @@ namespace Integra_7_Xamarin
                     case _page.EDIT_TONE:
                         Edit_MidiInPort_MessageReceived();
                         break;
+                    case _page.EDIT_STUDIO_SET:
+                        EditStudioSet_MidiInPort_MessageReceived();
+                        break;
                 }
-                rawData = new byte[0];
+                //rawData = new byte[0];
             }
         }
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // Functions common to all pages
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         public void SetFontSizes(StackLayout stackLayout)
         {
@@ -233,6 +244,12 @@ namespace Integra_7_Xamarin
                     SetFontSize(subView, size);
                 }
             }
+        }
+
+        private void SetStudioSet(byte[] number)
+        {
+            t.Trace("private void SetStudioSet (" + "byte[]" + number + ", " + ")");
+            commonState.midi.ProgramChange((byte)15, (byte)85, (byte)0, (byte)(number[2] + 1));
         }
 
         //private void Waiting(Boolean on)

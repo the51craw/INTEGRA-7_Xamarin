@@ -42,6 +42,9 @@ namespace Integra_7_Xamarin
         Button Favorites_btnReturn = null;
         Grid Favorites_grRightColumn = null;
 
+
+
+
         public void DrawFavoritesPage()
         {
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -157,7 +160,7 @@ namespace Integra_7_Xamarin
                 NumberOfTapsRequired = 2
             });
 
-            // Oter handlers:
+            // Other handlers:
             Favorites_edNewFolderName.TextChanged += Favorites_edNewFolderName_TextChanged;
             Favorites_btnAddFolder.Clicked += Favorites_btnAddFolder_Clicked;
             Favorites_btnDeleteFolder.Clicked += Favorites_btnDeleteFolder_Clicked;
@@ -177,7 +180,7 @@ namespace Integra_7_Xamarin
             RowDefinitionCollection Favorites_rdcLeft = new RowDefinitionCollection();
             Favorites_rdcLeft.Add(new RowDefinition());
             Favorites_rdcLeft.Add(new RowDefinition());
-            Favorites_rdcLeft[0].Height = new GridLength(headingHeight, GridUnitType.Absolute);
+            Favorites_rdcLeft[0].Height = new GridLength(rowHeight, GridUnitType.Absolute);
             Favorites_rdcLeft[1].Height = new GridLength(0, GridUnitType.Auto);
 
             Favorites_grLeftColumn.RowDefinitions.Add(Favorites_rdcLeft[0]);
@@ -191,7 +194,7 @@ namespace Integra_7_Xamarin
             RowDefinitionCollection Favorites_rdcMiddle = new RowDefinitionCollection();
             Favorites_rdcMiddle.Add(new RowDefinition());
             Favorites_rdcMiddle.Add(new RowDefinition());
-            Favorites_rdcMiddle[0].Height = new GridLength(headingHeight, GridUnitType.Absolute);
+            Favorites_rdcMiddle[0].Height = new GridLength(rowHeight, GridUnitType.Absolute);
             Favorites_rdcMiddle[1].Height = new GridLength(0, GridUnitType.Auto);
 
             Favorites_grMiddleColumn.RowDefinitions.Add(Favorites_rdcMiddle[0]);
@@ -228,9 +231,9 @@ namespace Integra_7_Xamarin
 
             // Assemble FavoritesStackLayout --------------------------------------------------------------
 
-            FavoritesStackLayout = new StackLayout();
-            FavoritesStackLayout.Children.Add((new GridRow(0, new View[] { Favorites_grLeftColumn, Favorites_grMiddleColumn, Favorites_grRightColumn })).Row);
-            FavoritesStackLayout.BackgroundColor = Color.Black;
+            Favorites_StackLayout = new StackLayout();
+            Favorites_StackLayout.Children.Add((new GridRow(0, new View[] { Favorites_grLeftColumn, Favorites_grMiddleColumn, Favorites_grRightColumn })).Row);
+            Favorites_StackLayout.BackgroundColor = Color.Black;
 
             //***player = new Player(commonState, ref commonState.player.btnPlayStop);
             UpdateFoldersList();
@@ -243,7 +246,7 @@ namespace Integra_7_Xamarin
         private void Favorites_btnReturn_Clicked(object sender, EventArgs e)
         {
             //mainStackLayout.Children.RemoveAt(0);
-            FavoritesStackLayout.IsVisible = false;
+            Favorites_StackLayout.IsVisible = false;
             ShowLibrarianPage();
         }
 
@@ -298,7 +301,7 @@ namespace Integra_7_Xamarin
                     //FindFavoriteByNameAndFolder()
                     commonState.currentTone = (Tone)Favorites_lvFavoriteList.SelectedItem;
                     //mainStackLayout.Children.RemoveAt(0);
-                    FavoritesStackLayout.IsVisible = false;
+                    Favorites_StackLayout.IsVisible = false;
                     //ShowLibrarianPage();
                 }
             }
@@ -526,13 +529,13 @@ namespace Integra_7_Xamarin
         public void ShowFavoritesPage(FavoritesAction favoriteAction)
         {
             this.favoritesAction = favoriteAction;
-            if (!FavoritesIsCreated)
+            if (!Favorites_IsCreated)
             {
                 DrawFavoritesPage();
-                mainStackLayout.Children.Add(FavoritesStackLayout);
-                FavoritesIsCreated = true;
+                mainStackLayout.Children.Add(Favorites_StackLayout);
+                Favorites_IsCreated = true;
             }
-            FavoritesStackLayout.IsVisible = true;
+            Favorites_StackLayout.IsVisible = true;
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////

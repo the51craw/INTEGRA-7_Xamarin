@@ -9,13 +9,13 @@ using System.Runtime.Serialization;
 using System.Xml;
 using System.Threading.Tasks;
 
-namespace Integra_7_uwp
+namespace Integra_7_Xamarin
 {
     [DataContract]
     public class StudioSet
     {
-        [IgnoreDataMember]
-        HBTrace t = new HBTrace("class StudioSet");
+        //[IgnoreDataMember]
+        //HBTrace t = new HBTrace("class StudioSet");
         //[DataMember]
         //public StudioSet_Setup Setup { get; set; }
         [DataMember]
@@ -45,7 +45,7 @@ namespace Integra_7_uwp
 
         public StudioSet()
         {
-            t.Trace("public StudioSet()");
+            //t.Trace("public StudioSet()");
             // This will populate chorus type classes with initial data:
             //CommonChorus = new StudioSet_CommonChorus();
             PartMainSettings = new StudioSet_PartMainSettings[16];
@@ -63,101 +63,101 @@ namespace Integra_7_uwp
 
         public static async Task<StudioSet> Deserialize<StudioSet>(StudioSet studioSet)
         {
-            try
-            {
-                FileOpenPicker openPicker = new FileOpenPicker();
-                openPicker.ViewMode = PickerViewMode.Thumbnail;
-                openPicker.FileTypeFilter.Add(".xml");
-                StorageFile openStudioSetFile = await openPicker.PickSingleFileAsync();
+            //try
+            //{
+            //    FileOpenPicker openPicker = new FileOpenPicker();
+            //    openPicker.ViewMode = PickerViewMode.Thumbnail;
+            //    openPicker.FileTypeFilter.Add(".xml");
+            //    StorageFile openStudioSetFile = await openPicker.PickSingleFileAsync();
 
-                if (openStudioSetFile != null)
-                {
-                    Stream stream = await openStudioSetFile.OpenStreamForReadAsync();
-                    await Task.Run(() =>
-                    {
-                        MemoryStream memoryStream = new MemoryStream();
-                        stream.CopyTo(memoryStream);
-                        memoryStream.Position = 0;
-                        DataContractSerializer dataContractSerializer = new DataContractSerializer(typeof(StudioSet));
-                        XmlReader xmlReader = XmlReader.Create(memoryStream);
-                        XmlDictionaryReader xmlDictionaryReader = XmlDictionaryReader.CreateDictionaryReader(xmlReader);
-                        studioSet = (StudioSet)dataContractSerializer.ReadObject(xmlDictionaryReader);
-                        xmlReader.Dispose();
-                    });
-                }
-            }
-            catch (Exception e) { }
+            //    if (openStudioSetFile != null)
+            //    {
+            //        Stream stream = await openStudioSetFile.OpenStreamForReadAsync();
+            //        await Task.Run(() =>
+            //        {
+            //            MemoryStream memoryStream = new MemoryStream();
+            //            stream.CopyTo(memoryStream);
+            //            memoryStream.Position = 0;
+            //            DataContractSerializer dataContractSerializer = new DataContractSerializer(typeof(StudioSet));
+            //            XmlReader xmlReader = XmlReader.Create(memoryStream);
+            //            XmlDictionaryReader xmlDictionaryReader = XmlDictionaryReader.CreateDictionaryReader(xmlReader);
+            //            studioSet = (StudioSet)dataContractSerializer.ReadObject(xmlDictionaryReader);
+            //            xmlReader.Dispose();
+            //        });
+            //    }
+            //}
+            //catch (Exception e) { }
             return studioSet;
         }
 
         public static async Task Serialize<StudioSet>(StudioSet studioSet)
         {
-            try
-            {
-                FileSavePicker savePicker = new FileSavePicker();
-                savePicker.FileTypeChoices.Add("Plain Text", new List<string>() { ".xml" });
-                StorageFile saveStudioSetFile = await savePicker.PickSaveFileAsync();
-                if (saveStudioSetFile != null)
-                {
-                    //await saveStudioSetFile. DeleteAsync(StorageDeleteOption.Default);
-                    CachedFileManager.DeferUpdates(saveStudioSetFile);
-                    Stream fileStream = await saveStudioSetFile.OpenStreamForWriteAsync();
-                    fileStream.SetLength(0);
-                    await Task.Run(() =>
-                    {
-                        MemoryStream memoryStream = new MemoryStream();
-                        XmlWriter xmlWriter = XmlWriter.Create(memoryStream);
-                        using (XmlDictionaryWriter xmlDictionaryWriter = XmlDictionaryWriter.CreateDictionaryWriter(xmlWriter))
-                        {
-                            var dataContractSerializer = new DataContractSerializer(typeof(StudioSet));
-                            dataContractSerializer.WriteObject(memoryStream, studioSet);
-                            fileStream.Seek(0, SeekOrigin.Begin);
-                            ArraySegment<byte> data = new ArraySegment<byte>();
-                            memoryStream.TryGetBuffer(out data);
-                            xmlWriter.Flush();
-                            fileStream.Write(data.ToArray(), 0, (Int32)data.Count);
-                            fileStream.Flush();
-                            xmlDictionaryWriter.Dispose();
-                        }
-                        xmlWriter.Dispose();
-                        memoryStream.Dispose();
-                    });
-                    fileStream.Dispose();
-                    String xmlText = await FileIO.ReadTextAsync(saveStudioSetFile);
-                    xmlText = xmlText.Replace("><", ">\n<");
-                    String[] lines = xmlText.Split('\n');
-                    String indent = "";
-                    xmlText = "";
-                    Boolean firstLine = true;
-                    foreach (String line in lines)
-                    {
-                        if (firstLine)
-                        {
-                            xmlText = line + "\r\n";
-                            firstLine = false;
-                        }
-                        else if (line.StartsWith("</"))
-                        {
-                            if (indent.Length > 0)
-                            {
-                                indent = indent.Remove(0, 1);
-                            }
-                            xmlText += indent + line + "\r\n";
-                        }
-                        else if (line.Contains("</"))
-                        {
-                            xmlText += indent + line + "\r\n";
-                        }
-                        else
-                        {
-                            xmlText += indent + line + "\r\n";
-                            indent += "\t";
-                        }
-                    }
-                    await FileIO.WriteTextAsync(saveStudioSetFile, xmlText);
-                }
-            }
-            catch (Exception e) { }
+            //try
+            //{
+            //    FileSavePicker savePicker = new FileSavePicker();
+            //    savePicker.FileTypeChoices.Add("Plain Text", new List<string>() { ".xml" });
+            //    StorageFile saveStudioSetFile = await savePicker.PickSaveFileAsync();
+            //    if (saveStudioSetFile != null)
+            //    {
+            //        //await saveStudioSetFile. DeleteAsync(StorageDeleteOption.Default);
+            //        CachedFileManager.DeferUpdates(saveStudioSetFile);
+            //        Stream fileStream = await saveStudioSetFile.OpenStreamForWriteAsync();
+            //        fileStream.SetLength(0);
+            //        await Task.Run(() =>
+            //        {
+            //            MemoryStream memoryStream = new MemoryStream();
+            //            XmlWriter xmlWriter = XmlWriter.Create(memoryStream);
+            //            using (XmlDictionaryWriter xmlDictionaryWriter = XmlDictionaryWriter.CreateDictionaryWriter(xmlWriter))
+            //            {
+            //                var dataContractSerializer = new DataContractSerializer(typeof(StudioSet));
+            //                dataContractSerializer.WriteObject(memoryStream, studioSet);
+            //                fileStream.Seek(0, SeekOrigin.Begin);
+            //                ArraySegment<byte> data = new ArraySegment<byte>();
+            //                memoryStream.TryGetBuffer(out data);
+            //                xmlWriter.Flush();
+            //                fileStream.Write(data.ToArray(), 0, (Int32)data.Count);
+            //                fileStream.Flush();
+            //                xmlDictionaryWriter.Dispose();
+            //            }
+            //            xmlWriter.Dispose();
+            //            memoryStream.Dispose();
+            //        });
+            //        fileStream.Dispose();
+            //        String xmlText = await FileIO.ReadTextAsync(saveStudioSetFile);
+            //        xmlText = xmlText.Replace("><", ">\n<");
+            //        String[] lines = xmlText.Split('\n');
+            //        String indent = "";
+            //        xmlText = "";
+            //        Boolean firstLine = true;
+            //        foreach (String line in lines)
+            //        {
+            //            if (firstLine)
+            //            {
+            //                xmlText = line + "\r\n";
+            //                firstLine = false;
+            //            }
+            //            else if (line.StartsWith("</"))
+            //            {
+            //                if (indent.Length > 0)
+            //                {
+            //                    indent = indent.Remove(0, 1);
+            //                }
+            //                xmlText += indent + line + "\r\n";
+            //            }
+            //            else if (line.Contains("</"))
+            //            {
+            //                xmlText += indent + line + "\r\n";
+            //            }
+            //            else
+            //            {
+            //                xmlText += indent + line + "\r\n";
+            //                indent += "\t";
+            //            }
+            //        }
+            //        await FileIO.WriteTextAsync(saveStudioSetFile, xmlText);
+            //    }
+            //}
+            //catch (Exception e) { }
         }
     }
 
@@ -216,7 +216,7 @@ namespace Integra_7_uwp
 
         public StudioSet_SystemCommon(ReceivedData Data)
         {
-            t.Trace("public StudioSet_SystemCommon (" + "ReceivedData" + Data + ", " + ")");
+            //t.Trace("public StudioSet_SystemCommon (" + "ReceivedData" + Data + ", " + ")");
             MasterTune = (256 * Data.GetByte(0x01) + 16 * Data.GetByte(0x02) + Data.GetByte(0x03)) - 1024;
             MasterKeyShift = (byte)(Data.GetByte(0x04) - 64);
             MasterLevel = Data.GetByte(0x05);
@@ -280,7 +280,7 @@ namespace Integra_7_uwp
 
         public StudioSet_Common(ReceivedData Data)
         {
-            t.Trace("public StudioSet_Common (" + "ReceivedData" + Data + ", " + ")");
+            //t.Trace("public StudioSet_Common (" + "ReceivedData" + Data + ", " + ")");
             Name = "";
             for (Int32 i = 0x00; i < 0x10; i++)
             {
@@ -339,7 +339,7 @@ namespace Integra_7_uwp
 
         public StudioSet_CommonChorus(ReceivedData Data)
         {
-            t.Trace("public StudioSet_CommonChorus(ReceivedData Data)");
+            //t.Trace("public StudioSet_CommonChorus(ReceivedData Data)");
             Type = Data.GetByte(0);
             Level = Data.GetByte(1);
             OutputAssign = Data.GetByte(2);
@@ -385,7 +385,7 @@ namespace Integra_7_uwp
 
         //public StudioSet_CommonChorus(ReceivedData Data)
         //{
-        //    t.Trace("public StudioSet_CommonChorus (" + "ReceivedData" + Data + ", " + ")");
+        //    //t.Trace("public StudioSet_CommonChorus (" + "ReceivedData" + Data + ", " + ")");
         //    byte[] defaultChorusOff = { 0x00, 0x7f, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x06, 0x08, 0x00, 0x01, 0x04, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x0a, 0x08, 0x00, 0x01, 0x02, 0x08, 0x00, 0x01, 0x0e, 0x08, 0x00, 0x05, 0x0a, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x03, 0x0b, 0x08, 0x00, 0x01, 0x01, 0x08, 0x00, 0x07, 0x0f, 0x08, 0x00, 0x07, 0x0f, 0x08, 0x00, 0x07, 0x0f, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00 };
         //    byte[] defaultChorusChorus = { 0x01, 0x7f, 0x00, 0x00, 0x08, 0x00, 0x00, 0x02, 0x08, 0x00, 0x00, 0x06, 0x08, 0x00, 0x01, 0x04, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x0a, 0x08, 0x00, 0x01, 0x02, 0x08, 0x00, 0x01, 0x0e, 0x08, 0x00, 0x05, 0x0a, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00 };
         //    byte[] defaultChorusDelay = { 0x02, 0x7f, 0x00, 0x00, 0x08, 0x00, 0x00, 0x01, 0x08, 0x00, 0x0c, 0x08, 0x08, 0x00, 0x00, 0x07, 0x08, 0x00, 0x00, 0x01, 0x08, 0x01, 0x09, 0x00, 0x08, 0x00, 0x00, 0x0a, 0x08, 0x00, 0x00, 0x01, 0x08, 0x02, 0x05, 0x08, 0x08, 0x00, 0x00, 0x0c, 0x08, 0x00, 0x03, 0x0b, 0x08, 0x00, 0x01, 0x01, 0x08, 0x00, 0x07, 0x0f, 0x08, 0x00, 0x07, 0x0f, 0x08, 0x00, 0x07, 0x0f, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00 };
@@ -417,7 +417,7 @@ namespace Integra_7_uwp
 
         public byte[] GetSwitchMessage(byte Type)
         {
-            //t.Trace("public byte[] GetSwitchMessage (" + "byte" + Type + ", " + ")");
+            ////t.Trace("public byte[] GetSwitchMessage (" + "byte" + Type + ", " + ")");
             switch (Type)
             {
                 case 0:
@@ -443,7 +443,7 @@ namespace Integra_7_uwp
 
         public StudioSet_CommonChorusOff(ReceivedData Data)
         {
-            t.Trace("public StudioSet_CommonChorusOff (" + "ReceivedData" + Data + ", " + ")");
+            //t.Trace("public StudioSet_CommonChorusOff (" + "ReceivedData" + Data + ", " + ")");
             this.RawData = Data.RawData;
         }
     }
@@ -476,7 +476,7 @@ namespace Integra_7_uwp
 
         public StudioSet_CommonChorusChorus(ReceivedData Data)
         {
-            t.Trace("public StudioSet_CommonChorusChorus (" + "ReceivedData" + Data + ", " + ")");
+            //t.Trace("public StudioSet_CommonChorusChorus (" + "ReceivedData" + Data + ", " + ")");
             this.RawData = Data.RawData;
             FilterType = Data.GetByte(7);
             FilterCutoffFrequency = Data.GetByte(11);
@@ -528,7 +528,7 @@ namespace Integra_7_uwp
 
         public StudioSet_CommonChorusDelay()
         {
-            t.Trace("public StudioSet_CommonChorusDelay()");
+            //t.Trace("public StudioSet_CommonChorusDelay()");
             LeftMsNote = 0;
             //Left = (byte)(16 * Data.GetByte(10) + Data.GetByte(11));
             RightMsNote = 0;
@@ -544,7 +544,7 @@ namespace Integra_7_uwp
 
         public StudioSet_CommonChorusDelay(ReceivedData Data)
         {
-            t.Trace("public StudioSet_CommonChorusDelay (" + "ReceivedData" + Data + ", " + ")");
+            //t.Trace("public StudioSet_CommonChorusDelay (" + "ReceivedData" + Data + ", " + ")");
             this.RawData = Data.RawData;
             LeftMsNote = Data.GetByte(7);
             LeftMs = (byte)(16 * Data.GetByte(10) + Data.GetByte(11));
@@ -587,7 +587,7 @@ namespace Integra_7_uwp
 
         public StudioSet_CommonChorusGM2Chorus(ReceivedData Data)
         {
-            t.Trace("public StudioSet_CommonChorusGM2Chorus (" + "ReceivedData" + Data + ", " + ")");
+            //t.Trace("public StudioSet_CommonChorusGM2Chorus (" + "ReceivedData" + Data + ", " + ")");
             this.RawData = Data.RawData;
             PreLPF = Data.GetByte(7);
             Level = (byte)(16 * Data.GetByte(10) + Data.GetByte(11));
@@ -625,7 +625,7 @@ namespace Integra_7_uwp
 
         public StudioSet_CommonReverb(ReceivedData Data)
         {
-            t.Trace("public StudioSet_CommonReverb (" + "ReceivedData" + Data + ", " + ")");
+            //t.Trace("public StudioSet_CommonReverb (" + "ReceivedData" + Data + ", " + ")");
 
             Type = Data.GetByte(0);
             Level = Data.GetByte(1);
@@ -727,7 +727,7 @@ namespace Integra_7_uwp
 
         public StudioSet_CommonReverbReverb(ReceivedData Data)
         {
-            t.Trace("public StudioSet_CommonReverbReverb (" + "ReceivedData" + Data + ", " + ")");
+            //t.Trace("public StudioSet_CommonReverbReverb (" + "ReceivedData" + Data + ", " + ")");
             PreDelay = (byte)(16 * Data.GetByte(9) + Data.GetByte(10));
             Time = (byte)(16 * Data.GetByte(13) + Data.GetByte(14));
             Density = (byte)(16 * Data.GetByte(17) + Data.GetByte(18));
@@ -768,7 +768,7 @@ namespace Integra_7_uwp
 
         public StudioSet_CommonReverbGM2Reverb(ReceivedData Data)
         {
-            t.Trace("public StudioSet_CommonReverbGM2Reverb (" + "ReceivedData" + Data + ", " + ")");
+            //t.Trace("public StudioSet_CommonReverbGM2Reverb (" + "ReceivedData" + Data + ", " + ")");
             Character = (byte)(16 * Data.GetByte(5) + Data.GetByte(6));
             Time = (byte)(16 * Data.GetByte(17) + Data.GetByte(18));
         }
@@ -824,7 +824,7 @@ namespace Integra_7_uwp
 
         public StudioSet_MotionalSurround(ReceivedData Data)
         {
-            t.Trace("public StudioSet_MotionalSurround (" + "ReceivedData" + Data + ", " + ")");
+            //t.Trace("public StudioSet_MotionalSurround (" + "ReceivedData" + Data + ", " + ")");
             MotionalSurroundSwitch = Data.GetByte(0) > 0 ? true : false;
             RoomType = Data.GetByte(1);
             AmbienceLevel = Data.GetByte(2);
@@ -863,7 +863,7 @@ namespace Integra_7_uwp
 
         public StudioSet_MasterEQ(ReceivedData Data)
         {
-            t.Trace("public StudioSet_MasterEQ (" + "ReceivedData" + Data + ", " + ")");
+            //t.Trace("public StudioSet_MasterEQ (" + "ReceivedData" + Data + ", " + ")");
             EQLowFreq = Data.GetByte(0);
             EQLowGain = Data.GetByte(1);
             EQMidFreq = Data.GetByte(2);
@@ -932,7 +932,7 @@ namespace Integra_7_uwp
 
         public StudioSet_PartMainSettings(ReceivedData Data)
         {
-            t.Trace("public StudioSet_PartMainSettings (" + "ReceivedData" + Data + ", " + ")");
+            //t.Trace("public StudioSet_PartMainSettings (" + "ReceivedData" + Data + ", " + ")");
             ReceiveChannel = Data.GetByte(0x00);
             ReceiveSwitch = Data.GetByte(0x01) > 0;
             ToneBankSelectMSB = Data.GetByte(0x06);
@@ -993,7 +993,7 @@ namespace Integra_7_uwp
 
         public StudioSet_PartKeyboard(ReceivedData Data)
         {
-            t.Trace("public StudioSet_PartKeyboard (" + "ReceivedData" + Data + ", " + ")");
+            //t.Trace("public StudioSet_PartKeyboard (" + "ReceivedData" + Data + ", " + ")");
             OctaveShift = Data.GetByte(0x1b);
             VelocitySenseOffset = Data.GetByte(0x1c);
             RangeLower = Data.GetByte(0x1d);
@@ -1045,7 +1045,7 @@ namespace Integra_7_uwp
 
         public StudioSet_PartScaleTune(ReceivedData Data)
         {
-            t.Trace("public StudioSet_PartScaleTune (" + "ReceivedData" + Data + ", " + ")");
+            //t.Trace("public StudioSet_PartScaleTune (" + "ReceivedData" + Data + ", " + ")");
             Type = Data.GetByte(0x2b);
             Key = Data.GetByte(0x2c);
             C = (byte)(Data.GetByte(0x2d) + 64);
@@ -1093,7 +1093,7 @@ namespace Integra_7_uwp
 
         public StudioSet_PartMidi(ReceivedData Data)
         {
-            t.Trace("public StudioSet_PartMidi (" + "ReceivedData" + Data + ", " + ")");
+            //t.Trace("public StudioSet_PartMidi (" + "ReceivedData" + Data + ", " + ")");
             PhaseLock = false; // This has to be read separately!
             ReceiveProgramChange = Data.GetByte(0x39) > 0;
             ReceiveBankSelect = Data.GetByte(0x3a) > 0;
@@ -1124,7 +1124,7 @@ namespace Integra_7_uwp
 
         public StudioSet_PartMotionalSurround(ReceivedData Data)
         {
-            t.Trace("public StudioSet_PartMotionalSurround (" + "ReceivedData" + Data + ", " + ")");
+            //t.Trace("public StudioSet_PartMotionalSurround (" + "ReceivedData" + Data + ", " + ")");
             LR = (byte)(Data.GetByte(0x0) + 64);
             FB = (byte)(Data.GetByte(0x0) + 64);
             Width = Data.GetByte(0x0);
@@ -1156,7 +1156,7 @@ namespace Integra_7_uwp
 
         public StudioSet_PartEQ(ReceivedData Data)
         {
-            t.Trace("public StudioSet_PartEQ (" + "ReceivedData" + Data + ", " + ")");
+            //t.Trace("public StudioSet_PartEQ (" + "ReceivedData" + Data + ", " + ")");
             EqSwitch = Data.GetByte(0x00) > 0;
             EqLowFreq = Data.GetByte(0x01);
             EqLowGain = (byte)(Data.GetByte(0x02) - 15);

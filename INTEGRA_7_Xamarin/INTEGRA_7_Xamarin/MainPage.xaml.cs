@@ -29,7 +29,6 @@ namespace Integra_7_Xamarin
 
         public void Init()
         {
-            //StackLayout mainStackLayout = this.FindByName<StackLayout>("MainStackLayout");
             StackLayout mainStackLayout = this.FindByName<StackLayout>("MainStackLayout");
             uIHandler = new UIHandler(mainStackLayout, MainPage_Portable);
         }

@@ -431,6 +431,7 @@ namespace Integra_7_Xamarin
         public _labelPosition LabelPosition { get; set; }
         public Label Label { get; set; }
         public Switch Switch { get; set; }
+        public Boolean IsChecked { get { return Switch.IsToggled; } set { Switch.IsToggled = value; } }
 
         public LabeledSwitch(String LabelText)
         {
@@ -473,6 +474,7 @@ namespace Integra_7_Xamarin
 
             this.Switch.VerticalOptions = LayoutOptions.FillAndExpand;
             this.Label.VerticalOptions = LayoutOptions.FillAndExpand;
+
             if (Orientation == _orientation.HORIZONTAL)
             {
 
@@ -487,6 +489,7 @@ namespace Integra_7_Xamarin
                     this.Children.Add((new GridRow(0, new View[] { this.Switch, this.Label }, sizes, true)).Row);
                 }
                 this.Label.VerticalOptions = LayoutOptions.Center;
+                this.Switch.VerticalOptions = LayoutOptions.Center;
             }
             else
             {
@@ -505,6 +508,7 @@ namespace Integra_7_Xamarin
                     this.Children.Add((new GridRow(1, new View[] { this.Label }, null, true)).Row);
                 }
                 this.Label.HorizontalOptions = LayoutOptions.Center;
+                this.Switch.HorizontalOptions = LayoutOptions.Center;
             }
             this.Switch.IsToggled = IsSelected;
         }

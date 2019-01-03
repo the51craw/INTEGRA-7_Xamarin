@@ -6,7 +6,6 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
-using Windows.UI.Popups;
 using Xamarin.Forms;
 
 namespace Integra_7_Xamarin
@@ -1420,26 +1419,18 @@ namespace Integra_7_Xamarin
                         switch (cb.SelectedIndex)
                         {
                             case 1:
-                                ((TextBox)((Grid)((Grid)((Grid)((Grid)((Grid)cb.Parent).Parent).Parent).Children[lineNumber]).Children[0]).Children[0]).IsVisible = false;
-                                ((Xamarin.Forms.Slider)((Grid)((Grid)((Grid)((Grid)((Grid)cb.Parent).Parent).Parent).Children[lineNumber]).Children[1]).Children[0]).IsVisible = false;
-                                ((TextBox)((Grid)((Grid)((Grid)((Grid)((Grid)cb.Parent).Parent).Parent).Children[lineNumber + 1]).Children[0]).Children[0]).IsVisible = true;
-                                ((ComboBox)((Grid)((Grid)((Grid)((Grid)((Grid)cb.Parent).Parent).Parent).Children[lineNumber + 1]).Children[1]).Children[0]).IsVisible = true;
+                                ((Grid)((Grid)cb.Parent.Parent).Children[lineNumber]).Children[0].IsVisible = false;
+                                ((Grid)((Grid)cb.Parent.Parent).Children[lineNumber]).Children[1].IsVisible = false;
+                                ((Grid)((Grid)cb.Parent.Parent).Children[lineNumber + 1]).Children[0].IsVisible = true;
+                                ((Grid)((Grid)cb.Parent.Parent).Children[lineNumber + 1]).Children[1].IsVisible = true;
                                 break;
                             case 0:
-                                ((TextBox)((Grid)((Grid)((Grid)((Grid)((Grid)cb.Parent).Parent).Parent).Children[lineNumber]).Children[0]).Children[0]).IsVisible = true;
-                                ((Xamarin.Forms.Slider)((Grid)((Grid)((Grid)((Grid)((Grid)cb.Parent).Parent).Parent).Children[lineNumber]).Children[1]).Children[0]).IsVisible = true;
-                                ((TextBox)((Grid)((Grid)((Grid)((Grid)((Grid)cb.Parent).Parent).Parent).Children[lineNumber + 1]).Children[0]).Children[0]).IsVisible = false;
-                                ((ComboBox)((Grid)((Grid)((Grid)((Grid)((Grid)cb.Parent).Parent).Parent).Children[lineNumber + 1]).Children[1]).Children[0]).IsVisible = false;
+                                ((Grid)((Grid)cb.Parent.Parent).Children[lineNumber]).Children[0].IsVisible = true;
+                                ((Grid)((Grid)cb.Parent.Parent).Children[lineNumber]).Children[1].IsVisible = true;
+                                ((Grid)((Grid)cb.Parent.Parent).Children[lineNumber + 1]).Children[0].IsVisible = false;
+                                ((Grid)((Grid)cb.Parent.Parent).Children[lineNumber + 1]).Children[1].IsVisible = false;
                                 break;
                         }
-                        //t.Trace(((TextBox)((Grid)((Grid)((Grid)((Grid)((Grid)cb.Parent).Parent).Parent).Children[lineNumber]).Children[0]).Children[0]).Name + ": " + 
-                        //    ((TextBox)((Grid)((Grid)((Grid)((Grid)((Grid)cb.Parent).Parent).Parent).Children[lineNumber]).Children[0]).Children[0]).Visibility.ToString());
-                        //t.Trace(((Slider)((Grid)((Grid)((Grid)((Grid)((Grid)cb.Parent).Parent).Parent).Children[lineNumber]).Children[1]).Children[0]).Name + ": " + 
-                        //    ((Slider)((Grid)((Grid)((Grid)((Grid)((Grid)cb.Parent).Parent).Parent).Children[lineNumber]).Children[1]).Children[0]).Visibility.ToString());
-                        //t.Trace(((TextBox)((Grid)((Grid)((Grid)((Grid)((Grid)cb.Parent).Parent).Parent).Children[lineNumber + 1]).Children[0]).Children[0]).Name + ": " + 
-                        //    ((TextBox)((Grid)((Grid)((Grid)((Grid)((Grid)cb.Parent).Parent).Parent).Children[lineNumber + 1]).Children[0]).Children[0]).Visibility.ToString());
-                        //t.Trace(((ComboBox)((Grid)((Grid)((Grid)((Grid)((Grid)cb.Parent).Parent).Parent).Children[lineNumber + 1]).Children[1]).Children[0]).Name + ": " + 
-                        //    ((ComboBox)((Grid)((Grid)((Grid)((Grid)((Grid)cb.Parent).Parent).Parent).Children[lineNumber + 1]).Children[1]).Children[0]).Visibility.ToString());
                     }
 
                     HelpTag tag = ((Buddy)cb.Tag).Tag;

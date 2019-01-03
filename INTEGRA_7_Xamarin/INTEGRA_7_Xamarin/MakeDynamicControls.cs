@@ -5,23 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
-using Windows.ApplicationModel.Resources;
-using Windows.Devices.Midi;
-using Windows.Foundation;
-//using Windows.Foundation.Collections;
-using Windows.Storage;
-using Windows.Storage.AccessCache;
-using Windows.Storage.Pickers;
-using Windows.Storage.Streams;
-using Windows.System;
-//using Windows.UI.Xaml;
-//using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Media.Imaging;
-using Windows.UI.Xaml.Navigation;
+
 using Xamarin.Forms;
 
 namespace Integra_7_Xamarin
@@ -10445,18 +10429,17 @@ namespace Integra_7_Xamarin
                             dynamicSliders[sliderIndex++] }, new byte[] { 1, 2 })).Row);
                             ControlsGrid.Children.Add((new GridRow((byte)(parameterNumber + 1 - rowOffset), new View[] {  dynamicTextboxes[textboxIndex++],
                             dynamicComboboxes[comboboxIndex++]}, new byte[] { 1, 2 })).Row);
-                            //parameterNumber++;
                             try
                             {
-                                if ((String)((ComboBox)((Grid)((Grid)(ControlsGrid.Children[parameterNumber])).Children[1]).Children[0]).SelectedItem == "Hz")
+                                if((String)((ComboBox)((Grid)ControlsGrid.Children[parameterNumber]).Children[1]).SelectedItem == "Hz")
                                 {
-                                    ((TextBox)((Grid)((Grid)(ControlsGrid.Children[parameterNumber + 2])).Children[0]).Children[0]).IsVisible = false;
-                                    ((ComboBox)((Grid)((Grid)(ControlsGrid.Children[parameterNumber + 2])).Children[1]).Children[0]).IsVisible = false;
+                                    ((TextBox)((Grid)ControlsGrid.Children[parameterNumber + 2]).Children[0]).IsVisible = false;
+                                    ((ComboBox)((Grid)ControlsGrid.Children[parameterNumber + 2]).Children[1]).IsVisible = false;
                                 }
                                 else
                                 {
-                                    ((TextBox)((Grid)((Grid)(ControlsGrid.Children[parameterNumber + 1])).Children[0]).Children[0]).IsVisible = false;
-                                    ((Slider)((Grid)((Grid)(ControlsGrid.Children[parameterNumber + 1])).Children[1]).Children[0]).IsVisible = false;
+                                    ((TextBox)((Grid)ControlsGrid.Children[parameterNumber + 1]).Children[0]).IsVisible = false;
+                                    ((Slider)((Grid)ControlsGrid.Children[parameterNumber + 1]).Children[1]).IsVisible = false;
                                 }
                             }
                             catch (Exception e)
@@ -10479,18 +10462,17 @@ namespace Integra_7_Xamarin
                             dynamicSliders[sliderIndex++] }, new byte[] { 1, 2 })).Row);
                             ControlsGrid.Children.Add((new GridRow((byte)(parameterNumber + 1 - rowOffset), new View[] {  dynamicTextboxes[textboxIndex++],
                             dynamicComboboxes[comboboxIndex++]}, new byte[] { 1, 2 })).Row);
-                            //parameterNumber++;
                             try
                             {
-                                if ((String)((ComboBox)((Grid)((Grid)(ControlsGrid.Children[parameterNumber])).Children[1]).Children[0]).SelectedItem == "Hz")
+                                if ((String)((ComboBox)((Grid)ControlsGrid.Children[parameterNumber]).Children[1]).SelectedItem == "Hz")
                                 {
-                                    ((TextBox)((Grid)((Grid)(ControlsGrid.Children[parameterNumber + 2])).Children[0]).Children[0]).IsVisible = false;
-                                    ((ComboBox)((Grid)((Grid)(ControlsGrid.Children[parameterNumber + 2])).Children[1]).Children[0]).IsVisible = false;
+                                    ((TextBox)((Grid)ControlsGrid.Children[parameterNumber + 2]).Children[0]).IsVisible = false;
+                                    ((ComboBox)((Grid)ControlsGrid.Children[parameterNumber + 2]).Children[1]).IsVisible = false;
                                 }
                                 else
                                 {
-                                    ((TextBox)((Grid)((Grid)(ControlsGrid.Children[parameterNumber + 1])).Children[0]).Children[0]).IsVisible = false;
-                                    ((Slider)((Grid)((Grid)(ControlsGrid.Children[parameterNumber + 1])).Children[1]).Children[0]).IsVisible = false;
+                                    ((TextBox)((Grid)ControlsGrid.Children[parameterNumber + 1]).Children[0]).IsVisible = false;
+                                    ((Slider)((Grid)ControlsGrid.Children[parameterNumber + 1]).Children[1]).IsVisible = false;
                                 }
                             }
                             catch (Exception e)
@@ -10594,6 +10576,7 @@ namespace Integra_7_Xamarin
             t.Trace("private void AddDynamicComboBox (" + "String[]" + Items + ", " + "Int32" + SelectedIndex + ", " + "Buddy" + Tag + ", " + ")");
             handleControlEvents = false;
             dynamicComboboxes.Add(new ComboBox());
+            dynamicComboboxes[dynamicComboboxes.Count() - 1].Name = "";
             if (Items != null)
             {
                 for (byte i = 0; i < Items.Length; i++)

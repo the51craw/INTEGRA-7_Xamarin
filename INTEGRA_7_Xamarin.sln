@@ -11,7 +11,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Integra_7_Xamarin_Android",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Integra_7_Xamarin.iOS", "Integra_7_Xamarin\Integra_7_Xamarin.iOS\Integra_7_Xamarin.iOS.csproj", "{24A11694-AD4C-438A-A22B-9CDD2924B697}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Integra_7_Xamarin.MacOS", "Integra_7_Xamarin\Integra_7_Xamarin.MacOS\Integra_7_Xamarin_MacOS.csproj", "{E9897E2B-4BEC-49D4-83B5-086E352FEC66}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Integra_7_Xamarin_MacOS", "Integra_7_Xamarin\Integra_7_Xamarin.MacOS\Integra_7_Xamarin_MacOS.csproj", "{E9897E2B-4BEC-49D4-83B5-086E352FEC66}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{857D2DC2-E1C9-45C8-868C-54E414AA3F08}"
+	ProjectSection(SolutionItems) = preProject
+		ToDo.txt = ToDo.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

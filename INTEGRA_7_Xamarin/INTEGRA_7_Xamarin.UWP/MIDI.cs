@@ -373,9 +373,16 @@ namespace Integra_7_Xamarin.UWP
 
         public void SendSystemExclusive(byte[] bytes)
         {
-            IBuffer buffer = bytes.AsBuffer();
-            MidiSystemExclusiveMessage midiMessageToSend = new MidiSystemExclusiveMessage(buffer);
-            midiOutPort.SendMessage(midiMessageToSend);
+            try
+            {
+                IBuffer buffer = bytes.AsBuffer();
+                MidiSystemExclusiveMessage midiMessageToSend = new MidiSystemExclusiveMessage(buffer);
+                midiOutPort.SendMessage(midiMessageToSend);
+            }
+            catch (Exception e)
+            {
+                // TODO: Add trace reporting!!!
+            }
         }
 
         public byte[] SystemExclusiveRQ1Message(byte[] Address, byte[] Length)

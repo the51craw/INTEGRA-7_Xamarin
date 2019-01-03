@@ -9,9 +9,7 @@ namespace Integra_7_Xamarin
 {
     public partial class UIHandler
     {
-        HBTrace t = new HBTrace("", 0);
-
-        enum CurrentMidiRequest
+        enum Edit_CurrentMidiRequest
         {
             NONE,
             QUERYING_TONE_TYPE,
@@ -93,7 +91,7 @@ namespace Integra_7_Xamarin
         //Boolean showTestControls = false;
 
         SelectedTone selectedSound;
-        CurrentMidiRequest currentMidiRequest = CurrentMidiRequest.NONE;
+        Edit_CurrentMidiRequest currentEditMidiRequest = Edit_CurrentMidiRequest.NONE;
         Edit_State edit_State;
         //Boolean initDone = false;
         //Boolean handleControlEvents = false;            // Some control events re-creates the control, and that will cause a loop. Use handleControlEvents to prevent that.
@@ -132,7 +130,7 @@ namespace Integra_7_Xamarin
         Int32 KeySamplePlayingR = -1;
         byte chorusSendLevel;
         byte reverbSendLevel;
-        Boolean stopTimer;
+        Boolean stopEditTimer;
 
         public Grid EditTonesGrid = null;
         public Grid EditTonesLeftColumnGrid = null;
@@ -859,10 +857,10 @@ namespace Integra_7_Xamarin
 
             // Assemble EditorStackLayout -----------------------------------------------------------------
             
-            EditorStackLayout = new StackLayout();
-            EditorStackLayout.MinimumHeightRequest = 1;
-            EditorStackLayout.MinimumWidthRequest = 1;
-            EditorStackLayout.Children.Add((new GridRow(0, new View[] { EditTonesGrid })).Row);
+            Edit_StackLayout = new StackLayout();
+            Edit_StackLayout.MinimumHeightRequest = 1;
+            Edit_StackLayout.MinimumWidthRequest = 1;
+            Edit_StackLayout.Children.Add((new GridRow(0, new View[] { EditTonesGrid })).Row);
 
             // Control values -----------------------------------------------------------------------------
 
@@ -881,7 +879,7 @@ namespace Integra_7_Xamarin
 
         private void btnEditTone_Return_Click(object sender, EventArgs e)
         {
-            EditorStackLayout.IsVisible = false;
+            Edit_StackLayout.IsVisible = false;
             ShowLibrarianPage();
         }
 
@@ -1034,18 +1032,18 @@ namespace Integra_7_Xamarin
         public void ShowToneEditorPage()
         {
             page = _page.EDIT_TONE;
-            if (!EditorIsCreated)
+            if (!Edit_IsCreated)
             {
                 handleControlEvents = false;
                 DrawToneEditorPage();
-                mainStackLayout.Children.Add(EditorStackLayout);
-                EditorIsCreated = true;
+                mainStackLayout.Children.Add(Edit_StackLayout);
+                Edit_IsCreated = true;
                 handleControlEvents = true;
                 Edit_Init();
-                StartTimer();
+                Edit_StartTimer();
             }
             ShowToneTypeDependentControls();
-            EditorStackLayout.IsVisible = true;
+            Edit_StackLayout.IsVisible = true;
         }
 
         //private void ToneEdit_NotYetImplemented_Clicked(object sender, EventArgs e)
@@ -1209,9 +1207,9 @@ namespace Integra_7_Xamarin
         /// <param name="sender"></param>
         /// <param name="e"></param>
         //private void Timer_Tick(object sender, object e)
-        private void StartTimer()
+        private void Edit_StartTimer()
         {
-            stopTimer = false;
+            stopEditTimer = false;
             Device.StartTimer(TimeSpan.FromMilliseconds(10), () =>
             {
                 //if (commonState.reactToMidiIn != CommonState.ReactToMidiIn.EDIT)
@@ -1219,7 +1217,7 @@ namespace Integra_7_Xamarin
                 //    return;
                 //}
                 //t.Trace("private void Timer_Tick (" + "object" + sender + ", " + "object" + e + ", " + ")");
-                if (stopTimer)
+                if (stopEditTimer)
                 {
                     return false;
                 }
@@ -1277,11 +1275,11 @@ namespace Integra_7_Xamarin
                 }
                 else
                 {
-                    if (edit_State == Edit_State.DONE && currentMidiRequest == CurrentMidiRequest.NONE)
+                    if (edit_State == Edit_State.DONE && currentEditMidiRequest == Edit_CurrentMidiRequest.NONE)
                     {
                         edit_State = Edit_State.NONE;
                     }
-                    else if (edit_State == Edit_State.NONE && currentMidiRequest == CurrentMidiRequest.NONE)
+                    else if (edit_State == Edit_State.NONE && currentEditMidiRequest == Edit_CurrentMidiRequest.NONE)
                     {
                         handleControlEvents = true;
                     }
@@ -1290,102 +1288,102 @@ namespace Integra_7_Xamarin
                         switch (currentProgramType)
                         {
                             case ProgramType.PCM_SYNTH_TONE:
-                                if (edit_State == Edit_State.UPDATE_CONTROLS && currentMidiRequest == CurrentMidiRequest.NONE)
+                                if (edit_State == Edit_State.UPDATE_CONTROLS && currentEditMidiRequest == Edit_CurrentMidiRequest.NONE)
                                 {
                                     edit_State = Edit_State.NONE;
-                                    currentMidiRequest = CurrentMidiRequest.NONE;
+                                    currentEditMidiRequest = Edit_CurrentMidiRequest.NONE;
                                     EditTone_UpdateControls();
                                 }
-                                if (edit_State == Edit_State.DONE && currentMidiRequest == CurrentMidiRequest.QUERYING_PCM_SYNTH_TONE_COMMON_MFX)
+                                if (edit_State == Edit_State.DONE && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_PCM_SYNTH_TONE_COMMON_MFX)
                                 {
                                     edit_State = Edit_State.NONE;
-                                    currentMidiRequest = CurrentMidiRequest.NONE;
+                                    currentEditMidiRequest = Edit_CurrentMidiRequest.NONE;
                                     EditTone_UpdateControls();
                                 }
-                                else if (edit_State == Edit_State.DONE && currentMidiRequest == CurrentMidiRequest.QUERYING_PCM_SYNTH_TONE_PARTIAL)
+                                else if (edit_State == Edit_State.DONE && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_PCM_SYNTH_TONE_PARTIAL)
                                 {
                                     edit_State = Edit_State.NONE;
-                                    currentMidiRequest = CurrentMidiRequest.NONE;
+                                    currentEditMidiRequest = Edit_CurrentMidiRequest.NONE;
                                     EditTone_UpdateControls();
                                 }
                                 break;
                             case ProgramType.PCM_DRUM_KIT:
-                                if (edit_State == Edit_State.UPDATE_CONTROLS && currentMidiRequest == CurrentMidiRequest.NONE)
+                                if (edit_State == Edit_State.UPDATE_CONTROLS && currentEditMidiRequest == Edit_CurrentMidiRequest.NONE)
                                 {
                                     edit_State = Edit_State.NONE;
-                                    currentMidiRequest = CurrentMidiRequest.NONE;
+                                    currentEditMidiRequest = Edit_CurrentMidiRequest.NONE;
                                     MakePCMDrumKitControls();// (byte)(currentKey - 21));
                                 }
-                                else if (edit_State == Edit_State.DONE && currentMidiRequest == CurrentMidiRequest.QUERYING_PCM_DRUM_KIT_PARTIAL)
+                                else if (edit_State == Edit_State.DONE && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_PCM_DRUM_KIT_PARTIAL)
                                 {
                                     edit_State = Edit_State.NONE;
-                                    currentMidiRequest = CurrentMidiRequest.NONE;
+                                    currentEditMidiRequest = Edit_CurrentMidiRequest.NONE;
                                     UpdatePCMDrumKitControls();
                                 }
-                                else if (edit_State == Edit_State.DONE && currentMidiRequest == CurrentMidiRequest.QUERYING_PCM_DRUM_KIT_COMMON_MFX)
+                                else if (edit_State == Edit_State.DONE && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_PCM_DRUM_KIT_COMMON_MFX)
                                 {
                                     edit_State = Edit_State.NONE;
-                                    currentMidiRequest = CurrentMidiRequest.NONE;
+                                    currentEditMidiRequest = Edit_CurrentMidiRequest.NONE;
                                     UpdatePCMDrumKitControls();
                                 }
                                 break;
                             case ProgramType.SUPERNATURAL_ACOUSTIC_TONE:
-                                if (edit_State == Edit_State.UPDATE_CONTROLS && currentMidiRequest == CurrentMidiRequest.NONE)
+                                if (edit_State == Edit_State.UPDATE_CONTROLS && currentEditMidiRequest == Edit_CurrentMidiRequest.NONE)
                                 {
                                     edit_State = Edit_State.NONE;
-                                    currentMidiRequest = CurrentMidiRequest.NONE;
+                                    currentEditMidiRequest = Edit_CurrentMidiRequest.NONE;
                                     UpdateSuperNATURALAcousticToneControls();// (byte)(currentKey - 21));
                                 }
-                                else if (edit_State == Edit_State.DONE && currentMidiRequest == CurrentMidiRequest.QUERYING_SUPERNATURAL_ACOUSTIC_TONE_COMMON_MFX)
+                                else if (edit_State == Edit_State.DONE && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_SUPERNATURAL_ACOUSTIC_TONE_COMMON_MFX)
                                 {
                                     edit_State = Edit_State.NONE;
-                                    currentMidiRequest = CurrentMidiRequest.NONE;
+                                    currentEditMidiRequest = Edit_CurrentMidiRequest.NONE;
                                     UpdateSuperNATURALAcousticToneControls();
                                 }
                                 break;
                             case ProgramType.SUPERNATURAL_SYNTH_TONE:
-                                if (edit_State == Edit_State.UPDATE_CONTROLS && currentMidiRequest == CurrentMidiRequest.NONE)
+                                if (edit_State == Edit_State.UPDATE_CONTROLS && currentEditMidiRequest == Edit_CurrentMidiRequest.NONE)
                                 {
                                     edit_State = Edit_State.NONE;
-                                    currentMidiRequest = CurrentMidiRequest.NONE;
+                                    currentEditMidiRequest = Edit_CurrentMidiRequest.NONE;
                                     UpdateSuperNATURALSynthToneControls();// (byte)(currentKey - 21));
                                 }
-                                else if (edit_State == Edit_State.DONE && currentMidiRequest == CurrentMidiRequest.QUERYING_SUPERNATURAL_ACOUSTIC_TONE_WAVE)
+                                else if (edit_State == Edit_State.DONE && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_SUPERNATURAL_ACOUSTIC_TONE_WAVE)
                                 {
                                     edit_State = Edit_State.NONE;
-                                    currentMidiRequest = CurrentMidiRequest.NONE;
+                                    currentEditMidiRequest = Edit_CurrentMidiRequest.NONE;
                                     UpdateSuperNATURALSynthToneControls();
                                 }
-                                else if (edit_State == Edit_State.DONE && currentMidiRequest == CurrentMidiRequest.QUERYING_SUPERNATURAL_SYNTH_TONE_PARTIAL)
+                                else if (edit_State == Edit_State.DONE && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_SUPERNATURAL_SYNTH_TONE_PARTIAL)
                                 {
                                     edit_State = Edit_State.NONE;
-                                    currentMidiRequest = CurrentMidiRequest.NONE;
+                                    currentEditMidiRequest = Edit_CurrentMidiRequest.NONE;
                                     UpdateSuperNATURALSynthToneControls();
                                 }
-                                else if (edit_State == Edit_State.DONE && currentMidiRequest == CurrentMidiRequest.QUERYING_SUPERNATURAL_SYNTH_TONE_COMMON_MFX)
+                                else if (edit_State == Edit_State.DONE && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_SUPERNATURAL_SYNTH_TONE_COMMON_MFX)
                                 {
                                     edit_State = Edit_State.NONE;
-                                    currentMidiRequest = CurrentMidiRequest.NONE;
+                                    currentEditMidiRequest = Edit_CurrentMidiRequest.NONE;
                                     UpdateSuperNATURALSynthToneControls();
                                 }
                                 break;
                             case ProgramType.SUPERNATURAL_DRUM_KIT:
-                                if (edit_State == Edit_State.UPDATE_CONTROLS && currentMidiRequest == CurrentMidiRequest.NONE)
+                                if (edit_State == Edit_State.UPDATE_CONTROLS && currentEditMidiRequest == Edit_CurrentMidiRequest.NONE)
                                 {
                                     edit_State = Edit_State.NONE;
-                                    currentMidiRequest = CurrentMidiRequest.NONE;
+                                    currentEditMidiRequest = Edit_CurrentMidiRequest.NONE;
                                     UpdateSuperNATURALDrumKitControls();// (byte)(currentKey - 27));
                                 }
-                                else if (edit_State == Edit_State.DONE && currentMidiRequest == CurrentMidiRequest.QUERYING_SUPERNATURAL_DRUM_KIT_PARTIAL)
+                                else if (edit_State == Edit_State.DONE && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_SUPERNATURAL_DRUM_KIT_PARTIAL)
                                 {
                                     edit_State = Edit_State.NONE;
-                                    currentMidiRequest = CurrentMidiRequest.NONE;
+                                    currentEditMidiRequest = Edit_CurrentMidiRequest.NONE;
                                     UpdateSuperNATURALDrumKitControls();
                                 }
-                                else if (edit_State == Edit_State.DONE && currentMidiRequest == CurrentMidiRequest.QUERYING_SUPERNATURAL_DRUM_KIT_COMMON_MFX)
+                                else if (edit_State == Edit_State.DONE && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_SUPERNATURAL_DRUM_KIT_COMMON_MFX)
                                 {
                                     edit_State = Edit_State.NONE;
-                                    currentMidiRequest = CurrentMidiRequest.NONE;
+                                    currentEditMidiRequest = Edit_CurrentMidiRequest.NONE;
                                     UpdateSuperNATURALDrumKitControls();
                                 }
                                 break;
@@ -1398,7 +1396,7 @@ namespace Integra_7_Xamarin
 
         private async void IsModuleLoaded()
         {
-            if (currentMidiRequest == CurrentMidiRequest.QUERYING_SUPERNATURAL_ACOUSTIC_TONE_COMMON)
+            if (currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_SUPERNATURAL_ACOUSTIC_TONE_COMMON)
             {
                 //MessageDialog warning = new MessageDialog("There is no response from your INTEGRA-7. Is the selected module loaded?");
                 //warning.Title = "Problem!";
@@ -1411,14 +1409,14 @@ namespace Integra_7_Xamarin
                 commonState.currentTone = null; // To force re-read of data.
                 //commonState.midi.midiInPort.MessageReceived -= Edit_MidiInPort_MessageReceived;
                 //this.Frame.Navigate(typeof(MainPage), commonState);
-                EditorStackLayout.IsVisible = false;
+                Edit_StackLayout.IsVisible = false;
                 ShowLibrarianPage();
             }
             else
             {
                 //commonState.midi.midiInPort.MessageReceived -= Edit_MidiInPort_MessageReceived;
                 //this.Frame.Navigate(typeof(CommunicationError), commonState);
-                EditorStackLayout.IsVisible = false;
+                Edit_StackLayout.IsVisible = false;
                 ShowLibrarianPage(); // TODO: Add an error page and show
             }
         }
@@ -1508,6 +1506,35 @@ namespace Integra_7_Xamarin
                     break;
             }
             Help.Show(currentProgramIndex, 0, 0, 0);
+            try
+            {
+                ((Button)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
+            }
+            catch
+            {
+                try
+                {
+                    ((ComboBox)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
+                }
+                catch
+                {
+                    try
+                    {
+                        ((Slider)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
+                    }
+                    catch
+                    {
+                        try
+                        {
+                            ((Switch)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
+                        }
+                        catch
+                        {
+                            t.Trace("Could not find type on line 1533");
+                        }
+                    }
+                }
+            }
             //handleControlEvents = currentHandleControlEvents;
         }
 
@@ -1527,7 +1554,7 @@ namespace Integra_7_Xamarin
                 currentKey = temp;
                 if (!initDone)
                 {
-                    if (edit_State == Edit_State.WAITING && currentMidiRequest == CurrentMidiRequest.QUERYING_TONE_TYPE)
+                    if (edit_State == Edit_State.WAITING && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_TONE_TYPE)
                     {
                         selectedSound = new SelectedTone(rawData[17], rawData[18], rawData[19]);
                         //commonState.currentTone = commonState.toneList.Get(rawData[17], rawData[18], rawData[19]);
@@ -1569,12 +1596,12 @@ namespace Integra_7_Xamarin
                                 break;
                         }
                     }
-                    else if (edit_State == Edit_State.WAITING && currentMidiRequest == CurrentMidiRequest.QUERYING_PCM_SYNTH_TONE_COMMON)
+                    else if (edit_State == Edit_State.WAITING && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_PCM_SYNTH_TONE_COMMON)
                     {
                         pCMSynthTone = new PCMSynthTone(new ReceivedData(rawData));
                         QueryPCMSynthToneCommonMFX();
                     }
-                    else if (edit_State == Edit_State.WAITING && currentMidiRequest == CurrentMidiRequest.QUERYING_PCM_SYNTH_TONE_COMMON_MFX)
+                    else if (edit_State == Edit_State.WAITING && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_PCM_SYNTH_TONE_COMMON_MFX)
                     {
                         commonMFX = new CommonMFX(new ReceivedData(rawData));
                         SetMFXTypeAndOffset(commonMFX.MFXType);
@@ -1584,13 +1611,13 @@ namespace Integra_7_Xamarin
                         }
                         QueryPCMSynthTonePMT();
                     }
-                    else if (edit_State == Edit_State.WAITING && currentMidiRequest == CurrentMidiRequest.QUERYING_PCM_SYNTH_TONE_PMT)
+                    else if (edit_State == Edit_State.WAITING && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_PCM_SYNTH_TONE_PMT)
                     {
                         pCMSynthTone.pCMSynthTonePMT = new PCMSynthTonePMT(new ReceivedData(rawData));
                         currentPartial = 0;
                         QueryPCMSynthTonePartial();
                     }
-                    else if (edit_State == Edit_State.WAITING && currentMidiRequest == CurrentMidiRequest.QUERYING_PCM_SYNTH_TONE_PARTIAL)
+                    else if (edit_State == Edit_State.WAITING && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_PCM_SYNTH_TONE_PARTIAL)
                     {
                         pCMSynthTone.pCMSynthTonePartial[currentPartial] = new PCMSynthTonePartial(new ReceivedData(rawData));
                         if (++currentPartial < 4)
@@ -1603,17 +1630,17 @@ namespace Integra_7_Xamarin
                             QueryPCMSynthToneCommon2();
                         }
                     }
-                    else if (edit_State == Edit_State.WAITING && currentMidiRequest == CurrentMidiRequest.QUERYING_PCM_SYNTH_TONE_COMMON2)
+                    else if (edit_State == Edit_State.WAITING && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_PCM_SYNTH_TONE_COMMON2)
                     {
                         pCMSynthTone.pCMSynthToneCommon2 = new PCMSynthToneCommon2(new ReceivedData(rawData));
                         QueryStudioSetSendParameters();
                     }
-                    else if (edit_State == Edit_State.WAITING && currentMidiRequest == CurrentMidiRequest.QUERYING_PCM_DRUM_KIT_COMMON)
+                    else if (edit_State == Edit_State.WAITING && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_PCM_DRUM_KIT_COMMON)
                     {
                         pCMDrumKit = new PCMDrumKit(new ReceivedData(rawData));
                         QueryPCMDrumKitCommonMFX();
                     }
-                    else if (edit_State == Edit_State.WAITING && currentMidiRequest == CurrentMidiRequest.QUERYING_PCM_DRUM_KIT_COMMON_MFX)
+                    else if (edit_State == Edit_State.WAITING && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_PCM_DRUM_KIT_COMMON_MFX)
                     {
                         commonMFX = new CommonMFX(new ReceivedData(rawData));
                         if (mfxPageReadFromIntegra7 == 0xff)
@@ -1622,13 +1649,13 @@ namespace Integra_7_Xamarin
                         }
                         QueryPCMDrumKitCommonCompEq();
                     }
-                    else if (edit_State == Edit_State.WAITING && currentMidiRequest == CurrentMidiRequest.QUERYING_PCM_DRUM_KIT_COMMON_COMP_EQ)
+                    else if (edit_State == Edit_State.WAITING && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_PCM_DRUM_KIT_COMMON_COMP_EQ)
                     {
                         pCMDrumKit.pCMDrumKitCommonCompEQ = new PCMDrumKitCommonCompEQ(new ReceivedData(rawData));
                         currentKey = 0;
                         QueryPCMDrumKitPartial();
                     }
-                    else if (edit_State == Edit_State.WAITING && currentMidiRequest == CurrentMidiRequest.QUERYING_PCM_DRUM_KIT_PARTIAL)
+                    else if (edit_State == Edit_State.WAITING && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_PCM_DRUM_KIT_PARTIAL)
                     {
                         pCMDrumKit.pCMDrumKitPartial[currentKey] = new PCMDrumKitPartial(new ReceivedData(rawData));
                         currentKey++;
@@ -1645,37 +1672,37 @@ namespace Integra_7_Xamarin
                             QueryPCMDrumKitCommon2();
                         }
                     }
-                    else if (edit_State == Edit_State.WAITING && currentMidiRequest == CurrentMidiRequest.QUERYING_PCM_DRUM_KIT_COMMON2)
+                    else if (edit_State == Edit_State.WAITING && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_PCM_DRUM_KIT_COMMON2)
                     {
                         pCMDrumKit.pCMDrumKitCommon2 = new PCMDrumKitCommon2(new ReceivedData(rawData));
                         QueryStudioSetSendParameters();
                     }
-                    else if (edit_State == Edit_State.WAITING && currentMidiRequest == CurrentMidiRequest.QUERYING_SUPERNATURAL_ACOUSTIC_TONE_COMMON)
+                    else if (edit_State == Edit_State.WAITING && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_SUPERNATURAL_ACOUSTIC_TONE_COMMON)
                     {
                         superNATURALAcousticTone = new SuperNATURALAcousticTone(new ReceivedData(rawData));
                         QuerySuperNATURALAcousticToneCommonMFX();
                     }
-                    else if (edit_State == Edit_State.WAITING && currentMidiRequest == CurrentMidiRequest.QUERYING_SUPERNATURAL_ACOUSTIC_TONE_COMMON_MFX)
+                    else if (edit_State == Edit_State.WAITING && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_SUPERNATURAL_ACOUSTIC_TONE_COMMON_MFX)
                     {
                         commonMFX = new CommonMFX(new ReceivedData(rawData));
                         if (mfxPageReadFromIntegra7 == 0xff)
                         {
                             mfxPageReadFromIntegra7 = commonMFX.MFXType;
                         }
-                        currentMidiRequest = CurrentMidiRequest.NONE;
+                        currentEditMidiRequest = Edit_CurrentMidiRequest.NONE;
                         edit_State = Edit_State.UPDATE_CONTROLS;
                     }
-                    else if (edit_State == Edit_State.WAITING && currentMidiRequest == CurrentMidiRequest.QUERYING_SUPERNATURAL_SYNTH_TONE_UNDOCUMENTED_PARAMETERS)
+                    else if (edit_State == Edit_State.WAITING && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_SUPERNATURAL_SYNTH_TONE_UNDOCUMENTED_PARAMETERS)
                     {
                         undocumented_Parameters = new Undocumented_Parameters(new ReceivedData(rawData));
                         QuerySuperNATURALSynthToneCommon();
                     }
-                    else if (edit_State == Edit_State.WAITING && currentMidiRequest == CurrentMidiRequest.QUERYING_SUPERNATURAL_SYNTH_TONE_COMMON)
+                    else if (edit_State == Edit_State.WAITING && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_SUPERNATURAL_SYNTH_TONE_COMMON)
                     {
                         superNATURALSynthTone = new SuperNATURALSynthTone(new ReceivedData(rawData));
                         QuerySuperNATURALSynthToneCommonMFX();
                     }
-                    else if (edit_State == Edit_State.WAITING && currentMidiRequest == CurrentMidiRequest.QUERYING_SUPERNATURAL_SYNTH_TONE_COMMON_MFX)
+                    else if (edit_State == Edit_State.WAITING && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_SUPERNATURAL_SYNTH_TONE_COMMON_MFX)
                     {
                         commonMFX = new CommonMFX(new ReceivedData(rawData));
                         if (mfxPageReadFromIntegra7 == 0xff)
@@ -1685,7 +1712,7 @@ namespace Integra_7_Xamarin
                         currentPartial = 0;
                         QuerySuperNATURALSynthTonePartial();
                     }
-                    else if (edit_State == Edit_State.WAITING && currentMidiRequest == CurrentMidiRequest.QUERYING_SUPERNATURAL_SYNTH_TONE_PARTIAL)
+                    else if (edit_State == Edit_State.WAITING && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_SUPERNATURAL_SYNTH_TONE_PARTIAL)
                     {
                         superNATURALSynthTone.superNATURALSynthTonePartial[currentKey] = new SuperNATURALSynthTonePartial(new ReceivedData(rawData));
                         currentKey++;
@@ -1699,19 +1726,19 @@ namespace Integra_7_Xamarin
                             QuerySuperNATURALSynthToneMisc();
                         }
                     }
-                    else if (edit_State == Edit_State.WAITING && currentMidiRequest == CurrentMidiRequest.QUERYING_SUPERNATURAL_SYNTH_TONE_MISC)
+                    else if (edit_State == Edit_State.WAITING && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_SUPERNATURAL_SYNTH_TONE_MISC)
                     {
                         superNATURALSynthTone.superNATURALSynthToneMisc = new SuperNATURALSynthToneMisc(new ReceivedData(rawData));
                         // Envelope Loop Sync Note is in Undocumented_Parameters.Data_05:
                         superNATURALSynthTone.superNATURALSynthToneMisc.EnvelopeLoopSyncNote = undocumented_Parameters.Data_00;
                         QueryStudioSetSendParameters();
                     }
-                    else if (edit_State == Edit_State.WAITING && currentMidiRequest == CurrentMidiRequest.QUERYING_SUPERNATURAL_DRUM_KIT_COMMON)
+                    else if (edit_State == Edit_State.WAITING && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_SUPERNATURAL_DRUM_KIT_COMMON)
                     {
                         superNATURALDrumKit = new SuperNATURALDrumKit(new ReceivedData(rawData));
                         QuerySuperNATURALDrumKitCommonMFX();
                     }
-                    else if (edit_State == Edit_State.WAITING && currentMidiRequest == CurrentMidiRequest.QUERYING_SUPERNATURAL_DRUM_KIT_COMMON_MFX)
+                    else if (edit_State == Edit_State.WAITING && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_SUPERNATURAL_DRUM_KIT_COMMON_MFX)
                     {
                         commonMFX = new CommonMFX(new ReceivedData(rawData));
                         if (mfxPageReadFromIntegra7 == 0xff)
@@ -1720,13 +1747,13 @@ namespace Integra_7_Xamarin
                         }
                         QuerySuperNATURALDrumKitCommonCompEQ();
                     }
-                    else if (edit_State == Edit_State.WAITING && currentMidiRequest == CurrentMidiRequest.QUERYING_SUPERNATURAL_DRUM_KIT_COMMON_COMP_EQ)
+                    else if (edit_State == Edit_State.WAITING && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_SUPERNATURAL_DRUM_KIT_COMMON_COMP_EQ)
                     {
                         superNATURALDrumKit.superNATURALDrumKitCommonCompEQ = new SuperNATURALDrumKitCommonCompEQ(new ReceivedData(rawData));
                         currentKey = 0;
                         QuerySuperNATURALDrumKitPartial();
                     }
-                    else if (edit_State == Edit_State.WAITING && currentMidiRequest == CurrentMidiRequest.QUERYING_SUPERNATURAL_DRUM_KIT_PARTIAL)
+                    else if (edit_State == Edit_State.WAITING && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_SUPERNATURAL_DRUM_KIT_PARTIAL)
                     {
                         superNATURALDrumKit.superNATURALDrumKitKey[currentKey] = new SuperNATURALDrumKitKey(new ReceivedData(rawData));
                         currentKey++;
@@ -1740,11 +1767,11 @@ namespace Integra_7_Xamarin
                             QueryStudioSetSendParameters();
                         }
                     }
-                    else if (edit_State == Edit_State.WAITING && currentMidiRequest == CurrentMidiRequest.QUERYING_STUDIO_SET_SEND_PARAMETERS)
+                    else if (edit_State == Edit_State.WAITING && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_STUDIO_SET_SEND_PARAMETERS)
                     {
                         chorusSendLevel = rawData[11];
                         reverbSendLevel = rawData[12];
-                        currentMidiRequest = CurrentMidiRequest.NONE;
+                        currentEditMidiRequest = Edit_CurrentMidiRequest.NONE;
                         edit_State = Edit_State.UPDATE_CONTROLS;
                     }
                 }
@@ -1754,53 +1781,53 @@ namespace Integra_7_Xamarin
                     //result += hexString(rawData) + "\r\n";
                     //return;
                     currentKey = temp;
-                    if (edit_State == Edit_State.WAITING && currentMidiRequest == CurrentMidiRequest.QUERYING_PCM_DRUM_KIT_PARTIAL)
+                    if (edit_State == Edit_State.WAITING && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_PCM_DRUM_KIT_PARTIAL)
                     {
                         //pCMDrumKit.pCMDrumKitPartial = new PCMDrumKitPartial(new ReceivedData(rawData));
                         edit_State = Edit_State.DONE;
                     }
-                    else if (edit_State == Edit_State.WAITING && currentMidiRequest == CurrentMidiRequest.QUERYING_SUPERNATURAL_ACOUSTIC_TONE_COMMON_MFX)
+                    else if (edit_State == Edit_State.WAITING && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_SUPERNATURAL_ACOUSTIC_TONE_COMMON_MFX)
                     {
                         commonMFX = new CommonMFX(new ReceivedData(rawData));
                         edit_State = Edit_State.DONE;
                     }
-                    else if (edit_State == Edit_State.WAITING && currentMidiRequest == CurrentMidiRequest.QUERYING_PCM_SYNTH_TONE_PARTIAL)
+                    else if (edit_State == Edit_State.WAITING && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_PCM_SYNTH_TONE_PARTIAL)
                     {
                         pCMSynthTone.pCMSynthTonePartial[currentPartial] = new PCMSynthTonePartial(new ReceivedData(rawData));
                         edit_State = Edit_State.DONE;
                     }
-                    else if (edit_State == Edit_State.WAITING && currentMidiRequest == CurrentMidiRequest.QUERYING_PCM_SYNTH_TONE_COMMON_MFX)
+                    else if (edit_State == Edit_State.WAITING && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_PCM_SYNTH_TONE_COMMON_MFX)
                     {
                         commonMFX = new CommonMFX(new ReceivedData(rawData));
                         edit_State = Edit_State.DONE;
                     }
-                    else if (edit_State == Edit_State.WAITING && currentMidiRequest == CurrentMidiRequest.QUERYING_PCM_DRUM_KIT_COMMON_MFX)
+                    else if (edit_State == Edit_State.WAITING && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_PCM_DRUM_KIT_COMMON_MFX)
                     {
                         commonMFX = new CommonMFX(new ReceivedData(rawData));
                         edit_State = Edit_State.DONE;
                     }
-                    else if (edit_State == Edit_State.WAITING && currentMidiRequest == CurrentMidiRequest.QUERYING_SUPERNATURAL_SYNTH_TONE_PARTIAL)
+                    else if (edit_State == Edit_State.WAITING && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_SUPERNATURAL_SYNTH_TONE_PARTIAL)
                     {
                         superNATURALSynthTone.superNATURALSynthTonePartial[currentKey] = new SuperNATURALSynthTonePartial(new ReceivedData(rawData));
                         edit_State = Edit_State.DONE;
                     }
-                    else if (edit_State == Edit_State.WAITING && currentMidiRequest == CurrentMidiRequest.QUERYING_SUPERNATURAL_SYNTH_TONE_COMMON_MFX)
+                    else if (edit_State == Edit_State.WAITING && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_SUPERNATURAL_SYNTH_TONE_COMMON_MFX)
                     {
                         commonMFX = new CommonMFX(new ReceivedData(rawData));
                         edit_State = Edit_State.DONE;
                     }
-                    else if (edit_State == Edit_State.WAITING && currentMidiRequest == CurrentMidiRequest.QUERYING_SUPERNATURAL_DRUM_KIT_PARTIAL)
+                    else if (edit_State == Edit_State.WAITING && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_SUPERNATURAL_DRUM_KIT_PARTIAL)
                     {
                         //superNATURALDrumKit.superNATURALDrumKitKey = new SuperNATURALDrumKitKey(new ReceivedData(rawData));
                         edit_State = Edit_State.DONE;
                     }
-                    else if (edit_State == Edit_State.WAITING && currentMidiRequest == CurrentMidiRequest.QUERYING_SUPERNATURAL_DRUM_KIT_COMMON_MFX)
+                    else if (edit_State == Edit_State.WAITING && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_SUPERNATURAL_DRUM_KIT_COMMON_MFX)
                     {
                         commonMFX = new CommonMFX(new ReceivedData(rawData));
                         edit_State = Edit_State.DONE;
                     }
 
-                    else if (edit_State == Edit_State.WAITING && currentMidiRequest == CurrentMidiRequest.EDIT_TONE_SAVE)
+                    else if (edit_State == Edit_State.WAITING && currentEditMidiRequest == Edit_CurrentMidiRequest.EDIT_TONE_SAVE)
                     {
                         //if (tbEditToneToneName.Text.Length > 12)
                         //{
@@ -1837,7 +1864,7 @@ namespace Integra_7_Xamarin
             t.Trace("private void QueryToneType()");
             initDone = false;
             edit_State = Edit_State.WAITING;
-            currentMidiRequest = CurrentMidiRequest.QUERYING_TONE_TYPE; 
+            currentEditMidiRequest = Edit_CurrentMidiRequest.QUERYING_TONE_TYPE; 
             byte[] address = { 0x18, 0x00, (byte)(0x20 + commonState.CurrentPart), 0x00 };
             byte[] length = { 0x00, 0x00, 0x00, 0x09 };
             byte[] bytes = commonState.midi.SystemExclusiveRQ1Message(address, length);
@@ -1870,7 +1897,7 @@ namespace Integra_7_Xamarin
         private void QueryPCMSynthToneCommon()          // length 01 11 start 19 00 00 00 (for part 1)
         {
             edit_State = Edit_State.WAITING;
-            currentMidiRequest = CurrentMidiRequest.QUERYING_PCM_SYNTH_TONE_COMMON;
+            currentEditMidiRequest = Edit_CurrentMidiRequest.QUERYING_PCM_SYNTH_TONE_COMMON;
             byte[] address = { 0x19, 0x00, 0x00, 0x00 };
             byte[] partOffset = new byte[] { (byte)((0x20 * commonState.CurrentPart) / 128), (byte)((0x20 * commonState.CurrentPart) % 128), 0x00, 0x00 };
             address = AddBytes128(address, partOffset);
@@ -1882,7 +1909,7 @@ namespace Integra_7_Xamarin
         private void QueryPCMSynthToneCommonMFX()          // length 01 11 start 19 00 02 00 (for part 1)
         {
             edit_State = Edit_State.WAITING;
-            currentMidiRequest = CurrentMidiRequest.QUERYING_PCM_SYNTH_TONE_COMMON_MFX;
+            currentEditMidiRequest = Edit_CurrentMidiRequest.QUERYING_PCM_SYNTH_TONE_COMMON_MFX;
             byte[] address = { 0x19, 0x00, 0x02, 0x00 };
             byte[] partOffset = new byte[] { (byte)((0x20 * commonState.CurrentPart) / 128), (byte)((0x20 * commonState.CurrentPart) % 128), 0x00, 0x00 };
             address = AddBytes128(address, partOffset);
@@ -1895,7 +1922,7 @@ namespace Integra_7_Xamarin
         {
             t.Trace("private void QueryPCMSynthTonePMT()");
             edit_State = Edit_State.WAITING;
-            currentMidiRequest = CurrentMidiRequest.QUERYING_PCM_SYNTH_TONE_PMT;
+            currentEditMidiRequest = Edit_CurrentMidiRequest.QUERYING_PCM_SYNTH_TONE_PMT;
             byte[] address = { 0x19, 0x00, 0x10, 0x00 };
             byte[] partOffset = new byte[] { (byte)((0x20 * commonState.CurrentPart) / 128), (byte)((0x20 * commonState.CurrentPart) % 128), 0x00, 0x00 };
             address = AddBytes128(address, partOffset);
@@ -1908,7 +1935,7 @@ namespace Integra_7_Xamarin
         {
             t.Trace("private void QueryPCMSynthTonePartial()");
             edit_State = Edit_State.WAITING;
-            currentMidiRequest = CurrentMidiRequest.QUERYING_PCM_SYNTH_TONE_PARTIAL;
+            currentEditMidiRequest = Edit_CurrentMidiRequest.QUERYING_PCM_SYNTH_TONE_PARTIAL;
             byte[] address = { 0x19, 0x00, 0x00, 0x00 };
             byte[] partOffset = new byte[] { (byte)((0x20 * commonState.CurrentPart) / 128), (byte)((0x20 * commonState.CurrentPart) % 128), 0x00, 0x00 };
             address = AddBytes128(address, partOffset);
@@ -1923,7 +1950,7 @@ namespace Integra_7_Xamarin
         {
             t.Trace("private void QueryPCMSynthToneCommon2()");
             edit_State = Edit_State.WAITING;
-            currentMidiRequest = CurrentMidiRequest.QUERYING_PCM_SYNTH_TONE_COMMON2;
+            currentEditMidiRequest = Edit_CurrentMidiRequest.QUERYING_PCM_SYNTH_TONE_COMMON2;
             byte[] address = { 0x19, 0x00, 0x30, 0x00 };
             byte[] partOffset = new byte[] { (byte)((0x20 * commonState.CurrentPart) / 128), (byte)((0x20 * commonState.CurrentPart) % 128), 0x00, 0x00 };
             address = AddBytes128(address, partOffset);
@@ -1936,7 +1963,7 @@ namespace Integra_7_Xamarin
         {
             t.Trace("private void QueryPCMDrumKitCommon()");
             edit_State = Edit_State.WAITING;
-            currentMidiRequest = CurrentMidiRequest.QUERYING_PCM_DRUM_KIT_COMMON;
+            currentEditMidiRequest = Edit_CurrentMidiRequest.QUERYING_PCM_DRUM_KIT_COMMON;
             byte[] address = { 0x19, 0x10, 0x00, 0x00 };
             byte[] partOffset = new byte[] { (byte)((0x20 * commonState.CurrentPart) / 128), (byte)((0x20 * commonState.CurrentPart) % 128), 0x00, 0x00 };
             address = AddBytes128(address, partOffset);
@@ -1949,7 +1976,7 @@ namespace Integra_7_Xamarin
         {
             t.Trace("private void QueryPCMDrumKitCommonMFX()");
             edit_State = Edit_State.WAITING;
-            currentMidiRequest = CurrentMidiRequest.QUERYING_PCM_DRUM_KIT_COMMON_MFX;
+            currentEditMidiRequest = Edit_CurrentMidiRequest.QUERYING_PCM_DRUM_KIT_COMMON_MFX;
             byte[] address = { 0x19, 0x10, 0x02, 0x00 };
             byte[] partOffset = new byte[] { (byte)((0x20 * commonState.CurrentPart) / 128), (byte)((0x20 * commonState.CurrentPart) % 128), 0x00, 0x00 };
             address = AddBytes128(address, partOffset);
@@ -1962,7 +1989,7 @@ namespace Integra_7_Xamarin
         {
             t.Trace("private void QueryPCMDrumKitCommonCompEq()");
             edit_State = Edit_State.WAITING;
-            currentMidiRequest = CurrentMidiRequest.QUERYING_PCM_DRUM_KIT_COMMON_COMP_EQ;
+            currentEditMidiRequest = Edit_CurrentMidiRequest.QUERYING_PCM_DRUM_KIT_COMMON_COMP_EQ;
             byte[] address = { 0x19, 0x10, 0x08, 0x00 };
             byte[] partOffset = new byte[] { (byte)((0x20 * commonState.CurrentPart) / 128), (byte)((0x20 * commonState.CurrentPart) % 128), 0x00, 0x00 };
             address = AddBytes128(address, partOffset);
@@ -1979,14 +2006,14 @@ namespace Integra_7_Xamarin
             byte[] bytes = commonState.midi.SystemExclusiveRQ1Message(address, length);
             commonState.midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
             edit_State = Edit_State.WAITING;
-            currentMidiRequest = CurrentMidiRequest.QUERYING_PCM_DRUM_KIT_PARTIAL;
+            currentEditMidiRequest = Edit_CurrentMidiRequest.QUERYING_PCM_DRUM_KIT_PARTIAL;
         }
 
         private void QueryPCMDrumKitCommon2()
         {
             t.Trace("private void QueryPCMDrumKitCommon2()");
             edit_State = Edit_State.WAITING;
-            currentMidiRequest = CurrentMidiRequest.QUERYING_PCM_DRUM_KIT_COMMON2;
+            currentEditMidiRequest = Edit_CurrentMidiRequest.QUERYING_PCM_DRUM_KIT_COMMON2;
             byte[] address = { 0x19, 0x12, 0x00, 0x00 };
             byte[] partOffset = new byte[] { (byte)((0x20 * commonState.CurrentPart) / 128), (byte)((0x20 * commonState.CurrentPart) % 128), 0x00, 0x00 };
             address = AddBytes128(address, partOffset);
@@ -1999,7 +2026,7 @@ namespace Integra_7_Xamarin
         {
             t.Trace("private void QuerySuperNATURALAcousticTone()");
             edit_State = Edit_State.WAITING;
-            currentMidiRequest = CurrentMidiRequest.QUERYING_SUPERNATURAL_ACOUSTIC_TONE_COMMON;
+            currentEditMidiRequest = Edit_CurrentMidiRequest.QUERYING_SUPERNATURAL_ACOUSTIC_TONE_COMMON;
             byte[] address = { 0x19, 0x02, 0x00, 0x00 };
             byte[] partOffset = new byte[] { (byte)((0x20 * commonState.CurrentPart) / 128), (byte)((0x20 * commonState.CurrentPart) % 128), 0x00, 0x00 };
             address = AddBytes128(address, partOffset);
@@ -2012,7 +2039,7 @@ namespace Integra_7_Xamarin
         {
             t.Trace("private void QuerySuperNATURALAcousticToneMFX()");
             edit_State = Edit_State.WAITING;
-            currentMidiRequest = CurrentMidiRequest.QUERYING_SUPERNATURAL_ACOUSTIC_TONE_COMMON_MFX;
+            currentEditMidiRequest = Edit_CurrentMidiRequest.QUERYING_SUPERNATURAL_ACOUSTIC_TONE_COMMON_MFX;
             byte[] address = { 0x19, 0x02, 0x02, 0x00 };
             byte[] partOffset = new byte[] { (byte)((0x20 * commonState.CurrentPart) / 128), (byte)((0x20 * commonState.CurrentPart) % 128), 0x00, 0x00 };
             address = AddBytes128(address, partOffset);
@@ -2025,7 +2052,7 @@ namespace Integra_7_Xamarin
         {
             t.Trace("private void QuerySuperNATURALSynthToneUndocumentedParameters()");
             edit_State = Edit_State.WAITING;
-            currentMidiRequest = CurrentMidiRequest.QUERYING_SUPERNATURAL_SYNTH_TONE_UNDOCUMENTED_PARAMETERS;
+            currentEditMidiRequest = Edit_CurrentMidiRequest.QUERYING_SUPERNATURAL_SYNTH_TONE_UNDOCUMENTED_PARAMETERS;
             byte[] address = { 0x19, 0x01, 0x50, 0x00 };
             byte[] length = { 0x00, 0x00, 0x00, 0x25 };
             byte[] bytes = commonState.midi.SystemExclusiveRQ1Message(address, length);
@@ -2036,7 +2063,7 @@ namespace Integra_7_Xamarin
         {
             t.Trace("private void QuerySuperNATURALSynthToneCommon()");
             edit_State = Edit_State.WAITING;
-            currentMidiRequest = CurrentMidiRequest.QUERYING_SUPERNATURAL_SYNTH_TONE_COMMON;
+            currentEditMidiRequest = Edit_CurrentMidiRequest.QUERYING_SUPERNATURAL_SYNTH_TONE_COMMON;
             byte[] address = { 0x19, 0x01, 0x00, 0x00 };
             byte[] partOffset = new byte[] { (byte)((0x20 * commonState.CurrentPart) / 128), (byte)((0x20 * commonState.CurrentPart) % 128), 0x00, 0x00 };
             address = AddBytes128(address, partOffset);
@@ -2049,7 +2076,7 @@ namespace Integra_7_Xamarin
         {
             t.Trace("private void QuerySuperNATURALSynthToneCommonMFX()");
             edit_State = Edit_State.WAITING;
-            currentMidiRequest = CurrentMidiRequest.QUERYING_SUPERNATURAL_SYNTH_TONE_COMMON_MFX;
+            currentEditMidiRequest = Edit_CurrentMidiRequest.QUERYING_SUPERNATURAL_SYNTH_TONE_COMMON_MFX;
             byte[] address = { 0x19, 0x01, 0x02, 0x00 };
             byte[] partOffset = new byte[] { (byte)((0x20 * commonState.CurrentPart) / 128), (byte)((0x20 * commonState.CurrentPart) % 128), 0x00, 0x00 };
             address = AddBytes128(address, partOffset);
@@ -2062,7 +2089,7 @@ namespace Integra_7_Xamarin
         {
             t.Trace("private void QuerySuperNATURALSynthTonePartial()");
             edit_State = Edit_State.WAITING;
-            currentMidiRequest = CurrentMidiRequest.QUERYING_SUPERNATURAL_SYNTH_TONE_PARTIAL;
+            currentEditMidiRequest = Edit_CurrentMidiRequest.QUERYING_SUPERNATURAL_SYNTH_TONE_PARTIAL;
             byte[] address = { 0x19, 0x01, 0x20, 0x00 };
             byte[] partOffset = new byte[] { (byte)((0x20 * commonState.CurrentPart) / 128), (byte)((0x20 * commonState.CurrentPart) % 128), 0x00, 0x00 };
             address = AddBytes128(address, partOffset);
@@ -2077,7 +2104,7 @@ namespace Integra_7_Xamarin
         {
             t.Trace("private void QuerySuperNATURALSynthToneMisc()");
             edit_State = Edit_State.WAITING;
-            currentMidiRequest = CurrentMidiRequest.QUERYING_SUPERNATURAL_SYNTH_TONE_MISC;
+            currentEditMidiRequest = Edit_CurrentMidiRequest.QUERYING_SUPERNATURAL_SYNTH_TONE_MISC;
             byte[] address = { 0x19, 0x01, 0x50, 0x00 };
             byte[] length = { 0x00, 0x00, 0x00, 0x06 };
             byte[] bytes = commonState.midi.SystemExclusiveRQ1Message(address, length);
@@ -2088,7 +2115,7 @@ namespace Integra_7_Xamarin
         {
             t.Trace("private void QuerySuperNATURALDrumKit()");
             edit_State = Edit_State.WAITING;
-            currentMidiRequest = CurrentMidiRequest.QUERYING_SUPERNATURAL_DRUM_KIT_COMMON;
+            currentEditMidiRequest = Edit_CurrentMidiRequest.QUERYING_SUPERNATURAL_DRUM_KIT_COMMON;
             byte[] address = { 0x19, 0x03, 0x00, 0x00 };
             byte[] partOffset = new byte[] { (byte)((0x20 * commonState.CurrentPart) / 128), (byte)((0x20 * commonState.CurrentPart) % 128), 0x00, 0x00 };
             address = AddBytes128(address, partOffset);
@@ -2101,7 +2128,7 @@ namespace Integra_7_Xamarin
         {
             t.Trace("private void QuerySuperNATURALDrumKitMFX()");
             edit_State = Edit_State.WAITING;
-            currentMidiRequest = CurrentMidiRequest.QUERYING_SUPERNATURAL_DRUM_KIT_COMMON_MFX;
+            currentEditMidiRequest = Edit_CurrentMidiRequest.QUERYING_SUPERNATURAL_DRUM_KIT_COMMON_MFX;
             byte[] address = { 0x19, 0x03, 0x02, 0x00 };
             byte[] partOffset = new byte[] { (byte)((0x20 * commonState.CurrentPart) / 128), (byte)((0x20 * commonState.CurrentPart) % 128), 0x00, 0x00 };
             address = AddBytes128(address, partOffset);
@@ -2114,7 +2141,7 @@ namespace Integra_7_Xamarin
         {
             t.Trace("private void QuerySuperNATURALDrumKitCommonCompEQ()");
             edit_State = Edit_State.WAITING;
-            currentMidiRequest = CurrentMidiRequest.QUERYING_SUPERNATURAL_DRUM_KIT_COMMON_COMP_EQ;
+            currentEditMidiRequest = Edit_CurrentMidiRequest.QUERYING_SUPERNATURAL_DRUM_KIT_COMMON_COMP_EQ;
             byte[] address = { 0x19, 0x03, 0x08, 0x00 };
             byte[] partOffset = new byte[] { (byte)((0x20 * commonState.CurrentPart) / 128), (byte)((0x20 * commonState.CurrentPart) % 128), 0x00, 0x00 };
             address = AddBytes128(address, partOffset);
@@ -2127,7 +2154,7 @@ namespace Integra_7_Xamarin
         {
             t.Trace("private void QuerySuperNATURALDrumKitNote()");
             edit_State = Edit_State.WAITING;
-            currentMidiRequest = CurrentMidiRequest.QUERYING_SUPERNATURAL_DRUM_KIT_PARTIAL;
+            currentEditMidiRequest = Edit_CurrentMidiRequest.QUERYING_SUPERNATURAL_DRUM_KIT_PARTIAL;
             byte[] address = MakeAddress(ProgramType.SUPERNATURAL_DRUM_KIT, ParameterPage.PARTIAL, new byte[] { 0x00 });
             byte[] length = { 0x00, 0x00, 0x00, 0x13 };
             byte[] bytes = commonState.midi.SystemExclusiveRQ1Message(address, length);
@@ -2138,7 +2165,7 @@ namespace Integra_7_Xamarin
         {
             t.Trace("private void QueryStudioSetSendParameters()");
             edit_State = Edit_State.WAITING;
-            currentMidiRequest = CurrentMidiRequest.QUERYING_STUDIO_SET_SEND_PARAMETERS;
+            currentEditMidiRequest = Edit_CurrentMidiRequest.QUERYING_STUDIO_SET_SEND_PARAMETERS;
             byte[] address = new byte[] { 0x18, 0x00, (byte)(0x20 + commonState.CurrentPart), 0x27 };
             byte[] length = { 0x00, 0x00, 0x00, 0x02 };
             byte[] bytes = commonState.midi.SystemExclusiveRQ1Message(address, length);

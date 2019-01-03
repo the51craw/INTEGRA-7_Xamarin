@@ -1,0 +1,14 @@
+* Add initial read of user tones.
+	This was already implemented by adding a button that reads user tones first time it is cliked, and then is a seletor
+	for user tones, preset tones and both user tones and preset tones.
+
+Initial tone seletion is not done properly. One must re-select category and tone before correct tone can be edited.
+
+Some edit pages have too high controls. Probably missing empty rows. Check main rowdefinitions for the dynamic controls area.
+
+Add CheckForVenderDriver and invoke for Windows version.
+
+Check how settings can be handled in the different platforms, or if already implemented in Xamarin.
+
+Check for how to implement file I/O in the different platforms.
+

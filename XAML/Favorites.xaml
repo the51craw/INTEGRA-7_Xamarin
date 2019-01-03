@@ -1,0 +1,71 @@
+﻿<Page
+    x:Class="Integra_7_uwp.Favorites"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Integra_7_uwp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" >
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0" x:Name="gcFolders">
+            <ListView x:Name="lvFolders" x:Uid="lvFolders" Margin="2,2,2,2" BorderThickness="1" BorderBrush="Black" SelectionChanged="lvFolders_SelectionChanged" DoubleTapped="lvFolders_DoubleTapped"  />
+        </Grid>
+        <Grid Grid.Column="1">
+            <ListView x:Name="lvFavorites" x:Uid="lvFavorites" Margin="2,2,2,2" BorderThickness="1" BorderBrush="Black" SelectionChanged="lvFavorites_SelectionChanged" DoubleTapped="lvFavorites_DoubleTapped" />
+        </Grid>
+        <Grid Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition Height="4*" />
+                <RowDefinition Height="4*" />
+                <RowDefinition Height="2*" />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <TextBox x:Name="tbNewFolder" x:Uid="tbNewFolder" Margin="2,2,2,2" KeyUp="tbNewFolder_KeyUp" PlaceholderText="Type new folder name..." />
+            </Grid>
+            <Grid Grid.Row="1">
+                <Button x:Name="btnNewFolder" x:Uid="btnNewFolder" Margin="2,2,2,2" Content="Add folder"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsEnabled="False" Click="btnNewFolder_Click"/>
+            </Grid>
+            <Grid Grid.Row="2">
+                <Button x:Name="btnDeleteFolder" x:Uid="btnDeleteFolder" Margin="2,2,2,2" Content="Delete folder" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnDeleteFolder_Click" IsEnabled="False"/>
+            </Grid>
+            <Grid Grid.Row="3">
+                <TextBlock x:Name="tbGeneralInstructions" x:Uid="tbInstructions" Margin="2,2,2,2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextWrapping="WrapWholeWords" Text="Save your favorites in different folders, for example &quot;Classic&quot;, &quot;Blues&quot; etcetera, or &quot;For movies&quot;, &quot;Funny sounds&quot; or whatever suites you. Add or remove folders above."/>
+            </Grid>
+            <Grid Grid.Row="4">
+                <TextBlock x:Name="tbContextInstructions" x:Uid="tbInstructions" Margin="2,2,2,2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextWrapping="WrapWholeWords" />
+            </Grid>
+            <Grid Grid.Row="5">
+                <TextBlock x:Name="tbItemInstructions" x:Uid="tbInstructions" Margin="2,2,2,2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextWrapping="WrapWholeWords" />
+            </Grid>
+            <Grid Grid.Row="6">
+                <Button x:Name="btnContext" Margin="2,2,2,2" Content="" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnContext_Click" IsEnabled="True"/>
+            </Grid>
+            <Grid Grid.Row="7">
+                <Button x:Name="btnPlayStop" Margin="2,2,2,2" Content="Play" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsEnabled="True" Click="btnPlayStop_Click"/>
+            </Grid>
+            <Grid Grid.Row="8">
+                <Button x:Name="btnSave" Margin="2,2,2,2" Content="Backup to file" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnSave_Click" IsEnabled="True" />
+            </Grid>
+            <Grid Grid.Row="9">
+                <Button x:Name="btnLoad" Margin="2,2,2,2" Content="Restore from file" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnLoad_Click" IsEnabled="True" />
+            </Grid>
+            <Grid Grid.Row="10">
+                <Button x:Name="btnReturn" Margin="2,2,2,2" Content="Return" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnReturn_Click" IsEnabled="True" />
+            </Grid>
+        </Grid>
+    </Grid>
+</Page>
