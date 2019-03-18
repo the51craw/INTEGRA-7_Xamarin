@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
+//using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -45,10 +45,10 @@ namespace Integra_7_Xamarin
             //t.Trace("private void cbEditTone_PartSelector_SelectionChanged (" + "object" + sender + ", " + "EventArgs" + e + ", " + ")");
             if (initDone && handleControlEvents)
             {
-                Waiting(true);
+                Waiting(true, "Working...", Edit_StackLayout);
                 commonState.CurrentPart = (byte)cbEditTone_PartSelector.SelectedIndex;
                 initDone = false;
-                handleControlEvents = false;
+                PushHandleControlEvents();
                 currentParameterPageIndex = 0;
                 currentPartial = 0;
                 QueryToneType();
@@ -62,46 +62,46 @@ namespace Integra_7_Xamarin
 
             if (initDone && handleControlEvents)
             {
-                Waiting(true);
+                Waiting(true, "Working...", Edit_StackLayout);
                 switch (currentProgramType)
                 {
                     case ProgramType.PCM_SYNTH_TONE:
-                        handleControlEvents = false;
+                        PushHandleControlEvents();
                         currentPartial = (byte)cbEditTone_PartialSelector.SelectedIndex;
                         //QueryPCMSynthTonePartial(); No need, all 4 are now read in initially, just update controls:
                         EditTone_UpdateControls();
-                        handleControlEvents = true;
+                        PopHandleControlEvents();
                         break;
                     case ProgramType.PCM_DRUM_KIT:
-                        handleControlEvents = false;
+                        PushHandleControlEvents();
                         currentPartial = (byte)cbEditTone_PartialSelector.SelectedIndex;
                         //QueryPCMDrumKitPartial();
                         UpdatePCMDrumKitControls();
-                        handleControlEvents = true;
+                        PopHandleControlEvents();
                         break;
                     case ProgramType.SUPERNATURAL_ACOUSTIC_TONE:
-                        handleControlEvents = false;
+                        PushHandleControlEvents();
                         currentPartial = (byte)cbEditTone_PartialSelector.SelectedIndex;
                         UpdateSuperNATURALAcousticToneControls();
-                        handleControlEvents = true;
+                        PopHandleControlEvents();
                         break;
                     case ProgramType.SUPERNATURAL_SYNTH_TONE:
-                        handleControlEvents = false;
+                        PushHandleControlEvents();
                         currentPartial = (byte)cbEditTone_PartialSelector.SelectedIndex;
                         //QuerySuperNATURALSynthTonePartial();
                         UpdateSuperNATURALSynthToneControls();
-                        handleControlEvents = true;
+                        PopHandleControlEvents();
                         break;
                     case ProgramType.SUPERNATURAL_DRUM_KIT:
-                        handleControlEvents = false;
+                        PushHandleControlEvents();
                         currentPartial = (byte)cbEditTone_PartialSelector.SelectedIndex;
                         //QuerySuperNATURALDrumKit();
                         UpdateSuperNATURALDrumKitControls();
-                        handleControlEvents = true;
+                        PopHandleControlEvents();
                         break;
                 }
             }
-            //handleControlEvents = true;
+            //PopHandleControlEvents();
         }
 
         //private void tbEditTone_KeyName_TextChanged(object sender, TextChangedEventArgs e)
@@ -119,22 +119,22 @@ namespace Integra_7_Xamarin
             //t.Trace("private void cbEditTone_KeySelector_SelectionChanged (" + "object" + sender + ", " + "EventArgs" + e + ", " + ")");
             if (initDone && handleControlEvents)
             {
-                Waiting(true);
+                Waiting(true, "Working...", Edit_StackLayout);
                 switch (currentProgramType)
                 {
                     case ProgramType.PCM_DRUM_KIT:
-                        handleControlEvents = false;
+                        PushHandleControlEvents();
                         currentKey = (byte)(cbEditTone_KeySelector.SelectedIndex);
                         //QueryPCMDrumKitPartial();
                         UpdatePCMDrumKitControls();
-                        handleControlEvents = true;
+                        PopHandleControlEvents();
                         break;
                     case ProgramType.SUPERNATURAL_DRUM_KIT:
-                        handleControlEvents = false;
+                        PushHandleControlEvents();
                         currentKey = (byte)(cbEditTone_KeySelector.SelectedIndex);
                         //QuerySuperNATURALDrumKitPartial();
                         UpdateSuperNATURALDrumKitControls();
-                        handleControlEvents = true;
+                        PopHandleControlEvents();
                         break;
                 }
             }
@@ -145,9 +145,9 @@ namespace Integra_7_Xamarin
             //t.Trace("private void cbEditTone_ParameterPages_SelectionChanged (" + "object" + sender + ", " + "EventArgs" + e + ", " + ")");
             if (initDone && handleControlEvents)
             {
-                Waiting(true);
+                Waiting(true, "Working...", Edit_StackLayout);
                 currentHandleControlEvents = handleControlEvents;
-                handleControlEvents = false;
+                PushHandleControlEvents();
                 currentParameterPageIndex = (byte)cbEditTone_ParameterPages.SelectedIndex;
                 currentParameterPage = (String)cbEditTone_ParameterPages.SelectedItem;
                 //tbEditTone_KeyName.Visibility = Visibility.Collapsed;
@@ -347,7 +347,7 @@ namespace Integra_7_Xamarin
                             try
                             {
                                 superNATURALDrumKit = sndData.ToneData;
-                                handleControlEvents = false;
+                                PushHandleControlEvents();
                                 commonMFX = sndData.MFX;
                                 UpdateIntegra7FromSND();
                                 currentParameterPageIndex = 0;
@@ -512,7 +512,7 @@ namespace Integra_7_Xamarin
             }
             if (save)
             {
-                Waiting(true);
+                Waiting(true, "Working...", Edit_StackLayout);
                 if (tbEditTone_SaveTone_TitleText.Text.Length > 12)
                 {
                     tbEditTone_SaveTone_TitleText.Text = tbEditTone_SaveTone_TitleText.Text.Remove(12);
@@ -1002,7 +1002,7 @@ namespace Integra_7_Xamarin
                         UpdateSuperNATURALDrumKitControls();
                         break;
                 }
-                Waiting(false);
+                Waiting(false, "Working...", Edit_StackLayout);
             }
         }
 
@@ -1292,29 +1292,29 @@ namespace Integra_7_Xamarin
             }
         }
 
-        private void btnEditTone_Play_Click(object sender, EventArgs e)
-        {
-            if (initDone && handleControlEvents)
-            {
-                DrumKit_WaveOff();
-                commonState.player.Play();
-                //byte[] address = new byte[] { 0x0f, 0x00, 0x20, 0x00 };
-                //byte[] data = new byte[1];
-                //if (commonState.player.Playing)
-                //{
-                //    data = new byte[] { 0x00 };
-                //    btnEditTone_Play.Content = "Play";
-                //}
-                //else
-                //{
-                //    data = new byte[] { (byte)(currentPart + 1) };
-                //    btnEditTone_Play.Content = "Stop";
-                //}
-                //byte[] package = commonState.midi.SystemExclusiveDT1Message(address, data);
-                //commonState.midi.SendSystemExclusive(package);
-                //commonState.player.Playing = !commonState.player.Playing;
-            }
-        }
+        //private void btnEditTone_Play_Click(object sender, EventArgs e)
+        //{
+        //    if (initDone && handleControlEvents)
+        //    {
+        //        DrumKit_WaveOff();
+        //        commonState.player.Play();
+        //        //byte[] address = new byte[] { 0x0f, 0x00, 0x20, 0x00 };
+        //        //byte[] data = new byte[1];
+        //        //if (commonState.player.Playing)
+        //        //{
+        //        //    data = new byte[] { 0x00 };
+        //        //    btnEditTone_Play.Content = "Play";
+        //        //}
+        //        //else
+        //        //{
+        //        //    data = new byte[] { (byte)(currentPart + 1) };
+        //        //    btnEditTone_Play.Content = "Stop";
+        //        //}
+        //        //byte[] package = commonState.midi.SystemExclusiveDT1Message(address, data);
+        //        //commonState.midi.SendSystemExclusive(package);
+        //        //commonState.player.Playing = !commonState.player.Playing;
+        //    }
+        //}
 
         private async void btnEditTone_Reset_Click(object sender, EventArgs e)
         {
@@ -1339,11 +1339,11 @@ namespace Integra_7_Xamarin
         private async void Reset()
         {
             //t.Trace("Reset()");
-            Waiting(true);
+            Waiting(true, "Working...", Edit_StackLayout);
             DrumKit_WaveOff();
             // Set the I-7 to a default sound. It always does that when initialized.
             // Read all from I-7.
-            handleControlEvents = false;
+            PushHandleControlEvents();
             currentProgramIndex = (byte)(cbEditTone_SynthesizerType.SelectedIndex);
             currentProgramType = (ProgramType)cbEditTone_SynthesizerType.SelectedIndex;
             byte msb = 0;
@@ -1369,7 +1369,7 @@ namespace Integra_7_Xamarin
             }
             commonState.midi.ProgramChange(commonState.CurrentPart, msb, lsb, pc);
             initDone = false;
-            Waiting(true);
+            Waiting(true, "Working...", Edit_StackLayout);
             await Task.Delay(TimeSpan.FromMilliseconds(1000));
             QueryToneType();
         }
@@ -1397,7 +1397,7 @@ namespace Integra_7_Xamarin
             //t.Trace("private void GenericCombobox_SelectionChanged ()");
             if (initDone && handleControlEvents)
             {
-                Waiting(true);
+                Waiting(true, "Working...", Edit_StackLayout);
                 ComboBox cb = (ComboBox)sender;
                 //t.Trace("cb.Name = " + cb.Name);
                 if (cb.Tag != null && cb.Tag.GetType() == typeof(Buddy))
@@ -1440,7 +1440,7 @@ namespace Integra_7_Xamarin
                 {
                     GenericHandler(cb);
                 }
-                Waiting(false);
+                Waiting(false, "Working...", Edit_StackLayout);
             }
         }
 
@@ -1449,10 +1449,11 @@ namespace Integra_7_Xamarin
             //t.Trace("slEditToneChorusSendLevel_ValueChanged()");
             if (initDone && handleControlEvents)
             {
+                byte sliderValue = (byte)slEditToneChorusSendLevel.Value;
                 //byte[] address = MakeAddress(currentProgramType, ParameterPage.COMMONMFX, new byte[] { 0x02 });
                 byte[] address = new byte[] { 0x18, 0x00, (byte)(0x20 + commonState.CurrentPart), 0x27};
-                tbEditToneChorusSendLevel.Text = "Chorus send level: " + slEditToneChorusSendLevel.Value.ToString();
-                byte[] value = new byte[] { (byte)slEditToneChorusSendLevel.Value };
+                tbEditToneChorusSendLevel.Text = "Chorus send level: " + sliderValue.ToString();
+                byte[] value = new byte[] { sliderValue };
                 SendParameter(address, value);
             }
         }
@@ -1508,37 +1509,37 @@ namespace Integra_7_Xamarin
 
         private void GenericCheckBox_Click(object sender, EventArgs e)
         {
+            //t.Trace("private void GenericCheckBox_Click (" + "object" + sender + ", " + ")");
             if (initDone && handleControlEvents)
             {
-                //t.Trace("private void GenericCheckBox_Click (" + "object" + sender + ", " + "EventArgs" + e + ", " + ")");
-                GenericCheckBox_Handler(sender);
-            }
-        }
+                object tag = null;
+                CheckBox cb = null;
+                //LabeledCheckBox lcb = null;
+                UInt16 tempAddress = 0;
 
-        private void GenericCheckBox_Handler(object sender)
-        {
-            //t.Trace("private void GenericCheckBox_Handler (" + "object" + sender + ", " + ")");
-            if (initDone && handleControlEvents)
-            {
-                CheckBox cb = (CheckBox)sender;
-                if (cb.Tag != null && cb.Tag.GetType() == typeof(Buddy))
+                if (sender.GetType() == typeof(Xamarin.Forms.Switch))
                 {
-                    UInt16 tempAddress = (UInt16)(((Buddy)cb.Tag).Offset + 4 * ((Buddy)cb.Tag).ParameterNumber);
-                    byte addressHi = (byte)(tempAddress / 128);
-                    byte addressLo = (byte)(tempAddress % 128);
-                    byte[] address = MakeAddress(currentProgramType, ParameterPage.COMMONMFX, 0x00);
-                    address = AddBytes128(address, new byte[] { addressHi, addressLo });
-                    byte[] pageOffset = new byte[] { 0x00, 0x00, 0x00, currentMFXTypePageAddressOffset };
-                    address = AddBytes128(address, pageOffset);
-                    UInt16 dValue = (UInt16)((Boolean)(cb.IsChecked) ? 1 : 0);
-                    byte[] value = new byte[] { 0x08, 0x00, 0x00, (byte)(dValue) };
-                    byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
-                    commonState.midi.SendSystemExclusive(bytes);
-                    //SendCommonMFX();
-                }
-                else
-                {
-                    GenericHandler(cb);
+                    //cb = (CheckBox)sender;
+                    cb = (CheckBox)((Grid)((Xamarin.Forms.Switch)sender).Parent).Parent;
+                    tag = cb.Tag;
+                    if (tag != null && tag.GetType() == typeof(Buddy))
+                    {
+                        tempAddress = (UInt16)(((Buddy)tag).Offset + 4 * ((Buddy)tag).ParameterNumber);
+                        byte addressHi = (byte)(tempAddress / 128);
+                        byte addressLo = (byte)(tempAddress % 128);
+                        byte[] address = MakeAddress(currentProgramType, ParameterPage.COMMONMFX, 0x00);
+                        address = AddBytes128(address, new byte[] { addressHi, addressLo });
+                        byte[] pageOffset = new byte[] { 0x00, 0x00, 0x00, currentMFXTypePageAddressOffset };
+                        address = AddBytes128(address, pageOffset);
+                        UInt16 dValue = (UInt16)((Boolean)(cb.IsChecked) ? 1 : 0);
+                        byte[] value = new byte[] { 0x08, 0x00, 0x00, (byte)(dValue) };
+                        byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+                        commonState.midi.SendSystemExclusive(bytes);
+                    }
+                    else
+                    {
+                        GenericHandler(cb);
+                    }
                 }
             }
         }
@@ -1895,9 +1896,9 @@ namespace Integra_7_Xamarin
                             // PCM Synth Tone PMT tab *****
                             case "cbEditTone_PCMSynthTone_PMT":
                                 currentPMT = (byte)comboBox.SelectedIndex;
-                                handleControlEvents = false;
+                                PushHandleControlEvents();
                                 UpdatePCMSynthToneControls();
-                                handleControlEvents = true;
+                                PopHandleControlEvents();
                                 break;
                             case "cbEditTone_PCMSynthTone_PMT_PMTVelocityControl":
                                 pCMSynthTone.pCMSynthTonePMT.PMTVelocityControl = (byte)comboBox.SelectedIndex;
@@ -2766,7 +2767,7 @@ namespace Integra_7_Xamarin
                                 if (handleControlEvents)
                                 {
                                     RemoveControls(ControlsGrid);
-                                    handleControlEvents = false;
+                                    PushHandleControlEvents();
                                     currentMatrixControlPage = (byte)comboBox.SelectedIndex;
                                     AddPCMSynthToneMatrixControlControls();
                                 }
@@ -3001,25 +3002,25 @@ namespace Integra_7_Xamarin
                                 address = MakeAddress(ProgramType.PCM_SYNTH_TONE, ParameterPage.COMMONMFX, new byte[] { 0x0c });
                                 SendParameter(address, (byte)((commonMFX.MFXControlSens[3])));
                                 break;
-                            case "cbEditTone_pCMSynthTone_MFXControl_MFXControlAssign0":
+                            case "cbEditTone_PCMSynthTone_MFXControl_MFXControlAssign0":
                                 commonMFX.MFXControlAssign[0] = (byte)(comboBox.SelectedIndex);
                                 address = MakeAddress(ProgramType.PCM_SYNTH_TONE, ParameterPage.COMMONMFX, new byte[] { 0x0d });
                                 value = new byte[] { (byte)(commonMFX.MFXControlAssign[0]) };
                                 SendParameter(address, value);
                                 break;
-                            case "cbEditTone_pCMSynthTone_MFXControl_MFXControlAssign1":
+                            case "cbEditTone_PCMSynthTone_MFXControl_MFXControlAssign1":
                                 commonMFX.MFXControlAssign[1] = (byte)(comboBox.SelectedIndex);
                                 address = MakeAddress(ProgramType.PCM_SYNTH_TONE, ParameterPage.COMMONMFX, new byte[] { 0x0e });
                                 value = new byte[] { (byte)(commonMFX.MFXControlAssign[1]) };
                                 SendParameter(address, value);
                                 break;
-                            case "cbEditTone_pCMSynthTone_MFXControl_MFXControlAssign2":
+                            case "cbEditTone_PCMSynthTone_MFXControl_MFXControlAssign2":
                                 commonMFX.MFXControlAssign[2] = (byte)(comboBox.SelectedIndex);
                                 address = MakeAddress(ProgramType.PCM_SYNTH_TONE, ParameterPage.COMMONMFX, new byte[] { 0x0f });
                                 value = new byte[] { (byte)(commonMFX.MFXControlAssign[2]) };
                                 SendParameter(address, value);
                                 break;
-                            case "cbEditTone_pCMSynthTone_MFXControl_MFXControlAssign3":
+                            case "cbEditTone_PCMSynthTone_MFXControl_MFXControlAssign3":
                                 commonMFX.MFXControlAssign[3] = (byte)(comboBox.SelectedIndex);
                                 address = MakeAddress(ProgramType.PCM_SYNTH_TONE, ParameterPage.COMMONMFX, new byte[] { 0x10 });
                                 value = new byte[] { (byte)(commonMFX.MFXControlAssign[3]) };
@@ -4252,7 +4253,7 @@ namespace Integra_7_Xamarin
                             // SuperNATURAL Acoustic Tone Instrument tab
                             case "cbEditTone_SuperNATURALAcousticTone_Instrument_Bank":
                                 currentHandleControlEvents = handleControlEvents;
-                                handleControlEvents = false;
+                                PushHandleControlEvents();
                                 List<Instrument> instruments = superNaturalAcousticInstrumentList.ListInstruments((String)cbEditTone_SuperNATURALAcousticTone_Instrument_Bank.SelectedItem);
                                 try
                                 {
@@ -4626,25 +4627,25 @@ namespace Integra_7_Xamarin
                                 value = new byte[] { (byte)(commonMFX.MFXControlSource[3]) };
                                 SendParameter(address, value);
                                 break;
-                            case "cbEditTone_CommonMFX_MFXControlDestination0":
+                            case "cbEditTone_CommonMFX_MFXControlAssign0":
                                 commonMFX.MFXControlAssign[0] = (byte)comboBox.SelectedIndex;
                                 address = MakeAddress(ProgramType.SUPERNATURAL_ACOUSTIC_TONE, ParameterPage.COMMONMFX, new byte[] { 0x0d });
                                 value = new byte[] { (byte)(commonMFX.MFXControlAssign[0]) };
                                 SendParameter(address, value);
                                 break;
-                            case "cbEditTone_CommonMFX_MFXControlDestination1":
+                            case "cbEditTone_CommonMFX_MFXControlAssign1":
                                 commonMFX.MFXControlAssign[1] = (byte)comboBox.SelectedIndex;
                                 address = MakeAddress(ProgramType.SUPERNATURAL_ACOUSTIC_TONE, ParameterPage.COMMONMFX, new byte[] { 0x0e });
                                 value = new byte[] { (byte)(commonMFX.MFXControlAssign[1]) };
                                 SendParameter(address, value);
                                 break;
-                            case "cbEditTone_CommonMFX_MFXControlDestination2":
+                            case "cbEditTone_CommonMFX_MFXControlAssign2":
                                 commonMFX.MFXControlAssign[2] = (byte)comboBox.SelectedIndex;
                                 address = MakeAddress(ProgramType.SUPERNATURAL_ACOUSTIC_TONE, ParameterPage.COMMONMFX, new byte[] { 0x0f });
                                 value = new byte[] { (byte)(commonMFX.MFXControlAssign[2]) };
                                 SendParameter(address, value);
                                 break;
-                            case "cbEditTone_CommonMFX_MFXControlDestination3":
+                            case "cbEditTone_CommonMFX_MFXControlAssign3":
                                 commonMFX.MFXControlAssign[3] = (byte)comboBox.SelectedIndex;
                                 address = MakeAddress(ProgramType.SUPERNATURAL_ACOUSTIC_TONE, ParameterPage.COMMONMFX, new byte[] { 0x10 });
                                 value = new byte[] { (byte)(commonMFX.MFXControlAssign[3]) };
@@ -5292,7 +5293,7 @@ namespace Integra_7_Xamarin
                                 break;
                             // SuperNATURAL Drum Kit Instrument *****
                             case "cbEditTone_superNATURALDrumKit_Druminstrument_BankNumber":
-                                handleControlEvents = false;
+                                PushHandleControlEvents();
                                 superNATURALDrumKit.superNATURALDrumKitKey[currentPartial].BankNumber = (byte)(comboBox.SelectedIndex);
                                 //commonState.keyNames[currentPartial] = ((ComboBoxItem)comboBox.SelectedItem).Content.ToString();
                                 // Bank number is 0 for Internal and 1 for ExSN6.Read more in MakeDynamicControls.cs AddSupernaturalDrumKitDruminstrumentControls()
@@ -6065,7 +6066,7 @@ namespace Integra_7_Xamarin
         {
             if (handleControlEvents)
             {
-                handleControlEvents = false;
+                PushHandleControlEvents();
                 byte selectedIndex = (byte)comboBox.SelectedIndex;
                 commonMFX.MFXType = SetMFXTypeAndOffset((byte)comboBox.SelectedIndex);
                 // Is this read from Integra-7, or should we use default parameters?
@@ -6166,7 +6167,7 @@ namespace Integra_7_Xamarin
         private void SuperNaturalDrumKitSetVariation()
         {
             currentHandleControlEvents = handleControlEvents;
-            handleControlEvents = false;
+            PushHandleControlEvents();
             DrumInstrument drumInstrumentForVariations =
                 superNATURALDrumKitInstrumentList.DrumInstruments[superNATURALDrumKit
                 .superNATURALDrumKitKey[currentPartial].InstNumber];

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
+//using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 
 using Xamarin.Forms;
@@ -16,6 +16,9 @@ namespace Integra_7_Xamarin
         /// Populates parameter pages selector and instrument selector according to tone type.
         /// Builds all controls for PCM Synth Tone after having removed any previous ones.
         /// </summary>
+        /// 
+
+        private static byte MAX_ROWS = 15;
 
         #region Controls common to all types
 
@@ -253,7 +256,7 @@ namespace Integra_7_Xamarin
             cbEditTone_ParameterPages.SelectedIndex = currentParameterPageIndex;
             cbEditTone_InstrumentCategorySelector.SelectedIndex =
                 toneCategories.pcmToneCategoryNameIndex[pCMSynthTone.pCMSynthToneCommon2.ToneCategory];
-            Waiting(false);
+            Waiting(false, "", Edit_StackLayout);
         }
 
         private void MakePCMDrumKitControls(byte SelectedIndex = 0)
@@ -345,7 +348,7 @@ namespace Integra_7_Xamarin
                     AddPCMDrumKitSaveControls();
                     break;
             }
-            Waiting(false);
+            Waiting(false, "", Edit_StackLayout);
         }
 
         private void UpdateSuperNATURALAcousticToneControls(byte SelectedIndex = 0)
@@ -374,7 +377,7 @@ namespace Integra_7_Xamarin
                     AddSuperNaturalAcousticToneSaveControls();
                     break;
             }
-            Waiting(false);
+            Waiting(false, "", Edit_StackLayout);
         }
 
         private void UpdateSuperNATURALSynthToneControls(byte SelectedIndex = 0)
@@ -420,7 +423,7 @@ namespace Integra_7_Xamarin
                     AddSuperNaturalSynthToneSaveControls();
                     break;
             }
-            Waiting(false);
+            Waiting(false, "", Edit_StackLayout);
         }
 
         private void UpdateSuperNATURALDrumKitControls(byte SelectedIndex = 0)
@@ -458,7 +461,7 @@ namespace Integra_7_Xamarin
                     AddSuperNaturalDrumKitSaveControls();
                     break;
             }
-            Waiting(false);
+            Waiting(false, "", Edit_StackLayout);
         }
 
         #endregion
@@ -524,8 +527,8 @@ namespace Integra_7_Xamarin
             slEditTone_PCMSynthTone_TonePan.Focused += Generic_GotFocus;
             slEditTone_PCMSynthTone_TonePan.Tag = new HelpTag(controlsIndex++, 0);
             slEditTone_PCMSynthTone_TonePan.Name = "slEditTone_PCMSynthTone_TonePan";
-            slEditTone_PCMSynthTone_TonePan.Minimum = -64;
             slEditTone_PCMSynthTone_TonePan.Maximum = 63;
+            slEditTone_PCMSynthTone_TonePan.Minimum = -64;
 
             // Tone proirity:
             ComboBox cbEditTone_PCMSynthTone_TonePriority = new ComboBox();
@@ -657,7 +660,7 @@ namespace Integra_7_Xamarin
 
             // Legato switch:
             CheckBox cbEditTone_PCMSynthTone_Legato = new CheckBox();
-            cbEditTone_PCMSynthTone_Legato.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Legato.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Legato.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Legato.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Legato.Content = "Legato";
@@ -665,7 +668,7 @@ namespace Integra_7_Xamarin
 
             // Legato trigger:
             CheckBox cbEditTone_PCMSynthTone_LegatoTrigger = new CheckBox();
-            cbEditTone_PCMSynthTone_LegatoTrigger.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_LegatoTrigger.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_LegatoTrigger.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_LegatoTrigger.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_LegatoTrigger.Name = "cbEditTone_PCMSynthTone_LegatoTrigger";
@@ -673,7 +676,7 @@ namespace Integra_7_Xamarin
 
             // Portamento switch:
             CheckBox cbEditTone_PCMSynthTone_Portamento = new CheckBox();
-            cbEditTone_PCMSynthTone_Portamento.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Portamento.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Portamento.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Portamento.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Portamento.Name = "cbEditTone_PCMSynthTone_Portamento";
@@ -736,6 +739,14 @@ namespace Integra_7_Xamarin
             ControlsGrid.Children.Add((new GridRow(13, new View[] { cbEditTone_PCMSynthTone_Portamento, cbEditTone_PCMSynthTone_PortamentoMode, cbEditTone_PCMSynthTone_PortamentoType, cbEditTone_PCMSynthTone_PortamentoStart }, new byte[] { 1, 1, 1, 1 })).Row);
             ControlsGrid.Children.Add((new GridRow(14, new View[] { tbEditTone_PCMSynthTone_PortamentoTime, slEditTone_PCMSynthTone_PortamentoTime }, new byte[] { 1, 2 })).Row);
 
+            byte row = 15;
+            while (row < MAX_ROWS)
+            {
+                Grid dummy = new Grid();
+                dummy.BackgroundColor = colorSettings.ControlBackground;
+                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })).Row);
+            }
+
             // Finally, set selected values (must be done after the controls has been given their parents):
             slEditTone_PCMSynthTone_ToneLevel.Value = pCMSynthTone.pCMSynthToneCommon.Level;
             cbEditTone_PCMSynthTone_PhraseNumber.SelectedIndex = pCMSynthTone.pCMSynthToneCommon2.PhraseNumber;
@@ -769,7 +780,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PMTPartial1Switch
             CheckBox cbEditTone_PCMSynthTone_Wave_PMTPartial1Switch = new CheckBox();
-            cbEditTone_PCMSynthTone_Wave_PMTPartial1Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Wave_PMTPartial1Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Wave_PMTPartial1Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Wave_PMTPartial1Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Wave_PMTPartial1Switch.Content = "Partial 1";
@@ -777,7 +788,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PMTPartial2Switch
             CheckBox cbEditTone_PCMSynthTone_Wave_PMTPartial2Switch = new CheckBox();
-            cbEditTone_PCMSynthTone_Wave_PMTPartial2Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Wave_PMTPartial2Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Wave_PMTPartial2Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Wave_PMTPartial2Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Wave_PMTPartial2Switch.Content = "Partial 2";
@@ -785,7 +796,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PMTPartial3Switch
             CheckBox cbEditTone_PCMSynthTone_Wave_PMTPartial3Switch = new CheckBox();
-            cbEditTone_PCMSynthTone_Wave_PMTPartial3Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Wave_PMTPartial3Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Wave_PMTPartial3Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Wave_PMTPartial3Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Wave_PMTPartial3Switch.Content = "Partial 3";
@@ -793,7 +804,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PMTPartial4Switch
             CheckBox cbEditTone_PCMSynthTone_Wave_PMTPartial4Switch = new CheckBox();
-            cbEditTone_PCMSynthTone_Wave_PMTPartial4Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Wave_PMTPartial4Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Wave_PMTPartial4Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Wave_PMTPartial4Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Wave_PMTPartial4Switch.Content = "Partial 4";
@@ -852,7 +863,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for Wave Tempo Sync
             CheckBox cbEditTone_PCMSynthTone_Wave_WaveTempoSync = new CheckBox();
-            cbEditTone_PCMSynthTone_Wave_WaveTempoSync.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Wave_WaveTempoSync.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Wave_WaveTempoSync.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Wave_WaveTempoSync.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Wave_WaveTempoSync.Content = "Wave Tempo Sync";
@@ -860,7 +871,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for Wave MFX Switch
             CheckBox cbEditTone_PCMSynthTone_Wave_WaveFXMSwitch = new CheckBox();
-            cbEditTone_PCMSynthTone_Wave_WaveFXMSwitch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Wave_WaveFXMSwitch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Wave_WaveFXMSwitch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Wave_WaveFXMSwitch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Wave_WaveFXMSwitch.Content = "Wave MFX Switch";
@@ -921,6 +932,14 @@ namespace Integra_7_Xamarin
             ControlsGrid.Children.Add((new GridRow(6, new View[] { cbEditTone_PCMSynthTone_Wave_PartialDelayMode })).Row);
             ControlsGrid.Children.Add((new GridRow(7, new View[] { tbEditTone_PCMSynthTone_Wave_PartialDelayTime, slEditTone_PCMSynthTone_Wave_PartialDelayTime }, new byte[] { 1, 2 })).Row);
 
+            byte row = 8;
+            while (row < MAX_ROWS)
+            {
+                Grid dummy = new Grid();
+                dummy.BackgroundColor = colorSettings.ControlBackground;
+                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })).Row);
+            }
+
             // Set values:
             cbEditTone_PCMSynthTone_Wave_PMTPartial1Switch.IsChecked = pCMSynthTone.pCMSynthTonePMT.PMTPartialSwitch[0];
             cbEditTone_PCMSynthTone_Wave_PMTPartial2Switch.IsChecked = pCMSynthTone.pCMSynthTonePMT.PMTPartialSwitch[1];
@@ -970,7 +989,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PMTPartial1Switch
             CheckBox cbEditTone_PCMSynthTone_Wave_PMTPartial1Switch = new CheckBox();
-            cbEditTone_PCMSynthTone_Wave_PMTPartial1Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Wave_PMTPartial1Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Wave_PMTPartial1Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Wave_PMTPartial1Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Wave_PMTPartial1Switch.Content = "Partial 1";
@@ -978,7 +997,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PMTPartial2Switch
             CheckBox cbEditTone_PCMSynthTone_Wave_PMTPartial2Switch = new CheckBox();
-            cbEditTone_PCMSynthTone_Wave_PMTPartial2Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Wave_PMTPartial2Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Wave_PMTPartial2Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Wave_PMTPartial2Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Wave_PMTPartial2Switch.Content = "Partial 2";
@@ -986,7 +1005,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PMTPartial3Switch
             CheckBox cbEditTone_PCMSynthTone_Wave_PMTPartial3Switch = new CheckBox();
-            cbEditTone_PCMSynthTone_Wave_PMTPartial3Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Wave_PMTPartial3Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Wave_PMTPartial3Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Wave_PMTPartial3Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Wave_PMTPartial3Switch.Content = "Partial 3";
@@ -994,7 +1013,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PMTPartial4Switch
             CheckBox cbEditTone_PCMSynthTone_Wave_PMTPartial4Switch = new CheckBox();
-            cbEditTone_PCMSynthTone_Wave_PMTPartial4Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Wave_PMTPartial4Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Wave_PMTPartial4Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Wave_PMTPartial4Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Wave_PMTPartial4Switch.Content = "Partial 4";
@@ -1024,7 +1043,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PMT Control Switch
             CheckBox cbEditTone_PCMSynthTone_PMT_PMTControlSwitch = new CheckBox();
-            cbEditTone_PCMSynthTone_PMT_PMTControlSwitch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_PMT_PMTControlSwitch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_PMT_PMTControlSwitch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_PMT_PMTControlSwitch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_PMT_PMTControlSwitch.Content = "PMT Control Switch";
@@ -1181,6 +1200,14 @@ namespace Integra_7_Xamarin
             ControlsGrid.Children.Add((new GridRow(10, new View[] { tbEditTone_PCMSynthTone_PMT_PMTVelocityRangeLower, slEditTone_PCMSynthTone_PMT_PMTVelocityRangeLower })).Row);
             ControlsGrid.Children.Add((new GridRow(11, new View[] { tbEditTone_PCMSynthTone_PMT_PMTVelocityFadeWidthLower, slEditTone_PCMSynthTone_PMT_PMTVelocityFadeWidthLower })).Row);
 
+            byte row = 12;
+            while (row < MAX_ROWS)
+            {
+                Grid dummy = new Grid();
+                dummy.BackgroundColor = colorSettings.ControlBackground;
+                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })).Row);
+            }
+
             // Set controls values
             cbEditTone_PCMSynthTone_Wave_PMTPartial1Switch.IsChecked = pCMSynthTone.pCMSynthTonePMT.PMTPartialSwitch[0];
             cbEditTone_PCMSynthTone_Wave_PMTPartial2Switch.IsChecked = pCMSynthTone.pCMSynthTonePMT.PMTPartialSwitch[1];
@@ -1219,7 +1246,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PitchPartial1Switch
             CheckBox cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch = new CheckBox();
-            cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.Content = "Partial 1";
@@ -1227,7 +1254,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PitchPartial2Switch
             CheckBox cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch = new CheckBox();
-            cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.Content = "Partial 2";
@@ -1235,7 +1262,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PitchPartial3Switch
             CheckBox cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch = new CheckBox();
-            cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.Content = "Partial 3";
@@ -1243,7 +1270,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PitchPartial4Switch
             CheckBox cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch = new CheckBox();
-            cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.Content = "Partial 4";
@@ -1317,7 +1344,7 @@ namespace Integra_7_Xamarin
             slEditTone_PCMSynthTone_Pitch_WavePitchKeyfollow.Focused += Generic_GotFocus;
             slEditTone_PCMSynthTone_Pitch_WavePitchKeyfollow.Tag = new HelpTag(controlsIndex++, 0);
             slEditTone_PCMSynthTone_Pitch_WavePitchKeyfollow.Name = "slEditTone_PCMSynthTone_Pitch_WavePitchKeyfollow";
-            //slEditTone_PCMSynthTone_Pitch_WavePitchKeyfollow.StepFrequency = 10;
+            slEditTone_PCMSynthTone_Pitch_WavePitchKeyfollow.StepFrequency = 10;
             slEditTone_PCMSynthTone_Pitch_WavePitchKeyfollow.Minimum = -20;
             slEditTone_PCMSynthTone_Pitch_WavePitchKeyfollow.Maximum = 20;
 
@@ -1353,6 +1380,14 @@ namespace Integra_7_Xamarin
             ControlsGrid.Children.Add((new GridRow(5, new View[] { tbEditTone_PCMSynthTone_Pitch_PitchBendRangeUp, slEditTone_PCMSynthTone_Pitch_PitchBendRangeUp }, new byte[] { 1, 2 })).Row);
             ControlsGrid.Children.Add((new GridRow(6, new View[] { tbEditTone_PCMSynthTone_Pitch_PitchBendRangeDown, slEditTone_PCMSynthTone_Pitch_PitchBendRangeDown }, new byte[] { 1, 2 })).Row);
 
+            byte row = 7;
+            while (row < MAX_ROWS)
+            {
+                Grid dummy = new Grid();
+                dummy.BackgroundColor = colorSettings.ControlBackground;
+                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })).Row);
+            }
+
             // Set control values
             cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.IsChecked = pCMSynthTone.pCMSynthTonePMT.PMTPartialSwitch[0];
             cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.IsChecked = pCMSynthTone.pCMSynthTonePMT.PMTPartialSwitch[1];
@@ -1378,7 +1413,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PitchPartial1Switch
             CheckBox cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch = new CheckBox();
-            cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.Content = "Partial 1";
@@ -1386,7 +1421,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PitchPartial2Switch
             CheckBox cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch = new CheckBox();
-            cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.Content = "Partial 2";
@@ -1394,7 +1429,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PitchPartial3Switch
             CheckBox cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch = new CheckBox();
-            cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.Content = "Partial 3";
@@ -1402,7 +1437,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PitchPartial4Switch
             CheckBox cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch = new CheckBox();
-            cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.Content = "Partial 4";
@@ -1512,6 +1547,14 @@ namespace Integra_7_Xamarin
                 ControlsGrid.Children.Add((new GridRow((byte)(10 + i), new View[] { tbEditTone_PCMSynthTone_Pitchenvelope_PitchEnvLevel[i], slEditTone_PCMSynthTone_Pitchenvelope_PitchEnvLevel[i] }, new byte[] { 1, 2 })).Row);
             }
 
+            byte row = 14;
+            while (row < MAX_ROWS)
+            {
+                Grid dummy = new Grid();
+                dummy.BackgroundColor = colorSettings.ControlBackground;
+                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })).Row);
+            }
+
             // Set control values
             cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.IsChecked = pCMSynthTone.pCMSynthTonePMT.PMTPartialSwitch[0];
             cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.IsChecked = pCMSynthTone.pCMSynthTonePMT.PMTPartialSwitch[1];
@@ -1546,7 +1589,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PitchPartial1Switch
             CheckBox cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch = new CheckBox();
-            cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.Content = "Partial 1";
@@ -1554,7 +1597,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PitchPartial2Switch
             CheckBox cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch = new CheckBox();
-            cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.Content = "Partial 2";
@@ -1562,7 +1605,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PitchPartial3Switch
             CheckBox cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch = new CheckBox();
-            cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.Content = "Partial 3";
@@ -1570,7 +1613,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PitchPartial4Switch
             CheckBox cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch = new CheckBox();
-            cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.Content = "Partial 4";
@@ -1673,6 +1716,14 @@ namespace Integra_7_Xamarin
             ControlsGrid.Children.Add((new GridRow(6, new View[] { tbEditTone_PCMSynthTone_TVF_TVFCutoffVelocitySens, slEditTone_PCMSynthTone_TVF_TVFCutoffVelocitySens }, new byte[] { 1, 2 })).Row);
             ControlsGrid.Children.Add((new GridRow(7, new View[] { tbEditTone_PCMSynthTone_TVF_TVFResonanceVelocitySens, slEditTone_PCMSynthTone_TVF_TVFResonanceVelocitySens }, new byte[] { 1, 2 })).Row);
 
+            byte row = 8;
+            while (row < MAX_ROWS)
+            {
+                Grid dummy = new Grid();
+                dummy.BackgroundColor = colorSettings.ControlBackground;
+                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })).Row);
+            }
+
             // Set control values
             cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.IsChecked = pCMSynthTone.pCMSynthTonePMT.PMTPartialSwitch[0];
             cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.IsChecked = pCMSynthTone.pCMSynthTonePMT.PMTPartialSwitch[1];
@@ -1699,7 +1750,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PitchPartial1Switch
             CheckBox cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch = new CheckBox();
-            cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.Content = "Partial 1";
@@ -1707,7 +1758,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PitchPartial2Switch
             CheckBox cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch = new CheckBox();
-            cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.Content = "Partial 2";
@@ -1715,7 +1766,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PitchPartial3Switch
             CheckBox cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch = new CheckBox();
-            cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.Content = "Partial 3";
@@ -1723,7 +1774,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PitchPartial4Switch
             CheckBox cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch = new CheckBox();
-            cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.Content = "Partial 4";
@@ -1849,6 +1900,14 @@ namespace Integra_7_Xamarin
                 ControlsGrid.Children.Add((new GridRow((byte)(10 + i), new View[] { tbEditTone_PCMSynthTone_TVFEnvelope_TVFEnvLevel[i], slEditTone_PCMSynthTone_TVFEnvelope_TVFEnvLevel[i] }, new byte[] { 1, 2 })).Row);
             }
 
+            byte row = 14;
+            while (row < MAX_ROWS)
+            {
+                Grid dummy = new Grid();
+                dummy.BackgroundColor = colorSettings.ControlBackground;
+                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })).Row);
+            }
+
             // Set values
             slEditTone_PCMSynthTone_TVFEnvelope_TVFEnvDepth.Value = pCMSynthTone.pCMSynthTonePartial[currentPartial].TVF.TVFEnvDepth - 64;
             tbEditTone_PCMSynthTone_TVFEnvelope_TVFEnvDepth.Text = "TVF Env Depth: " + (pCMSynthTone.pCMSynthTonePartial[currentPartial].TVF.TVFEnvDepth - 64).ToString();
@@ -1880,7 +1939,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PitchPartial1Switch
             CheckBox cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch = new CheckBox();
-            cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.Content = "Partial 1";
@@ -1888,7 +1947,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PitchPartial2Switch
             CheckBox cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch = new CheckBox();
-            cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.Content = "Partial 2";
@@ -1896,7 +1955,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PitchPartial3Switch
             CheckBox cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch = new CheckBox();
-            cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.Content = "Partial 3";
@@ -1904,7 +1963,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PitchPartial4Switch
             CheckBox cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch = new CheckBox();
-            cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.Content = "Partial 4";
@@ -2037,6 +2096,14 @@ namespace Integra_7_Xamarin
             ControlsGrid.Children.Add((new GridRow(9, new View[] { tbEditTone_PCMSynthTone_TVA_PartialRandomPanDepth, slEditTone_PCMSynthTone_TVA_PartialRandomPanDepth }, new byte[] { 1, 2 })).Row);
             ControlsGrid.Children.Add((new GridRow(10, new View[] { tbEditTone_PCMSynthTone_TVA_PartialAlternatePanDepth, slEditTone_PCMSynthTone_TVA_PartialAlternatePanDepth }, new byte[] { 1, 2 })).Row);
 
+            byte row = 11;
+            while (row < MAX_ROWS)
+            {
+                Grid dummy = new Grid();
+                dummy.BackgroundColor = colorSettings.ControlBackground;
+                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })).Row);
+            }
+
             // Set values
             cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.IsChecked = pCMSynthTone.pCMSynthTonePMT.PMTPartialSwitch[0];
             cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.IsChecked = pCMSynthTone.pCMSynthTonePMT.PMTPartialSwitch[1];
@@ -2092,7 +2159,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PitchPartial1Switch
             CheckBox cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch = new CheckBox();
-            cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.Content = "Partial 1";
@@ -2100,7 +2167,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PitchPartial2Switch
             CheckBox cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch = new CheckBox();
-            cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.Content = "Partial 2";
@@ -2108,7 +2175,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PitchPartial3Switch
             CheckBox cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch = new CheckBox();
-            cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.Content = "Partial 3";
@@ -2116,7 +2183,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PitchPartial4Switch
             CheckBox cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch = new CheckBox();
-            cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.Content = "Partial 4";
@@ -2198,6 +2265,14 @@ namespace Integra_7_Xamarin
                 ControlsGrid.Children.Add((new GridRow((byte)(8 + i), new View[] { tbEditTone_PCMSynthTone_TVAEnvelope_TVAEnvLevel[i], slEditTone_PCMSynthTone_TVAEnvelope_TVAEnvLevel[i] }, new byte[] { 1, 2 })).Row);
             }
 
+            byte row = 11;
+            while (row < MAX_ROWS)
+            {
+                Grid dummy = new Grid();
+                dummy.BackgroundColor = colorSettings.ControlBackground;
+                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })).Row);
+            }
+
             // Set values
             cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.IsChecked = pCMSynthTone.pCMSynthTonePMT.PMTPartialSwitch[0];
             cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.IsChecked = pCMSynthTone.pCMSynthTonePMT.PMTPartialSwitch[1];
@@ -2228,7 +2303,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PitchPartial1Switch
             CheckBox cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch = new CheckBox();
-            cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.Content = "Partial 1";
@@ -2236,7 +2311,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PitchPartial2Switch
             CheckBox cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch = new CheckBox();
-            cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.Content = "Partial 2";
@@ -2244,7 +2319,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PitchPartial3Switch
             CheckBox cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch = new CheckBox();
-            cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.Content = "Partial 3";
@@ -2252,7 +2327,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PitchPartial4Switch
             CheckBox cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch = new CheckBox();
-            cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.Content = "Partial 4";
@@ -2297,6 +2372,14 @@ namespace Integra_7_Xamarin
             ControlsGrid.Children.Add((new GridRow(2, new View[] { tbEditTone_PCMSynthTone_Output_PartialChorusSendLevel, slEditTone_PCMSynthTone_Output_PartialChorusSendLevel }, new byte[] { 1, 2 })).Row);
             ControlsGrid.Children.Add((new GridRow(3, new View[] { tbEditTone_PCMSynthTone_Output_PartialReverbSendLevel, slEditTone_PCMSynthTone_Output_PartialReverbSendLevel }, new byte[] { 1, 2 })).Row);
 
+            byte row = 4;
+            while (row < MAX_ROWS)
+            {
+                Grid dummy = new Grid();
+                dummy.BackgroundColor = colorSettings.ControlBackground;
+                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })).Row);
+            }
+
             // Set values
             cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.IsChecked = pCMSynthTone.pCMSynthTonePMT.PMTPartialSwitch[0];
             cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.IsChecked = pCMSynthTone.pCMSynthTonePMT.PMTPartialSwitch[1];
@@ -2317,7 +2400,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PitchPartial1Switch
             CheckBox cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch = new CheckBox();
-            cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.Content = "Partial 1";
@@ -2325,7 +2408,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PitchPartial2Switch
             CheckBox cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch = new CheckBox();
-            cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.Content = "Partial 2";
@@ -2333,7 +2416,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PitchPartial3Switch
             CheckBox cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch = new CheckBox();
-            cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.Content = "Partial 3";
@@ -2341,7 +2424,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PitchPartial4Switch
             CheckBox cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch = new CheckBox();
-            cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.Content = "Partial 4";
@@ -2445,7 +2528,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for LFO Key Trigger
             CheckBox cbEditTone_PCMSynthTone_LFO1_LFOKeyTrigger = new CheckBox();
-            cbEditTone_PCMSynthTone_LFO1_LFOKeyTrigger.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_LFO1_LFOKeyTrigger.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_LFO1_LFOKeyTrigger.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_LFO1_LFOKeyTrigger.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_LFO1_LFOKeyTrigger.Content = "LFO Key Trigger";
@@ -2508,6 +2591,14 @@ namespace Integra_7_Xamarin
             ControlsGrid.Children.Add((new GridRow(12, new View[] { tbEditTone_PCMSynthTone_LFO1_LFOTVADepth, slEditTone_PCMSynthTone_LFO1_LFOTVADepth }, new byte[] { 1, 2 })).Row);
             ControlsGrid.Children.Add((new GridRow(13, new View[] { tbEditTone_PCMSynthTone_LFO1_LFOPanDepth, slEditTone_PCMSynthTone_LFO1_LFOPanDepth }, new byte[] { 1, 2 })).Row);
 
+            byte row = 14;
+            while (row < MAX_ROWS)
+            {
+                Grid dummy = new Grid();
+                dummy.BackgroundColor = colorSettings.ControlBackground;
+                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })).Row);
+            }
+
             // Set values
             cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.IsChecked = pCMSynthTone.pCMSynthTonePMT.PMTPartialSwitch[0];
             cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.IsChecked = pCMSynthTone.pCMSynthTonePMT.PMTPartialSwitch[1];
@@ -2551,7 +2642,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PitchPartial1Switch
             CheckBox cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch = new CheckBox();
-            cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.Content = "Partial 1";
@@ -2559,7 +2650,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PitchPartial2Switch
             CheckBox cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch = new CheckBox();
-            cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.Content = "Partial 2";
@@ -2567,7 +2658,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PitchPartial3Switch
             CheckBox cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch = new CheckBox();
-            cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.Content = "Partial 3";
@@ -2575,7 +2666,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PitchPartial4Switch
             CheckBox cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch = new CheckBox();
-            cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.Content = "Partial 4";
@@ -2676,7 +2767,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for LFO Key Trigger
             CheckBox cbEditTone_PCMSynthTone_LFO2_LFOKeyTrigger = new CheckBox();
-            cbEditTone_PCMSynthTone_LFO2_LFOKeyTrigger.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_LFO2_LFOKeyTrigger.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_LFO2_LFOKeyTrigger.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_LFO2_LFOKeyTrigger.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_LFO2_LFOKeyTrigger.Content = "LFO Key Trigger";
@@ -2739,6 +2830,14 @@ namespace Integra_7_Xamarin
             ControlsGrid.Children.Add((new GridRow(12, new View[] { tbEditTone_PCMSynthTone_LFO2_LFOTVADepth, slEditTone_PCMSynthTone_LFO2_LFOTVADepth }, new byte[] { 1, 2 })).Row);
             ControlsGrid.Children.Add((new GridRow(13, new View[] { tbEditTone_PCMSynthTone_LFO2_LFOPanDepth, slEditTone_PCMSynthTone_LFO2_LFOPanDepth }, new byte[] { 1, 2 })).Row);
 
+            byte row = 14;
+            while (row < MAX_ROWS)
+            {
+                Grid dummy = new Grid();
+                dummy.BackgroundColor = colorSettings.ControlBackground;
+                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })).Row);
+            }
+
             // Set values
             cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.IsChecked = pCMSynthTone.pCMSynthTonePMT.PMTPartialSwitch[0];
             cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.IsChecked = pCMSynthTone.pCMSynthTonePMT.PMTPartialSwitch[1];
@@ -2782,7 +2881,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PitchPartial1Switch
             CheckBox cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch = new CheckBox();
-            cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.Content = "Partial 1";
@@ -2790,7 +2889,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PitchPartial2Switch
             CheckBox cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch = new CheckBox();
-            cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.Content = "Partial 2";
@@ -2798,7 +2897,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PitchPartial3Switch
             CheckBox cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch = new CheckBox();
-            cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.Content = "Partial 3";
@@ -2806,7 +2905,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PitchPartial4Switch
             CheckBox cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch = new CheckBox();
-            cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.Content = "Partial 4";
@@ -2865,7 +2964,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PitchPartial1Switch
             CheckBox cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch = new CheckBox();
-            cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.Content = "Partial 1";
@@ -2873,7 +2972,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PitchPartial2Switch
             CheckBox cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch = new CheckBox();
-            cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.Content = "Partial 2";
@@ -2881,7 +2980,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PitchPartial3Switch
             CheckBox cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch = new CheckBox();
-            cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.Content = "Partial 3";
@@ -2889,7 +2988,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PitchPartial4Switch
             CheckBox cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch = new CheckBox();
-            cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.Content = "Partial 4";
@@ -2906,7 +3005,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for Partial Receive Bender
             CheckBox cbEditTone_PCMSynthTone_Control_PartialReceiveBender = new CheckBox();
-            cbEditTone_PCMSynthTone_Control_PartialReceiveBender.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Control_PartialReceiveBender.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Control_PartialReceiveBender.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Control_PartialReceiveBender.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Control_PartialReceiveBender.Content = "Partial Receive Bender";
@@ -2914,7 +3013,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for Partial Receive Expression
             CheckBox cbEditTone_PCMSynthTone_Control_PartialReceiveExpression = new CheckBox();
-            cbEditTone_PCMSynthTone_Control_PartialReceiveExpression.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Control_PartialReceiveExpression.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Control_PartialReceiveExpression.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Control_PartialReceiveExpression.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Control_PartialReceiveExpression.Content = "Partial Receive Expression";
@@ -2922,7 +3021,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for Partial Receive Hold_1
             CheckBox cbEditTone_PCMSynthTone_Control_PartialReceiveHold_1 = new CheckBox();
-            cbEditTone_PCMSynthTone_Control_PartialReceiveHold_1.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Control_PartialReceiveHold_1.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Control_PartialReceiveHold_1.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Control_PartialReceiveHold_1.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Control_PartialReceiveHold_1.Content = "Partial Receive Hold_1";
@@ -2930,7 +3029,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for Partial Redamper Switch
             CheckBox cbEditTone_PCMSynthTone_Control_PartialRedamperSwitch = new CheckBox();
-            cbEditTone_PCMSynthTone_Control_PartialRedamperSwitch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Control_PartialRedamperSwitch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Control_PartialRedamperSwitch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Control_PartialRedamperSwitch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Control_PartialRedamperSwitch.Content = "Partial Redamper Switch";
@@ -2944,6 +3043,14 @@ namespace Integra_7_Xamarin
             ControlsGrid.Children.Add((new GridRow(3, new View[] { cbEditTone_PCMSynthTone_Control_PartialReceiveExpression })).Row);
             ControlsGrid.Children.Add((new GridRow(4, new View[] { cbEditTone_PCMSynthTone_Control_PartialReceiveHold_1 })).Row);
             ControlsGrid.Children.Add((new GridRow(5, new View[] { cbEditTone_PCMSynthTone_Control_PartialRedamperSwitch })).Row);
+
+            byte row = 6;
+            while (row < MAX_ROWS)
+            {
+                Grid dummy = new Grid();
+                dummy.BackgroundColor = colorSettings.ControlBackground;
+                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })).Row);
+            }
 
             // Set values
             cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.IsChecked = pCMSynthTone.pCMSynthTonePMT.PMTPartialSwitch[0];
@@ -2964,7 +3071,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PitchPartial1Switch
             CheckBox cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch = new CheckBox();
-            cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.Content = "Partial 1";
@@ -2972,7 +3079,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PitchPartial2Switch
             CheckBox cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch = new CheckBox();
-            cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.Content = "Partial 2";
@@ -2980,7 +3087,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PitchPartial3Switch
             CheckBox cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch = new CheckBox();
-            cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch.Content = "Partial 3";
@@ -2988,7 +3095,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PitchPartial4Switch
             CheckBox cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch = new CheckBox();
-            cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch.Content = "Partial 4";
@@ -3004,7 +3111,7 @@ namespace Integra_7_Xamarin
             cbEditTone_PCMSynthTone_MatrixControl_Page.Items.Add("Matrix control 2");
             cbEditTone_PCMSynthTone_MatrixControl_Page.Items.Add("Matrix control 3");
             cbEditTone_PCMSynthTone_MatrixControl_Page.Items.Add("Matrix control 4");
-            handleControlEvents = false;
+            PushHandleControlEvents();
             cbEditTone_PCMSynthTone_MatrixControl_Page.SelectedIndex = currentMatrixControlPage;
 
             // ComboBox for Matrix Control Source
@@ -3223,6 +3330,14 @@ namespace Integra_7_Xamarin
                     new byte[] { 1, 2 })).Row);
             }
 
+            byte row = 10;
+            while (row < MAX_ROWS)
+            {
+                Grid dummy = new Grid();
+                dummy.BackgroundColor = colorSettings.ControlBackground;
+                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })).Row);
+            }
+
             // Set control values
             cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch.IsChecked = pCMSynthTone.pCMSynthTonePMT.PMTPartialSwitch[0];
             cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch.IsChecked = pCMSynthTone.pCMSynthTonePMT.PMTPartialSwitch[1];
@@ -3374,9 +3489,10 @@ namespace Integra_7_Xamarin
                 cbEditTone_PCMSynthTone_MFXControl_MFXControlAssign[i].Tag = new HelpTag(controlsIndex++, 0);
                 cbEditTone_PCMSynthTone_MFXControl_MFXControlAssign[i].Name = "cbEditTone_PCMSynthTone_MFXControl_MFXControlAssign" + i.ToString();
                 cbEditTone_PCMSynthTone_MFXControl_MFXControlAssign[i].Items.Add("Destination : Off");
-                cbEditTone_PCMSynthTone_MFXControl_MFXControlAssign[i].Items.Add("Destination : Low gain");
-                cbEditTone_PCMSynthTone_MFXControl_MFXControlAssign[i].Items.Add("Destination : High gain");
-                cbEditTone_PCMSynthTone_MFXControl_MFXControlAssign[i].Items.Add("Destination : Level");
+                for (byte j = 0; j < CommonMFX.MFXControlAssigns[commonMFX.MFXType - 1].Length; j++)
+                {
+                    cbEditTone_PCMSynthTone_MFXControl_MFXControlAssign[i].Items.Add("Destination : " + CommonMFX.MFXControlAssigns[commonMFX.MFXType - 1][j]);
+                }
 
                 // Slider for MFX Control Sense:
                 tbEditTone_PCMSynthTone_MFXControl_MFXControlSens[i] = new TextBox();
@@ -3399,11 +3515,20 @@ namespace Integra_7_Xamarin
             }
 
             // Set values
-            //handleControlEvents = false;
+            //PushHandleControlEvents();
             for (byte i = 0; i < 4; i++)
             {
                 cbEditTone_PCMSynthTone_MFXControl_MFXControlSource[i].SelectedIndex = commonMFX.MFXControlSource[i];
-                cbEditTone_PCMSynthTone_MFXControl_MFXControlAssign[i].SelectedIndex = commonMFX.MFXControlAssign[i];
+                try
+                {
+                    // If the MFX type has been changed, the old assign might be out of the list:
+                    cbEditTone_PCMSynthTone_MFXControl_MFXControlAssign[i].SelectedIndex = commonMFX.MFXControlAssign[i];
+                }
+                catch
+                {
+                    // However, Off is always available:
+                    cbEditTone_PCMSynthTone_MFXControl_MFXControlAssign[i].SelectedIndex = 0;
+                }
                 slEditTone_PCMSynthTone_MFXControl_MFXControlSens[i].Value = (commonMFX.MFXControlSens[i] - 64);
                 tbEditTone_PCMSynthTone_MFXControl_MFXControlSens[i].Text = "MFX Control " + (byte)(i + 1) + " Sense: " + ((commonMFX.MFXControlSens[i] - 64)).ToString();
             }
@@ -3611,7 +3736,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for Partial Receive Expression
             CheckBox cbEditTone_PCMDrumKit_Common_PartialReceiveExpression = new CheckBox();
-            cbEditTone_PCMDrumKit_Common_PartialReceiveExpression.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMDrumKit_Common_PartialReceiveExpression.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMDrumKit_Common_PartialReceiveExpression.Focused += Generic_GotFocus;
             cbEditTone_PCMDrumKit_Common_PartialReceiveExpression.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMDrumKit_Common_PartialReceiveExpression.Content = "Partial Receive Expression";
@@ -3619,7 +3744,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for Partial Receive Hold_1
             CheckBox cbEditTone_PCMDrumKit_Common_PartialReceiveHold_1 = new CheckBox();
-            cbEditTone_PCMDrumKit_Common_PartialReceiveHold_1.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMDrumKit_Common_PartialReceiveHold_1.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMDrumKit_Common_PartialReceiveHold_1.Focused += Generic_GotFocus;
             cbEditTone_PCMDrumKit_Common_PartialReceiveHold_1.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMDrumKit_Common_PartialReceiveHold_1.Content = "Partial Receive Hold_1";
@@ -3627,7 +3752,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for One Shot Mode
             CheckBox cbEditTone_PCMDrumKit_Common_OneShotMode = new CheckBox();
-            cbEditTone_PCMDrumKit_Common_OneShotMode.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMDrumKit_Common_OneShotMode.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMDrumKit_Common_OneShotMode.Focused += Generic_GotFocus;
             cbEditTone_PCMDrumKit_Common_OneShotMode.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMDrumKit_Common_OneShotMode.Content = "One Shot Mode";
@@ -3643,6 +3768,14 @@ namespace Integra_7_Xamarin
                 slEditTone_PCMDrumKit_Common_PartialPitchBendRange }, new byte[] { 1, 2 })).Row);
             ControlsGrid.Children.Add((new GridRow(4, new View[] {  cbEditTone_PCMDrumKit_Common_PartialReceiveExpression,
                 cbEditTone_PCMDrumKit_Common_PartialReceiveHold_1, cbEditTone_PCMDrumKit_Common_OneShotMode})).Row);
+
+            byte row = 5;
+            while (row < MAX_ROWS)
+            {
+                Grid dummy = new Grid();
+                dummy.BackgroundColor = colorSettings.ControlBackground;
+                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })).Row);
+            }
 
             cbEditTone_PCMDrumKit_Common_PhraseNumber.SelectedIndex = pCMDrumKit.pCMDrumKitCommon2.PhraseNumber;
             slEditTone_PCMDrumKit_Common_DrumKitLevel.Value = (pCMDrumKit.pCMDrumKitCommon.DrumKitLevel);
@@ -3663,7 +3796,7 @@ namespace Integra_7_Xamarin
             controlsIndex = 0;
             // CheckBox for PitchPartial1Switch
             CheckBox cbEditTone_PCMDrumKit_Partial1Switch = new CheckBox();
-            cbEditTone_PCMDrumKit_Partial1Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMDrumKit_Partial1Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMDrumKit_Partial1Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMDrumKit_Partial1Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMDrumKit_Partial1Switch.Content = "Partial 1";
@@ -3671,7 +3804,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PitchPartial2Switch
             CheckBox cbEditTone_PCMDrumKit_Partial2Switch = new CheckBox();
-            cbEditTone_PCMDrumKit_Partial2Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMDrumKit_Partial2Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMDrumKit_Partial2Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMDrumKit_Partial2Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMDrumKit_Partial2Switch.Content = "Partial 2";
@@ -3679,7 +3812,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PitchPartial3Switch
             CheckBox cbEditTone_PCMDrumKit_Partial3Switch = new CheckBox();
-            cbEditTone_PCMDrumKit_Partial3Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMDrumKit_Partial3Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMDrumKit_Partial3Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMDrumKit_Partial3Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMDrumKit_Partial3Switch.Content = "Partial 3";
@@ -3687,7 +3820,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PitchPartial4Switch
             CheckBox cbEditTone_PCMDrumKit_Partial4Switch = new CheckBox();
-            cbEditTone_PCMDrumKit_Partial4Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMDrumKit_Partial4Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMDrumKit_Partial4Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMDrumKit_Partial4Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMDrumKit_Partial4Switch.Content = "Partial 4";
@@ -3747,7 +3880,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for WMT Wave Tempo Sync
             CheckBox cbEditTone_PCMDrumKit_Wave_WMTWaveTempoSync = new CheckBox();
-            cbEditTone_PCMDrumKit_Wave_WMTWaveTempoSync.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMDrumKit_Wave_WMTWaveTempoSync.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMDrumKit_Wave_WMTWaveTempoSync.Focused += Generic_GotFocus;
             cbEditTone_PCMDrumKit_Wave_WMTWaveTempoSync.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMDrumKit_Wave_WMTWaveTempoSync.Content = "WMT Wave Tempo Sync";
@@ -3755,7 +3888,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for WMT Wave MFX Switch
             CheckBox cbEditTone_PCMDrumKit_Wave_WMTWaveFXMSwitch = new CheckBox();
-            cbEditTone_PCMDrumKit_Wave_WMTWaveFXMSwitch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMDrumKit_Wave_WMTWaveFXMSwitch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMDrumKit_Wave_WMTWaveFXMSwitch.Focused += Generic_GotFocus;
             cbEditTone_PCMDrumKit_Wave_WMTWaveFXMSwitch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMDrumKit_Wave_WMTWaveFXMSwitch.Content = "WMT Wave MFX";
@@ -3825,7 +3958,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for WMT Wave Random Pan Sw
             CheckBox cbEditTone_PCMDrumKit_Wave_WMTWaveRandomPanSw = new CheckBox();
-            cbEditTone_PCMDrumKit_Wave_WMTWaveRandomPanSw.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMDrumKit_Wave_WMTWaveRandomPanSw.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMDrumKit_Wave_WMTWaveRandomPanSw.Focused += Generic_GotFocus;
             cbEditTone_PCMDrumKit_Wave_WMTWaveRandomPanSw.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMDrumKit_Wave_WMTWaveRandomPanSw.Content = "WMT Wave Random Pan";
@@ -3859,6 +3992,14 @@ namespace Integra_7_Xamarin
             ControlsGrid.Children.Add((new GridRow(11, new View[] { tbEditTone_PCMDrumKit_Wave_WMTWavePan, slEditTone_PCMDrumKit_Wave_WMTWavePan }, new byte[] { 1, 2 })).Row);
             ControlsGrid.Children.Add((new GridRow(12, new View[] { cbEditTone_PCMDrumKit_Wave_WMTWaveRandomPanSw })).Row);
             ControlsGrid.Children.Add((new GridRow(13, new View[] { cbEditTone_PCMDrumKit_Wave_WMTWaveAlterPanSwitch })).Row);
+
+            byte row = 14;
+            while (row < MAX_ROWS)
+            {
+                Grid dummy = new Grid();
+                dummy.BackgroundColor = colorSettings.ControlBackground;
+                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })).Row);
+            }
 
             // Set control values
             cbEditTone_PCMDrumKit_Partial1Switch.IsChecked = pCMDrumKit.pCMDrumKitPartial[currentKey].WMT[0].WMTWaveSwitch;
@@ -3898,7 +4039,7 @@ namespace Integra_7_Xamarin
             controlsIndex = 0;
             // CheckBox for PitchPartial1Switch
             CheckBox cbEditTone_PCMDrumKit_Partial1Switch = new CheckBox();
-            cbEditTone_PCMDrumKit_Partial1Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMDrumKit_Partial1Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMDrumKit_Partial1Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMDrumKit_Partial1Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMDrumKit_Partial1Switch.Content = "Partial 1";
@@ -3906,7 +4047,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PitchPartial2Switch
             CheckBox cbEditTone_PCMDrumKit_Partial2Switch = new CheckBox();
-            cbEditTone_PCMDrumKit_Partial2Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMDrumKit_Partial2Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMDrumKit_Partial2Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMDrumKit_Partial2Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMDrumKit_Partial2Switch.Content = "Partial 2";
@@ -3914,7 +4055,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PitchPartial3Switch
             CheckBox cbEditTone_PCMDrumKit_Partial3Switch = new CheckBox();
-            cbEditTone_PCMDrumKit_Partial3Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMDrumKit_Partial3Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMDrumKit_Partial3Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMDrumKit_Partial3Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMDrumKit_Partial3Switch.Content = "Partial 3";
@@ -3922,7 +4063,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for PitchPartial4Switch
             CheckBox cbEditTone_PCMDrumKit_Partial4Switch = new CheckBox();
-            cbEditTone_PCMDrumKit_Partial4Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_PCMDrumKit_Partial4Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_PCMDrumKit_Partial4Switch.Focused += Generic_GotFocus;
             cbEditTone_PCMDrumKit_Partial4Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_PCMDrumKit_Partial4Switch.Content = "Partial 4";
@@ -3955,8 +4096,8 @@ namespace Integra_7_Xamarin
             slEditTone_PCMDrumKit_WMT_WMTVelocityRangeUpper.Focused += Generic_GotFocus;
             slEditTone_PCMDrumKit_WMT_WMTVelocityRangeUpper.Tag = new HelpTag(controlsIndex++, 0);
             slEditTone_PCMDrumKit_WMT_WMTVelocityRangeUpper.Name = "slEditTone_PCMDrumKit_WMT_WMTVelocityRangeUpper";
-            slEditTone_PCMDrumKit_WMT_WMTVelocityRangeUpper.Minimum = 1;
             slEditTone_PCMDrumKit_WMT_WMTVelocityRangeUpper.Maximum = 127;
+            slEditTone_PCMDrumKit_WMT_WMTVelocityRangeUpper.Minimum = 1;
 
             slEditTone_PCMDrumKit_WMT_WMTVelocityRangeUpper.Value = (pCMDrumKit.pCMDrumKitPartial[currentKey].WMT[currentPartial].WMTVelocityRangeUpper);
 
@@ -3969,8 +4110,8 @@ namespace Integra_7_Xamarin
             slEditTone_PCMDrumKit_WMT_WMTVelocityRangeLower.Focused += Generic_GotFocus;
             slEditTone_PCMDrumKit_WMT_WMTVelocityRangeLower.Tag = new HelpTag(controlsIndex++, 0);
             slEditTone_PCMDrumKit_WMT_WMTVelocityRangeLower.Name = "slEditTone_PCMDrumKit_WMT_WMTVelocityRangeLower";
-            slEditTone_PCMDrumKit_WMT_WMTVelocityRangeLower.Minimum = 1;
             slEditTone_PCMDrumKit_WMT_WMTVelocityRangeLower.Maximum = 127;
+            slEditTone_PCMDrumKit_WMT_WMTVelocityRangeLower.Minimum = 1;
 
             // Slider for WMT Velocity Fade Width Lower:
             SetLabelProperties(ref tbEditTone_PCMDrumKit_WMT_WMTVelocityFadeWidthLower);
@@ -3992,6 +4133,14 @@ namespace Integra_7_Xamarin
             ControlsGrid.Children.Add((new GridRow(3, new View[] { tbEditTone_PCMDrumKit_WMT_WMTVelocityRangeUpper, slEditTone_PCMDrumKit_WMT_WMTVelocityRangeUpper }, new byte[] { 1, 2 })).Row);
             ControlsGrid.Children.Add((new GridRow(4, new View[] { tbEditTone_PCMDrumKit_WMT_WMTVelocityRangeLower, slEditTone_PCMDrumKit_WMT_WMTVelocityRangeLower }, new byte[] { 1, 2 })).Row);
             ControlsGrid.Children.Add((new GridRow(5, new View[] { tbEditTone_PCMDrumKit_WMT_WMTVelocityFadeWidthLower, slEditTone_PCMDrumKit_WMT_WMTVelocityFadeWidthLower }, new byte[] { 1, 2 })).Row);
+
+            byte row = 6;
+            while (row < MAX_ROWS)
+            {
+                Grid dummy = new Grid();
+                dummy.BackgroundColor = colorSettings.ControlBackground;
+                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })).Row);
+            }
 
             // Set control values
             cbEditTone_PCMDrumKit_Partial1Switch.IsChecked = pCMDrumKit.pCMDrumKitPartial[currentKey].WMT[0].WMTWaveSwitch;
@@ -4074,6 +4223,14 @@ namespace Integra_7_Xamarin
             ControlsGrid.Children.Add((new GridRow(0, new View[] { tbEditTone_PCMDrumKit_Pitch_PartialCoarseTune, slEditTone_PCMDrumKit_Pitch_PartialCoarseTune }, new byte[] { 1, 2 })).Row);
             ControlsGrid.Children.Add((new GridRow(1, new View[] { tbEditTone_PCMDrumKit_Pitch_PartialFineTune, slEditTone_PCMDrumKit_Pitch_PartialFineTune }, new byte[] { 1, 2 })).Row);
             ControlsGrid.Children.Add((new GridRow(2, new View[] { cbEditTone_PCMDrumKit_Pitch_PartialRandomPitchDepth })).Row);
+
+            byte row = 3;
+            while (row < MAX_ROWS)
+            {
+                Grid dummy = new Grid();
+                dummy.BackgroundColor = colorSettings.ControlBackground;
+                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })).Row);
+            }
 
             // Set control values
             slEditTone_PCMDrumKit_Pitch_PartialCoarseTune.Value = (pCMDrumKit.pCMDrumKitPartial[currentKey].PartialCoarseTune);
@@ -4170,6 +4327,14 @@ namespace Integra_7_Xamarin
             for (byte i = 0; i < 5; i++)
             {
                 ControlsGrid.Children.Add((new GridRow((byte)(8 + i), new View[] { tbEditTone_PCMDrumKit_Pitch_PitchEnvLevel[i], slEditTone_PCMDrumKit_Pitch_PitchEnvLevel[i] }, new byte[] { 1, 2 })).Row);
+            }
+
+            byte row = 13;
+            while (row < MAX_ROWS)
+            {
+                Grid dummy = new Grid();
+                dummy.BackgroundColor = colorSettings.ControlBackground;
+                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })).Row);
             }
 
             // Set control values
@@ -4322,6 +4487,14 @@ namespace Integra_7_Xamarin
             ControlsGrid.Children.Add((new GridRow(8, new View[] { tbEditTone_PCMDrumKit_TVF_TVFEnvTime1VelocitySens, slEditTone_PCMDrumKit_TVF_TVFEnvTime1VelocitySens }, new byte[] { 1, 2 })).Row);
             ControlsGrid.Children.Add((new GridRow(9, new View[] { tbEditTone_PCMDrumKit_TVF_TVFEnvTime4VelocitySens, slEditTone_PCMDrumKit_TVF_TVFEnvTime4VelocitySens }, new byte[] { 1, 2 })).Row);
 
+            byte row = 10;
+            while (row < MAX_ROWS)
+            {
+                Grid dummy = new Grid();
+                dummy.BackgroundColor = colorSettings.ControlBackground;
+                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })).Row);
+            }
+
             // Set control values
             cbEditTone_PCMDrumKit_TVF_TVFFilterType.SelectedIndex = pCMDrumKit.pCMDrumKitPartial[currentKey].TVF.TVFFilterType;
             slEditTone_PCMDrumKit_TVF_TVFCutoffFrequency.Value = (pCMDrumKit.pCMDrumKitPartial[currentKey].TVF.TVFCutoffFrequency);
@@ -4396,6 +4569,14 @@ namespace Integra_7_Xamarin
             for (byte i = 0; i < 5; i++)
             {
                 ControlsGrid.Children.Add((new GridRow((byte)(5 + i), new View[] { tbEditTone_PCMDrumKit_TVFenv_TVFEnvLevel[i], slEditTone_PCMDrumKit_TVFenv_TVFEnvLevel[i] }, new byte[] { 1, 2 })).Row);
+            }
+
+            byte row = 10;
+            while (row < MAX_ROWS)
+            {
+                Grid dummy = new Grid();
+                dummy.BackgroundColor = colorSettings.ControlBackground;
+                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })).Row);
             }
 
             // Set control values
@@ -4502,6 +4683,14 @@ namespace Integra_7_Xamarin
             ControlsGrid.Children.Add((new GridRow(5, new View[] { tbEditTone_PCMDrumKit_TVA_PartialAlternatePanDepth, slEditTone_PCMDrumKit_TVA_PartialAlternatePanDepth }, new byte[] { 1, 2 })).Row);
             ControlsGrid.Children.Add((new GridRow(6, new View[] { tbEditTone_PCMDrumKit_TVA_RelativeLevel, slEditTone_PCMDrumKit_TVA_RelativeLevel }, new byte[] { 1, 2 })).Row);
 
+            byte row = 7;
+            while (row < MAX_ROWS)
+            {
+                Grid dummy = new Grid();
+                dummy.BackgroundColor = colorSettings.ControlBackground;
+                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })).Row);
+            }
+
             // Set control values
             slEditTone_PCMDrumKit_TVA_PartialLevel.Value = (pCMDrumKit.pCMDrumKitPartial[currentKey].PartialLevel);
             tbEditTone_PCMDrumKit_TVA_PartialLevel.Text = "Partial Level: " + ((pCMDrumKit.pCMDrumKitPartial[currentKey].PartialLevel)).ToString();
@@ -4585,6 +4774,14 @@ namespace Integra_7_Xamarin
                 ControlsGrid.Children.Add((new GridRow((byte)(6 + i), new View[] { tbEditTone_PCMDrumKit_TVA_TVAEnvLevel[i], slEditTone_PCMDrumKit_TVA_TVAEnvLevel[i] }, new byte[] { 1, 2 })).Row);
             }
 
+            byte row = 9;
+            while (row < MAX_ROWS)
+            {
+                Grid dummy = new Grid();
+                dummy.BackgroundColor = colorSettings.ControlBackground;
+                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })).Row);
+            }
+
             // Set control values
             slEditTone_PCMDrumKit_TVA_TVAEnvTime1VelocitySens.Value = (pCMDrumKit.pCMDrumKitPartial[currentKey].TVA.TVAEnvTime1VelocitySens - 64);
             tbEditTone_PCMDrumKit_TVA_TVAEnvTime1VelocitySens.Text = "TVA Env Time 1 Velocity Sens: " + ((pCMDrumKit.pCMDrumKitPartial[currentKey].TVA.TVAEnvTime1VelocitySens - 64)).ToString();
@@ -4657,6 +4854,14 @@ namespace Integra_7_Xamarin
             ControlsGrid.Children.Add((new GridRow(2, new View[] { tbEditTone_PCMDrumKit_TVA_PartialChorusSendLevel, slEditTone_PCMDrumKit_TVA_PartialChorusSendLevel }, new byte[] { 1, 2 })).Row);
             ControlsGrid.Children.Add((new GridRow(3, new View[] { tbEditTone_PCMDrumKit_TVA_PartialReverbSendLevel, slEditTone_PCMDrumKit_TVA_PartialReverbSendLevel }, new byte[] { 1, 2 })).Row);
 
+            byte row = 4;
+            while (row < MAX_ROWS)
+            {
+                Grid dummy = new Grid();
+                dummy.BackgroundColor = colorSettings.ControlBackground;
+                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })).Row);
+            }
+
             // Set control values
             cbEditTone_PCMDrumKit_TVA_PartialOutputAssign.SelectedIndex = pCMDrumKit.pCMDrumKitPartial[currentKey].PartialOutputAssign;
             slEditTone_PCMDrumKit_TVA_PartialOutputLevel.Value = (pCMDrumKit.pCMDrumKitPartial[currentKey].PartialOutputLevel);
@@ -4676,7 +4881,7 @@ namespace Integra_7_Xamarin
             for (byte i = 0; i < 6; i++)
             {
                 cbEditTone_PCMDrumKit_CompEq_CompSwitch[i] = new CheckBox();
-                cbEditTone_PCMDrumKit_CompEq_CompSwitch[i].Toggled += GenericCheckBox_Click;
+                cbEditTone_PCMDrumKit_CompEq_CompSwitch[i].CBSwitch.Toggled += GenericCheckBox_Click;
                 cbEditTone_PCMDrumKit_CompEq_CompSwitch[i].Focused += Generic_GotFocus;
                 cbEditTone_PCMDrumKit_CompEq_CompSwitch[i].Tag = new HelpTag(controlsIndex++, 0);
                 cbEditTone_PCMDrumKit_CompEq_CompSwitch[i].Content = "Comp Switch" + (i + 1).ToString();
@@ -4892,7 +5097,7 @@ namespace Integra_7_Xamarin
             for (byte i = 0; i < 6; i++)
             {
                 cbEditTone_PCMDrumKit_Equalizer_EqSwitch[i] = new CheckBox();
-                cbEditTone_PCMDrumKit_Equalizer_EqSwitch[i].Toggled += GenericCheckBox_Click;
+                cbEditTone_PCMDrumKit_Equalizer_EqSwitch[i].CBSwitch.Toggled += GenericCheckBox_Click;
                 cbEditTone_PCMDrumKit_Equalizer_EqSwitch[i].Focused += Generic_GotFocus;
                 cbEditTone_PCMDrumKit_Equalizer_EqSwitch[i].Tag = new HelpTag(controlsIndex++, 0);
                 cbEditTone_PCMDrumKit_Equalizer_EqSwitch[i].Content = "Eq " + (i + 1).ToString();
@@ -5069,6 +5274,14 @@ namespace Integra_7_Xamarin
                     tbEditTone_PCMDrumKit_Equalizer_EQHighGain[i], slEditTone_PCMDrumKit_Equalizer_EQHighGain[i] }, new byte[] { 1, 2, 1, 2 })).Row);
             }
 
+            byte row = 15;
+            while (row < MAX_ROWS)
+            {
+                Grid dummy = new Grid();
+                dummy.BackgroundColor = colorSettings.ControlBackground;
+                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })).Row);
+            }
+
             // Set control values
             for (byte i = 0; i < 6; i++)
             {
@@ -5242,24 +5455,12 @@ namespace Integra_7_Xamarin
                 cbEditTone_PCMDrumKit_MFXcontrol_MFXControlAssign[i].SelectedIndexChanged += GenericCombobox_SelectionChanged;
                 cbEditTone_PCMDrumKit_MFXcontrol_MFXControlAssign[i].Focused += Generic_GotFocus;
                 cbEditTone_PCMDrumKit_MFXcontrol_MFXControlAssign[i].Tag = new HelpTag(controlsIndex++, 0);
-                cbEditTone_PCMDrumKit_MFXcontrol_MFXControlAssign[i].Name = "cbEditTone_PCMDrumKit_MFXcontrol_MFXControlAssign" + i.ToString() + "";
-                cbEditTone_PCMDrumKit_MFXcontrol_MFXControlAssign[i].Items.Add("Assign: Off");
-                cbEditTone_PCMDrumKit_MFXcontrol_MFXControlAssign[i].Items.Add("Assign: 1");
-                cbEditTone_PCMDrumKit_MFXcontrol_MFXControlAssign[i].Items.Add("Assign: 2");
-                cbEditTone_PCMDrumKit_MFXcontrol_MFXControlAssign[i].Items.Add("Assign: 3 ");
-                cbEditTone_PCMDrumKit_MFXcontrol_MFXControlAssign[i].Items.Add("Assign: 4 ");
-                cbEditTone_PCMDrumKit_MFXcontrol_MFXControlAssign[i].Items.Add("Assign: 5");
-                cbEditTone_PCMDrumKit_MFXcontrol_MFXControlAssign[i].Items.Add("Assign: 6");
-                cbEditTone_PCMDrumKit_MFXcontrol_MFXControlAssign[i].Items.Add("Assign: 7");
-                cbEditTone_PCMDrumKit_MFXcontrol_MFXControlAssign[i].Items.Add("Assign: 8");
-                cbEditTone_PCMDrumKit_MFXcontrol_MFXControlAssign[i].Items.Add("Assign: 9");
-                cbEditTone_PCMDrumKit_MFXcontrol_MFXControlAssign[i].Items.Add("Assign: 10");
-                cbEditTone_PCMDrumKit_MFXcontrol_MFXControlAssign[i].Items.Add("Assign: 11");
-                cbEditTone_PCMDrumKit_MFXcontrol_MFXControlAssign[i].Items.Add("Assign: 12");
-                cbEditTone_PCMDrumKit_MFXcontrol_MFXControlAssign[i].Items.Add("Assign: 13");
-                cbEditTone_PCMDrumKit_MFXcontrol_MFXControlAssign[i].Items.Add("Assign: 14");
-                cbEditTone_PCMDrumKit_MFXcontrol_MFXControlAssign[i].Items.Add("Assign: 15");
-                cbEditTone_PCMDrumKit_MFXcontrol_MFXControlAssign[i].Items.Add("Assign: 16");
+                cbEditTone_PCMDrumKit_MFXcontrol_MFXControlAssign[i].Name = "cbEditTone_PCMDrumKit_MFXcontrol_MFXControlAssign" + i.ToString();
+                cbEditTone_PCMDrumKit_MFXcontrol_MFXControlAssign[i].Items.Add("Destination : Off");
+                for (byte j = 0; j < CommonMFX.MFXControlAssigns[commonMFX.MFXType - 1].Length; j++)
+                {
+                    cbEditTone_PCMDrumKit_MFXcontrol_MFXControlAssign[i].Items.Add("Destination : " + CommonMFX.MFXControlAssigns[commonMFX.MFXType - 1][j]);
+                }
 
                 // Slider for MFX Control Sens:
                 tbEditTone_PCMDrumKit_MFXcontrol_MFXControlSens[i] = new TextBox();
@@ -5526,6 +5727,14 @@ namespace Integra_7_Xamarin
             ControlsGrid.Children.Add((new GridRow(10, new View[] {  tbEditTone_SuperNATURALAcousticTone_Common_VibratoDelay,
                 slEditTone_SuperNATURALAcousticTone_Common_VibratoDelay }, new byte[] { 1, 2 })).Row);
 
+            byte row = 11;
+            while (row < MAX_ROWS)
+            {
+                Grid dummy = new Grid();
+                dummy.BackgroundColor = colorSettings.ControlBackground;
+                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })).Row);
+            }
+
             // Set control values
             cbEditTone_SuperNATURALAcousticTone_Common_PhraseNumber.SelectedIndex = superNATURALAcousticTone.superNATURALAcousticToneCommon.PhraseNumber;
             cbEditTone_SuperNATURALAcousticTone_Common_PhraseOctaveShift.SelectedIndex = superNATURALAcousticTone.superNATURALAcousticToneCommon.PhraseOctaveShift - 61;
@@ -5575,7 +5784,7 @@ namespace Integra_7_Xamarin
                 if (cbEditTone_SuperNATURALAcousticTone_Instrument_Bank.Items.Count() > 5)
                 {
                     currentHandleControlEvents = handleControlEvents;
-                    handleControlEvents = false;
+                    PushHandleControlEvents();
                     cbEditTone_SuperNATURALAcousticTone_Instrument_Bank.SelectedItem = bankName;
                     handleControlEvents = currentHandleControlEvents;
                 }
@@ -5608,7 +5817,7 @@ namespace Integra_7_Xamarin
             ControlsGrid.Children.Add((new GridRow(0, new View[] {  cbEditTone_SuperNATURALAcousticTone_Instrument_Bank,
                 cbEditTone_SuperNATURALAcousticTone_Instrument_InstNumber })).Row);
             currentHandleControlEvents = handleControlEvents;
-            handleControlEvents = false;
+            PushHandleControlEvents();
             cbEditTone_SuperNATURALAcousticTone_Instrument_InstNumber.SelectedIndex = index;
             handleControlEvents = currentHandleControlEvents;
 
@@ -6140,7 +6349,7 @@ namespace Integra_7_Xamarin
             {
                 // CheckBox for StrumModeCC19
                 CheckBox cbEditTone_SuperNATURALAcousticTone_Instrument_StrumModeCC19 = new CheckBox();
-                cbEditTone_SuperNATURALAcousticTone_Instrument_StrumModeCC19.Toggled += GenericCheckBox_Click;
+                cbEditTone_SuperNATURALAcousticTone_Instrument_StrumModeCC19.CBSwitch.Toggled += GenericCheckBox_Click;
                 cbEditTone_SuperNATURALAcousticTone_Instrument_StrumModeCC19.Focused += Generic_GotFocus;
                 cbEditTone_SuperNATURALAcousticTone_Instrument_StrumModeCC19.Tag = new HelpTag((byte)(controlsIndex - 1), 0);
                 cbEditTone_SuperNATURALAcousticTone_Instrument_StrumModeCC19.Content = "StrumModeCC19";
@@ -6162,7 +6371,7 @@ namespace Integra_7_Xamarin
             {
                 // CheckBox for Picking Harmonics
                 CheckBox cbEditTone_SuperNATURALAcousticTone_Instrument_PickingHarmonics = new CheckBox();
-                cbEditTone_SuperNATURALAcousticTone_Instrument_PickingHarmonics.Toggled += GenericCheckBox_Click;
+                cbEditTone_SuperNATURALAcousticTone_Instrument_PickingHarmonics.CBSwitch.Toggled += GenericCheckBox_Click;
                 cbEditTone_SuperNATURALAcousticTone_Instrument_PickingHarmonics.Focused += Generic_GotFocus;
                 cbEditTone_SuperNATURALAcousticTone_Instrument_PickingHarmonics.Tag = new HelpTag((byte)(controlsIndex - 1), 0);
                 cbEditTone_SuperNATURALAcousticTone_Instrument_PickingHarmonics.Content = "Picking Harmonics";
@@ -6481,7 +6690,7 @@ namespace Integra_7_Xamarin
             if (superNaturalAcousticInstrumentList.ParameterMask[index][((controlsIndex++) - 2)] > 0)
             {
                 // CheckBox for Percussion Switch
-                cbEditTone_SuperNATURALAcousticTone_Instrument_PercussionSwitch.Toggled += GenericCheckBox_Click;
+                cbEditTone_SuperNATURALAcousticTone_Instrument_PercussionSwitch.CBSwitch.Toggled += GenericCheckBox_Click;
                 cbEditTone_SuperNATURALAcousticTone_Instrument_PercussionSwitch.Focused += Generic_GotFocus;
                 cbEditTone_SuperNATURALAcousticTone_Instrument_PercussionSwitch.Tag = new HelpTag((byte)(controlsIndex - 1), 0);
                 cbEditTone_SuperNATURALAcousticTone_Instrument_PercussionSwitch.Content = "Percussion Switch";
@@ -6829,7 +7038,7 @@ namespace Integra_7_Xamarin
             {
                 // CheckBox for Glissando Mode CC19
                 CheckBox cbEditTone_SuperNATURALAcousticTone_Instrument_GlissandoModeCC19 = new CheckBox();
-                cbEditTone_SuperNATURALAcousticTone_Instrument_GlissandoModeCC19.Toggled += GenericCheckBox_Click;
+                cbEditTone_SuperNATURALAcousticTone_Instrument_GlissandoModeCC19.CBSwitch.Toggled += GenericCheckBox_Click;
                 cbEditTone_SuperNATURALAcousticTone_Instrument_GlissandoModeCC19.Focused += Generic_GotFocus;
                 cbEditTone_SuperNATURALAcousticTone_Instrument_GlissandoModeCC19.Tag = new HelpTag((byte)(controlsIndex - 1), 0);
                 cbEditTone_SuperNATURALAcousticTone_Instrument_GlissandoModeCC19.Content = "Glissando Mode (CC19)";
@@ -6934,7 +7143,7 @@ namespace Integra_7_Xamarin
             {
                 // CheckBox for Buzz Key Switch
                 CheckBox cbEditTone_SuperNATURALAcousticTone_Instrument_BuzzKeySwitch = new CheckBox();
-                cbEditTone_SuperNATURALAcousticTone_Instrument_BuzzKeySwitch.Toggled += GenericCheckBox_Click;
+                cbEditTone_SuperNATURALAcousticTone_Instrument_BuzzKeySwitch.CBSwitch.Toggled += GenericCheckBox_Click;
                 cbEditTone_SuperNATURALAcousticTone_Instrument_BuzzKeySwitch.Focused += Generic_GotFocus;
                 cbEditTone_SuperNATURALAcousticTone_Instrument_BuzzKeySwitch.Tag = new HelpTag((byte)(controlsIndex - 1), 0);
                 cbEditTone_SuperNATURALAcousticTone_Instrument_BuzzKeySwitch.Content = "Buzz Key Switch";
@@ -7004,7 +7213,7 @@ namespace Integra_7_Xamarin
             {
                 // CheckBox for Hold Legato Mode CC19
                 CheckBox cbEditTone_SuperNATURALAcousticTone_Instrument_HoldLegatoModeCC19 = new CheckBox();
-                cbEditTone_SuperNATURALAcousticTone_Instrument_HoldLegatoModeCC19.Toggled += GenericCheckBox_Click;
+                cbEditTone_SuperNATURALAcousticTone_Instrument_HoldLegatoModeCC19.CBSwitch.Toggled += GenericCheckBox_Click;
                 cbEditTone_SuperNATURALAcousticTone_Instrument_HoldLegatoModeCC19.Focused += Generic_GotFocus;
                 cbEditTone_SuperNATURALAcousticTone_Instrument_HoldLegatoModeCC19.Tag = new HelpTag((byte)(controlsIndex - 1), 0);
                 cbEditTone_SuperNATURALAcousticTone_Instrument_HoldLegatoModeCC19.Content = "Hold Legato Mode CC19";
@@ -7122,6 +7331,13 @@ namespace Integra_7_Xamarin
                                                                                                   //superNATURALAcousticTone.superNATURALAcousticToneCommon.InstVariation;// -
                                                                                                   //superNATURALAcousticToneVariation.ComboBoxOffset;
                 }
+            }
+
+            while (row < MAX_ROWS)
+            {
+                Grid dummy = new Grid();
+                dummy.BackgroundColor = colorSettings.ControlBackground;
+                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })).Row);
             }
         }
 
@@ -7254,9 +7470,10 @@ namespace Integra_7_Xamarin
                 cbEditTone_CommonMFX_Control_MFXControlAssign[i].Name =
                     "cbEditTone_CommonMFX_MFXControlAssign" + i.ToString();
                 cbEditTone_CommonMFX_Control_MFXControlAssign[i].Items.Add("Destination : Off");
-                cbEditTone_CommonMFX_Control_MFXControlAssign[i].Items.Add("Destination : Low gain");
-                cbEditTone_CommonMFX_Control_MFXControlAssign[i].Items.Add("Destination : High gain");
-                cbEditTone_CommonMFX_Control_MFXControlAssign[i].Items.Add("Destination : Level");
+                for (byte j = 0; j < CommonMFX.MFXControlAssigns[commonMFX.MFXType - 1].Length; j++)
+                {
+                    cbEditTone_CommonMFX_Control_MFXControlAssign[i].Items.Add("Destination : " + CommonMFX.MFXControlAssigns[commonMFX.MFXType - 1][j]);
+                }
 
                 // Slider for MFX Control Sense:
                 tbEditTone_CommonMFX_Control_MFXControlSens[i] = new TextBox();
@@ -7284,7 +7501,7 @@ namespace Integra_7_Xamarin
             }
 
             // Set values
-            handleControlEvents = false;
+            PushHandleControlEvents();
             for (byte i = 0; i < 4; i++)
             {
                 cbEditTone_CommonMFX_Control_MFXControlSource[i].SelectedIndex = commonMFX.MFXControlSource[i];
@@ -7398,7 +7615,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for RING Switch
             CheckBox cbEditTone_superNATURALSynthTone_Common_RINGSwitch = new CheckBox();
-            cbEditTone_superNATURALSynthTone_Common_RINGSwitch.Toggled += GenericCheckBox_Click;
+            cbEditTone_superNATURALSynthTone_Common_RINGSwitch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_superNATURALSynthTone_Common_RINGSwitch.Focused += Generic_GotFocus;
             cbEditTone_superNATURALSynthTone_Common_RINGSwitch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_superNATURALSynthTone_Common_RINGSwitch.Content = "RING Switch";
@@ -7426,7 +7643,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for Unison Switch
             CheckBox cbEditTone_superNATURALSynthTone_Common_UnisonSwitch = new CheckBox();
-            cbEditTone_superNATURALSynthTone_Common_UnisonSwitch.Toggled += GenericCheckBox_Click;
+            cbEditTone_superNATURALSynthTone_Common_UnisonSwitch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_superNATURALSynthTone_Common_UnisonSwitch.Focused += Generic_GotFocus;
             cbEditTone_superNATURALSynthTone_Common_UnisonSwitch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_superNATURALSynthTone_Common_UnisonSwitch.Content = "Unison Switch";
@@ -7454,7 +7671,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for Legato Switch
             CheckBox cbEditTone_superNATURALSynthTone_Common_LegatoSwitch = new CheckBox();
-            cbEditTone_superNATURALSynthTone_Common_LegatoSwitch.Toggled += GenericCheckBox_Click;
+            cbEditTone_superNATURALSynthTone_Common_LegatoSwitch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_superNATURALSynthTone_Common_LegatoSwitch.Focused += Generic_GotFocus;
             cbEditTone_superNATURALSynthTone_Common_LegatoSwitch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_superNATURALSynthTone_Common_LegatoSwitch.Content = "Legato Switch";
@@ -7462,7 +7679,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for Portamento Switch
             CheckBox cbEditTone_superNATURALSynthTone_Common_PortamentoSwitch = new CheckBox();
-            cbEditTone_superNATURALSynthTone_Common_PortamentoSwitch.Toggled += GenericCheckBox_Click;
+            cbEditTone_superNATURALSynthTone_Common_PortamentoSwitch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_superNATURALSynthTone_Common_PortamentoSwitch.Focused += Generic_GotFocus;
             cbEditTone_superNATURALSynthTone_Common_PortamentoSwitch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_superNATURALSynthTone_Common_PortamentoSwitch.Content = "Portamento Switch";
@@ -7506,6 +7723,14 @@ namespace Integra_7_Xamarin
                 slEditTone_superNATURALSynthTone_Common_PortamentoTime }, new byte[] { 1, 2 })).Row);
             ControlsGrid.Children.Add((new GridRow(12, new View[] { cbEditTone_superNATURALSynthTone_Common_PortamentoMode })).Row);
 
+            byte row = 13;
+            while (row < MAX_ROWS)
+            {
+                Grid dummy = new Grid();
+                dummy.BackgroundColor = colorSettings.ControlBackground;
+                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })).Row);
+            }
+
             // Set control values
             cbEditTone_SuperNATURALSynthTone_Common_PhraseNumber.SelectedIndex = superNATURALSynthTone.superNATURALSynthToneCommon.PhraseNumber;
             cbEditTone_superNATURALSynthTone_Common_PhraseOctaveShift.SelectedIndex = superNATURALSynthTone.superNATURALSynthToneCommon.PhraseOctaveShift - 61;
@@ -7534,7 +7759,7 @@ namespace Integra_7_Xamarin
             // CheckBox for Partial 1 Switch
             CheckBox cbEditTone_superNATURALSynthTone_Osc_Partial1Switch = new CheckBox();
             cbEditTone_superNATURALSynthTone_Osc_Partial1Switch = new CheckBox();
-            cbEditTone_superNATURALSynthTone_Osc_Partial1Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_superNATURALSynthTone_Osc_Partial1Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_superNATURALSynthTone_Osc_Partial1Switch.Focused += Generic_GotFocus;
             cbEditTone_superNATURALSynthTone_Osc_Partial1Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_superNATURALSynthTone_Osc_Partial1Switch.Content = "Partial 1 Switch";
@@ -7543,7 +7768,7 @@ namespace Integra_7_Xamarin
             // CheckBox for Partial 2 Switch
             CheckBox cbEditTone_superNATURALSynthTone_Osc_Partial2Switch = new CheckBox();
             cbEditTone_superNATURALSynthTone_Osc_Partial2Switch = new CheckBox();
-            cbEditTone_superNATURALSynthTone_Osc_Partial2Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_superNATURALSynthTone_Osc_Partial2Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_superNATURALSynthTone_Osc_Partial2Switch.Focused += Generic_GotFocus;
             cbEditTone_superNATURALSynthTone_Osc_Partial2Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_superNATURALSynthTone_Osc_Partial2Switch.Content = "Partial 2 Switch";
@@ -7552,7 +7777,7 @@ namespace Integra_7_Xamarin
             // CheckBox for Partial 3 Switch
             CheckBox cbEditTone_superNATURALSynthTone_Osc_Partial3Switch = new CheckBox();
             cbEditTone_superNATURALSynthTone_Osc_Partial3Switch = new CheckBox();
-            cbEditTone_superNATURALSynthTone_Osc_Partial3Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_superNATURALSynthTone_Osc_Partial3Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_superNATURALSynthTone_Osc_Partial3Switch.Focused += Generic_GotFocus;
             cbEditTone_superNATURALSynthTone_Osc_Partial3Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_superNATURALSynthTone_Osc_Partial3Switch.Content = "Partial 3 Switch";
@@ -7648,6 +7873,14 @@ namespace Integra_7_Xamarin
             ControlsGrid.Children.Add((new GridRow(6, new View[] { tbEditTone_superNATURALSynthTone_Osc_PulseWidthShift, slEditTone_superNATURALSynthTone_Osc_PulseWidthShift }, new byte[] { 1, 2 })).Row);
             ControlsGrid.Children.Add((new GridRow(7, new View[] { tbEditTone_superNATURALSynthTone_Osc_SuperSawDetune, slEditTone_superNATURALSynthTone_Osc_SuperSawDetune }, new byte[] { 1, 2 })).Row);
 
+            byte row = 8;
+            while (row < MAX_ROWS)
+            {
+                Grid dummy = new Grid();
+                dummy.BackgroundColor = colorSettings.ControlBackground;
+                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })).Row);
+            }
+
             // Set control values
             cbEditTone_superNATURALSynthTone_Osc_WaveShape.SelectedIndex = superNATURALSynthTone.superNATURALSynthTonePartial[currentPartial].OSCWave;
             cbEditTone_superNATURALSynthTone_Osc_Partial1Switch.IsChecked = superNATURALSynthTone.superNATURALSynthToneCommon.Partial1Switch;
@@ -7672,7 +7905,7 @@ namespace Integra_7_Xamarin
             // CheckBox for Partial 1 Switch
             CheckBox cbEditTone_superNATURALSynthTone_Pitch_Partial1Switch = new CheckBox();
             cbEditTone_superNATURALSynthTone_Pitch_Partial1Switch = new CheckBox();
-            cbEditTone_superNATURALSynthTone_Pitch_Partial1Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_superNATURALSynthTone_Pitch_Partial1Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_superNATURALSynthTone_Pitch_Partial1Switch.Focused += Generic_GotFocus;
             cbEditTone_superNATURALSynthTone_Pitch_Partial1Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_superNATURALSynthTone_Pitch_Partial1Switch.Content = "Partial 1 Switch";
@@ -7681,7 +7914,7 @@ namespace Integra_7_Xamarin
             // CheckBox for Partial 2 Switch
             CheckBox cbEditTone_superNATURALSynthTone_Pitch_Partial2Switch = new CheckBox();
             cbEditTone_superNATURALSynthTone_Pitch_Partial2Switch = new CheckBox();
-            cbEditTone_superNATURALSynthTone_Pitch_Partial2Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_superNATURALSynthTone_Pitch_Partial2Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_superNATURALSynthTone_Pitch_Partial2Switch.Focused += Generic_GotFocus;
             cbEditTone_superNATURALSynthTone_Pitch_Partial2Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_superNATURALSynthTone_Pitch_Partial2Switch.Content = "Partial 2 Switch";
@@ -7690,7 +7923,7 @@ namespace Integra_7_Xamarin
             // CheckBox for Partial 3 Switch
             CheckBox cbEditTone_superNATURALSynthTone_Pitch_Partial3Switch = new CheckBox();
             cbEditTone_superNATURALSynthTone_Pitch_Partial3Switch = new CheckBox();
-            cbEditTone_superNATURALSynthTone_Pitch_Partial3Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_superNATURALSynthTone_Pitch_Partial3Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_superNATURALSynthTone_Pitch_Partial3Switch.Focused += Generic_GotFocus;
             cbEditTone_superNATURALSynthTone_Pitch_Partial3Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_superNATURALSynthTone_Pitch_Partial3Switch.Content = "Partial 3 Switch";
@@ -7792,6 +8025,14 @@ namespace Integra_7_Xamarin
             ControlsGrid.Children.Add((new GridRow(7, new View[] { tbEditTone_superNATURALSynthTone_Pitch_PitchBendRangeUp, slEditTone_superNATURALSynthTone_Pitch_PitchBendRangeUp }, new byte[] { 1, 2 })).Row);
             ControlsGrid.Children.Add((new GridRow(8, new View[] { tbEditTone_superNATURALSynthTone_Pitch_PitchBendRangeDown, slEditTone_superNATURALSynthTone_Pitch_PitchBendRangeDown }, new byte[] { 1, 2 })).Row);
 
+            byte row = 9;
+            while (row < MAX_ROWS)
+            {
+                Grid dummy = new Grid();
+                dummy.BackgroundColor = colorSettings.ControlBackground;
+                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })).Row);
+            }
+
             // Set control values
             cbEditTone_superNATURALSynthTone_Pitch_Partial1Switch.IsChecked = superNATURALSynthTone.superNATURALSynthToneCommon.Partial1Switch;
             cbEditTone_superNATURALSynthTone_Pitch_Partial2Switch.IsChecked = superNATURALSynthTone.superNATURALSynthToneCommon.Partial2Switch;
@@ -7821,7 +8062,7 @@ namespace Integra_7_Xamarin
             // CheckBox for Partial 1 Switch
             CheckBox cbEditTone_superNATURALSynthTone_Filter_Partial1Switch = new CheckBox();
             cbEditTone_superNATURALSynthTone_Filter_Partial1Switch = new CheckBox();
-            cbEditTone_superNATURALSynthTone_Filter_Partial1Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_superNATURALSynthTone_Filter_Partial1Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_superNATURALSynthTone_Filter_Partial1Switch.Focused += Generic_GotFocus;
             cbEditTone_superNATURALSynthTone_Filter_Partial1Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_superNATURALSynthTone_Filter_Partial1Switch.Content = "Partial 1 Switch";
@@ -7830,7 +8071,7 @@ namespace Integra_7_Xamarin
             // CheckBox for Partial 2 Switch
             CheckBox cbEditTone_superNATURALSynthTone_Filter_Partial2Switch = new CheckBox();
             cbEditTone_superNATURALSynthTone_Filter_Partial2Switch = new CheckBox();
-            cbEditTone_superNATURALSynthTone_Filter_Partial2Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_superNATURALSynthTone_Filter_Partial2Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_superNATURALSynthTone_Filter_Partial2Switch.Focused += Generic_GotFocus;
             cbEditTone_superNATURALSynthTone_Filter_Partial2Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_superNATURALSynthTone_Filter_Partial2Switch.Content = "Partial 2 Switch";
@@ -7839,7 +8080,7 @@ namespace Integra_7_Xamarin
             // CheckBox for Partial 3 Switch
             CheckBox cbEditTone_superNATURALSynthTone_Filter_Partial3Switch = new CheckBox();
             cbEditTone_superNATURALSynthTone_Filter_Partial3Switch = new CheckBox();
-            cbEditTone_superNATURALSynthTone_Filter_Partial3Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_superNATURALSynthTone_Filter_Partial3Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_superNATURALSynthTone_Filter_Partial3Switch.Focused += Generic_GotFocus;
             cbEditTone_superNATURALSynthTone_Filter_Partial3Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_superNATURALSynthTone_Filter_Partial3Switch.Content = "Partial 3 Switch";
@@ -7985,6 +8226,14 @@ namespace Integra_7_Xamarin
             ControlsGrid.Children.Add((new GridRow(11, new View[] { tbEditTone_superNATURALSynthTone_Pitch_FILTEREnvDepth, slEditTone_superNATURALSynthTone_Pitch_FILTEREnvDepth }, new byte[] { 1, 2 })).Row);
             ControlsGrid.Children.Add((new GridRow(12, new View[] { tbEditTone_superNATURALSynthTone_Pitch_HPFCutoff, slEditTone_superNATURALSynthTone_Pitch_HPFCutoff }, new byte[] { 1, 2 })).Row);
 
+            byte row = 13;
+            while (row < MAX_ROWS)
+            {
+                Grid dummy = new Grid();
+                dummy.BackgroundColor = colorSettings.ControlBackground;
+                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })).Row);
+            }
+
             // Set control values
             cbEditTone_superNATURALSynthTone_Filter_Partial1Switch.IsChecked = superNATURALSynthTone.superNATURALSynthToneCommon.Partial1Switch;
             cbEditTone_superNATURALSynthTone_Filter_Partial2Switch.IsChecked = superNATURALSynthTone.superNATURALSynthToneCommon.Partial2Switch;
@@ -8021,7 +8270,7 @@ namespace Integra_7_Xamarin
             // CheckBox for Partial 1 Switch
             CheckBox cbEditTone_superNATURALSynthTone_AMP_Partial1Switch = new CheckBox();
             cbEditTone_superNATURALSynthTone_AMP_Partial1Switch = new CheckBox();
-            cbEditTone_superNATURALSynthTone_AMP_Partial1Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_superNATURALSynthTone_AMP_Partial1Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_superNATURALSynthTone_AMP_Partial1Switch.Focused += Generic_GotFocus;
             cbEditTone_superNATURALSynthTone_AMP_Partial1Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_superNATURALSynthTone_AMP_Partial1Switch.Content = "Partial 1 Switch";
@@ -8030,7 +8279,7 @@ namespace Integra_7_Xamarin
             // CheckBox for Partial 2 Switch
             CheckBox cbEditTone_superNATURALSynthTone_AMP_Partial2Switch = new CheckBox();
             cbEditTone_superNATURALSynthTone_AMP_Partial2Switch = new CheckBox();
-            cbEditTone_superNATURALSynthTone_AMP_Partial2Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_superNATURALSynthTone_AMP_Partial2Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_superNATURALSynthTone_AMP_Partial2Switch.Focused += Generic_GotFocus;
             cbEditTone_superNATURALSynthTone_AMP_Partial2Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_superNATURALSynthTone_AMP_Partial2Switch.Content = "Partial 2 Switch";
@@ -8039,7 +8288,7 @@ namespace Integra_7_Xamarin
             // CheckBox for Partial 3 Switch
             CheckBox cbEditTone_superNATURALSynthTone_AMP_Partial3Switch = new CheckBox();
             cbEditTone_superNATURALSynthTone_AMP_Partial3Switch = new CheckBox();
-            cbEditTone_superNATURALSynthTone_AMP_Partial3Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_superNATURALSynthTone_AMP_Partial3Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_superNATURALSynthTone_AMP_Partial3Switch.Focused += Generic_GotFocus;
             cbEditTone_superNATURALSynthTone_AMP_Partial3Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_superNATURALSynthTone_AMP_Partial3Switch.Content = "Partial 3 Switch";
@@ -8137,6 +8386,14 @@ namespace Integra_7_Xamarin
             ControlsGrid.Children.Add((new GridRow(7, new View[] { tbEditTone_superNATURALSynthTone_Amp_AMPEnvSustainLevel, slEditTone_superNATURALSynthTone_Amp_AMPEnvSustainLevel }, new byte[] { 1, 2 })).Row);
             ControlsGrid.Children.Add((new GridRow(8, new View[] { tbEditTone_superNATURALSynthTone_Amp_AMPEnvReleaseTime, slEditTone_superNATURALSynthTone_Amp_AMPEnvReleaseTime }, new byte[] { 1, 2 })).Row);
 
+            byte row = 9;
+            while (row < MAX_ROWS)
+            {
+                Grid dummy = new Grid();
+                dummy.BackgroundColor = colorSettings.ControlBackground;
+                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })).Row);
+            }
+
             // Set control values
             cbEditTone_superNATURALSynthTone_AMP_Partial1Switch.IsChecked = superNATURALSynthTone.superNATURALSynthToneCommon.Partial1Switch;
             cbEditTone_superNATURALSynthTone_AMP_Partial2Switch.IsChecked = superNATURALSynthTone.superNATURALSynthToneCommon.Partial2Switch;
@@ -8167,7 +8424,7 @@ namespace Integra_7_Xamarin
             // CheckBox for Partial 1 Switch
             CheckBox cbEditTone_superNATURALSynthTone_LFO_Partial1Switch = new CheckBox();
             cbEditTone_superNATURALSynthTone_LFO_Partial1Switch = new CheckBox();
-            cbEditTone_superNATURALSynthTone_LFO_Partial1Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_superNATURALSynthTone_LFO_Partial1Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_superNATURALSynthTone_LFO_Partial1Switch.Focused += Generic_GotFocus;
             cbEditTone_superNATURALSynthTone_LFO_Partial1Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_superNATURALSynthTone_LFO_Partial1Switch.Content = "Partial 1 Switch";
@@ -8176,7 +8433,7 @@ namespace Integra_7_Xamarin
             // CheckBox for Partial 2 Switch
             CheckBox cbEditTone_superNATURALSynthTone_LFO_Partial2Switch = new CheckBox();
             cbEditTone_superNATURALSynthTone_LFO_Partial2Switch = new CheckBox();
-            cbEditTone_superNATURALSynthTone_LFO_Partial2Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_superNATURALSynthTone_LFO_Partial2Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_superNATURALSynthTone_LFO_Partial2Switch.Focused += Generic_GotFocus;
             cbEditTone_superNATURALSynthTone_LFO_Partial2Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_superNATURALSynthTone_LFO_Partial2Switch.Content = "Partial 2 Switch";
@@ -8185,7 +8442,7 @@ namespace Integra_7_Xamarin
             // CheckBox for Partial 3 Switch
             CheckBox cbEditTone_superNATURALSynthTone_LFO_Partial3Switch = new CheckBox();
             cbEditTone_superNATURALSynthTone_LFO_Partial3Switch = new CheckBox();
-            cbEditTone_superNATURALSynthTone_LFO_Partial3Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_superNATURALSynthTone_LFO_Partial3Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_superNATURALSynthTone_LFO_Partial3Switch.Focused += Generic_GotFocus;
             cbEditTone_superNATURALSynthTone_LFO_Partial3Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_superNATURALSynthTone_LFO_Partial3Switch.Content = "Partial 3 Switch";
@@ -8216,7 +8473,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for LFO Tempo Sync Switch
             CheckBox cbEditTone_superNATURALSynthTone_LFO_LFOTempoSyncSwitch = new CheckBox();
-            cbEditTone_superNATURALSynthTone_LFO_LFOTempoSyncSwitch.Toggled += GenericCheckBox_Click;
+            cbEditTone_superNATURALSynthTone_LFO_LFOTempoSyncSwitch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_superNATURALSynthTone_LFO_LFOTempoSyncSwitch.Focused += Generic_GotFocus;
             cbEditTone_superNATURALSynthTone_LFO_LFOTempoSyncSwitch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_superNATURALSynthTone_LFO_LFOTempoSyncSwitch.Content = "LFO Tempo Sync Switch";
@@ -8261,7 +8518,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for LFO Key Trigger
             CheckBox cbEditTone_superNATURALSynthTone_LFO_LFOKeyTrigger = new CheckBox();
-            cbEditTone_superNATURALSynthTone_LFO_LFOKeyTrigger.Toggled += GenericCheckBox_Click;
+            cbEditTone_superNATURALSynthTone_LFO_LFOKeyTrigger.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_superNATURALSynthTone_LFO_LFOKeyTrigger.Focused += Generic_GotFocus;
             cbEditTone_superNATURALSynthTone_LFO_LFOKeyTrigger.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_superNATURALSynthTone_LFO_LFOKeyTrigger.Content = "LFO Key Trigger";
@@ -8321,6 +8578,14 @@ namespace Integra_7_Xamarin
             ControlsGrid.Children.Add((new GridRow(9, new View[] { tbEditTone_superNATURALSynthTone_LFO_LFOAMPDepth, slEditTone_superNATURALSynthTone_LFO_LFOAMPDepth }, new byte[] { 1, 2 })).Row);
             ControlsGrid.Children.Add((new GridRow(10, new View[] { tbEditTone_superNATURALSynthTone_LFO_LFOPanDepth, slEditTone_superNATURALSynthTone_LFO_LFOPanDepth }, new byte[] { 1, 2 })).Row);
 
+            byte row = 11;
+            while (row < MAX_ROWS)
+            {
+                Grid dummy = new Grid();
+                dummy.BackgroundColor = colorSettings.ControlBackground;
+                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })).Row);
+            }
+
             // Set control values
             cbEditTone_superNATURALSynthTone_LFO_Partial1Switch.IsChecked = superNATURALSynthTone.superNATURALSynthToneCommon.Partial1Switch;
             cbEditTone_superNATURALSynthTone_LFO_Partial2Switch.IsChecked = superNATURALSynthTone.superNATURALSynthToneCommon.Partial2Switch;
@@ -8351,7 +8616,7 @@ namespace Integra_7_Xamarin
             // CheckBox for Partial 1 Switch
             CheckBox cbEditTone_superNATURALSynthTone_ModLFO_Partial1Switch = new CheckBox();
             cbEditTone_superNATURALSynthTone_ModLFO_Partial1Switch = new CheckBox();
-            cbEditTone_superNATURALSynthTone_ModLFO_Partial1Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_superNATURALSynthTone_ModLFO_Partial1Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_superNATURALSynthTone_ModLFO_Partial1Switch.Focused += Generic_GotFocus;
             cbEditTone_superNATURALSynthTone_ModLFO_Partial1Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_superNATURALSynthTone_ModLFO_Partial1Switch.Content = "Partial 1 Switch";
@@ -8360,7 +8625,7 @@ namespace Integra_7_Xamarin
             // CheckBox for Partial 2 Switch
             CheckBox cbEditTone_superNATURALSynthTone_ModLFO_Partial2Switch = new CheckBox();
             cbEditTone_superNATURALSynthTone_ModLFO_Partial2Switch = new CheckBox();
-            cbEditTone_superNATURALSynthTone_ModLFO_Partial2Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_superNATURALSynthTone_ModLFO_Partial2Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_superNATURALSynthTone_ModLFO_Partial2Switch.Focused += Generic_GotFocus;
             cbEditTone_superNATURALSynthTone_ModLFO_Partial2Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_superNATURALSynthTone_ModLFO_Partial2Switch.Content = "Partial 2 Switch";
@@ -8369,7 +8634,7 @@ namespace Integra_7_Xamarin
             // CheckBox for Partial 3 Switch
             CheckBox cbEditTone_superNATURALSynthTone_ModLFO_Partial3Switch = new CheckBox();
             cbEditTone_superNATURALSynthTone_ModLFO_Partial3Switch = new CheckBox();
-            cbEditTone_superNATURALSynthTone_ModLFO_Partial3Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_superNATURALSynthTone_ModLFO_Partial3Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_superNATURALSynthTone_ModLFO_Partial3Switch.Focused += Generic_GotFocus;
             cbEditTone_superNATURALSynthTone_ModLFO_Partial3Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_superNATURALSynthTone_ModLFO_Partial3Switch.Content = "Partial 3 Switch";
@@ -8400,7 +8665,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for Modulation LFO Tempo Sync Switch
             CheckBox cbEditTone_superNATURALSynthTone_LFO_ModulationLFOTempoSyncSwitch = new CheckBox();
-            cbEditTone_superNATURALSynthTone_LFO_ModulationLFOTempoSyncSwitch.Toggled += GenericCheckBox_Click;
+            cbEditTone_superNATURALSynthTone_LFO_ModulationLFOTempoSyncSwitch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_superNATURALSynthTone_LFO_ModulationLFOTempoSyncSwitch.Focused += Generic_GotFocus;
             cbEditTone_superNATURALSynthTone_LFO_ModulationLFOTempoSyncSwitch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_superNATURALSynthTone_LFO_ModulationLFOTempoSyncSwitch.Content = "Modulation LFO Tempo Sync Switch";
@@ -8496,6 +8761,14 @@ namespace Integra_7_Xamarin
             ControlsGrid.Children.Add((new GridRow(8, new View[] { tbEditTone_superNATURALSynthTone_LFO_ModulationLFOPanDepth, slEditTone_superNATURALSynthTone_LFO_ModulationLFOPanDepth }, new byte[] { 1, 2 })).Row);
             ControlsGrid.Children.Add((new GridRow(9, new View[] { tbEditTone_superNATURALSynthTone_LFO_ModulationLFORateControl, slEditTone_superNATURALSynthTone_LFO_ModulationLFORateControl }, new byte[] { 1, 2 })).Row);
 
+            byte row = 10;
+            while (row < MAX_ROWS)
+            {
+                Grid dummy = new Grid();
+                dummy.BackgroundColor = colorSettings.ControlBackground;
+                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })).Row);
+            }
+
             // Set control values
             cbEditTone_superNATURALSynthTone_ModLFO_Partial1Switch.IsChecked = superNATURALSynthTone.superNATURALSynthToneCommon.Partial1Switch;
             cbEditTone_superNATURALSynthTone_ModLFO_Partial2Switch.IsChecked = superNATURALSynthTone.superNATURALSynthToneCommon.Partial2Switch;
@@ -8525,7 +8798,7 @@ namespace Integra_7_Xamarin
             // CheckBox for Partial 1 Switch
             CheckBox cbEditTone_superNATURALSynthTone_TVAenv_Partial1Switch = new CheckBox();
             cbEditTone_superNATURALSynthTone_TVAenv_Partial1Switch = new CheckBox();
-            cbEditTone_superNATURALSynthTone_TVAenv_Partial1Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_superNATURALSynthTone_TVAenv_Partial1Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_superNATURALSynthTone_TVAenv_Partial1Switch.Focused += Generic_GotFocus;
             cbEditTone_superNATURALSynthTone_TVAenv_Partial1Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_superNATURALSynthTone_TVAenv_Partial1Switch.Content = "Partial 1 Switch";
@@ -8534,7 +8807,7 @@ namespace Integra_7_Xamarin
             // CheckBox for Partial 2 Switch
             CheckBox cbEditTone_superNATURALSynthTone_TVAenv_Partial2Switch = new CheckBox();
             cbEditTone_superNATURALSynthTone_TVAenv_Partial2Switch = new CheckBox();
-            cbEditTone_superNATURALSynthTone_TVAenv_Partial2Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_superNATURALSynthTone_TVAenv_Partial2Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_superNATURALSynthTone_TVAenv_Partial2Switch.Focused += Generic_GotFocus;
             cbEditTone_superNATURALSynthTone_TVAenv_Partial2Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_superNATURALSynthTone_TVAenv_Partial2Switch.Content = "Partial 2 Switch";
@@ -8543,7 +8816,7 @@ namespace Integra_7_Xamarin
             // CheckBox for Partial 3 Switch
             CheckBox cbEditTone_superNATURALSynthTone_TVAenv_Partial3Switch = new CheckBox();
             cbEditTone_superNATURALSynthTone_TVAenv_Partial3Switch = new CheckBox();
-            cbEditTone_superNATURALSynthTone_TVAenv_Partial3Switch.Toggled += GenericCheckBox_Click;
+            cbEditTone_superNATURALSynthTone_TVAenv_Partial3Switch.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_superNATURALSynthTone_TVAenv_Partial3Switch.Focused += Generic_GotFocus;
             cbEditTone_superNATURALSynthTone_TVAenv_Partial3Switch.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_superNATURALSynthTone_TVAenv_Partial3Switch.Content = "Partial 3 Switch";
@@ -8574,6 +8847,14 @@ namespace Integra_7_Xamarin
             cbEditTone_superNATURALSynthTone_TVAenv_Partial2Switch, cbEditTone_superNATURALSynthTone_TVAenv_Partial3Switch})).Row);
             ControlsGrid.Children.Add((new GridRow(1, new View[] { tbEditTone_superNATURALSynthTone_LFO_CutoffAftertouchSens, slEditTone_superNATURALSynthTone_LFO_CutoffAftertouchSens }, new byte[] { 1, 2 })).Row);
             ControlsGrid.Children.Add((new GridRow(2, new View[] { tbEditTone_superNATURALSynthTone_LFO_LevelAftertouchSens, slEditTone_superNATURALSynthTone_LFO_LevelAftertouchSens }, new byte[] { 1, 2 })).Row);
+
+            byte row = 3;
+            while (row < MAX_ROWS)
+            {
+                Grid dummy = new Grid();
+                dummy.BackgroundColor = colorSettings.ControlBackground;
+                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })).Row);
+            }
 
             // Set control values
             cbEditTone_superNATURALSynthTone_TVAenv_Partial1Switch.IsChecked = superNATURALSynthTone.superNATURALSynthToneCommon.Partial1Switch;
@@ -8659,7 +8940,7 @@ namespace Integra_7_Xamarin
 
             // CheckBox for Chromatic Portamento
             CheckBox cbEditTone_superNATURALSynthTone_Misc_ChromaticPortamento = new CheckBox();
-            cbEditTone_superNATURALSynthTone_Misc_ChromaticPortamento.Toggled += GenericCheckBox_Click;
+            cbEditTone_superNATURALSynthTone_Misc_ChromaticPortamento.CBSwitch.Toggled += GenericCheckBox_Click;
             cbEditTone_superNATURALSynthTone_Misc_ChromaticPortamento.Focused += Generic_GotFocus;
             cbEditTone_superNATURALSynthTone_Misc_ChromaticPortamento.Tag = new HelpTag(controlsIndex++, 0);
             cbEditTone_superNATURALSynthTone_Misc_ChromaticPortamento.Content = "Chromatic Portamento";
@@ -8672,6 +8953,14 @@ namespace Integra_7_Xamarin
             ControlsGrid.Children.Add((new GridRow(3, new View[] { cbEditTone_superNATURALSynthTone_Misc_EnvelopeLoopMode })).Row);
             ControlsGrid.Children.Add((new GridRow(4, new View[] { cbEditTone_superNATURALSynthTone_Misc_EnvelopeLoopSyncNote })).Row);
             ControlsGrid.Children.Add((new GridRow(5, new View[] { cbEditTone_superNATURALSynthTone_Misc_ChromaticPortamento })).Row);
+
+            byte row = 6;
+            while (row < MAX_ROWS)
+            {
+                Grid dummy = new Grid();
+                dummy.BackgroundColor = colorSettings.ControlBackground;
+                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })).Row);
+            }
 
             // Set control values
             slEditTone_superNATURALSynthTone_Misc_AttackTimeIntervalSens.Value = (superNATURALSynthTone.superNATURALSynthToneMisc.AttackTimeIntervalSens);
@@ -8811,10 +9100,12 @@ namespace Integra_7_Xamarin
                 cbEditTone_CommonMFX_MFXControl_MFXControlAssign[i].Focused += Generic_GotFocus;
                 cbEditTone_CommonMFX_MFXControl_MFXControlAssign[i].Tag = new HelpTag(controlsIndex++, 0);
                 cbEditTone_CommonMFX_MFXControl_MFXControlAssign[i].Name = "cbEditTone_CommonMFX_MFXControl_MFXControlAssign" + i.ToString();
+                // Destinations depend on MFX type:
                 cbEditTone_CommonMFX_MFXControl_MFXControlAssign[i].Items.Add("Destination : Off");
-                cbEditTone_CommonMFX_MFXControl_MFXControlAssign[i].Items.Add("Destination : Low gain");
-                cbEditTone_CommonMFX_MFXControl_MFXControlAssign[i].Items.Add("Destination : High gain");
-                cbEditTone_CommonMFX_MFXControl_MFXControlAssign[i].Items.Add("Destination : Level");
+                for (byte j = 0; j < CommonMFX.MFXControlAssigns[commonMFX.MFXType - 1].Length; j++)
+                {
+                    cbEditTone_CommonMFX_MFXControl_MFXControlAssign[i].Items.Add("Destination : " + CommonMFX.MFXControlAssigns[commonMFX.MFXType - 1][j]);
+                }
 
                 // Slider for MFX Control Sense:
                 tbEditTone_CommonMFX_MFXControl_MFXControlSens[i] = new TextBox();
@@ -8837,7 +9128,7 @@ namespace Integra_7_Xamarin
             }
 
             // Set values
-            handleControlEvents = false;
+            PushHandleControlEvents();
             for (byte i = 0; i < 4; i++)
             {
                 cbEditTone_CommonMFX_MFXControl_MFXControlSource[i].SelectedIndex = commonMFX.MFXControlSource[i];
@@ -8961,6 +9252,14 @@ namespace Integra_7_Xamarin
             ControlsGrid.Children.Add((new GridRow(0, new View[] { cbEditTone_superNATURALDrumKit_Common_PhraseNumber })).Row);
             ControlsGrid.Children.Add((new GridRow(1, new View[] { tbEditTone_superNATURALDrumKit_Common_KitLevel, slEditTone_superNATURALDrumKit_Common_KitLevel }, new byte[] { 1, 2 })).Row);
             ControlsGrid.Children.Add((new GridRow(2, new View[] { tbEditTone_superNATURALDrumKit_Common_AmbienceLevel, slEditTone_superNATURALDrumKit_Common_AmbienceLevel }, new byte[] { 1, 2 })).Row);
+
+            byte row = 3;
+            while (row < MAX_ROWS)
+            {
+                Grid dummy = new Grid();
+                dummy.BackgroundColor = colorSettings.ControlBackground;
+                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })).Row);
+            }
 
             // Set control values
             cbEditTone_superNATURALDrumKit_Common_PhraseNumber.SelectedIndex = superNATURALDrumKit.superNATURALDrumKitCommon.PhraseNumber;
@@ -9183,6 +9482,14 @@ namespace Integra_7_Xamarin
             ControlsGrid.Children.Add((new GridRow(11, new View[] { tbEditTone_superNATURALDrumKit_Druminstrument_StereoWidth, slEditTone_superNATURALDrumKit_Druminstrument_StereoWidth }, new byte[] { 1, 2 })).Row);
             ControlsGrid.Children.Add((new GridRow(12, new View[] { cbEditTone_superNATURALDrumKit_Druminstrument_Variation, cbEditTone_superNATURALDrumKit_Druminstrument_OutputAssign })).Row);
 
+            byte row = 13;
+            while (row < MAX_ROWS)
+            {
+                Grid dummy = new Grid();
+                dummy.BackgroundColor = colorSettings.ControlBackground;
+                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })).Row);
+            }
+
             // Set control values
             cbEditTone_superNATURALDrumKit_Druminstrument_BankNumber.SelectedIndex = superNATURALDrumKit.superNATURALDrumKitKey[currentKey].BankNumber;
             switch (superNATURALDrumKit.superNATURALDrumKitKey[currentKey].BankNumber)
@@ -9240,7 +9547,7 @@ namespace Integra_7_Xamarin
             for (byte i = 0; i < 6; i++)
             {
                 cbEditTone_superNATURALDrumKit_Compressor_CompSwitch[i] = new CheckBox();
-                cbEditTone_superNATURALDrumKit_Compressor_CompSwitch[i].Toggled += GenericCheckBox_Click;
+                cbEditTone_superNATURALDrumKit_Compressor_CompSwitch[i].CBSwitch.Toggled += GenericCheckBox_Click;
                 cbEditTone_superNATURALDrumKit_Compressor_CompSwitch[i].Focused += Generic_GotFocus;
                 cbEditTone_superNATURALDrumKit_Compressor_CompSwitch[i].Tag = new HelpTag(controlsIndex++, 0);
                 cbEditTone_superNATURALDrumKit_Compressor_CompSwitch[i].Content = "Comp " + (i + 1).ToString();
@@ -9419,9 +9726,13 @@ namespace Integra_7_Xamarin
                 slEditTone_superNATURALDrumKit_Compressor_CompOutputGain[4], tbEditTone_superNATURALDrumKit_Compressor_CompOutputGain[5],
                 slEditTone_superNATURALDrumKit_Compressor_CompOutputGain[5] }, new byte[] { 1, 2, 1, 2 })).Row);
 
-
-
-
+            byte row = 13;
+            while (row < MAX_ROWS)
+            {
+                Grid dummy = new Grid();
+                dummy.BackgroundColor = colorSettings.ControlBackground;
+                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })).Row);
+            }
 
             // Set control values
             for (byte i = 0; i < 6; i++)
@@ -9463,7 +9774,7 @@ namespace Integra_7_Xamarin
             for (byte i = 0; i < 6; i++)
             {
                 cbEditTone_superNATURALDrumKit_Equalizer_EQSwitch[i] = new CheckBox();
-                cbEditTone_superNATURALDrumKit_Equalizer_EQSwitch[i].Toggled += GenericCheckBox_Click;
+                cbEditTone_superNATURALDrumKit_Equalizer_EQSwitch[i].CBSwitch.Toggled += GenericCheckBox_Click;
                 cbEditTone_superNATURALDrumKit_Equalizer_EQSwitch[i].Focused += Generic_GotFocus;
                 cbEditTone_superNATURALDrumKit_Equalizer_EQSwitch[i].Tag = new HelpTag(controlsIndex++, 0);
                 cbEditTone_superNATURALDrumKit_Equalizer_EQSwitch[i].Content = "EQ Switch" + (i + 1).ToString();
@@ -9624,6 +9935,14 @@ namespace Integra_7_Xamarin
             ControlsGrid.Children.Add((new GridRow(13, new View[] {  tbEditTone_superNATURALDrumKit_Equalizer_EQHighGain[4],
                 slEditTone_superNATURALDrumKit_Equalizer_EQHighGain[4], tbEditTone_superNATURALDrumKit_Equalizer_EQHighGain[5],
                 slEditTone_superNATURALDrumKit_Equalizer_EQHighGain[5] }, new byte[] { 1, 2, 1, 2 })).Row);
+
+            byte row = 14;
+            while (row < MAX_ROWS)
+            {
+                Grid dummy = new Grid();
+                dummy.BackgroundColor = colorSettings.ControlBackground;
+                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })).Row);
+            }
 
             // Set control values
             for (byte i = 0; i < 6; i++)
@@ -9790,9 +10109,10 @@ namespace Integra_7_Xamarin
                 cbEditTone_CommonMFX_MFXControl_MFXControlAssign[i].Tag = new HelpTag(controlsIndex++, 0);
                 cbEditTone_CommonMFX_MFXControl_MFXControlAssign[i].Name = "cbEditTone_CommonMFX_MFXControl_MFXControlAssign" + i.ToString();
                 cbEditTone_CommonMFX_MFXControl_MFXControlAssign[i].Items.Add("Destination : Off");
-                cbEditTone_CommonMFX_MFXControl_MFXControlAssign[i].Items.Add("Destination : Low gain");
-                cbEditTone_CommonMFX_MFXControl_MFXControlAssign[i].Items.Add("Destination : High gain");
-                cbEditTone_CommonMFX_MFXControl_MFXControlAssign[i].Items.Add("Destination : Level");
+                for (byte j = 0; j < CommonMFX.MFXControlAssigns[commonMFX.MFXType - 1].Length; j++)
+                {
+                    cbEditTone_CommonMFX_MFXControl_MFXControlAssign[i].Items.Add("Destination : " + CommonMFX.MFXControlAssigns[commonMFX.MFXType - 1][j]);
+                }
 
                 // Slider for MFX Control Sense:
                 tbEditTone_CommonMFX_MFXControl_MFXControlSens[i] = new TextBox();
@@ -9815,7 +10135,7 @@ namespace Integra_7_Xamarin
             }
 
             // Set values
-            //handleControlEvents = false;
+            //PushHandleControlEvents();
             for (byte i = 0; i < 4; i++)
             {
                 cbEditTone_CommonMFX_MFXControl_MFXControlSource[i].SelectedIndex = commonMFX.MFXControlSource[i];
@@ -9884,7 +10204,7 @@ namespace Integra_7_Xamarin
         private void SetSaveSlotToFirstFreeOrSameName()
         {
             currentHandleControlEvents = handleControlEvents;
-            handleControlEvents = false;
+            PushHandleControlEvents();
             cbEditTone_SaveTone_SlotNumber.SelectedIndex = 0;
             while (((String)cbEditTone_SaveTone_SlotNumber.SelectedItem).Remove(0, 5) != "INIT TONE"
                 && ((String)cbEditTone_SaveTone_SlotNumber.SelectedItem).Remove(0, 5) != "INIT KIT"
@@ -9911,7 +10231,7 @@ namespace Integra_7_Xamarin
 
         private void PopulatePCMSynthToneWaveLists(Int32 listNumber) // 0 = INT, 1 - 12 = SRX_01 - SRX_12
         {
-            handleControlEvents = false;
+            PushHandleControlEvents();
             cbEditTone_PCMSynthTone_Wave_WaveNumberL.Items.Clear();
             cbEditTone_PCMSynthTone_Wave_WaveNumberR.Items.Clear();
             if (listNumber == 0)
@@ -9930,7 +10250,7 @@ namespace Integra_7_Xamarin
                     cbEditTone_PCMSynthTone_Wave_WaveNumberR.Items.Add(i.ToString() + ": " + srxWaves.srxWaveNames[listNumber - 1][i]);
                 }
             }
-            handleControlEvents = true;
+            PopHandleControlEvents();
         }
 
 
@@ -10547,10 +10867,10 @@ namespace Integra_7_Xamarin
         private void AddDynamicSlider(Int32 Minimum, Int32 Maximum, Int32 Value, Buddy Tag = null)
         {
             t.Trace("private void AddDynamicSlider (" + "Int32" + Minimum + ", " + "Int32" + Maximum + ", " + "Int32" + Value + ", " + "Buddy" + Tag + ", " + ")");
-            handleControlEvents = false;
+            PushHandleControlEvents();
             dynamicSliders.Add(new Slider());
-            dynamicSliders[dynamicSliders.Count() - 1].Minimum = Minimum;
             dynamicSliders[dynamicSliders.Count() - 1].Maximum = Maximum;
+            dynamicSliders[dynamicSliders.Count() - 1].Minimum = Minimum;
             dynamicSliders[dynamicSliders.Count() - 1].Value = Value;
             dynamicSliders[dynamicSliders.Count() - 1].ValueChanged += GenericSlider_ValueChanged;
             dynamicSliders[dynamicSliders.Count() - 1].Focused += Generic_GotFocus;
@@ -10560,11 +10880,11 @@ namespace Integra_7_Xamarin
         private void AddDynamicSlider(Double Minimum, Double Maximum, Double Step, Double Value, Buddy Tag = null)
         {
             t.Trace("private void AddDynamicHzSlider (" + "Double" + Minimum + ", " + "Double" + Maximum + ", " + "Double" + Step + ", " + "Double" + Value + ", " + "Buddy" + Tag + ", " + ")");
-            handleControlEvents = false;
+            PushHandleControlEvents();
             dynamicSliders.Add(new Slider());
-            dynamicSliders[dynamicSliders.Count() - 1].Minimum = Minimum;
             dynamicSliders[dynamicSliders.Count() - 1].Maximum = Maximum;
-            //dynamicSliders[dynamicSliders.Count() - 1].StepFrequency = Step;
+            dynamicSliders[dynamicSliders.Count() - 1].Minimum = Minimum;
+            dynamicSliders[dynamicSliders.Count() - 1].StepFrequency = Step;
             dynamicSliders[dynamicSliders.Count() - 1].Value = Value;
             dynamicSliders[dynamicSliders.Count() - 1].ValueChanged += GenericSlider_ValueChanged;
             dynamicSliders[dynamicSliders.Count() - 1].Focused += Generic_GotFocus;
@@ -10574,7 +10894,7 @@ namespace Integra_7_Xamarin
         private void AddDynamicComboBox(String[] Items, Int32 SelectedIndex, Buddy Tag = null)
         {
             t.Trace("private void AddDynamicComboBox (" + "String[]" + Items + ", " + "Int32" + SelectedIndex + ", " + "Buddy" + Tag + ", " + ")");
-            handleControlEvents = false;
+            PushHandleControlEvents();
             dynamicComboboxes.Add(new ComboBox());
             dynamicComboboxes[dynamicComboboxes.Count() - 1].Name = "";
             if (Items != null)
@@ -10606,7 +10926,7 @@ namespace Integra_7_Xamarin
             t.Trace("private void AddDynamicCheckBox(Boolean Checked = " + Checked.ToString() + ", Buddy Tag = " + Tag + ")");
             dynamicCheckboxes.Add(new CheckBox());
             dynamicCheckboxes[dynamicCheckboxes.Count - 1].IsChecked = Checked > 0;
-            dynamicCheckboxes[dynamicCheckboxes.Count - 1].Toggled += GenericCheckBox_Click;
+            dynamicCheckboxes[dynamicCheckboxes.Count - 1].CBSwitch.Toggled += GenericCheckBox_Click;
             dynamicCheckboxes[dynamicCheckboxes.Count - 1].Focused += Generic_GotFocus;
             //dynamicCheckboxes[dynamicCheckboxes.Count() - 1].HorizontalContentAlignment = HorizontalAlignment.Left; // TODO ?
             //dynamicCheckboxes[dynamicCheckboxes.Count() - 1].BorderThickness = new Thickness(0);
@@ -10641,7 +10961,7 @@ namespace Integra_7_Xamarin
                         }
                         else if (type == typeof(CheckBox))
                         {
-                            ((CheckBox)grid.Children[0]).Toggled -= GenericCheckBox_Click;
+                            ((CheckBox)grid.Children[0]).CBSwitch.Toggled -= GenericCheckBox_Click;
                             ((CheckBox)grid.Children[0]).Focused -= Generic_GotFocus;
                         }
                         else if (type == typeof(Button))

@@ -54,6 +54,7 @@ namespace Integra_7_Xamarin
         public RowDefinition rdHelpHeaderImage;
         public RowDefinition rdHelpText;
         public RowDefinition rdHelpImage;
+        public Grid HelpGrid;
         public Label tbEditToneHelpsHeading;
         public Image imgEditToneHeadingImage;
         public Label tbEditToneHelpsText;
@@ -64,7 +65,7 @@ namespace Integra_7_Xamarin
         private EditToneParameterPageItems editToneParameterPageItems;
         public byte Skip { get; set; } // Static controls occupy Skip number of help texts. When doing the dynamic controls (not the MFX however), skip those.
 
-        public Help(Label tbEditToneHelpsHeading, Image imgEditToneHeadingImage, Label tbEditToneHelpsText, Image imgEditToneImage, ref RowDefinition rdHelpHeader, ref RowDefinition rdHelpHeaderImage, ref RowDefinition rdHelpText, ref RowDefinition rdHelpImage) //, Int32 ParameterPagesCount)
+        public Help(Label tbEditToneHelpsHeading, Image imgEditToneHeadingImage, Label tbEditToneHelpsText, Image imgEditToneImage) //, Int32 ParameterPagesCount)
         {
             HelpItems = new List<List<List<List<HelpItem>>>>();
             // Create top level menuitems for the 5 tone types and one for MFX controls:
@@ -72,15 +73,10 @@ namespace Integra_7_Xamarin
             {
                 HelpItems.Add(new List<List<List<HelpItem>>>());
             }
-            this.rdHelpHeader = rdHelpHeader;
-            this.rdHelpHeaderImage = rdHelpHeaderImage;
-            this.rdHelpText = rdHelpText;
-            this.rdHelpImage = rdHelpImage;
             this.tbEditToneHelpsHeading = tbEditToneHelpsHeading;
             this.imgEditToneHeadingImage = imgEditToneHeadingImage;
             this.tbEditToneHelpsText = tbEditToneHelpsText;
             this.imgEditToneImage = imgEditToneImage;
-            //this.ParameterPagesCount = (byte)ParameterPagesCount;
             editToneParameterPageItems = new EditToneParameterPageItems();
             ItemIndex = 0;
             SubItemIndex = 0;
@@ -113,7 +109,7 @@ namespace Integra_7_Xamarin
             HelpItems[ToneType][Page][Item].Add(new HelpItem(this, Heading, HeadingImage, Text, Image, SpaceAssign));
         }
 
-        public void Show(byte ToneType, byte Page, byte Item, byte SubItem)
+        public HelpItem Show(byte ToneType, byte Page, byte Item, byte SubItem)
         {
             try
             {
@@ -127,13 +123,13 @@ namespace Integra_7_Xamarin
                             {
                                 if (HelpItems[ToneType][Page][Item].Count() > SubItem && HelpItems[ToneType][Page][Item][SubItem] != null)
                                 {
-                                    HelpItems[ToneType][Page][Item][SubItem].Show();
+                                    return HelpItems[ToneType][Page][Item][SubItem].Show();
                                 }
                                 else
                                 {
                                     if (HelpItems[ToneType][Page][Item][0] != null)
                                     {
-                                        HelpItems[ToneType][Page][Item][0].Show();
+                                        return HelpItems[ToneType][Page][Item][0].Show();
                                     }
                                 }
                             }
@@ -141,7 +137,7 @@ namespace Integra_7_Xamarin
                             {
                                 if (HelpItems[ToneType][Page][0][0] != null)
                                 {
-                                    HelpItems[ToneType][Page][0][0].Show();
+                                    return HelpItems[ToneType][Page][0][0].Show();
                                 }
                             }
                         }
@@ -149,7 +145,7 @@ namespace Integra_7_Xamarin
                         {
                             if (HelpItems[ToneType][0][0][0] != null)
                             {
-                                HelpItems[ToneType][0][0][0].Show();
+                                return HelpItems[ToneType][0][0][0].Show();
                             }
                         }
                     }
@@ -157,6 +153,7 @@ namespace Integra_7_Xamarin
             }
             catch (Exception e)
             { }
+            return null;
         }
 
         String Warning = "\r\n\r\nNOTE! The INTEGRA-7 will not report current settings if you change part," +
@@ -10377,10 +10374,10 @@ namespace Integra_7_Xamarin
         public String Image { get; set; }
         public UInt16 SpaceAssign { get; set; }
         private Help Help;
-        private byte spaceForHeading;
-        private byte spaceForHeadingImage;
-        private byte spaceForText;
-        private byte spaceForImage;
+        public byte spaceForHeading;
+        public byte spaceForHeadingImage;
+        public byte spaceForText;
+        public byte spaceForImage;
 
         public HelpItem(Help Help, String Heading, String HeadingImage, String Text, String Image, UInt16 SpaceAssign = 0x10c0)
         {
@@ -10395,20 +10392,16 @@ namespace Integra_7_Xamarin
             this.spaceForImage = (byte)(SpaceAssign & 0x000f);
         }
 
-        public void Show()
+        public HelpItem Show()
         {
             spaceForHeading = spaceForHeading == (byte)0 ? (byte)1 : spaceForHeading;
             spaceForHeadingImage = spaceForHeadingImage == (byte)0 ? (byte)1 : spaceForHeadingImage;
             spaceForText = spaceForText == (byte)0 ? (byte)1 : spaceForText;
             spaceForImage = spaceForImage == (byte)0 ? (byte)1 : spaceForImage;
-            Help.rdHelpHeader.Height = new GridLength(spaceForHeading, GridUnitType.Star);
-            Help.rdHelpHeaderImage.Height = new GridLength(spaceForHeadingImage, GridUnitType.Star);
-            Help.rdHelpText.Height = new GridLength(spaceForText, GridUnitType.Star);
-            Help.rdHelpImage.Height = new GridLength(spaceForImage, GridUnitType.Star);
+
             Help.tbEditToneHelpsHeading.Text = "";
-            //Help.imgEditToneHeadingImage.Source = null;
             Help.tbEditToneHelpsText.Text = "";
-            //Help.imgEditToneImage.Source = null;
+
             if (!String.IsNullOrEmpty(Heading))
             {
                 Help.tbEditToneHelpsHeading.Text = Heading;
@@ -10455,6 +10448,7 @@ namespace Integra_7_Xamarin
             {
                 Help.imgEditToneImage.Source = "";
             }
+            return this;
         }
     }
 

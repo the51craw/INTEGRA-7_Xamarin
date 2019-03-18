@@ -97,8 +97,8 @@ namespace Integra_7_Xamarin
         //Boolean handleControlEvents = false;            // Some control events re-creates the control, and that will cause a loop. Use handleControlEvents to prevent that.
         Boolean currentHandleControlEvents = false;     // Use when temporarioy disabling control events.
         //DispatcherTimer timer = null;
-        byte[] currentStudioSetNumberAsBytes = new byte[3];
-        byte[] studioSetNumberIndexAsBytes = new byte[3];
+        //byte[] currentStudioSetNumberAsBytes = new byte[3];
+        //byte[] studioSetNumberIndexAsBytes = new byte[3];
         public ProgramType currentProgramType = ProgramType.PCM_SYNTH_TONE;
         Instrument currentInstrument;                   // For retaining more info on current SuperNATURAL Acoustic tone instrument.
         byte currentProgramIndex = 0;                   // 0 = PCM Synth Tone, 1 = PCM Drum Kit, 2 = SuperNATURAL Acoustic Tone, 3 = SuperNATURAL Synth Tone, 4 = SuperNATURAL Drum Kit
@@ -122,9 +122,9 @@ namespace Integra_7_Xamarin
                                                         // So, when entering Edit, save current MFX type here.
         UInt32 waitingForResponseFromIntegra7 = 0;      // A counter for detecting non-responsiveness from I-7. Used in Timer_Tick.
         //***SolidColorBrush blackBorder;
-        Thickness borderThickness;
-        Thickness margin2222;
-        Thickness margin2022;
+        //Thickness borderThickness;
+        //Thickness margin2222;
+        //Thickness margin2022;
         SRXWaves srxWaves = new SRXWaves();
         Int32 KeySamplePlayingL = -1;
         Int32 KeySamplePlayingR = -1;
@@ -710,27 +710,26 @@ namespace Integra_7_Xamarin
 
             // Main layout:
             EditTonesGrid = new Grid();
+            EditTonesGrid.VerticalOptions = LayoutOptions.FillAndExpand;
             EditTonesLeftColumnGrid = new Grid();
+            EditTonesLeftColumnGrid.VerticalOptions = LayoutOptions.FillAndExpand;
+            for (Int32 i = 0; i < 17; i++)
+            {
+                EditTonesLeftColumnGrid.RowDefinitions.Add(new RowDefinition());
+            }
             EditTonesRightColumnGrid = new Grid();
+            EditTonesRightColumnGrid.VerticalOptions = LayoutOptions.FillAndExpand;
+            for (Int32 i = 0; i < 17; i++)
+            {
+                EditTonesRightColumnGrid.RowDefinitions.Add(new RowDefinition());
+            }
+
             ControlsGrid = new Grid();
-            ControlsGrid.MinimumHeightRequest = 1;
+            ControlsGrid.MinimumHeightRequest = UIHandler.minimumHeightRequest;
             ControlsGrid.MinimumWidthRequest = 1;
+            ControlsGrid.VerticalOptions = LayoutOptions.FillAndExpand;
             HelpGrid = new Grid();
-            rdHelpHeader = new RowDefinition();
-            rdHelpHeaderImage = new RowDefinition();
-            rdHelpText = new RowDefinition();
-            rdHelpImage = new RowDefinition();
-            //rdHelpMain = new RowDefinition();
-            //rdHelpMain.Height = new GridLength(1, GridUnitType.Star);
-            rdHelpHeader.Height = new GridLength(1, GridUnitType.Star);
-            rdHelpHeaderImage.Height = new GridLength(1, GridUnitType.Star);
-            rdHelpText.Height = new GridLength(6, GridUnitType.Star);
-            rdHelpImage.Height = new GridLength(6, GridUnitType.Star);
-            HelpGrid.RowDefinitions.Add(rdHelpHeader);
-            HelpGrid.RowDefinitions.Add(rdHelpHeaderImage);
-            HelpGrid.RowDefinitions.Add(rdHelpText);
-            HelpGrid.RowDefinitions.Add(rdHelpImage);
-            //HelpGrid.RowDefinitions.Add(rdHelpMain);
+            HelpGrid.VerticalOptions = LayoutOptions.FillAndExpand;
 
             // Row 0 controls:
             cbEditTone_PartSelector = new ComboBox();
@@ -756,9 +755,13 @@ namespace Integra_7_Xamarin
             slEditToneReverbSendLevel = new Slider();
             tbEditToneHelpsHeading = new Label(); // " Text="Help heading texts goes here..." VerticalAlignment="Center" HorizontalAlignment="Stretch"
             imgEditToneHeadingImage = new Image(); //" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Tapped="Help_GotFocus" />
+            //imgEditToneHeadingImage.VerticalOptions = LayoutOptions.FillAndExpand;
             tbEditToneHelpsText = new Label(); // " Text="Help texts goes here..." VerticalAlignment="Center" HorizontalAlignment="Stretch"
+            //tbEditToneHelpsText.VerticalOptions = LayoutOptions.FillAndExpand;
             imgEditToneImage = new Image(); // " VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Tapped="Help_GotFocus"/>
+            //imgEditToneImage.VerticalOptions = LayoutOptions.FillAndExpand;
             btnEditToneMainHelp = new Button(); // " Content="Show main help info for selected synthesizer type" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Tapped="Help_GotFocus" />
+            //btnEditToneMainHelp.VerticalOptions = LayoutOptions.FillAndExpand;
             btnEditTone_Play = new Button(); // " Margin="2,0,1,2" Content="Play" HorizontalAlignment="Stretch"
             btnEditTone_Reset = new Button(); // " x:Uid="btnStudioSetReturn" Margin="1,0,1,2" Content="Reset" HorizontalAlignment="Stretch"
             btnEditTone_Return = new Button(); // " x:Uid="btnStudioSetReturn" Margin="1,0,2,2" Content="Return" HorizontalAlignment="Stretch"
@@ -781,22 +784,18 @@ namespace Integra_7_Xamarin
             slEditToneReverbSendLevel.Minimum = 0;
             slEditToneReverbSendLevel.Maximum = 127;
             tbEditToneHelpsHeading.Text = "Help heading texts goes here...";
-            //imgEditToneHeadingImage.Focused += Help_GotFocus;
             tbEditToneHelpsText.Text = "Help texts goes here...\r\nWith multiple\r\nlines!";
             imgEditToneImage.Focused += Help_GotFocus;
-            btnEditToneMainHelp.Text = "Show main help info for selected synthesizer type";
+            btnEditToneMainHelp.Text = "Show help for selected synthesizer type";
             btnEditTone_Play.Text = "Play";
-            btnEditTone_Play.Clicked += btnEditTone_Play_Click;
+            btnEditTone_Play.Clicked += Librarian_btnPlay_Clicked; // btnEditTone_Play_Click; It's all in the UIHandler class now, use the same handler.
             btnEditTone_Play.Focused += btnEditTone_Play_GotFocus;
-            //                                VerticalAlignment="Stretch" Click="btnEditTone_Play_Click" GotFocus="btnEditTone_Play_GotFocus" />
             btnEditTone_Reset.Text = "Reset";
             btnEditTone_Reset.Clicked += btnEditTone_Reset_Click;
             btnEditTone_Reset.Focused += btnEditTone_Reset_GotFocus;
-            //                                VerticalAlignment="Stretch" Click="btnEditTone_Reset_Click" GotFocus="btnEditTone_Reset_GotFocus" />
             btnEditTone_Return.Text = "Return";
             btnEditTone_Return.Clicked += btnEditTone_Return_Click;
             btnEditTone_Return.Focused += btnEditTone_Return_GotFocus;
-            //                                VerticalAlignment="Stretch" GotFocus="btnEditTone_Return_GotFocus" Click="btnEditTone_Return_Click" />
 
             // Add handlers -------------------------------------------------------------------------------
 
@@ -819,53 +818,91 @@ namespace Integra_7_Xamarin
             slEditToneReverbSendLevel.ValueChanged += slEditToneReverbSendLevel_ValueChanged;
             slEditToneReverbSendLevel.Focused += slEditToneReverbSendLevel_GotFocus;
 
-            // Assemble grids with controls ---------------------------------------------------------------
+            // Assemle main layout ------------------------------------------------------------------------
+            // Assemle second row:
+            gridSecondRow.Children.Clear();
+            gridSecondRow.Children.Add((new GridRow(0, new View[] {cbEditTone_ParameterPages, cbEditTone_PartialSelector,
+                cbEditTone_InstrumentCategorySelector, cbEditTone_KeySelector }, new byte[] { 127, 127, 127, 127 }, false, true, 1)).Row);
 
             // Assemle left column ------------------------------------------------------------------------
 
-            // Assemle second row:
-            gridSecondRow.Children.Add((new GridRow(0, new View[] {cbEditTone_ParameterPages, cbEditTone_PartialSelector,
-                cbEditTone_InstrumentCategorySelector, cbEditTone_KeySelector }, new byte[] { 255, 255, 255, 255 })).Row);
+            EditTonesLeftColumnGrid.Children.Clear();
+            EditTonesLeftColumnGrid.Children.Add((new GridRow(0, new View[] { cbEditTone_PartSelector, cbEditTone_SynthesizerType, tbEditTone_Instrument })).Row);
+            EditTonesLeftColumnGrid.Children.Add((new GridRow(1, new View[] { gridSecondRow })).Row);
+            EditTonesLeftColumnGrid.Children.Add((new GridRow(2, new View[] { ControlsGrid }, null, false, true, 15)).Row);
 
             // Assemle right column -----------------------------------------------------------------------
 
-            HelpGrid.Children.Add((new GridRow(0, new View[] { tbEditToneHelpsHeading }, null, false, false, 1)).Row);
-            HelpGrid.Children.Add((new GridRow(1, new View[] { imgEditToneHeadingImage }, null, false, false, 1)).Row);
-            HelpGrid.Children.Add((new GridRow(2, new View[] { tbEditToneHelpsText }, null, false, false, 1)).Row);
-            HelpGrid.Children.Add((new GridRow(3, new View[] { imgEditToneImage }, null, false, false, 1)).Row);
-            //HelpGrid.Children.Add(btnEditToneMainHelp);
+            Edit_RenderRightColumn(null);
+
+            //EditTonesRightColumnGrid.Children.Clear();
+            //EditTonesRightColumnGrid.Children.Add((new GridRow(0, new View[] { tbEditToneChorusSendLevel, slEditToneChorusSendLevel }, new byte[] { 2, 3 }, false, false, 1)).Row);
+            //EditTonesRightColumnGrid.Children.Add((new GridRow(1, new View[] { tbEditToneReverbSendLevel, slEditToneReverbSendLevel }, new byte[] { 2, 3 }, false, false, 1)).Row);
+            //EditTonesRightColumnGrid.Children.Add((new GridRow(16, new View[] { btnEditTone_Play, btnEditTone_Reset, btnEditToneMainHelp, btnEditTone_Return })).Row);
 
             // Assemle main layout ------------------------------------------------------------------------
 
-            EditTonesLeftColumnGrid.Children.Add((new GridRow(0, new View[] { cbEditTone_PartSelector, cbEditTone_SynthesizerType, tbEditTone_Instrument }, null, false, false, 1)).Row);
-            EditTonesLeftColumnGrid.Children.Add((new GridRow(1, new View[] { gridSecondRow })).Row);
-            EditTonesLeftColumnGrid.Children.Add((new GridRow(2, new View[] { ControlsGrid }, null, false, false, 14)).Row);
+            EditTonesGrid.Children.Clear();
+            EditTonesGrid.Children.Add((new GridRow(0, new View[] { EditTonesLeftColumnGrid, EditTonesRightColumnGrid }, new byte[] { 3, 2 } )).Row);
+            //EditTonesGrid.Children.Add((new GridRow(0, new View[] { EditTonesLeftColumnGrid })).Row);
+            //EditTonesGrid.Children.Add((new GridRow(0, new View[] { EditTonesRightColumnGrid })).Row);
 
-            EditTonesRightColumnGrid.Children.Add((new GridRow(0, new View[] { tbEditToneChorusSendLevel, slEditToneChorusSendLevel }, new byte[] { 2, 3 }, false, false, 1)).Row);
-            EditTonesRightColumnGrid.Children.Add((new GridRow(1, new View[] { tbEditToneReverbSendLevel, slEditToneReverbSendLevel }, new byte[] { 2, 3 }, false, false, 1)).Row);
-            //EditTonesRightColumnGrid.Children.Add((new GridRow(2, new View[] { tbEditToneHelpsHeading }, null, false, false, 1)).Row);
-            //EditTonesRightColumnGrid.Children.Add((new GridRow(3, new View[] { imgEditToneHeadingImage }, null, false, false, 2)).Row);
-            //EditTonesRightColumnGrid.Children.Add((new GridRow(5, new View[] { tbEditToneHelpsText }, null, false, false, 5)).Row);
-            //EditTonesRightColumnGrid.Children.Add((new GridRow(10, new View[] { imgEditToneImage }, null, false, false, 5)).Row);
-            //EditTonesRightColumnGrid.Children.Add((new GridRow(15, new View[] { btnEditToneMainHelp }, null, false, true, 1)).Row);
-            //EditTonesRightColumnGrid.Children.Add((new GridRow(16, new View[] { btnEditTone_Play, btnEditTone_Reset, btnEditTone_Return }, null, false, true, 1)).Row);
-            EditTonesRightColumnGrid.Children.Add((new GridRow(2, new View[] { HelpGrid }, null, false, true, 14)).Row);
-            EditTonesRightColumnGrid.Children.Add((new GridRow(15, new View[] { btnEditToneMainHelp }, null, false, true, 1)).Row);
-            EditTonesRightColumnGrid.Children.Add((new GridRow(16, new View[] { btnEditTone_Play, btnEditTone_Reset, btnEditTone_Return }, null, false, true, 1)).Row);
+            // Create and asemble EditorStackLayout ------------------------------------------------------
 
-            EditTonesGrid.Children.Add((new GridRow(0, new View[] { EditTonesLeftColumnGrid, EditTonesRightColumnGrid }, new byte[] { 3, 2 })).Row);
-
-            // Assemble EditorStackLayout -----------------------------------------------------------------
-            
+            //Edit_StackLayout.MinimumHeightRequest = 1;
+            //Edit_StackLayout.MinimumWidthRequest = 1;
             Edit_StackLayout = new StackLayout();
-            Edit_StackLayout.MinimumHeightRequest = 1;
-            Edit_StackLayout.MinimumWidthRequest = 1;
+            Edit_StackLayout.BackgroundColor = colorSettings.Background;
+            Edit_StackLayout.VerticalOptions = LayoutOptions.FillAndExpand;
             Edit_StackLayout.Children.Add((new GridRow(0, new View[] { EditTonesGrid })).Row);
+        }
 
-            // Control values -----------------------------------------------------------------------------
 
-            cbEditTone_PartSelector.SelectedIndex = 0;
-            cbEditTone_SynthesizerType.SelectedIndex = 0;
+        private void Edit_RenderRightColumn(HelpItem helpItem)
+        {
+            // Get Helpitem values:
+            byte row = 0;
+            EditTonesRightColumnGrid.Children.Clear();
+            //if (EditTonesRightColumnGrid.Children.Count > 3)
+            //{
+            //    EditTonesRightColumnGrid.Children.RemoveAt(2);
+            //    EditTonesRightColumnGrid.Children.RemoveAt(2);
+            //    EditTonesRightColumnGrid.Children.RemoveAt(2);
+            //    EditTonesRightColumnGrid.Children.RemoveAt(2);
+            //}
+            EditTonesRightColumnGrid.Children.Add((new GridRow(row++, new View[] { tbEditToneChorusSendLevel, slEditToneChorusSendLevel }, new byte[] { 2, 3 }, false, true, 1)).Row);
+            EditTonesRightColumnGrid.Children.Add((new GridRow(row++, new View[] { tbEditToneReverbSendLevel, slEditToneReverbSendLevel }, new byte[] { 2, 3 }, false, true, 1)).Row);
+            if (helpItem != null)
+            {
+                tbEditToneHelpsHeading.Text = helpItem.Heading;
+                imgEditToneHeadingImage.Source = helpItem.HeadingImage;
+                tbEditToneHelpsText.Text = helpItem.Text;
+                imgEditToneImage.Source = helpItem.Image;
+                EditTonesRightColumnGrid.Children.Add((new GridRow(row++, new View[] { tbEditToneHelpsHeading }, null, false, false, helpItem.spaceForHeading)).Row);
+                EditTonesRightColumnGrid.Children.Add((new GridRow(row += helpItem.spaceForHeading, new View[] { imgEditToneHeadingImage }, null, false, true, helpItem.spaceForHeadingImage)).Row);
+                EditTonesRightColumnGrid.Children.Add((new GridRow(row += helpItem.spaceForHeadingImage, new View[] { tbEditToneHelpsText }, null, false, true, helpItem.spaceForText)).Row);
+                EditTonesRightColumnGrid.Children.Add((new GridRow(row += helpItem.spaceForText, new View[] { imgEditToneImage }, null, false, true, helpItem.spaceForImage)).Row);
+            }
+            else
+            {
+                tbEditToneHelpsHeading.Text = "";
+                imgEditToneHeadingImage.Source = null;
+                tbEditToneHelpsText.Text = "Sorry, no help available";
+                imgEditToneImage.Source = null;
+                EditTonesRightColumnGrid.Children.Add((new GridRow(row++, new View[] { tbEditToneHelpsHeading }, null, false, true, 2)).Row);
+                EditTonesRightColumnGrid.Children.Add((new GridRow(row += 2, new View[] { imgEditToneHeadingImage }, null, false, true, 6)).Row);
+                EditTonesRightColumnGrid.Children.Add((new GridRow(row += 6, new View[] { tbEditToneHelpsText }, null, false, true, 2)).Row);
+                EditTonesRightColumnGrid.Children.Add((new GridRow(row += 2, new View[] { imgEditToneImage }, null, false, true, 3)).Row);
+            }
+
+            while (row < MAX_ROWS - 1)
+            {
+                Grid dummy = new Grid();
+                dummy.BackgroundColor = colorSettings.ControlBackground;
+                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })).Row);
+            }
+
+            EditTonesRightColumnGrid.Children.Add((new GridRow(row++, new View[] { btnEditTone_Play, btnEditTone_Reset, btnEditToneMainHelp, btnEditTone_Return }, new byte[] { 1, 1, 5, 1 })).Row);
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1031,17 +1068,21 @@ namespace Integra_7_Xamarin
 
         public void ShowToneEditorPage()
         {
-            page = _page.EDIT_TONE;
+            Page = _page.EDIT_TONE;
             if (!Edit_IsCreated)
             {
-                handleControlEvents = false;
+                PushHandleControlEvents();
                 DrawToneEditorPage();
                 mainStackLayout.Children.Add(Edit_StackLayout);
                 Edit_IsCreated = true;
-                handleControlEvents = true;
+                PopHandleControlEvents();
                 Edit_Init();
-                Edit_StartTimer();
+                //Edit_StartTimer();
             }
+            cbEditTone_PartSelector.SelectedIndex = commonState.CurrentPart;
+            // Current tone is in commonState.currentTone but we also need all parameters, 
+            // so use QueryToneType which in turn will read all parameters:
+            QueryToneType();
             ShowToneTypeDependentControls();
             Edit_StackLayout.IsVisible = true;
         }
@@ -1175,24 +1216,24 @@ namespace Integra_7_Xamarin
                 {
                     btnEditTone_Play.Content = "Stop";
                 }
-                commonState.reactToMidiIn = CommonState.ReactToMidiIn.EDIT;
+                //commonState.reactToMidiInAndTimerTick = CommonState.ReactToMidiInAndTimerTick.EDIT;
             }
             catch { }
-            Waiting(true);
+            Waiting(true, "Working...", Edit_StackLayout);
             edit_State = Edit_State.NONE;
             //blackBorder = new SolidColorBrush(Windows.UI.Color.FromArgb(255,0,0,0));
-            borderThickness = new Thickness(1);
-            margin2022 = new Thickness(2, 2, 2, 2);
-            margin2222 = new Thickness(2);
+            //borderThickness = new Thickness(1);
+            //margin2022 = new Thickness(2, 2, 2, 2);
+            //margin2222 = new Thickness(2);
             toneLengths = parameterSets.GetNumberedParameter(PARAMETER_TYPE.COMBOBOX_NOTE_LENGTH);
             keyNames = parameterSets.GetNumberedParameter(PARAMETER_TYPE.COMBOBOX_TONE_NAMES);
-            Help = new Help(tbEditToneHelpsHeading, imgEditToneHeadingImage, tbEditToneHelpsText, imgEditToneImage, ref rdHelpHeader, ref rdHelpHeaderImage, ref rdHelpText, ref rdHelpImage);
+            Help = new Help(tbEditToneHelpsHeading, imgEditToneHeadingImage, tbEditToneHelpsText, imgEditToneImage);
             btnEditTone_SaveTone.IsEnabled = !commonState.VenderDriverIsInstalled;
             btnEditTone_DeleteTone.IsEnabled = !commonState.VenderDriverIsInstalled;
             btnEditTone_Play.IsEnabled = !commonState.VenderDriverIsInstalled;
             //localSettings = ApplicationData.Current.LocalSettings;
-            cbEditTone_PartSelector.SelectedIndex = commonState.CurrentPart;
-            QueryToneType();
+            //cbEditTone_PartSelector.SelectedIndex = commonState.CurrentPart;
+            //QueryToneType();
         }
 
         #region MIDI communication handlers
@@ -1207,192 +1248,195 @@ namespace Integra_7_Xamarin
         /// <param name="sender"></param>
         /// <param name="e"></param>
         //private void Timer_Tick(object sender, object e)
-        private void Edit_StartTimer()
+        //private void Edit_StartTimer()
+        //{
+        //    stopEditTimer = false;
+        //    Device.StartTimer(TimeSpan.FromMilliseconds(10), () =>
+        //    {
+        //        //if (commonState.reactToMidiIn != CommonState.ReactToMidiIn.EDIT)
+        //        //{
+        //        //    return;
+        //        //}
+        //        //t.Trace("private void Timer_Tick (" + "object" + sender + ", " + "object" + e + ", " + ")");
+        //        if (stopEditTimer)
+        //        {
+        //            return false;
+        //        }
+        private void Edit_Timer_Tick()
         {
-            stopEditTimer = false;
-            Device.StartTimer(TimeSpan.FromMilliseconds(10), () =>
+            if (!initDone)
             {
-                //if (commonState.reactToMidiIn != CommonState.ReactToMidiIn.EDIT)
-                //{
-                //    return;
-                //}
-                //t.Trace("private void Timer_Tick (" + "object" + sender + ", " + "object" + e + ", " + ")");
-                if (stopEditTimer)
+                if (edit_State == Edit_State.UPDATE_CONTROLS)
                 {
-                    return false;
+                    //switch (currentProgramType)
+                    //{
+                    //    case ProgramType.PCM_SYNTH_TONE:
+                    //        try { cdEditTone_PartialSelector.Width = new GridLength(1, GridUnitType.Star); } catch (Exception e2) { }
+                    //        break;
+                    //    case ProgramType.PCM_DRUM_KIT:
+                    //        try { cdEditTone_PartialSelector.Width = new GridLength(1, GridUnitType.Star); } catch { }
+                    //        break;
+                    //    case ProgramType.SUPERNATURAL_ACOUSTIC_TONE:
+                    //        try { cdEditTone_PartialSelector.Width = new GridLength(1, GridUnitType.Star); } catch { }
+                    //        break;
+                    //    case ProgramType.SUPERNATURAL_SYNTH_TONE:
+                    //        try { cdEditTone_PartialSelector.Width = new GridLength(1, GridUnitType.Star); } catch { }
+                    //        break;
+                    //    case ProgramType.SUPERNATURAL_DRUM_KIT:
+                    //        try { cdEditTone_PartialSelector.Width = new GridLength(0, GridUnitType.Star); } catch { }
+                    //        break;
+                    //}
+                    slEditToneChorusSendLevel.Value = chorusSendLevel;
+                    slEditToneReverbSendLevel.Value = reverbSendLevel;
+                    tbEditToneChorusSendLevel.Text = "Chorus send level: " + chorusSendLevel.ToString();
+                    tbEditToneReverbSendLevel.Text = "Reverb send level: " + reverbSendLevel.ToString();
+                    EditTone_UpdateControls();
+                    edit_State = Edit_State.DONE;
+                    initDone = true;
+                    Waiting(false, "", Edit_StackLayout);
                 }
-                if (!initDone)
+                // If the user tries to enter Edit Tone when selected a voice in an expansion
+                // that has not been loaded, the I-7 will not respond (it probably did when
+                // user selected the sound, but that was in the Main Page, and the Main Page
+                // does not listen for responses.
+                // So, we end up here, but the current edit_State is WAITING and the currentMidiRequest
+                // is QUERYING_(type)_COMMON and it has been so for loong. Catch it here:
+                if (edit_State == Edit_State.WAITING)
                 {
-                    if (edit_State == Edit_State.UPDATE_CONTROLS)
+                    waitingForResponseFromIntegra7++;
+                    if (waitingForResponseFromIntegra7 > 150)
                     {
-                        //switch (currentProgramType)
-                        //{
-                        //    case ProgramType.PCM_SYNTH_TONE:
-                        //        try { cdEditTone_PartialSelector.Width = new GridLength(1, GridUnitType.Star); } catch (Exception e2) { }
-                        //        break;
-                        //    case ProgramType.PCM_DRUM_KIT:
-                        //        try { cdEditTone_PartialSelector.Width = new GridLength(1, GridUnitType.Star); } catch { }
-                        //        break;
-                        //    case ProgramType.SUPERNATURAL_ACOUSTIC_TONE:
-                        //        try { cdEditTone_PartialSelector.Width = new GridLength(1, GridUnitType.Star); } catch { }
-                        //        break;
-                        //    case ProgramType.SUPERNATURAL_SYNTH_TONE:
-                        //        try { cdEditTone_PartialSelector.Width = new GridLength(1, GridUnitType.Star); } catch { }
-                        //        break;
-                        //    case ProgramType.SUPERNATURAL_DRUM_KIT:
-                        //        try { cdEditTone_PartialSelector.Width = new GridLength(0, GridUnitType.Star); } catch { }
-                        //        break;
-                        //}
-                        slEditToneChorusSendLevel.Value = chorusSendLevel;
-                        slEditToneReverbSendLevel.Value = reverbSendLevel;
-                        tbEditToneChorusSendLevel.Text = "Chorus send level: " + chorusSendLevel.ToString();
-                        tbEditToneReverbSendLevel.Text = "Reverb send level: " + reverbSendLevel.ToString();
-                        EditTone_UpdateControls();
-                        edit_State = Edit_State.DONE;
-                        initDone = true;
-                        Waiting(false);
-                    }
-                    // If the user tries to enter Edit Tone when selected a voice in an expansion
-                    // that has not been loaded, the I-7 will not respond (it probably did when
-                    // user selected the sound, but that was in the Main Page, and the Main Page
-                    // does not listen for responses.
-                    // So, we end up here, but the current edit_State is WAITING and the currentMidiRequest
-                    // is QUERYING_(type)_COMMON and it has been so for loong. Catch it here:
-                    if (edit_State == Edit_State.WAITING)
-                    {
-                        waitingForResponseFromIntegra7++;
-                        if (waitingForResponseFromIntegra7 > 150)
-                        {
-                            //timer.Stop();
-                            Waiting(false);
-                            IsModuleLoaded();
-                        }
-                    }
-                    else
-                    {
-                        waitingForResponseFromIntegra7 = 0;
+                        //timer.Stop();
+                        Waiting(false, "", Edit_StackLayout);
+                        IsModuleLoaded();
                     }
                 }
                 else
                 {
-                    if (edit_State == Edit_State.DONE && currentEditMidiRequest == Edit_CurrentMidiRequest.NONE)
+                    waitingForResponseFromIntegra7 = 0;
+                }
+            }
+            else
+            {
+                if (edit_State == Edit_State.DONE && currentEditMidiRequest == Edit_CurrentMidiRequest.NONE)
+                {
+                    edit_State = Edit_State.NONE;
+                }
+                else if (edit_State == Edit_State.NONE && currentEditMidiRequest == Edit_CurrentMidiRequest.NONE)
+                {
+                    PopHandleControlEvents();
+                }
+                else
+                {
+                    switch (currentProgramType)
                     {
-                        edit_State = Edit_State.NONE;
-                    }
-                    else if (edit_State == Edit_State.NONE && currentEditMidiRequest == Edit_CurrentMidiRequest.NONE)
-                    {
-                        handleControlEvents = true;
-                    }
-                    else
-                    {
-                        switch (currentProgramType)
-                        {
-                            case ProgramType.PCM_SYNTH_TONE:
-                                if (edit_State == Edit_State.UPDATE_CONTROLS && currentEditMidiRequest == Edit_CurrentMidiRequest.NONE)
-                                {
-                                    edit_State = Edit_State.NONE;
-                                    currentEditMidiRequest = Edit_CurrentMidiRequest.NONE;
-                                    EditTone_UpdateControls();
-                                }
-                                if (edit_State == Edit_State.DONE && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_PCM_SYNTH_TONE_COMMON_MFX)
-                                {
-                                    edit_State = Edit_State.NONE;
-                                    currentEditMidiRequest = Edit_CurrentMidiRequest.NONE;
-                                    EditTone_UpdateControls();
-                                }
-                                else if (edit_State == Edit_State.DONE && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_PCM_SYNTH_TONE_PARTIAL)
-                                {
-                                    edit_State = Edit_State.NONE;
-                                    currentEditMidiRequest = Edit_CurrentMidiRequest.NONE;
-                                    EditTone_UpdateControls();
-                                }
-                                break;
-                            case ProgramType.PCM_DRUM_KIT:
-                                if (edit_State == Edit_State.UPDATE_CONTROLS && currentEditMidiRequest == Edit_CurrentMidiRequest.NONE)
-                                {
-                                    edit_State = Edit_State.NONE;
-                                    currentEditMidiRequest = Edit_CurrentMidiRequest.NONE;
-                                    MakePCMDrumKitControls();// (byte)(currentKey - 21));
-                                }
-                                else if (edit_State == Edit_State.DONE && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_PCM_DRUM_KIT_PARTIAL)
-                                {
-                                    edit_State = Edit_State.NONE;
-                                    currentEditMidiRequest = Edit_CurrentMidiRequest.NONE;
-                                    UpdatePCMDrumKitControls();
-                                }
-                                else if (edit_State == Edit_State.DONE && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_PCM_DRUM_KIT_COMMON_MFX)
-                                {
-                                    edit_State = Edit_State.NONE;
-                                    currentEditMidiRequest = Edit_CurrentMidiRequest.NONE;
-                                    UpdatePCMDrumKitControls();
-                                }
-                                break;
-                            case ProgramType.SUPERNATURAL_ACOUSTIC_TONE:
-                                if (edit_State == Edit_State.UPDATE_CONTROLS && currentEditMidiRequest == Edit_CurrentMidiRequest.NONE)
-                                {
-                                    edit_State = Edit_State.NONE;
-                                    currentEditMidiRequest = Edit_CurrentMidiRequest.NONE;
-                                    UpdateSuperNATURALAcousticToneControls();// (byte)(currentKey - 21));
-                                }
-                                else if (edit_State == Edit_State.DONE && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_SUPERNATURAL_ACOUSTIC_TONE_COMMON_MFX)
-                                {
-                                    edit_State = Edit_State.NONE;
-                                    currentEditMidiRequest = Edit_CurrentMidiRequest.NONE;
-                                    UpdateSuperNATURALAcousticToneControls();
-                                }
-                                break;
-                            case ProgramType.SUPERNATURAL_SYNTH_TONE:
-                                if (edit_State == Edit_State.UPDATE_CONTROLS && currentEditMidiRequest == Edit_CurrentMidiRequest.NONE)
-                                {
-                                    edit_State = Edit_State.NONE;
-                                    currentEditMidiRequest = Edit_CurrentMidiRequest.NONE;
-                                    UpdateSuperNATURALSynthToneControls();// (byte)(currentKey - 21));
-                                }
-                                else if (edit_State == Edit_State.DONE && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_SUPERNATURAL_ACOUSTIC_TONE_WAVE)
-                                {
-                                    edit_State = Edit_State.NONE;
-                                    currentEditMidiRequest = Edit_CurrentMidiRequest.NONE;
-                                    UpdateSuperNATURALSynthToneControls();
-                                }
-                                else if (edit_State == Edit_State.DONE && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_SUPERNATURAL_SYNTH_TONE_PARTIAL)
-                                {
-                                    edit_State = Edit_State.NONE;
-                                    currentEditMidiRequest = Edit_CurrentMidiRequest.NONE;
-                                    UpdateSuperNATURALSynthToneControls();
-                                }
-                                else if (edit_State == Edit_State.DONE && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_SUPERNATURAL_SYNTH_TONE_COMMON_MFX)
-                                {
-                                    edit_State = Edit_State.NONE;
-                                    currentEditMidiRequest = Edit_CurrentMidiRequest.NONE;
-                                    UpdateSuperNATURALSynthToneControls();
-                                }
-                                break;
-                            case ProgramType.SUPERNATURAL_DRUM_KIT:
-                                if (edit_State == Edit_State.UPDATE_CONTROLS && currentEditMidiRequest == Edit_CurrentMidiRequest.NONE)
-                                {
-                                    edit_State = Edit_State.NONE;
-                                    currentEditMidiRequest = Edit_CurrentMidiRequest.NONE;
-                                    UpdateSuperNATURALDrumKitControls();// (byte)(currentKey - 27));
-                                }
-                                else if (edit_State == Edit_State.DONE && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_SUPERNATURAL_DRUM_KIT_PARTIAL)
-                                {
-                                    edit_State = Edit_State.NONE;
-                                    currentEditMidiRequest = Edit_CurrentMidiRequest.NONE;
-                                    UpdateSuperNATURALDrumKitControls();
-                                }
-                                else if (edit_State == Edit_State.DONE && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_SUPERNATURAL_DRUM_KIT_COMMON_MFX)
-                                {
-                                    edit_State = Edit_State.NONE;
-                                    currentEditMidiRequest = Edit_CurrentMidiRequest.NONE;
-                                    UpdateSuperNATURALDrumKitControls();
-                                }
-                                break;
-                        }
+                        case ProgramType.PCM_SYNTH_TONE:
+                            if (edit_State == Edit_State.UPDATE_CONTROLS && currentEditMidiRequest == Edit_CurrentMidiRequest.NONE)
+                            {
+                                edit_State = Edit_State.NONE;
+                                currentEditMidiRequest = Edit_CurrentMidiRequest.NONE;
+                                EditTone_UpdateControls();
+                            }
+                            if (edit_State == Edit_State.DONE && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_PCM_SYNTH_TONE_COMMON_MFX)
+                            {
+                                edit_State = Edit_State.NONE;
+                                currentEditMidiRequest = Edit_CurrentMidiRequest.NONE;
+                                EditTone_UpdateControls();
+                            }
+                            else if (edit_State == Edit_State.DONE && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_PCM_SYNTH_TONE_PARTIAL)
+                            {
+                                edit_State = Edit_State.NONE;
+                                currentEditMidiRequest = Edit_CurrentMidiRequest.NONE;
+                                EditTone_UpdateControls();
+                            }
+                            break;
+                        case ProgramType.PCM_DRUM_KIT:
+                            if (edit_State == Edit_State.UPDATE_CONTROLS && currentEditMidiRequest == Edit_CurrentMidiRequest.NONE)
+                            {
+                                edit_State = Edit_State.NONE;
+                                currentEditMidiRequest = Edit_CurrentMidiRequest.NONE;
+                                MakePCMDrumKitControls();// (byte)(currentKey - 21));
+                            }
+                            else if (edit_State == Edit_State.DONE && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_PCM_DRUM_KIT_PARTIAL)
+                            {
+                                edit_State = Edit_State.NONE;
+                                currentEditMidiRequest = Edit_CurrentMidiRequest.NONE;
+                                UpdatePCMDrumKitControls();
+                            }
+                            else if (edit_State == Edit_State.DONE && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_PCM_DRUM_KIT_COMMON_MFX)
+                            {
+                                edit_State = Edit_State.NONE;
+                                currentEditMidiRequest = Edit_CurrentMidiRequest.NONE;
+                                UpdatePCMDrumKitControls();
+                            }
+                            break;
+                        case ProgramType.SUPERNATURAL_ACOUSTIC_TONE:
+                            if (edit_State == Edit_State.UPDATE_CONTROLS && currentEditMidiRequest == Edit_CurrentMidiRequest.NONE)
+                            {
+                                edit_State = Edit_State.NONE;
+                                currentEditMidiRequest = Edit_CurrentMidiRequest.NONE;
+                                UpdateSuperNATURALAcousticToneControls();// (byte)(currentKey - 21));
+                            }
+                            else if (edit_State == Edit_State.DONE && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_SUPERNATURAL_ACOUSTIC_TONE_COMMON_MFX)
+                            {
+                                edit_State = Edit_State.NONE;
+                                currentEditMidiRequest = Edit_CurrentMidiRequest.NONE;
+                                UpdateSuperNATURALAcousticToneControls();
+                            }
+                            break;
+                        case ProgramType.SUPERNATURAL_SYNTH_TONE:
+                            if (edit_State == Edit_State.UPDATE_CONTROLS && currentEditMidiRequest == Edit_CurrentMidiRequest.NONE)
+                            {
+                                edit_State = Edit_State.NONE;
+                                currentEditMidiRequest = Edit_CurrentMidiRequest.NONE;
+                                UpdateSuperNATURALSynthToneControls();// (byte)(currentKey - 21));
+                            }
+                            else if (edit_State == Edit_State.DONE && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_SUPERNATURAL_ACOUSTIC_TONE_WAVE)
+                            {
+                                edit_State = Edit_State.NONE;
+                                currentEditMidiRequest = Edit_CurrentMidiRequest.NONE;
+                                UpdateSuperNATURALSynthToneControls();
+                            }
+                            else if (edit_State == Edit_State.DONE && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_SUPERNATURAL_SYNTH_TONE_PARTIAL)
+                            {
+                                edit_State = Edit_State.NONE;
+                                currentEditMidiRequest = Edit_CurrentMidiRequest.NONE;
+                                UpdateSuperNATURALSynthToneControls();
+                            }
+                            else if (edit_State == Edit_State.DONE && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_SUPERNATURAL_SYNTH_TONE_COMMON_MFX)
+                            {
+                                edit_State = Edit_State.NONE;
+                                currentEditMidiRequest = Edit_CurrentMidiRequest.NONE;
+                                UpdateSuperNATURALSynthToneControls();
+                            }
+                            break;
+                        case ProgramType.SUPERNATURAL_DRUM_KIT:
+                            if (edit_State == Edit_State.UPDATE_CONTROLS && currentEditMidiRequest == Edit_CurrentMidiRequest.NONE)
+                            {
+                                edit_State = Edit_State.NONE;
+                                currentEditMidiRequest = Edit_CurrentMidiRequest.NONE;
+                                UpdateSuperNATURALDrumKitControls();// (byte)(currentKey - 27));
+                            }
+                            else if (edit_State == Edit_State.DONE && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_SUPERNATURAL_DRUM_KIT_PARTIAL)
+                            {
+                                edit_State = Edit_State.NONE;
+                                currentEditMidiRequest = Edit_CurrentMidiRequest.NONE;
+                                UpdateSuperNATURALDrumKitControls();
+                            }
+                            else if (edit_State == Edit_State.DONE && currentEditMidiRequest == Edit_CurrentMidiRequest.QUERYING_SUPERNATURAL_DRUM_KIT_COMMON_MFX)
+                            {
+                                edit_State = Edit_State.NONE;
+                                currentEditMidiRequest = Edit_CurrentMidiRequest.NONE;
+                                UpdateSuperNATURALDrumKitControls();
+                            }
+                            break;
                     }
                 }
-                return true;
-            });
+            }
         }
+        //        return true;
+        //    });
+        //}
 
         private async void IsModuleLoaded()
         {
@@ -1448,13 +1492,14 @@ namespace Integra_7_Xamarin
         {
             t.Trace("private void EditTone_UpdateControls()");
             //currentHandleControlEvents = handleControlEvents;
-            //handleControlEvents = false;
+            //PushHandleControlEvents();
             if (!initDone)
             {
                 UpdateParameterPagesSelector();
                 Update_PartialSelector();
                 UpdateInstrumentSelector();
             }
+            cbEditTone_InstrumentCategorySelector.SelectedItem = commonState.currentTone.Category;
             switch (currentProgramType)
             {
                 case ProgramType.PCM_SYNTH_TONE:
@@ -1505,7 +1550,7 @@ namespace Integra_7_Xamarin
                     UpdateSuperNATURALDrumKitControls();
                     break;
             }
-            Help.Show(currentProgramIndex, 0, 0, 0);
+            Edit_RenderRightColumn(Help.Show(currentProgramIndex, 0, 0, 0));
             try
             {
                 ((Button)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
@@ -1530,7 +1575,84 @@ namespace Integra_7_Xamarin
                         }
                         catch
                         {
-                            t.Trace("Could not find type on line 1533");
+                            try
+                            {
+                                ((LabeledSwitch)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
+                            }
+                            catch
+                            {
+                                try
+                                {
+                                    ((ListView)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
+                                }
+                                catch
+                                {
+                                    try
+                                    {
+                                        ((Picker)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
+                                    }
+                                    catch
+                                    {
+                                        try
+                                        {
+                                            ((LabeledPicker)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
+                                        }
+                                        catch
+                                        {
+                                            try
+                                            {
+                                                ((Label)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
+                                            }
+                                            catch
+                                            {
+                                                try
+                                                {
+                                                    ((Editor)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
+                                                }
+                                                catch
+                                                {
+                                                    try
+                                                    {
+                                                        ((Image)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
+                                                    }
+                                                    catch
+                                                    {
+                                                        try
+                                                        {
+                                                            ((LabeledText)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
+                                                        }
+                                                        catch
+                                                        {
+                                                            try
+                                                            {
+                                                                ((TextBox)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
+                                                            }
+                                                            catch
+                                                            {
+                                                                try
+                                                                {
+                                                                    ((LabeledTextInput)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
+                                                                }
+                                                                catch
+                                                                {
+                                                                    try
+                                                                    {
+                                                                        ((Grid)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
+                                                                    }
+                                                                    catch
+                                                                    {
+                                                                        t.Trace("Could not find type on line 1629");
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -1541,10 +1663,10 @@ namespace Integra_7_Xamarin
         // TODO: Compare to earlier solutions for different MIDI reception using a variabla and a timer
         private void Edit_MidiInPort_MessageReceived()
         {
-            if (commonState.reactToMidiIn != CommonState.ReactToMidiIn.EDIT)
-            {
-                return;
-            }
+            //if (commonState.reactToMidiInAndTimerTick != CommonState.ReactToMidiInAndTimerTick.EDIT)
+            //{
+            //    return;
+            //}
             t.Trace("private void Edit_MidiInPort_MessageReceived ()");
             byte temp = currentKey;
             //IMidiMessage receivedMidiMessage = args.Message;
@@ -2207,6 +2329,7 @@ namespace Integra_7_Xamarin
             if (initDone && handleControlEvents)
             {
                 HelpTag tag;
+                HelpItem helpItem = null;
                 try
                 {
                     if (sender.GetType() == typeof(ComboBox))
@@ -2215,13 +2338,13 @@ namespace Integra_7_Xamarin
                         if (control.Tag.GetType() == typeof(HelpTag))
                         {
                             tag = (HelpTag)control.Tag;
-                            Help.Show(currentProgramIndex, currentParameterPageIndex, (byte)(((HelpTag)tag).ItemIndex + Help.Skip), (byte)(control.SelectedIndex));
+                            helpItem = Help.Show(currentProgramIndex, currentParameterPageIndex, (byte)(((HelpTag)tag).ItemIndex + Help.Skip), (byte)(control.SelectedIndex));
                         }
                         else
                         {
                             Buddy buddyTag = (Buddy)control.Tag;
                             tag = (HelpTag)buddyTag.Tag;
-                            Help.Show(5, (byte)(currentMFXType + currentMFXTypeOffset), (byte)(((HelpTag)tag).ItemIndex), (byte)(((HelpTag)tag).SubItemIndex + control.SelectedIndex));
+                            helpItem = Help.Show(5, (byte)(currentMFXType + currentMFXTypeOffset), (byte)(((HelpTag)tag).ItemIndex), (byte)(((HelpTag)tag).SubItemIndex + control.SelectedIndex));
                         }
                     }
                     else if (sender.GetType() == typeof(Slider))
@@ -2230,13 +2353,13 @@ namespace Integra_7_Xamarin
                         if (control.Tag.GetType() == typeof(HelpTag))
                         {
                             tag = (HelpTag)control.Tag;
-                            Help.Show(currentProgramIndex, currentParameterPageIndex, (byte)(((HelpTag)tag).ItemIndex + Help.Skip), (byte)(((HelpTag)tag).SubItemIndex));
+                            helpItem = Help.Show(currentProgramIndex, currentParameterPageIndex, (byte)(((HelpTag)tag).ItemIndex + Help.Skip), (byte)(((HelpTag)tag).SubItemIndex));
                         }
                         else
                         {
                             Buddy buddyTag = (Buddy)control.Tag;
                             tag = (HelpTag)buddyTag.Tag;
-                            Help.Show(5, (byte)(currentMFXType + currentMFXTypeOffset), (byte)(((HelpTag)tag).ItemIndex), (byte)(((HelpTag)tag).SubItemIndex));
+                            helpItem = Help.Show(5, (byte)(currentMFXType + currentMFXTypeOffset), (byte)(((HelpTag)tag).ItemIndex), (byte)(((HelpTag)tag).SubItemIndex));
                         }
                     }
                     else if (sender.GetType() == typeof(CheckBox))
@@ -2245,14 +2368,14 @@ namespace Integra_7_Xamarin
                         if (control.Tag.GetType() == typeof(HelpTag))
                         {
                             tag = (HelpTag)control.Tag;
-                            Help.Show(currentProgramIndex, currentParameterPageIndex, (byte)(((HelpTag)tag).ItemIndex + Help.Skip), (byte)(((HelpTag)tag).SubItemIndex));
+                            helpItem = Help.Show(currentProgramIndex, currentParameterPageIndex, (byte)(((HelpTag)tag).ItemIndex + Help.Skip), (byte)(((HelpTag)tag).SubItemIndex));
                         }
                         else
                         {
                                 
                             Buddy buddyTag = (Buddy)control.Tag;
                             tag = (HelpTag)buddyTag.Tag;
-                            Help.Show(5, (byte)(currentMFXType + currentMFXTypeOffset), (byte)(((HelpTag)tag).ItemIndex), (byte)(((HelpTag)tag).SubItemIndex));
+                            helpItem = Help.Show(5, (byte)(currentMFXType + currentMFXTypeOffset), (byte)(((HelpTag)tag).ItemIndex), (byte)(((HelpTag)tag).SubItemIndex));
                         }
                     }
                     else if (sender.GetType() == typeof(TextBox))
@@ -2261,14 +2384,14 @@ namespace Integra_7_Xamarin
                         if (control.Tag.GetType() == typeof(HelpTag))
                         {
                             tag = (HelpTag)control.Tag;
-                            Help.Show(currentProgramIndex, currentParameterPageIndex, (byte)(((HelpTag)tag).ItemIndex + Help.Skip), (byte)(((HelpTag)tag).SubItemIndex));
+                            helpItem = Help.Show(currentProgramIndex, currentParameterPageIndex, (byte)(((HelpTag)tag).ItemIndex + Help.Skip), (byte)(((HelpTag)tag).SubItemIndex));
                         }
                         else
                         {
 
                             Buddy buddyTag = (Buddy)control.Tag;
                             tag = (HelpTag)buddyTag.Tag;
-                            Help.Show(5, (byte)(currentMFXType + currentMFXTypeOffset), (byte)(((HelpTag)tag).ItemIndex), (byte)(((HelpTag)tag).SubItemIndex));
+                            helpItem = Help.Show(5, (byte)(currentMFXType + currentMFXTypeOffset), (byte)(((HelpTag)tag).ItemIndex), (byte)(((HelpTag)tag).SubItemIndex));
                         }
                     }
                     else if (sender.GetType() == typeof(Button))
@@ -2277,16 +2400,17 @@ namespace Integra_7_Xamarin
                         if (control.Tag.GetType() == typeof(HelpTag))
                         {
                             tag = (HelpTag)control.Tag;
-                            Help.Show(currentProgramIndex, currentParameterPageIndex, (byte)(((HelpTag)tag).ItemIndex + Help.Skip), (byte)(((HelpTag)tag).SubItemIndex));
+                            helpItem = Help.Show(currentProgramIndex, currentParameterPageIndex, (byte)(((HelpTag)tag).ItemIndex + Help.Skip), (byte)(((HelpTag)tag).SubItemIndex));
                         }
                         else
                         {
 
                             Buddy buddyTag = (Buddy)control.Tag;
                             tag = (HelpTag)buddyTag.Tag;
-                            Help.Show(5, (byte)(currentMFXType + currentMFXTypeOffset), (byte)(((HelpTag)tag).ItemIndex), (byte)(((HelpTag)tag).SubItemIndex));
+                            helpItem = Help.Show(5, (byte)(currentMFXType + currentMFXTypeOffset), (byte)(((HelpTag)tag).ItemIndex), (byte)(((HelpTag)tag).SubItemIndex));
                         }
                     }
+                    Edit_RenderRightColumn(helpItem);
                 }
                 catch (Exception e2)
                 {
@@ -2371,24 +2495,6 @@ namespace Integra_7_Xamarin
         #endregion
 
         #region helpers
-
-        private void Waiting(Boolean on) // TODO: Think about this, Tablets and phones normally do not have a cursor, 
-            // but can have when mouse is connected via OTG! Still has no waitcursor.
-            // In those cases image UI might have some 'disabled' look and not respond to tapping.
-            // This is platform dependent! UWP and MacOS definitely can show a waitcursor.
-        {
-            //t.Trace("private void Waiting(" + on.ToString() + ")");
-            //if (on)
-            //{
-            //    Window.Current.CoreWindow.PointerCursor =
-            //        new Windows.UI.Core.CoreCursor(Windows.UI.Core.CoreCursorType.Wait, 1);
-            //}
-            //else
-            //{
-            //    Window.Current.CoreWindow.PointerCursor =
-            //        new Windows.UI.Core.CoreCursor(Windows.UI.Core.CoreCursorType.Arrow, 1);
-            //}
-        }
 
         /// <summary>
         /// Given an MFX type some variable will be set to defeat the problem of splitted parameter pages

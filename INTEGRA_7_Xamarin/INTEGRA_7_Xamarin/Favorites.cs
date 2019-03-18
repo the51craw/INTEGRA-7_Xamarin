@@ -42,7 +42,7 @@ namespace Integra_7_Xamarin
         Button Favorites_btnReturn = null;
         Grid Favorites_grRightColumn = null;
 
-
+        LabeledSwitch kalle = null;
 
 
         public void DrawFavoritesPage()
@@ -98,7 +98,7 @@ namespace Integra_7_Xamarin
             Favorites_lvFavoriteList.ItemsSource = Favorites_ocFavoriteList;
 
             Favorites_edNewFolderName = new Editor();
-            Favorites_edNewFolderName.BackgroundColor = colorSettings.Background;
+            Favorites_edNewFolderName.BackgroundColor = colorSettings.ControlBackground;
 
             Favorites_btnAddFolder = new Button();
             Favorites_btnAddFolder.Text = "Add folder";
@@ -107,7 +107,7 @@ namespace Integra_7_Xamarin
             Favorites_btnDeleteFolder.Text = "Delete selected folder";
 
             Favorites_lvHelp1 = new TextBlock();
-            Favorites_lvHelp1.BackgroundColor = colorSettings.Background;
+            Favorites_lvHelp1.BackgroundColor = colorSettings.ControlBackground;
 
             Favorites_lvHelp2 = new ListView();
 
@@ -125,6 +125,11 @@ namespace Integra_7_Xamarin
 
             Favorites_btnReturn = new Button();
             Favorites_btnReturn.Text = "Return";
+
+
+            kalle = new LabeledSwitch("Svanslös");
+            //kalle.Label.Text = "Svanslös";
+            kalle.LSSwitch.Toggled += Switch_Toggled;
 
             // Add handlers -------------------------------------------------------------------------------
 
@@ -165,7 +170,7 @@ namespace Integra_7_Xamarin
             Favorites_btnAddFolder.Clicked += Favorites_btnAddFolder_Clicked;
             Favorites_btnDeleteFolder.Clicked += Favorites_btnDeleteFolder_Clicked;
             Favorites_btnContext.Clicked += Favorites_btnContext_Clicked;
-            Favorites_btnPlay.Clicked += Favorites_btnPlay_Clicked;
+            Favorites_btnPlay.Clicked += Librarian_btnPlay_Clicked; //  Favorites_btnPlay_Clicked; All in same class now, UIHandler.
             Favorites_btnBackup.Clicked += Favorites_btnBackup_Clicked;
             Favorites_btnRestore.Clicked += Favorites_btnRestore_Clicked;
             Favorites_btnReturn.Clicked += Favorites_btnReturn_Clicked;
@@ -211,7 +216,7 @@ namespace Integra_7_Xamarin
             Favorites_grRightColumn.Children.Add(new GridRow(6, new View[] { Favorites_btnPlay }).Row);
             Favorites_grRightColumn.Children.Add(new GridRow(7, new View[] { Favorites_btnBackup }).Row);
             Favorites_grRightColumn.Children.Add(new GridRow(8, new View[] { Favorites_btnRestore }).Row);
-            Favorites_grRightColumn.Children.Add(new GridRow(9, new View[] { Favorites_btnReturn }).Row);
+            Favorites_grRightColumn.Children.Add(new GridRow(9, new View[] { Favorites_btnReturn, kalle }).Row);
 
             RowDefinitionCollection Favorites_rdcRight = new RowDefinitionCollection();
 
@@ -239,6 +244,10 @@ namespace Integra_7_Xamarin
             UpdateFoldersList();
         }
 
+        private void Switch_Toggled(object sender, ToggledEventArgs e)
+        {
+        }
+
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Handlers
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -261,18 +270,18 @@ namespace Integra_7_Xamarin
             //Save();
         }
 
-        private void Favorites_btnPlay_Clicked(object sender, EventArgs e)
-        {
-            commonState.player.Play();
-            if (commonState.player.Playing)
-            {
-                Favorites_btnPlay.Text = "Stop";
-            }
-            else
-            {
-                Favorites_btnPlay.Text = "Play";
-            }
-        }
+        //private void Favorites_btnPlay_Clicked(object sender, EventArgs e)
+        //{
+        //    commonState.player.Play();
+        //    if (commonState.player.Playing)
+        //    {
+        //        Favorites_btnPlay.Text = "Stop";
+        //    }
+        //    else
+        //    {
+        //        Favorites_btnPlay.Text = "Play";
+        //    }
+        //}
 
         private void Favorites_btnContext_Clicked(object sender, EventArgs e)
         {
@@ -334,27 +343,30 @@ namespace Integra_7_Xamarin
             if (!String.IsNullOrEmpty(Favorites_edNewFolderName.Text))
             {
                 Boolean found = false;
-                foreach (FavoritesFolder folder in commonState.favoritesList.folders)
+                if (commonState.favoritesList != null && commonState.favoritesList.folders != null && commonState.favoritesList.folders.Count() > 0)
                 {
-                    if (folder.Name == Favorites_edNewFolderName.Text.Trim())
+                    foreach (FavoritesFolder folder in commonState.favoritesList.folders)
                     {
-                        found = true;
-                        break;
+                        if (folder.Name == Favorites_edNewFolderName.Text.Trim())
+                        {
+                            found = true;
+                            break;
+                        }
                     }
-                }
-                if (!found)
-                {
-                    Favorites_btnAddFolder.IsEnabled = true;
-                    if (((String)e.NewTextValue).Contains("\r"))
+                    if (!found)
                     {
-                        commonState.favoritesList.folders.Add(new FavoritesFolder(Favorites_edNewFolderName.Text.Trim().Replace("\r", "")));
-                        Favorites_edNewFolderName.Text = "";
-                        UpdateFoldersList();
+                        Favorites_btnAddFolder.IsEnabled = true;
+                        if (((String)e.NewTextValue).Contains("\r"))
+                        {
+                            commonState.favoritesList.folders.Add(new FavoritesFolder(Favorites_edNewFolderName.Text.Trim().Replace("\r", "")));
+                            Favorites_edNewFolderName.Text = "";
+                            UpdateFoldersList();
+                        }
                     }
-                }
-                else
-                {
-                    Favorites_btnAddFolder.IsEnabled = false;
+                    else
+                    {
+                        Favorites_btnAddFolder.IsEnabled = false;
+                    }
                 }
             }
             else
@@ -425,10 +437,10 @@ namespace Integra_7_Xamarin
         private void Favorites_lvFolderList_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
             //t.Trace("private void lvFolders_SelectionChanged(" + ((ListView)sender).SelectedIndex.ToString() + ")");
-            handleControlEvents = false;
+            PushHandleControlEvents();
             //UpdateFavoritesList((String)(((ListView)sender).SelectedItem));
             UpdateFavoritesList((String)sender);
-            handleControlEvents = true;
+            PopHandleControlEvents();
             Favorites_btnDeleteFolder.IsEnabled = true;
             currentFolder = Favorites_ocFolderList.IndexOf(Favorites_lvFolderList.SelectedItem);
             if (favoritesAction == FavoritesAction.ADD || favoritesAction == FavoritesAction.REMOVE)
@@ -744,7 +756,7 @@ namespace Integra_7_Xamarin
             if (handleControlEvents)
             {
                 t.Trace("private void UpdateFoldersList(SelectedIndex = " + SelectedFolderIndex.ToString() + ")");
-                handleControlEvents = false;
+                PushHandleControlEvents();
                 try
                 {
                     Int32 count = 0;
@@ -825,7 +837,7 @@ namespace Integra_7_Xamarin
                             Favorites_lvFolderList.SelectedItem = Favorites_ocFolderList[0];
                         }
                     }
-                    handleControlEvents = true;
+                    PopHandleControlEvents();
                     if (Favorites_lvFolderList.SelectedItem == null)
                     {
                         if (Favorites_ocFolderList.Count > 0)
@@ -837,7 +849,7 @@ namespace Integra_7_Xamarin
                     Favorites_lvFolderList.ItemsSource = Favorites_ocFolderList;
                 }
                 catch { }
-                handleControlEvents = true;
+                PopHandleControlEvents();
             }
         }
 

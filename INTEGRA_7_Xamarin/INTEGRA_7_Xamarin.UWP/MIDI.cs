@@ -5,6 +5,7 @@ using Windows.Devices.Midi;
 using Windows.UI.Xaml;
 using Windows.UI.Core;
 using Windows.Storage.Streams;
+using System.Threading.Tasks;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Xamarin.Forms;
 using Integra_7_Xamarin.UWP;
@@ -32,7 +33,7 @@ namespace Integra_7_Xamarin.UWP
         public byte[] rawData;
         public DispatcherTimer timer;
         public Boolean MessageReceived = false;
-        public Windows.UI.Core.CoreDispatcher dispatcher;
+        public Boolean VenderDriverPresent = false;
 
         public void GenericHandler(object sender, object e)
         {
@@ -44,13 +45,6 @@ namespace Integra_7_Xamarin.UWP
 
         public MIDI()
         {
-            if (midiOutPort == null)
-            {
-                timer = new DispatcherTimer();
-                timer.Interval = TimeSpan.FromMilliseconds(1);
-                timer.Tick += Timer_Tick;
-                timer.Start();
-            }
         }
 
         private void Timer_Tick(object sender, object e)
@@ -77,9 +71,14 @@ namespace Integra_7_Xamarin.UWP
             MessageReceived = true;
         }
 
+        public void Init(Integra_7_Xamarin.MainPage mainPage, string deviceName, Picker OutputDeviceSelector, Picker InputDeviceSelector, object DeviceSpecificObject, byte MidiOutPortChannel, byte MidiInPortChannel)
+        {
+            throw new NotImplementedException();
+        }
+
         public MIDI(Integra_7_Xamarin.MainPage mainPage, Picker OutputDeviceSelector, Picker InputDeviceSelector, byte MidiOutPortChannel, byte MidiInPortChannel)
         {
-            Init("INTEGRA-7", mainPage, OutputDeviceSelector, InputDeviceSelector, MidiOutPortChannel, MidiInPortChannel);
+            Init(mainPage, "INTEGRA-7", OutputDeviceSelector, InputDeviceSelector, MidiOutPortChannel, MidiInPortChannel);
         }
 
         // Constructor using a combobox for full device watch:
@@ -115,25 +114,29 @@ namespace Integra_7_Xamarin.UWP
             Init(deviceName);
         }
 
-        public void Init(String deviceName, object mainPage_UWP, Picker OutputDeviceSelector, Picker InputDeviceSelector, byte MidiOutPortChannel, byte MidiInPortChannel)
+        public void Init(Integra_7_Xamarin.MainPage mainPage, String deviceName, Picker OutputDeviceSelector, Picker InputDeviceSelector, byte MidiOutPortChannel, byte MidiInPortChannel)
         {
-            //MainPage_UWP = (Integra_7_Xamarin_UWP).MainPage)mainPage_UWP;
-            //dispatcher =    ((inte MainPage_UWP)mainPage_UWP).
-            //Integra_7_Xamarin.MainPage.GetMainPage(), 
-            //Dispatcher
-            //mainPage_UWP.dispatcher;
-            //dispatcher = Windows.UI.Core.CoreDispatcher; DependencyObject.Dispatcher; rs
-            //Init(deviceName, OutputDeviceSelector, InputDeviceSelector, Integra_7_Xamarin.MainPage mainPage_UWP.ge, MidiOutPortChannel, MidiInPortChannel);
+            //Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
+            //    () =>
+            //    {
+            //        Init(mainPage, deviceName, OutputDeviceSelector, InputDeviceSelector,
+            //    CoreApplication.GetCurrentView().CoreWindow.Dispatcher, MidiOutPortChannel, MidiInPortChannel);
+            //    });
+            //await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(
+            //CoreDispatcherPriority.Normal,
+            //() => { // your code should be here});
+            //Init(mainPage, deviceName, OutputDeviceSelector, InputDeviceSelector,
+            //CoreApplication.GetCurrentView().CoreWindow.Dispatcher, MidiOutPortChannel, MidiInPortChannel);
+            Init(mainPage, deviceName, OutputDeviceSelector, InputDeviceSelector, null, MidiOutPortChannel, MidiInPortChannel);
         }
 
-        public void Init(Integra_7_Xamarin.MainPage mainPage, String deviceName, Picker OutputDeviceSelector, Picker InputDeviceSelector, object Dispatcher, byte MidiOutPortChannel, byte MidiInPortChannel)
+        public void Init(Integra_7_Xamarin.MainPage mainPage, String deviceName, Picker OutputDeviceSelector, Picker InputDeviceSelector, CoreDispatcher Dispatcher, byte MidiOutPortChannel, byte MidiInPortChannel)
         {
-            //mainPage_UWP = DependencyService.Get<Integra_7_Xamarin.UWP.MainPage>();
             this.mainPage = mainPage;
-            midiOutputDeviceWatcher = new MidiDeviceWatcher(MidiOutPort.GetDeviceSelector(), OutputDeviceSelector, (CoreDispatcher)Dispatcher);
-            midiInputDeviceWatcher = new MidiDeviceWatcher(MidiInPort.GetDeviceSelector(), InputDeviceSelector, (CoreDispatcher)Dispatcher);
-            midiOutputDeviceWatcher.StartWatcher();
-            midiInputDeviceWatcher.StartWatcher();
+            //midiOutputDeviceWatcher = new MidiDeviceWatcher(MidiOutPort.GetDeviceSelector(), OutputDeviceSelector, Dispatcher);
+            //midiInputDeviceWatcher = new MidiDeviceWatcher(MidiInPort.GetDeviceSelector(), InputDeviceSelector, Dispatcher);
+            //midiOutputDeviceWatcher.StartWatcher();
+            //midiInputDeviceWatcher.StartWatcher();
             this.MidiOutPortChannel = MidiOutPortChannel;
             this.MidiInPortChannel = MidiInPortChannel;
             Init(deviceName);
@@ -148,7 +151,7 @@ namespace Integra_7_Xamarin.UWP
         public void Init(String deviceName, Integra_7_Xamarin.MainPage mainPage, Picker OutputDeviceSelector, Picker InputDeviceSelector)
         {
             this.mainPage = mainPage;
-            Init(deviceName, mainPage, OutputDeviceSelector, InputDeviceSelector, 0, 0);
+            Init(mainPage, deviceName, OutputDeviceSelector, InputDeviceSelector, 0, 0);
         }
 
         public async void Init(String deviceName)
@@ -198,12 +201,36 @@ namespace Integra_7_Xamarin.UWP
             else
             {
                 midiInPort.MessageReceived += MidiInPort_MessageReceived;
+                timer = new DispatcherTimer();
+                timer.Interval = TimeSpan.FromMilliseconds(1);
+                timer.Tick += Timer_Tick;
+                timer.Start();
             }
         }
 
         public Boolean MidiIsReady()
         {
-            return midiInPort != null && midiOutPort != null && midiInputDeviceWatcher != null && midiOutputDeviceWatcher != null;
+            return midiInPort != null && midiOutPort != null;
+        }
+
+        public async Task CheckForVenderDriver()
+        {
+            DeviceInformationCollection collection = await DeviceInformation.FindAllAsync();
+            foreach (DeviceInformation dev in collection)
+            {
+                if (dev.Name.ToLower().Contains("integra")
+                    && dev.Id.ToLower().Contains("wave")
+                    && dev.IsEnabled)
+                {
+                    VenderDriverPresent = true;
+                    break;
+                }
+            }
+        }
+
+        public Boolean VenderDriverDetected()
+        {
+            return VenderDriverPresent;
         }
 
         public void UpdateMidiComboBoxes(Picker midiOutputComboBox, Picker midiInputComboBox)

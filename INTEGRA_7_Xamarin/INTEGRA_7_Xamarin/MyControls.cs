@@ -62,36 +62,44 @@ namespace Integra_7_Xamarin
         AFTER,
     }
 
-    public enum _colorSettings
-    {
-        DARK,
-        LIGHT,
-    }
+    //public enum _colorSettings
+    //{
+    //    TEST,
+    //    DARK,
+    //    LIGHT,
+    //}
 
-    public class ColorSettings
-    {
-        public Color Background { get; set; }
-        public Color Frame { get; set; }
-        public Color Text { get; set; }
-        public Color LabelBackground { get; set; }
-        public Color IsFavorite { get; set; }
+    //public class ColorSettings
+    //{
+    //    public Color ControlBackground { get; set; }
+    //    public Color Background { get; set; }
+    //    public Color Text { get; set; }
+    //    public Color LabelBackground { get; set; }
+    //    public Color IsFavorite { get; set; }
 
-        public ColorSettings(_colorSettings colorSettings)
-        {
-            switch (colorSettings)
-            {
-                case _colorSettings.DARK:
-                    break;
-                case _colorSettings.LIGHT:
-                    Background = Color.White;
-                    Frame = Color.White;
-                    Text = Color.Black;
-                    LabelBackground = Color.White;
-                    IsFavorite = Color.LightGreen;
-                    break;
-            }
-        }
-    }
+    //    public ColorSettings(_colorSettings colorSettings)
+    //    {
+    //        switch (colorSettings)
+    //        {
+    //            case _colorSettings.DARK:
+    //                break;
+    //            case _colorSettings.LIGHT:
+    //                ControlBackground = Color.White;
+    //                Background = new Color(200, 200, 145);
+    //                Text = Color.Black;
+    //                LabelBackground = Color.White;
+    //                IsFavorite = Color.LightGreen;
+    //                break;
+    //            case _colorSettings.TEST:
+    //                ControlBackground = Color.Yellow;
+    //                Background = Color.Red;
+    //                Text = Color.Blue;
+    //                LabelBackground = Color.Cyan;
+    //                IsFavorite = Color.LightGreen;
+    //                break;
+    //        }
+    //    }
+    //}
 
     public class BorderThicknesSettings
     {
@@ -146,27 +154,70 @@ namespace Integra_7_Xamarin
         public new Boolean IsEnabled { get { return _editor.IsEnabled; } set { _editor.IsEnabled = value; } }
     }
 
-    public class CheckBox : Switch
+    //public class CheckBox : Switch
+    //{
+    //    //public new Boolean IsEnabled { get { return _switch.IsEnabled; } set { _switch.IsEnabled = value; } }
+    //    public Boolean IsChecked { get { return IsToggled; } set { IsToggled = value; } }
+    //    public String Name { get; set; }
+    //    public Object Tag { get; set; }
+    //    public String Content { get; set; }
+
+
+    //    //Switch _switch = new Switch();
+
+    //    public CheckBox()
+    //    {
+    //        //MinimumWidthRequest = 1;
+    //        MinimumHeightRequest = UIHandler.minimumHeightRequest;
+    //        //SetValue(VisualElement.MinimumHeightRequestProperty, 1);
+    //    }
+
+
+    //    //    //public static implicit operator Switch(CheckBox, _switch, )
+    //    //    //{
+    //    //    //    return _switch;
+    //    //    //}
+    //}
+
+    public class CheckBox : Xamarin.Forms.Grid
     {
-        //Switch _switch = new Switch();
+        //public new Boolean IsEnabled { get { return _switch.IsEnabled; } set { _switch.IsEnabled = value; } }
+        public Boolean IsChecked { get { return CBSwitch.IsToggled; } set { CBSwitch.IsToggled = value; } }
+        //public Boolean Toggled { get { return Switch.IsToggled; } set { Switch.IsToggled = value; } }
+        public String Name { get; set; }
+        public Object Tag { get; set; }
+        public String Content { get { return CBLabel.Text; } set { CBLabel.Text = value; } }
+
+        public Switch CBSwitch { get; set; }
+        //public Grid Grid = new Grid();
+        public Label CBLabel { get; set; }
 
         public CheckBox()
         {
-            //MinimumWidthRequest = 1;
-            MinimumHeightRequest = -1;
-            //SetValue(VisualElement.MinimumHeightRequestProperty, 1);
+            MinimumHeightRequest = UIHandler.minimumHeightRequest;
+            CBSwitch = new Switch();
+            CBLabel = new Label();
+            CBSwitch.VerticalOptions = LayoutOptions.FillAndExpand;
+            //Switch.BackgroundColor = new Color(255, 255, 255, 255);
+            //Switch.OnColor = new Color(255, 255, 255, 255);
+            //Switch.WidthRequest = 1;
+            CBSwitch.MinimumWidthRequest = 100;
+            //Switch.HeightRequest = 1;
+            CBSwitch.MinimumHeightRequest = 14;
+            CBLabel.WidthRequest = 1;
+            CBLabel.HeightRequest = 1;
+
+            CBLabel.BackgroundColor = UIHandler.colorSettings.Background;
+            CBLabel.TextColor = UIHandler.colorSettings.Text;
+            this.Children.Add(new GridRow(0, new View[] { CBLabel/*, Switch*/ }, null, true).Row);
         }
 
-        //public new Boolean IsEnabled { get { return _switch.IsEnabled; } set { _switch.IsEnabled = value; } }
-        public Boolean IsChecked { get { return IsToggled; } set { IsToggled = value; } }
-        public String Name { get; set; }
-        public Object Tag { get; set; }
-        public String Content { get ; set; }
 
-        
-        //public static implicit operator Switch(CheckBox, _switch, )
+        //public static implicit operator Grid(CheckBox rhs)
         //{
-        //    return _switch;
+        //    Grid grid = new Grid();
+        //    grid.Children.Add(new GridRow(0, new View[] { rhs.Label, rhs }).Row);
+        //    return grid;
         //}
     }
 
@@ -174,6 +225,12 @@ namespace Integra_7_Xamarin
     {
         public String Content { get { return Text; } set { Text = value; } }
         public Object Tag { get; set; }
+
+        public Button()
+        {
+            this.BorderWidth = 0;
+            this.CornerRadius = 6;
+        }
     }
 
     public class LabeledText : Grid
@@ -426,12 +483,11 @@ namespace Integra_7_Xamarin
 
     public class LabeledSwitch : Grid
     {
-        //public Grid TheGrid { get; set; }
         public _orientation Orientation { get; set; }
         public _labelPosition LabelPosition { get; set; }
-        public Label Label { get; set; }
-        public Switch Switch { get; set; }
-        public Boolean IsChecked { get { return Switch.IsToggled; } set { Switch.IsToggled = value; } }
+        public Label LSLabel { get; set; }
+        public Switch LSSwitch { get; set; }
+        public Boolean IsChecked { get { return LSSwitch.IsToggled; } set { LSSwitch.IsToggled = value; } }
 
         public LabeledSwitch(String LabelText)
         {
@@ -452,16 +508,19 @@ namespace Integra_7_Xamarin
         {
             this.Orientation = Orientation;
             this.LabelPosition = LabelPosition;
-            this.Label = new Label();
-            this.Label.Text = LabelText;
+            LSLabel = new Label();
+            LSLabel.Text = LabelText;
             if (Switch == null)
             {
-                this.Switch = new Switch();
+                this.LSSwitch = new Switch();
             }
             else
             {
-                this.Switch = Switch;
+                this.LSSwitch = Switch;
+                throw new Exception("Switchen fanns visst! *************************************************************************");
             }
+            this.LSSwitch.MinimumWidthRequest = 1;
+            this.LSSwitch.MinimumHeightRequest = 1;
             byte[] sizes;
             if (Sizes == null || Sizes.Count() != 2)
             {
@@ -472,54 +531,161 @@ namespace Integra_7_Xamarin
                 sizes = Sizes;
             }
 
-            this.Switch.VerticalOptions = LayoutOptions.FillAndExpand;
-            this.Label.VerticalOptions = LayoutOptions.FillAndExpand;
+            this.LSSwitch.VerticalOptions = LayoutOptions.FillAndExpand;
+            this.LSLabel.VerticalOptions = LayoutOptions.FillAndExpand;
 
             if (Orientation == _orientation.HORIZONTAL)
             {
 
                 if (LabelPosition == _labelPosition.BEFORE)
                 {
-                    this.Label.HorizontalOptions = LayoutOptions.End;
-                    this.Children.Add((new GridRow(0, new View[] { this.Label, this.Switch }, sizes, true)).Row);
+                    LSLabel.HorizontalOptions = LayoutOptions.End;
+                    Children.Add((new GridRow(0, new View[] { LSLabel, this.LSSwitch }, sizes, true)).Row);
                 }
                 else
                 {
-                    this.Switch.HorizontalOptions = LayoutOptions.Start;
-                    this.Children.Add((new GridRow(0, new View[] { this.Switch, this.Label }, sizes, true)).Row);
+                    this.LSSwitch.HorizontalOptions = LayoutOptions.Start;
+                    Children.Add((new GridRow(0, new View[] { this.LSSwitch, LSLabel }, sizes, true)).Row);
                 }
-                this.Label.VerticalOptions = LayoutOptions.Center;
-                this.Switch.VerticalOptions = LayoutOptions.Center;
+                this.LSLabel.VerticalOptions = LayoutOptions.Center;
+                this.LSSwitch.VerticalOptions = LayoutOptions.Center;
             }
             else
             {
                 if (LabelPosition == _labelPosition.BEFORE)
                 {
-                    this.Label.HorizontalOptions = LayoutOptions.Start;
-                    this.Switch.HorizontalOptions = LayoutOptions.End;
-                    this.Children.Add((new GridRow(0, new View[] { this.Label }, null, true)).Row);
-                    this.Children.Add((new GridRow(1, new View[] { this.Switch }, null, true)).Row);
+                    LSLabel.HorizontalOptions = LayoutOptions.Start;
+                    this.LSSwitch.HorizontalOptions = LayoutOptions.End;
+                    Children.Add((new GridRow(0, new View[] { LSLabel }, null, true)).Row);
+                    Children.Add((new GridRow(1, new View[] { this.LSSwitch }, null, true)).Row);
                 }
                 else
                 {
-                    this.Label.HorizontalOptions = LayoutOptions.End;
-                    this.Switch.HorizontalOptions = LayoutOptions.Start;
-                    this.Children.Add((new GridRow(0, new View[] { this.Switch }, null, true)).Row);
-                    this.Children.Add((new GridRow(1, new View[] { this.Label }, null, true)).Row);
+                    LSLabel.HorizontalOptions = LayoutOptions.End;
+                    this.LSSwitch.HorizontalOptions = LayoutOptions.Start;
+                    Children.Add((new GridRow(0, new View[] { this.LSSwitch }, null, true)).Row);
+                    Children.Add((new GridRow(1, new View[] { LSLabel }, null, true)).Row);
                 }
-                this.Label.HorizontalOptions = LayoutOptions.Center;
-                this.Switch.HorizontalOptions = LayoutOptions.Center;
+                LSLabel.HorizontalOptions = LayoutOptions.Center;
+                this.LSSwitch.HorizontalOptions = LayoutOptions.Center;
             }
-            this.Switch.IsToggled = IsSelected;
+            //this.Switch.IsToggled = IsSelected;
         }
     }
 
-    public partial class Slider : Xamarin.Forms.Slider
+    public class Slider : Xamarin.Forms.Slider
     {
         public String Name { get; set; }
         public Object Tag { get; set; }
+        public Double StepFrequency { get; set; }
+        public new Double Value { get { return AdjustForStepFrequency(); } set { SetValue(value); } }
+
+        //private Grid gridContainer;
+        private Double currentValue = 0;
+        private Boolean lockIt;
+
+        public Slider()
+        {
+            MinimumWidthRequest = 1;
+            MinimumHeightRequest = UIHandler.minimumHeightRequest;
+            HeightRequest = UIHandler.minimumHeightRequest;
+            WidthRequest = 10;
+            StepFrequency = 1;
+            Value = 0;
+            lockIt = false;
+            //gridContainer = new Grid();
+            //gridContainer.BackgroundColor = Color.WhiteSmoke;
+            //gridContainer.Parent = this.Parent;
+            //gridContainer.Children.Add(this);
+        }
+
+        private void SetValue(Double value)
+        {
+            currentValue = value;
+            SetValue(ValueProperty, currentValue);
+        }
+
+        private Double AdjustForStepFrequency()
+        {
+            if (!lockIt)
+            {
+                Double value = (Double)GetValue(ValueProperty);
+                if (value > currentValue)
+                {
+                    currentValue += StepFrequency;
+                    lockIt = true;
+                    SetValue(ValueProperty, currentValue);
+                }
+                else if (value < currentValue)
+                {
+                    currentValue -= StepFrequency;
+                    lockIt = true;
+                    SetValue(ValueProperty, currentValue);
+                }
+            }
+            else
+            {
+                lockIt = false;
+            }
+            return currentValue;
+        }
     }
 
+    //public partial class IntermediateSlider : Xamarin.Forms.Slider
+    //{
+    //    public Double StepFrequency { get; set; }
+    //    //EventHandler<ValueChangedEventArgs> eventHandler;
+    //    private Double lastValue = 0;
+    //    public IntermediateSlider()
+    //    {
+    //        //eventHandler = new EventHandler<ValueChangedEventArgs>(IntValueChanged);
+    //        ValueChanged += IntValueChanged;
+    //        StepFrequency = 1;
+    //        Value = 0;
+    //    }
+
+    //    public void IntValueChanged(object sender, ValueChangedEventArgs e)
+    //    {
+    //        if (((Slider)sender).Value > lastValue)
+    //        {
+    //            Value = lastValue + StepFrequency;
+    //        }
+    //        else if (((Slider)sender).Value < lastValue)
+    //        {
+    //            Value = lastValue - StepFrequency;
+    //        }
+    //        lastValue = Value;
+    //        //ValueChangedEventArgs valueChangedEventArgs = new ValueChangedEventArgs(lastValue, Value);
+    //    }
+    //}
+
+    //public partial class Slider : IntermediateSlider
+    //{
+    //    public String Name { get; set; }
+    //    public Object Tag { get; set; }
+    //    public Double Value { get; set; }
+    //    private IntermediateSlider slider;
+
+    //    public Slider()
+    //    {
+    //        MinimumWidthRequest = 1;
+    //        MinimumHeightRequest = UIHandler.minimumHeightRequest;
+    //        HeightRequest = UIHandler.minimumHeightRequest;
+    //        WidthRequest = 10;
+    //        slider = new IntermediateSlider();
+    //        ValueChanged += Slider_ValueChanged;
+    //    }
+
+    //    private void Slider_ValueChanged(object sender, ValueChangedEventArgs e)
+    //    {
+    //        Value = slider.Value;
+    //    }
+
+    //    //public override EventHandler<ValueChangedEventArgs> ValueChanged(object sender, ValueChangedEventArgs e)
+    //    //{
+    //    //    ((Slider)sender).Value
+    //    //}
+    //}
     //public partial class Control
     //{
     //    public String Name { get; set; }
@@ -534,4 +700,148 @@ namespace Integra_7_Xamarin
     //        throw new NotImplementedException();
     //    }
     //}
+
+    public partial class Picker : Xamarin.Forms.Picker
+    {
+
+    }
+
+    public class TaggedGrid : Xamarin.Forms.Grid
+    {
+        public Int32 Row { get; set; }
+        public Int32 Column { get; set; }
+    }
+
+    public class TaggedImage: Xamarin.Forms.Image
+    {
+        public Int32 Row { get; set; }
+        public Int32 Column { get; set; }
+    }
+
+    public class MotionalSurroundPartLabel : /*Xamarin.Forms.*/Button
+    {
+        public byte Horizontal { get; set; } // 0 - 127 => L64 - R63
+        public byte Vertical { get; set; }   // 0 - 127 => B64 - F63
+        //public Int32 Tag { get; set; }
+
+        public MotionalSurroundPartLabel(Int32 partNumber)
+        {
+            Horizontal = 63;
+            Vertical = 63;
+            if (partNumber == 17)
+            {
+                //Text = "                              Ext                              \b";
+                Text = "Ext";
+            }
+            else
+            {
+                //Text = "                              Part " + partNumber.ToString() + "                              \b";
+                Text = "Part " + partNumber.ToString();
+            }
+            BackgroundColor = Color.Yellow;
+            //TextColor = Color.Yellow;
+            //Focused += MotionalSurroundPartLabel_Focused;
+
+            HorizontalOptions = LayoutOptions.Center;
+            VerticalOptions = LayoutOptions.Center;
+            MinimumWidthRequest = 2000;
+            WidthRequest = 2000;
+            MinimumHeightRequest = 30;
+            HeightRequest = 30;
+            IsVisible = true;
+        }
+
+        private void MotionalSurroundPartLabel_Focused(object sender, FocusEventArgs e)
+        {
+            TextColor = Color.Black;
+            IsEnabled = true;
+        }
+
+        public void Step(Direction direction, Double width, Double height)
+        {
+            byte steps = 1;
+
+            if (direction != Direction.CENTER && direction >= Direction.DOUBLE_UP)
+            {
+                steps = 10;
+                direction -= Direction.DOUBLE_UP;
+            }
+
+            switch (direction)
+            {
+                case Direction.UP:
+                    Vertical = Vertical > steps ? (byte)(Vertical - steps) : (byte)0;
+                    break;
+                case Direction.DOWN:
+                    Vertical = Vertical < 127 - steps ? (byte)(Vertical + steps) : (byte)127;
+                    break;
+                case Direction.LEFT:
+                    Horizontal = Horizontal > steps ? (byte)(Horizontal - steps) : (byte)0;
+                    break;
+                case Direction.RIGHT:
+                    Horizontal = Horizontal < 127 - steps ? (byte)(Horizontal + steps) : (byte)127;
+                    break;
+                case Direction.UPLEFT:
+                    Horizontal = Horizontal > steps ? (byte)(Horizontal - steps) : (byte)0;
+                    Vertical = Vertical > steps ? (byte)(Vertical - steps) : (byte)0;
+                    break;
+                case Direction.UPRIGHT:
+                    Horizontal = Horizontal < 127 - steps ? (byte)(Horizontal + steps) : (byte)127;
+                    Vertical = Vertical > steps ? (byte)(Vertical - steps) : (byte)0;
+                    break;
+                case Direction.DOWNLEFT:
+                    Horizontal = Horizontal > steps ? (byte)(Horizontal - steps) : (byte)0;
+                    Vertical = Vertical < 127 - steps ? (byte)(Vertical + steps) : (byte)127;
+                    break;
+                case Direction.DOWNRIGHT:
+                    Horizontal = Horizontal < 127 - steps ? (byte)(Horizontal + steps) : (byte)127;
+                    Vertical = Vertical < 127 - steps ? (byte)(Vertical + steps) : (byte)127;
+                    break;
+                case Direction.CENTER:
+                    Horizontal = 63;
+                    Vertical = 63;
+                    break;
+            }
+            Plot(width, height);
+        }
+
+        public void Plot(Double width, Double height)
+        {
+            byte hOffset = (byte)(Width / 2.0);
+            byte vOffset = (byte)(Height / 2.0);
+
+            Double left = width * Horizontal / 127;
+            Double top = height * Vertical / 127;
+            Double right = width - left;
+            Double bottom = height - top;
+            left -= hOffset;
+            top -= vOffset;
+            right -= hOffset;
+            bottom -= vOffset;
+            Margin = new Thickness(left, top, right, bottom);
+        }
+    }
+
+    public class MotionalSurroundPartEditor : Grid
+    {
+        public LabeledSwitch Switch { get; set; }
+        public Editor Editor { get; set; }
+        public Int32 Tag { get; set; }
+
+        public MotionalSurroundPartEditor(Int32 PartNumber)
+        {
+            String label = "Ext";
+            if (PartNumber < 17)
+            {
+                label = "Part " + PartNumber.ToString();
+            }
+            Switch = new LabeledSwitch(label, null, false, _orientation.HORIZONTAL, _labelPosition.AFTER);
+            Editor = new Editor();
+            Editor.HorizontalOptions = LayoutOptions.FillAndExpand;
+            Editor.VerticalOptions = LayoutOptions.FillAndExpand;
+            HorizontalOptions = LayoutOptions.FillAndExpand;
+            VerticalOptions = LayoutOptions.FillAndExpand;
+            Children.Add(new GridRow(0, new View[] { Switch, Editor }, new byte[] { 2, 3 }).Row);
+        }
+    }
 }

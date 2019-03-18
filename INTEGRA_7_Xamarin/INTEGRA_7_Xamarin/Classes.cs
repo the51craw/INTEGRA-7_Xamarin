@@ -7,6 +7,7 @@ using System.Text;
 using Xamarin.Forms;
 using System.Runtime.Serialization;
 using Integra_7_Xamarin;
+using Switch = Xamarin.Forms.Switch;
 
 namespace Integra_7_Xamarin
 {
@@ -109,13 +110,14 @@ namespace Integra_7_Xamarin
     /// </summary>
     public class CommonState
     {
-        public enum ReactToMidiIn
-        {
-            MAIN,
-            EDIT,
-            EDIT_STUDIO_SET,
-            SURROUND,
-        }
+        //public enum ReactToMidiInAndTimerTick
+        //{
+        //    PLEASE_WAIT,
+        //    MAIN,
+        //    EDIT,
+        //    EDIT_STUDIO_SET,
+        //    SURROUND,
+        //}
 
         public enum SimpleToneTypes
         {
@@ -283,7 +285,7 @@ namespace Integra_7_Xamarin
         public byte CurrentStudioSet { get; set; }
         public byte CurrentPart { get; set; }
         public byte[] PartChannels { get; set; }
-        public ReactToMidiIn reactToMidiIn { get; set; }
+        //public ReactToMidiInAndTimerTick reactToMidiInAndTimerTick { get; set; }
         public Boolean VenderDriverIsInstalled { get; set; }
         //public PickerLocationId pickerLocationId { get; set; }
 
@@ -308,7 +310,7 @@ namespace Integra_7_Xamarin
             keyNames = new List<String>();
             drumKeyAssignLists = new DrumKeyAssignLists();
             PresetDrumKeyAssignListsCount = drumKeyAssignLists.ToneNames.Count();
-            reactToMidiIn = ReactToMidiIn.MAIN;
+            //reactToMidiInAndTimerTick = ReactToMidiInAndTimerTick.MAIN;
         }
 
         public void GetToneType(byte msb = 0xff, byte lsb = 0xff, byte pc = 0xff)
@@ -637,9 +639,12 @@ namespace Integra_7_Xamarin
             this.ToneIndex = -1;
             this.Group = tone[0];
             this.Category = tone[1];
+            try { this.Program = (byte)Int32.Parse(tone[2]); } catch { }
             this.Name = tone[3];
-            this.Index = Int32.Parse(tone[9]);
-            this.VariationIndex = Int32.Parse(tone[10]);
+            try { this.BankMSB = (byte)Int32.Parse(tone[4]); } catch { }
+            try { this.BankLSB = (byte)Int32.Parse(tone[5]); } catch { }
+            try { this.Index = Int32.Parse(tone[9]); } catch { }
+            try { this.VariationIndex = Int32.Parse(tone[10]); } catch { }
         }
 
         public Tone(Tone tone)
@@ -4545,11 +4550,11 @@ namespace Integra_7_Xamarin
                         break;
                     // 35:Modulation delay occupies 2 indexes, 45 and 46:
                     case 36:
-                        indexFromTypeOffset += 3;
+                        indexFromTypeOffset += 2;
                         break;
                     // 36:3Tap pan delay occupies 2 indexes, 47 and 48:
                     case 37:
-                        indexFromTypeOffset += 3;
+                        indexFromTypeOffset += 2;
                         break;
                     // 37: 4Tap Pan Delay occupies 2 indexes, 44 and 45:
                     case 38:
@@ -6612,8 +6617,100 @@ namespace Integra_7_Xamarin
         public byte[] MFXControlAssign { get; set; } // [4]
         [DataMember]
         public MFXNumberedParameters MFXNumberedParameters { get; set; }
-        //[DataMember]
-        private ParameterSets sets;
+        [IgnoreDataMember]
+        public static String[][] MFXControlAssigns = new String[][] {
+                new String[] { "Low Gain", "High Gain", "Level" },                                  // 01: Equalizer
+                new String[] { "Level" },                                                           // 02: Spectrum
+                new String[] { "Boost Frequency", "Boost Gain" },                                   // 03: Low Boost
+                new String[] { "Rate", "Attack", "Filter Resonance" },                              // 04: Step Filter
+                new String[] { "Sens", "Mix" },                                                     // 05: Enhancer
+                new String[] { "Manual", "Sens", "Rate", "Depth", "Phase" },                        // 06: Auto Wah
+                new String[] { "Drive", "Rate", "Depth", "Manual", "Pan" },                         // 07: Humanizer
+                new String[] { "Mic Level", "Direct Level", "Level" },                              // 08: Speaker Simulator
+                new String[] { "Manual", "Rate", "Resonance", "Mix" },                              // 09: Phaser 1
+                new String[] { "Rate" },                                                            // 10: Phaser 2
+                new String[] { "Speed" },                                                           // 11: Phaser 3
+                new String[] { "Manual", "Rate", "Resonance", "Step Rate", "Mix" },                 // 12: Step Phaser
+                new String[] { "Manual", "Rate", "Resonance", "Mix", "Pan" },                       // 13: Multi Stage Phaser
+                new String[] { "Speed", "Resonance", "Mix", "Pan" },                                // 14: Infinite Phaser
+                new String[] { "Frequency", "Sens", "Balance" },                                    // 15: Ring Modulator
+                new String[] { "Rate", "Depth" },                                                   // 16: Tremolo
+                new String[] { "Rate", "Depth" },                                                   // 17: Auto Pan
+                new String[] { "Rate", "Attack", "Shuffle" },                                       // 18: Slicer
+                new String[] { "Speed", "Level" },                                                  // 19: Rotary 1
+                new String[] { "Speed", "Brake", "Level" },                                         // 20: Rotary 2
+                new String[] { "Speed", "Brake", "OD Gain", "OD Drive", "Level" },                  // 21: Rotary 3
+                new String[] { "Rate", "Balance" },                                                 // 22: Chorus
+                new String[] { "Rate", "Feedback", "Balance" },                                     // 23: Flanger
+                new String[] { "Rate", "Feedback", "Step Rate", "Balance" },                        // 24: Step Flanger
+                new String[] { "Rate", "Balance" },                                                 // 25: Hexa-Chorus
+                new String[] { "Chorus Rate", "Tremolo Rate", "Balance" },                          // 26: Tremolo Chorus
+                new String[] { "Rate", "Balance" },                                                 // 27: Space-D
+                new String[] { "Drive", "Tone", "Pan" },                                            // 28: Overdrive
+                new String[] { "Drive", "Tone", "Pan" },                                            // 29: Distortion
+                new String[] { "Amp Volume", "Amp Master", "Pan", "Level" },                        // 30: Guitar Amp Simulator
+                new String[] { "Attack", "Threshold", "Level" },                                    // 31: Compressor
+                new String[] { "Release", "Threshold", "Level" },                                   // 32: Limiter
+                new String[] { "Threshold", "Balance" },                                            // 33: Gate
+                new String[] { "Feedback", "Balance" },                                             // 34: Delay
+                new String[] { "Feedback", "Rate", "Balance" },                                     // 35: Modulation Delay
+                new String[] { "Center Feedback", "Balance" },                                      // 36: 3Tap Pan Delay
+                new String[] { "Delay 1 Feedback", "Balance" },                                     // 37: 4Tap Pan Delay
+                new String[] { "Delay 1 Feedback", "Balance" },                                     // 38: Multi Tap Delay
+                new String[] { "Rev Delay Feedback", "Delay 3 Feedback", "Balance" },               // 39: Reverse Delay
+                new String[] { "Delay Time", "Feedback", "Balance" },                               // 40: Time Ctrl Delay
+                new String[] { "Balance", "Level" },                                                // 41: LOFI Compress
+                new String[] { "Sample Rate", "Bit Down", "Filter" },                               // 42: Bit Crasher
+                new String[] { "Pitch", "Feedback", "Balance" },                                    // 43: Pitch Shifter
+                new String[] { "Pitch 1", "Pitch 1 Feedback", "Pitch 1 Pan", "Pitch 2",
+                    "Pitch 2 Feedback", "Pitch 2 Pan", "Balance" },                                 // 44: 2Voice Pitch Shifter
+                new String[] { "Overdrive Drive", "Overdrive Pan", "Chorus Rate",
+                    "Chorus Balance" },                                                             // 45: Overdrive -> Chorus
+                new String[] { "Overdrive Drive", "Overdrive Pan", "Flanger Rate",
+                    "Flanger Feedback", "Flanger Balance" },                                        // 46: Overdrive -> Flanger
+                new String[] { "Overdrive Drive", "Overdrive Pan", "Delay Feedback",
+                    "Delay Balance" },                                                              // 47: Overdrive -> Delay
+                new String[] { "Distortion Drive", "Distortion Pan", "Chorus Rate",
+                    "Chorus Balance" },                                                             // 48: Distortion -> Chorus
+                new String[] { "Distortion Drive", "Distortion Pan", "Flanger Rate",
+                    "Flanger Feedback", "Flanger Balance" },                                        // 49: Distortion -> Flanger
+                new String[] { "Distortion Drive", "Distortion Pan", "Delay Feedback",
+                    "Delay Balance" },                                                              // 50: Distortion -> Delay
+                new String[] { "Drive", "Tone", "Touch Wah Sens", "Touch Wah Manual",
+                    "Touch Wah Peak", "Touch Wah Balance" },                                        // 51: OD/DS -> TouchWah
+                new String[] { "Drive", "Tone", "Auto Wah Manual", "Auto Wah Peak",
+                    "Auto Wah Rate", "Auto Wah Depth", "Auto Wah Balance" },                        // 52: OD/DS -> AutoWah
+                new String[] { "Amp Volume", "Amp Master", "Chorus Switch", "Chorus Rate (Hz)",
+                    "Chorus Depth", "Chorus Balance" },                                             // 53: GuitarAmpSim -> Chorus
+                new String[] { "Amp Volume", "Amp Master", "Flanger Switch", "Flanger Rate (Hz)",
+                    "Flanger Depth", "Flanger Feedback", "Flanger Balance" },                       // 54: GuitarAmpSim -> Flanger
+                new String[] { "Amp Volume", "Amp Master", "Phaser Switch", "Phaser Manual",
+                    "Phaser Resonance", "Phaser Mix", "Phaser Rate (Hz)", "Phaser Depth" },         // 55: GuitarAmpSim -> Phaser
+                new String[] { "Amp Volume", "Amp Master", "Delay Switch", "Delay Time",
+                    "Delay Feedback", "Delay Balance" },                                            // 56: GuitarAmpSim -> Delay
+                new String[] { "Bass", "Treble", "Tremolo Switch", "Tremolo Rate",
+                    "Tremolo Depth" },                                                              // 57: EP AmpSim -> Tremolo
+                new String[] { "Bass", "Treble", "Chorus Switch", "Chorus Rate", "Chorus Depth",
+                    "Chorus Balance" },                                                             // 58: EP AmpSim -> Chorus
+                new String[] { "Bass", "Treble", "Flanger Switch", "Flanger Rate", "Flanger Depth",
+                    "Flanger Feedback", "Flanger Balance" },                                        // 59: EP AmpSim -> Flanger
+                new String[] { "Bass", "Treble", "Phaser Switch", "Phaser Manual",
+                    "Phaser Resonance", "Phaser Mix", "Phaser Rate", "Phaser Depth" },              // 60: EP AmpSim -> Phaser
+                new String[] { "Bass", "Treble", "Delay Switch", "Delay Switch", "Delay Feedback",
+                    "Delay Balance" },                                                              // 61: EP AmpSim -> Delay
+                new String[] { "Enhancer Sens", "Enhancer Mix", "Chorus Rate", "Chorus Balance" },  // 62: Enhancer -> Chorus
+                new String[] { "Enhancer Sens", "Enhancer Mix", "Flanger Rate", "Flanger Feedback",
+                    "Flanger Balance" },                                                            // 63: Enhancer -> Flanger
+                new String[] { "Enhancer Sens", "Enhancer Mix", "Delay Feedback",
+                    "Delay Balance" },                                                              // 64: Enhancer -> Delay
+                new String[] { "Chorus Rate", "Chorus Balance", "Delay Feedback",
+                    "Delay Balance" },                                                              // 65: Chorus -> Delay
+                new String[] { "Flanger Rate", "Flanger Feedback", "Flanger Balance",
+                    "Delay Feedback", "Delay Balance" },                                            // 66: Flanger -> Delay
+                new String[] { "Chorus Rate", "Chorus Balance", "Flanger Rate", "Flanger Feedback",
+                    "Flanger Balance" },                                                            // 67: Chorus -> Flanger
+            };
+private ParameterSets sets;
 
         public CommonMFX(ReceivedData Data)
         {
@@ -8210,6 +8307,48 @@ namespace Integra_7_Xamarin
         }
     }
 
+    public enum _colorSettings
+    {
+        TEST,
+        DARK,
+        LIGHT,
+    }
+
+    public class ColorSettings
+    {
+        public Color Border { get; set; }
+        public Color ControlBackground { get; set; }
+        public Color Background { get; set; }
+        public Color Text { get; set; }
+        public Color LabelBackground { get; set; }
+        public Color IsFavorite { get; set; }
+
+        public ColorSettings(_colorSettings colorSettings)
+        {
+            switch (colorSettings)
+            {
+                case _colorSettings.DARK:
+                    break;
+                case _colorSettings.LIGHT:
+                    Border = Color.Black;
+                    ControlBackground = Color.White;
+                    Background = new Color(200, 200, 145);
+                    Text = Color.Black;
+                    LabelBackground = Color.White;
+                    IsFavorite = Color.LightGreen;
+                    break;
+                case _colorSettings.TEST:
+                    ControlBackground = Color.Yellow;
+                    Background = Color.Red;
+                    Text = Color.Beige;
+                    LabelBackground = Color.Cyan;
+                    IsFavorite = Color.LightGreen;
+                    break;
+            }
+        }
+    }
+
+
     /// <summary>
     /// XAML layout classes
     /// </summary>
@@ -8219,23 +8358,26 @@ namespace Integra_7_Xamarin
         public Grid Row { get; set; }
         public Grid[] Columns { get; set; }
 
-        public GridRow(byte row, View[] controls = null, byte[] columnWiths = null, Boolean KeepAlignment = false, Boolean AddMargins = true, Int32 rowspan = 1)
+        public GridRow(byte row, View[] controls = null, byte[] columnWiths = null, Boolean KeepAlignment = false, Boolean AddMargins = false, Int32 rowspan = 1)
         {
             t.Trace("public GridRow ()");
             try
             {
                 Row = new Grid();
                 Grid.SetRow(Row, row);
-                //Row.MinimumHeightRequest = 40;
                 Row.SetValue(Grid.HorizontalOptionsProperty, LayoutOptions.FillAndExpand);
                 Row.SetValue(Grid.VerticalOptionsProperty, LayoutOptions.FillAndExpand);
-                Row.SetValue(Grid.ColumnSpacingProperty, 0);
-                Row.SetValue(Grid.RowSpacingProperty, 0);
+                //Row.SetValue(Grid.ColumnSpacingProperty, 0);
+                //Row.SetValue(Grid.RowSpacingProperty, 0);
                 Row.SetValue(Grid.PaddingProperty, new Thickness(0, 0, 0, 0));
-                Row.SetValue(Grid.MarginProperty, new Thickness(0, 0, 0, 0));
-                Row.SetValue(Grid.MinimumHeightRequestProperty, 1);
+                Row.SetValue(Grid.MarginProperty, new Thickness(2));
+                Row.SetValue(Grid.MinimumHeightRequestProperty, UIHandler.minimumHeightRequest);
                 Row.SetValue(Grid.MinimumWidthRequestProperty, 1);
-                Grid.SetRowSpan(Row, rowspan);
+                if (rowspan > 1)
+                {
+                    Grid.SetRowSpan(Row, rowspan);
+                }
+                Row.ColumnDefinitions = new ColumnDefinitionCollection();
                 ColumnDefinition[] columnDefinitions = new ColumnDefinition[controls.Length];
 
                 if (controls != null)
@@ -8243,8 +8385,11 @@ namespace Integra_7_Xamarin
                     Columns = new Grid[controls.Length];
                     for (byte i = 0; i < controls.Length; i++)
                     {
+                        //Object control = new controls[i].GetType()();
                         try
                         {
+                            controls[i].VerticalOptions = LayoutOptions.FillAndExpand;
+                            controls[i].HorizontalOptions = LayoutOptions.FillAndExpand;
                             Row.Children.Add(controls[i]);
                         }
                         catch (Exception e)
@@ -8253,6 +8398,7 @@ namespace Integra_7_Xamarin
                             Row.Children.Add(Columns[i]);
                         }
                         columnDefinitions[i] = new ColumnDefinition();
+                        Row.ColumnDefinitions.Add(columnDefinitions[i]);
                         if (columnWiths == null || columnWiths.Length < i - 1)
                         {
                             columnDefinitions[i].Width = new GridLength(1, GridUnitType.Star);
@@ -8261,57 +8407,84 @@ namespace Integra_7_Xamarin
                         {
                             columnDefinitions[i].Width = new GridLength(columnWiths[i], GridUnitType.Star);
                         }
-                        controls[i].SetValue(Grid.MinimumHeightRequestProperty, 1);
+                        controls[i].SetValue(Grid.MinimumHeightRequestProperty, UIHandler.minimumHeightRequest);
                         controls[i].SetValue(Grid.MinimumWidthRequestProperty, 1);
                         if (!KeepAlignment)
                         {
+                            //try { Row.SetValue(BackgroundColorProperty, UIHandler.colorSettings.Background); } catch { }
+                            //try { controls[i].Parent.SetValue(VerticalOptionsProperty, LayoutOptions.FillAndExpand); } catch { }
+                            //try { controls[i].Parent.SetValue(VerticalOptionsProperty, controls[i].VerticalOptions); } catch { }
+                            //try { controls[i].SetValue(BackgroundColorProperty, UIHandler.colorSettings.ControlBackground); } catch { }
+                            //try { controls[i].SetValue(BorderColorProperty, UIHandler.colorSettings.ControlBackground); } catch { }
+                            //try { controls[i].SetValue(BorderWidthProperty, new Thickness(0, 0, 0, 0)); } catch { }
+                            //try { controls[i].SetValue(ColumnSpacingProperty, 0); } catch { }
+                            //try { controls[i].SetValue(HorizontalOptionsProperty, LayoutOptions.FillAndExpand); } catch { }
+                            //try { controls[i].SetValue(HorizontalTextAlignmentProperty, LayoutAlignment.Center); } catch { }
+                            //try { controls[i].SetValue(MarginProperty, new Thickness(0, 0, 0, 0)); } catch { }
+                            //try { controls[i].SetValue(MaximumTrackColorProperty, UIHandler.colorSettings.Text); } catch { }
+                            //try { controls[i].SetValue(PaddingProperty, new Thickness(0, 0, 0, 0)); } catch { }
+                            //try { controls[i].SetValue(RowSpacingProperty, 0); } catch { }
+                            //try { controls[i].SetValue(VerticalOptionsProperty, LayoutOptions.FillAndExpand); } catch { }
+                            //try { controls[i].SetValue(VerticalOptionsProperty, LayoutOptions.Start); } catch { }
+                            //try { controls[i].SetValue(VerticalTextAlignmentProperty, LayoutAlignment.Center); } catch { }
+
                             if (controls[i].GetType() == typeof(Button))
                             {
                                 controls[i].SetValue(Button.HorizontalOptionsProperty, LayoutOptions.FillAndExpand);
                                 controls[i].SetValue(Button.VerticalOptionsProperty, LayoutOptions.FillAndExpand);
-                                controls[i].SetValue(Button.BorderWidthProperty, new Thickness(0, 0, 0, 0));
-                                controls[i].SetValue(Button.BackgroundColorProperty, UIHandler.colorSettings.Background);
-                                controls[i].SetValue(Button.BorderColorProperty, UIHandler.colorSettings.Background);
+                                controls[i].SetValue(Button.BorderWidthProperty, new Thickness(0));
+                                controls[i].SetValue(Button.BackgroundColorProperty, UIHandler.colorSettings.ControlBackground);
+                                controls[i].SetValue(Button.BorderColorProperty, UIHandler.colorSettings.Border);
                                 controls[i].SetValue(Button.MarginProperty, new Thickness(0, 0, 0, 0));
+                                controls[i].SetValue(Button.TextColorProperty, UIHandler.colorSettings.Text);
                                 controls[i].Parent.SetValue(Grid.VerticalOptionsProperty, controls[i].VerticalOptions);
                             }
                             else if (controls[i].GetType() == typeof(Switch))
                             {
                                 controls[i].SetValue(Switch.HorizontalOptionsProperty, LayoutOptions.FillAndExpand);
                                 controls[i].SetValue(Switch.VerticalOptionsProperty, LayoutOptions.FillAndExpand);
-                                controls[i].SetValue(Switch.BackgroundColorProperty, UIHandler.colorSettings.Background);
+                                controls[i].SetValue(Switch.BackgroundColorProperty, UIHandler.colorSettings.ControlBackground);
+                                //controls[i].SetValue(Switch.OnColorProperty, UIHandler.colorSettings.ControlBackground);
                                 controls[i].SetValue(Switch.MarginProperty, new Thickness(0, 0, 0, 0));
                             }
                             else if (controls[i].GetType() == typeof(LabeledSwitch))
                             {
                                 controls[i].SetValue(LabeledSwitch.HorizontalOptionsProperty, LayoutOptions.FillAndExpand);
                                 controls[i].SetValue(LabeledSwitch.VerticalOptionsProperty, LayoutOptions.FillAndExpand);
-                                controls[i].SetValue(LabeledSwitch.BackgroundColorProperty, UIHandler.colorSettings.Background);
+                                controls[i].SetValue(LabeledSwitch.BackgroundColorProperty, UIHandler.colorSettings.ControlBackground);
                                 controls[i].SetValue(LabeledSwitch.MarginProperty, new Thickness(0, 0, 0, 0));
                                 controls[i].SetValue(LabeledSwitch.PaddingProperty, new Thickness(0, 0, 0, 0));
+                                //controls[i].SetValue(LabeledSwitch.TextColorProperty, UIHandler.colorSettings.Text);
                             }
                             else if (controls[i].GetType() == typeof(ListView))
                             {
                                 controls[i].SetValue(ListView.HorizontalOptionsProperty, LayoutOptions.FillAndExpand);
                                 controls[i].SetValue(ListView.VerticalOptionsProperty, LayoutOptions.FillAndExpand);
-                                controls[i].SetValue(ListView.BackgroundColorProperty, UIHandler.colorSettings.Background);
+                                controls[i].SetValue(ListView.BackgroundColorProperty, UIHandler.colorSettings.ControlBackground);
                                 controls[i].SetValue(ListView.MarginProperty, new Thickness(0, 0, 0, 0));
                                 controls[i].Parent.SetValue(Grid.VerticalOptionsProperty, LayoutOptions.FillAndExpand);
-                                Row.SetValue(Grid.BackgroundColorProperty, UIHandler.colorSettings.Frame);
+                                //var cell = new DataTemplate(typeof(TextCell));
+                                //cell.SetValue(TextCell.TextColorProperty, UIHandler.colorSettings.Text);
+                                controls[i].SetValue(ListView.ItemTemplateProperty, UIHandler.colorSettings.Text);
+                                Row.SetValue(Grid.BackgroundColorProperty, UIHandler.colorSettings.Background);
                             }
                             else if (controls[i].GetType() == typeof(Picker))
                             {
                                 controls[i].SetValue(Picker.HorizontalOptionsProperty, LayoutOptions.FillAndExpand);
                                 controls[i].SetValue(Picker.VerticalOptionsProperty, LayoutOptions.FillAndExpand);
-                                controls[i].SetValue(Picker.BackgroundColorProperty, UIHandler.colorSettings.Background);
+                                controls[i].SetValue(Picker.BackgroundColorProperty, UIHandler.colorSettings.ControlBackground);
                                 controls[i].SetValue(Picker.MarginProperty, new Thickness(0, 0, 0, 0));
+                                controls[i].SetValue(Picker.TextColorProperty, UIHandler.colorSettings.Text);
                             }
                             else if (controls[i].GetType() == typeof(LabeledPicker))
                             {
                                 controls[i].SetValue(LabeledPicker.HorizontalOptionsProperty, LayoutOptions.FillAndExpand);
                                 controls[i].SetValue(LabeledPicker.VerticalOptionsProperty, LayoutOptions.FillAndExpand);
-                                controls[i].SetValue(LabeledPicker.BackgroundColorProperty, UIHandler.colorSettings.Background);
+                                controls[i].SetValue(LabeledPicker.BackgroundColorProperty, UIHandler.colorSettings.ControlBackground);
                                 controls[i].SetValue(LabeledPicker.MarginProperty, new Thickness(0, 0, 0, 0));
+                                //var cell = new DataTemplate(typeof(TextCell));
+                                //cell.SetValue(TextCell.TextColorProperty, UIHandler.colorSettings.Text);
+                                controls[i].SetValue(LabeledPicker.RowProperty, UIHandler.colorSettings.Text);
                             }
                             else if (controls[i].GetType() == typeof(Label))
                             {
@@ -8319,14 +8492,17 @@ namespace Integra_7_Xamarin
                                 controls[i].SetValue(Label.VerticalOptionsProperty, LayoutOptions.FillAndExpand);
                                 controls[i].SetValue(Label.HorizontalTextAlignmentProperty, LayoutAlignment.Center);
                                 controls[i].SetValue(Label.VerticalTextAlignmentProperty, LayoutAlignment.Center);
-                                controls[i].SetValue(Label.BackgroundColorProperty, UIHandler.colorSettings.Background);
+                                //controls[i].SetValue(Label.BackgroundColorProperty, UIHandler.colorSettings.ControlBackground);
                                 controls[i].SetValue(Label.MarginProperty, new Thickness(0, 0, 0, 0));
+                                //controls[i].SetValue(Label.TextColorProperty, UIHandler.colorSettings.Text);
+                                //((Grid)controls[i].Parent).Padding = new Thickness(5);
                             }
                             else if (controls[i].GetType() == typeof(Editor))
                             {
                                 controls[i].SetValue(Editor.HorizontalOptionsProperty, LayoutOptions.FillAndExpand);
                                 controls[i].SetValue(Editor.VerticalOptionsProperty, LayoutOptions.Start);
                                 controls[i].SetValue(Editor.MarginProperty, new Thickness(0, 0, 0, 0));
+                                controls[i].SetValue(Editor.TextColorProperty, UIHandler.colorSettings.Text);
                             }
                             else if (controls[i].GetType() == typeof(Image))
                             {
@@ -8338,17 +8514,47 @@ namespace Integra_7_Xamarin
                             {
                                 controls[i].SetValue(LabeledText.HorizontalOptionsProperty, LayoutOptions.FillAndExpand);
                                 controls[i].SetValue(LabeledText.VerticalOptionsProperty, LayoutOptions.FillAndExpand);
-                                controls[i].SetValue(LabeledText.BackgroundColorProperty, UIHandler.colorSettings.Background);
+                                controls[i].SetValue(LabeledText.BackgroundColorProperty, UIHandler.colorSettings.ControlBackground);
                                 controls[i].SetValue(LabeledText.MarginProperty, new Thickness(0, 0, 0, 0));
                                 controls[i].SetValue(LabeledText.PaddingProperty, new Thickness(0, 0, 0, 0));
+                                //controls[i].SetValue(LabeledText.TextColorProperty, UIHandler.colorSettings.Text);
+                            }
+                            else if (controls[i].GetType() == typeof(TextBox))
+                            {
+                                controls[i].SetValue(TextBox.HorizontalOptionsProperty, LayoutOptions.FillAndExpand);
+                                controls[i].SetValue(TextBox.VerticalOptionsProperty, LayoutOptions.FillAndExpand);
+                                controls[i].SetValue(TextBox.BackgroundColorProperty, UIHandler.colorSettings.ControlBackground);
+                                controls[i].SetValue(TextBox.MarginProperty, new Thickness(0, 0, 0, 0));
+                                //controls[i].SetValue(TextBox.PaddingProperty, new Thickness(0, 0, 0, 0));
+                                controls[i].SetValue(TextBox.TextColorProperty, UIHandler.colorSettings.Text);
                             }
                             else if (controls[i].GetType() == typeof(LabeledTextInput))
                             {
                                 controls[i].SetValue(LabeledTextInput.HorizontalOptionsProperty, LayoutOptions.FillAndExpand);
                                 controls[i].SetValue(LabeledTextInput.VerticalOptionsProperty, LayoutOptions.FillAndExpand);
-                                controls[i].SetValue(LabeledTextInput.BackgroundColorProperty, UIHandler.colorSettings.Background);
+                                controls[i].SetValue(LabeledTextInput.BackgroundColorProperty, UIHandler.colorSettings.ControlBackground);
                                 controls[i].SetValue(LabeledTextInput.MarginProperty, new Thickness(0, 0, 0, 0));
                                 controls[i].SetValue(LabeledTextInput.PaddingProperty, new Thickness(0, 0, 0, 0));
+                                //controls[i].SetValue(LabeledTextInput.TextColorProperty, UIHandler.colorSettings.Text);
+                            }
+                            else if (controls[i].GetType() == typeof(Slider))
+                            {
+                                controls[i].SetValue(Slider.HorizontalOptionsProperty, LayoutOptions.FillAndExpand);
+                                controls[i].SetValue(Slider.VerticalOptionsProperty, LayoutOptions.FillAndExpand);
+                                controls[i].SetValue(Slider.BackgroundColorProperty, UIHandler.colorSettings.ControlBackground);
+                                controls[i].SetValue(Slider.MinimumTrackColorProperty, UIHandler.colorSettings.Text);
+                                controls[i].SetValue(Slider.MaximumTrackColorProperty, UIHandler.colorSettings.Text);
+                                controls[i].SetValue(Slider.MarginProperty, new Thickness(0, 0, 0, 0));
+                                //controls[i].SetValue(Slider.PaddingProperty, new Thickness(0, 0, 0, 0));
+                            }
+                            else if (controls[i].GetType() == typeof(ComboBox))
+                            {
+                                controls[i].SetValue(ComboBox.HorizontalOptionsProperty, LayoutOptions.FillAndExpand);
+                                controls[i].SetValue(ComboBox.VerticalOptionsProperty, LayoutOptions.FillAndExpand);
+                                controls[i].SetValue(ComboBox.BackgroundColorProperty, UIHandler.colorSettings.ControlBackground);
+                                controls[i].SetValue(ComboBox.MarginProperty, new Thickness(0, 0, 0, 0));
+                                controls[i].SetValue(ComboBox.TextColorProperty, UIHandler.colorSettings.Text);
+                                //controls[i].SetValue(ComboBox.PaddingProperty, new Thickness(0, 0, 0, 0));
                             }
                             else if (controls[i].GetType() == typeof(Grid))
                             {
@@ -8358,18 +8564,19 @@ namespace Integra_7_Xamarin
                                 controls[i].SetValue(Grid.PaddingProperty, new Thickness(0, 0, 0, 0));
                                 controls[i].SetValue(Grid.RowSpacingProperty, 0);
                                 controls[i].SetValue(Grid.ColumnSpacingProperty, 0);
+                                //controls[i].SetValue(Grid.TextColorProperty, UIHandler.colorSettings.Text);
                             }
 
                             // Set margins on all controls. Then the form background color will be seen as frames around controls.
                             //if (/*AddMargins && */controls[i].GetType() != typeof(Grid))
-                            if (AddMargins)
+                            if (AddMargins && controls[i].GetType() == typeof(Grid))
                             {
                                 if (row == 0)
                                 {
                                     if (i == 0)
                                     {
                                         // Top left control supplies all margins:
-                                        controls[i].SetValue(View.MarginProperty, new Thickness(
+                                        controls[i].SetValue(Grid.MarginProperty, new Thickness(
                                             UIHandler.borderThicknesSettings.Size,      // Left
                                             UIHandler.borderThicknesSettings.Size,      // Top
                                             UIHandler.borderThicknesSettings.Size,      // Right
@@ -8378,7 +8585,7 @@ namespace Integra_7_Xamarin
                                     else
                                     {
                                         // Other top controls supplies all margins but left the one:
-                                        controls[i].SetValue(View.MarginProperty, new Thickness(
+                                        controls[i].SetValue(Grid.MarginProperty, new Thickness(
                                             0,                                          // Left
                                             UIHandler.borderThicknesSettings.Size,      // Top
                                             UIHandler.borderThicknesSettings.Size,      // Right
@@ -8390,19 +8597,19 @@ namespace Integra_7_Xamarin
                                     if (i == 0)
                                     {
                                         // Non-top left controls supplies all margins but the top one:
-                                        controls[i].SetValue(View.MarginProperty, new Thickness(
+                                        controls[i].SetValue(Grid.MarginProperty, new Thickness(
                                             UIHandler.borderThicknesSettings.Size,      // Left
-                                            UIHandler.borderThicknesSettings.Size,      // Top
-                                            0,                                          // Right
+                                            0,                                          // Top
+                                            UIHandler.borderThicknesSettings.Size,      // Right
                                             UIHandler.borderThicknesSettings.Size));    // Bottom
                                     }
                                     else
                                     {
                                         // Non-top non-left controls supplies only right and bottom borders:
-                                        controls[i].SetValue(View.MarginProperty, new Thickness(
+                                        controls[i].SetValue(Grid.MarginProperty, new Thickness(
                                             0,                                          // Left
-                                            UIHandler.borderThicknesSettings.Size,      // Top
-                                            0,                                          // Right
+                                            0,                                          // Top
+                                            UIHandler.borderThicknesSettings.Size,      // Right
                                             UIHandler.borderThicknesSettings.Size));    // Bottom
                                     }
                                 }

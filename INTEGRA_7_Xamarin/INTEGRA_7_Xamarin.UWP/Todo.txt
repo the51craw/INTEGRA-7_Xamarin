@@ -1,0 +1,121 @@
+* Group, category and tone pickers are not set in accordance with the INTEGRA-7 at startup.
+	* Done, but it seems like it does a lot of unneccesary work. Take a look at it!
+
+* Changing tone from a drum kit to another type does not erase text on keyboard.
+
+* Drum keys names are one key too low.
+
+Some drum names are wrong.
+
+* When a drum kit is selected on I7 before startup, app fails to fill in key names.
+
+* Changin tone does not set current tone for the editor. Editor always get the tone that was set in I7 at app start?!?
+
+Category is set wrong in Edit. Fixed by changing it after wrong value has been found by this:
+    cbEditTone_InstrumentCategorySelector.SelectedIndex = toneCategories.snsToneCategoryNameIndex[superNATURALSynthTone.superNATURALSynthToneCommon.Category];
+	Check this list!
+
+Some edit controls are too high.
+
+There is no black space between controls. Compare with I7 random app to see how to fix it.
+
+Edit SN-D crashes in UpdateSuperNaturalDrumKitKeySelector().
+
+Fix the store images.
+
+Implement a close function in all device-dependent project, empty for tablets but closes apps for desktops.
+	Use when vender driver is detected.
+
+Edit hangs when sending a change via 5-pin MIDI.
+
+If studio set editor button is hit with no tone selected, it chrashes!
+
+Do not show librarian window unless MIDI is ok.
+
+Continue on the Studio set editor.
+	There are a lot of control labels that has no initial value.
+	Column 1:
+		* Tempo is not integer, is there a reason for that?
+		* When selecting a studio set, selector is left blank, and when opening it, it is scrolled down halfways.
+		* External part level reacts on arrow keys after 4 key presses. Is it not an integer?
+		* Ext part chorus/reverb levels are not integers. When changing, they update tempo label, not their own labels!
+	Column 2:
+		System common settings:
+			* Master key shift is not integer, is there a reason for that?
+			Cannot test 'Use scale tune switch' since I cannot find it in the manual, but it sends to I-7 so it is probably ok.
+			* There is a system tempo here, reason for that? Yes, this is the system tempo. The one in first column is the 
+				* studio set tempo. And here below is a selector to let system control tempo, or studio set.
+				* But it has no values in its label...
+		Voice reserv:
+		Chorus:
+			Chorus-chorus:
+				* Output select does not work.
+				* Filter cutoff frequency is not properly set, but it works to change. Seems to be a bug in I-7. It reports wrong,
+					* but if changed on the front panel, and from program change to delay and back agin, I-7 reports correct value.
+				Rate/Hz controls (selectable with 'Rate (num/notesw)') occupies each one row, they should occupy the same row.
+				* Hz low limits should be 0.05 to 10.
+				* Hz in not properly initialized and still has the slider int problem.
+				* Note in not properly initialized.
+				* All sliders uses many arrow keypress to change one step. Not an integer?
+				* Feedback is not properly initiated.
+				* When selecting chorus-chorus, then selecting another page (reverb, motional surround etc.) and back again,
+					* chorus page is set correctly to chorus-chorus, but shows only off parameters, not chorus-chorus parameters.
+			Chorus-delay:
+				* Output select does not work.
+				* When selecting this from chorus-shorus, screen is not properly cleared.
+				Num/note same problem as in chorus-chorus.
+				* Num/note switches does not send to I-7.
+				* Sliders int problem.
+				* Center feedback is not initialized.
+				* HF Damp lacks 'BYPASS' entry and possibly not initialized (maybe due to the missing entry).
+		Reverb:
+			* There are two time sliders in the same row and other GUI errors when first selected, but gets
+				* right when selecting a type.
+			* Does not react to type off.
+			* Level is not initiated, and label has no space between text and value.
+			* Most sliders (all but Spread) has the int problem.
+				* GM2 reverb Time label shows no decimals.
+		Motional surround:
+			* Motional switch surround is missing.
+			* All sliders has the int problem.
+		MasterEQ:
+			* All sliders has the int problem.
+	Column 3:
+		Maybe swap settings page selector with part selector.
+		* Part is always set to part 2 after initialization, why?
+		* Page selector is not set.
+		Part settings page 1:
+			* Change channel warning dialog lacks some text. Probably wrong thype of dialog (there are two types).
+			* Selecting tone via search box does not update I-7.
+			* All sliders has the int problem.
+		Part settings page 2:
+			* All sliders has the int problem.
+		Keyboard parameters:
+			* Velocity range upper/lower should have 1 as minimum, not 0.
+			* All sliders has the int problem.
+		Scale tune parameters:
+			* All sliders has the int problem.
+			* Key sliders has wrong upper/lower limits. Should be -64 -- +63.
+		Midi:
+			* All sliders has the int problem.
+			* Velocity curve type (adr 0x43) missing? Why is there a 'Phase lock' switch?
+		Motional surround:
+			L/R and F/B lacks offsets. Should be in range -64 -- +63.
+			Ambience send level is not initialized.
+		Studio set part EQ:
+			* All sliders has the int problem.
+			* Switch is missing.
+
+Test these now that they exist:
+There is no return button in studio set editor!
+Save/SaveFile/LoadFile buttons missing
+Save slot selector is missing
+Save slot name input field s missing
+
+Continue on the Favorites.
+
+* Add Surround page. Invent new way of 'dragging' controls since image has no coordinates in events.
+
+Add savint/loading settings in xml files (for all platforms!)
+
+Why is not cbStudioSetPartKeyboardMute added to the GUI?

@@ -10,6 +10,15 @@ namespace Integra_7_Xamarin
 {
     public partial class MainPage : ContentPage
     {
+        /// <summary>
+        /// The mainStackLayout is dynamically created at startup, by Init() 
+        /// and is the parent of the different pages, PleaseWait, Librarian,
+        /// Favorites, Tone edit, Studio set edit and the Motional surround editor.
+        /// All the pages are created at first use, except for the PleaseWait page,
+        /// that is needed to be created at app startup and shown while finding
+        /// a MIDI connection to the INTEGRA-7.
+        /// </summary>
+        StackLayout mainStackLayout { get; set; }
         public UIHandler uIHandler;
         private static MainPage MainPage_Portable;
         public object MainPage_Device { get; set; }
@@ -29,7 +38,18 @@ namespace Integra_7_Xamarin
 
         public void Init()
         {
-            StackLayout mainStackLayout = this.FindByName<StackLayout>("MainStackLayout");
+            mainStackLayout = new StackLayout();
+            mainStackLayout.VerticalOptions = LayoutOptions.Fill;
+            mainStackLayout.HorizontalOptions = LayoutOptions.Fill;
+            mainStackLayout.Margin = 0;
+            mainStackLayout.Padding = 0;
+            mainStackLayout.Spacing = 0;
+            mainStackLayout.MinimumWidthRequest = 1;
+            mainStackLayout.MinimumHeightRequest = 1;
+            mainStackLayout.SizeChanged += MainStackLayout_SizeChanged;
+            mainStackLayout.Parent = this;
+            mainStackLayout.IsVisible = true;
+            this.SetValue(ContentProperty, mainStackLayout);
             uIHandler = new UIHandler(mainStackLayout, MainPage_Portable);
         }
 

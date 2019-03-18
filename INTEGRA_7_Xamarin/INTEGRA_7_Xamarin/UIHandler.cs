@@ -18,7 +18,7 @@ namespace Integra_7_Xamarin
     {
         private HBTrace t = new HBTrace("UIHandler public sealed partial class MainPage : Page");
         Boolean handleControlEvents = true;            // Some control events re-creates the control, and that will cause a loop. Use handleControlEvents to prevent that.
-        Boolean previousHandleControlEvents = true;
+        List<Boolean> previousHandleControlEvents = new List<Boolean>();
 
         public enum _appType
         {
@@ -30,11 +30,21 @@ namespace Integra_7_Xamarin
 
         enum _page
         {
+            PLEASE_WAIT,
             LIBRARIAN,
             MOTIONAL_SURROUND,
             FAVORITES,
             EDIT_TONE,
             EDIT_STUDIO_SET,
+        }
+
+        public enum MIDIState
+        {
+            NOT_INITIALIZED,
+            INITIALIZING,
+            INITIALIZING_FAILED,
+            MIDI_NOT_AVAILABLE,
+            INITIALIZED
         }
 
         public enum QueryType
@@ -51,22 +61,27 @@ namespace Integra_7_Xamarin
             SND_KEY_NAME,
             CURRENT_SELECTED_STUDIO_SET,
             CURRENT_SELECTED_TONE,
+            READ_TONE_FROM_I7,
+            GET_CURRENT_STUDIO_SET_NUMBER_AND_SCAN,
+            GET_CURRENT_STUDIO_SET_NUMBER,
+            STUDIO_SET_NAMES,
         }
 
-        public object MainPage_Device { get; set; }
+        //public object MainPage_Device { get; set; }
         Boolean scanAll = false;
         UInt16 emptySlots = 10;
 
         SuperNATURALDrumKitInstrumentList superNATURALDrumKitInstrumentList = new SuperNATURALDrumKitInstrumentList();
+        Boolean showCurrentToneReadFromI7 = false;
 
         //ApplicationDataContainer localSettings = null;
         public CommonState commonState = null;
         //public IMyFileIO myFileIO = null;
         public System.Collections.Generic.List<System.Collections.Generic.List<String>> Lists = null;
-        private Boolean AutoUpdateChildLists = true;
-        private Int32 currentGroupIndex = -1;
-        private Int32 currentCategoryIndex = -1;
-        private Int32 currentToneNameIndex = -1;
+        //private Boolean AutoUpdateChildLists = true;
+        //private Int32 currentGroupIndex = -1;
+        //private Int32 currentCategoryIndex = -1;
+        //private Int32 currentToneNameIndex = -1;
         private byte currentNote = 255; // > 127 when note is off
         public static String[] lines;
         // private DrumKeyAssignLists drumKeyAssignLists = null; Moved to commonState
@@ -92,8 +107,8 @@ namespace Integra_7_Xamarin
         private byte lsb;
         private byte pc;
         private byte key;
-        String toneName;
-        String category;
+        //String toneName;
+        //String category;
         byte toneCategory;
         Int32 userToneIndex;
         Boolean integra_7Ready = false;
@@ -103,29 +118,38 @@ namespace Integra_7_Xamarin
         Boolean initMidi = false;
         UInt16[] userToneNumbers;
         public QueryType queryType { get; set; }
-        Boolean updateToneNames = false;
+        Boolean updateToneName = false;
         ToneCategories toneCategories = new ToneCategories();
         Hex2Midi hex2Midi = new Hex2Midi();
         //SuperNATURALDrumKitInstrumentList superNATURALDrumKitInstrumentList = new SuperNATURALDrumKitInstrumentList();
         public byte[] rawData;
         Int32 lastfontSize = 15;
+        Boolean stopTimer = false;
+        public static Int32 minimumHeightRequest = 14;
 
-        Integra_7_Xamarin.MainPage mainPage;
+        MainPage mainPage;
         public StackLayout mainStackLayout { get; set; }
+        public StackLayout PleaseWait_StackLayout = null;
+        public Boolean PleaseWait_IsCreated = false;
         public StackLayout Librarian_StackLayout = null;
         public Boolean Librarian_IsCreated = false;
         public StackLayout Edit_StackLayout = null;
         public StackLayout StudioSetEditor_StackLayout = null;
         public StackLayout Favorites_StackLayout = null;
+        public StackLayout MotionalSurround_StackLayout = null;
         public Boolean Edit_IsCreated = false;
         public Boolean EditStudioSet_IsCreated = false;
+        public Boolean MotionalSurround_IsCreated = false;
         public Boolean Favorites_IsCreated = false;
+        public MIDIState MidiState { get; set; }
 
 
         public static _appType appType;
-        public static ColorSettings colorSettings { get; set; }
-        public static BorderThicknesSettings borderThicknesSettings { get; set; }
-        _page page;
+        //public static ColorSettings colorSettings { get; set; }
+        public static ColorSettings colorSettings = new ColorSettings(_colorSettings.LIGHT);
+        //public static BorderThicknesSettings borderThicknesSettings { get; set; }
+        public static BorderThicknesSettings borderThicknesSettings = new BorderThicknesSettings(2);
+        _page Page;
 
         // Edit tone controls:
         //...
@@ -135,19 +159,26 @@ namespace Integra_7_Xamarin
         {
             this.mainStackLayout = mainStackLayout;
             this.mainPage = mainPage;
-            MainPage_Device = mainPage.MainPage_Device;
+            //MainPage_Device = mainPage.MainPage_Device;
             Init();
         }
 
         public void Init()
         {
-            page = _page.LIBRARIAN;
+            Page = _page.LIBRARIAN;
+            MidiState = MIDIState.NOT_INITIALIZED;
             colorSettings = new ColorSettings(_colorSettings.LIGHT);
             borderThicknesSettings = new BorderThicknesSettings(2);
             commonState = new CommonState(ref Librarian_btnPlay);
             commonState.midi = DependencyService.Get<IMidi>();
             rawData = new byte[0];
             IDeviceDependent deviceDependent;
+            userToneNumbers = new UInt16[128];
+            for (byte i = 0; i < 128; i++)
+            {
+                userToneNumbers[i] = 0;
+            }
+            StartTimer();
             initDone = true;
         }
 
@@ -156,14 +187,51 @@ namespace Integra_7_Xamarin
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         /// <summary>
+        /// This timer is used in all pages.
+        /// enum Page controls which page's timer routine is called.
+        /// </summary>
+        public void StartTimer()
+        {
+            Device.StartTimer(TimeSpan.FromMilliseconds(10), () =>
+            {
+                if (stopTimer)
+                {
+                    return false;
+                }
+                switch (Page)
+                {
+                    case _page.PLEASE_WAIT:
+                        PleaseWait_Timer_Tick();
+                        break;
+                    case _page.LIBRARIAN:
+                        Librarian_Timer_Tick();
+                        break;
+                    case _page.EDIT_TONE:
+                        Edit_Timer_Tick();
+                        break;
+                    case _page.EDIT_STUDIO_SET:
+                        EditStudioSet_Timer_Tick();
+                        break;
+                    case _page.MOTIONAL_SURROUND:
+                        MotionalSurround_Timer_Tick();
+                        break;
+                }
+                return true;
+            });
+        }
+
+        /// <summary>
         /// Device-specific classes fills out rawData and then calls MidiInPort_MessageRecceived().
         /// </summary>
         public void MidiInPort_MessageRecceived()
         {
             if (rawData.Length > 0)
             {
-                switch (page)
+                switch (Page)
                 {
+                    case _page.PLEASE_WAIT:
+                        PleaseWait_MidiInPort_MessageReceived();
+                        break;
                     case _page.LIBRARIAN:
                         Librarian_MidiInPort_MessageReceived();
                         break;
@@ -173,6 +241,9 @@ namespace Integra_7_Xamarin
                     case _page.EDIT_STUDIO_SET:
                         EditStudioSet_MidiInPort_MessageReceived();
                         break;
+                    case _page.MOTIONAL_SURROUND:
+						MotionalSurrouns_MidiInPort_MessageReceived();
+                        break;
                 }
                 //rawData = new byte[0];
             }
@@ -181,6 +252,18 @@ namespace Integra_7_Xamarin
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Functions common to all pages
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        private void PushHandleControlEvents(Boolean setHandleControlEvents = false)
+        {
+            previousHandleControlEvents.Add(handleControlEvents);
+            handleControlEvents = setHandleControlEvents;
+        }
+
+        private void PopHandleControlEvents()
+        {
+            handleControlEvents = previousHandleControlEvents[previousHandleControlEvents.Count() - 1];
+            previousHandleControlEvents.RemoveAt(previousHandleControlEvents.Count() - 1);
+        }
 
         public void SetFontSizes(StackLayout stackLayout)
         {
@@ -214,7 +297,7 @@ namespace Integra_7_Xamarin
             }
             else if (view.GetType() == typeof(LabeledSwitch))
             {
-                ((LabeledSwitch)view).Label.FontSize = size;
+                ((LabeledSwitch)view).LSLabel.FontSize = size;
             }
             else if (view.GetType() == typeof(LabeledPicker))
             {
@@ -230,6 +313,18 @@ namespace Integra_7_Xamarin
                 ((LabeledTextInput)view).Label.FontSize = size;
                 ((LabeledTextInput)view).Editor.FontSize = size;
             }
+            //else if (view.GetType() == typeof(ListView))
+            //{
+            //    ((ListView)view).SetValue(C ItemTemplate.f SetValue(Font.Default, size);
+            //}
+            //else if (view.GetType() == typeof(ComboBox))
+            //{
+            //    foreach (ComboBoxItem cbi in ((ComboBox)view).Items)
+            //    {
+            //        ((String)cbi.Content).
+            //    }
+            //    ((ComboBox)view).SetValue(C ItemTemplate.f SetValue(Font.Default, size);
+            //}
             else if (view.GetType() == typeof(StackLayout))
             {
                 foreach (View subView in ((StackLayout)view).Children)
@@ -244,41 +339,70 @@ namespace Integra_7_Xamarin
                     SetFontSize(subView, size);
                 }
             }
+            else
+            {
+                t.Trace("UIHandler line 309, missing type: " + view.GetType().ToString());
+            }
         }
 
-        private void SetStudioSet(byte[] number)
+        private void SetStudioSet(byte number)
         {
             t.Trace("private void SetStudioSet (" + "byte[]" + number + ", " + ")");
-            commonState.midi.ProgramChange((byte)15, (byte)85, (byte)0, (byte)(number[2] + 1));
+            //commonState.CurrentStudioSet = number;
+            commonState.midi.ProgramChange((byte)15, (byte)85, (byte)0, (byte)(number + 1));
         }
-
-        //private void Waiting(Boolean on)
+        
+        //public void DrawPleaseWaitPage()
         //{
-        //    switch (appType)
-        //    {
-        //        case _appType.ANDROID:
-        //            break;
-        //        case _appType.IOS:
-        //            break;
-        //        case _appType.MacOS:
-        //            break;
-        //        case _appType.UWP:
-        //            Waiting(on);
-        //            break;
-        //    }
-        //    t.Trace("private void Waiting (" + on + ")");
-        //    if (on)
-        //    {
-        //        EditTonesGrid.Cursor
-        //        Window.Current.CoreWindow.PointerCursor =
-        //            new Windows.UI.Core.CoreCursor(Windows.UI.Core.CoreCursorType.Wait, 1);
-        //    }
-        //    else
-        //    {
-        //        Window.Current.CoreWindow.PointerCursor =
-        //            new Windows.UI.Core.CoreCursor(Windows.UI.Core.CoreCursorType.Arrow, 1);
-        //    }
+        //    /*
+        //    <Grid x:Name="PleaseWaitWhileScanning" Visibility="Collapsed">
+        //        <ProgressBar Name="Progress" Margin="10,25,10,0" IsIndeterminate="true" Foreground="Green" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+        //        <TextBlock Name="txtScanning"  HorizontalAlignment="Center" VerticalAlignment="Center" />
+        //    </Grid>
+        //    */
+        //    grid_PleaseWait = new Grid();
+        //    pb_WaitingProgress = new ProgressBar();
+        //    pb_WaitingProgress.IsEnabled = true;
+        //    tbPleaseWait = new TextBlock();
+        //    tbPleaseWait.Text = "Please wait while scanning Studio set names and initiating form...";
+        //    PleaseWait_StackLayout = new StackLayout();
+        //    grid_PleaseWait.Children.Add(new GridRow(0, new View[] { tbPleaseWait }).Row);
+        //    grid_PleaseWait.Children.Add(new GridRow(1, new View[] { pb_WaitingProgress }).Row);
+        //    PleaseWait_StackLayout.Children.Add(new GridRow(0, new View[] { grid_PleaseWait }).Row);
+        //    PleaseWait_StackLayout.IsVisible = false;
         //}
+
+        // TODO: Think about this, Tablets and phones normally do not have a cursor, 
+        // but can have when mouse is connected via OTG! Still has no waitcursor.
+        // In those cases image UI might have some 'disabled' look and not respond to tapping.
+        // This is platform dependent! UWP and MacOS definitely can show a waitcursor.
+        private void Waiting(Boolean on, String WaitText, StackLayout stackLayout = null)
+        {
+            //t.Trace("private void Waiting(" + on.ToString() + ")");
+            // Maybe also test for platform and use different methods?
+            if (on)
+            {
+                if (stackLayout != null)
+                {
+                    stackLayout.IsVisible = false;
+                    ((TextBlock)((Grid)((Grid)((Grid)PleaseWait_StackLayout.Children[0]).
+                        Children[0]).Children[0]).Children[0]).Text = WaitText;
+                }
+                PleaseWait_StackLayout.IsVisible = true;
+                //Window.Current.CoreWindow.PointerCursor =
+                //    new Windows.UI.Core.CoreCursor(Windows.UI.Core.CoreCursorType.Wait, 1);
+            }
+            else
+            {
+                if (stackLayout != null)
+                {
+                    stackLayout.IsVisible = true;
+                }
+                PleaseWait_StackLayout.IsVisible = false;
+                //Window.Current.CoreWindow.PointerCursor =
+                //    new Windows.UI.Core.CoreCursor(Windows.UI.Core.CoreCursorType.Arrow, 1);
+            }
+        }
 
         private async void ShowMessage(String message)
         {

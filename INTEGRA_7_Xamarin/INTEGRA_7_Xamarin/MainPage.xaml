@@ -1,21 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:Integra_7_Xamarin"
+             xmlns:local="clr-namespace:INTEGRA_7_Xamarin"
              x:Class="Integra_7_Xamarin.MainPage">
+
     <ContentPage.Content
         VerticalOptions="Fill" 
         HorizontalOptions="Fill"
         Margin="0" 
         Padding="0"
-        Spacing="0">
-        <StackLayout x:Name="MainStackLayout" 
-            VerticalOptions="Fill" 
-            HorizontalOptions="Fill"
-            Margin="0" 
-            Padding="0"
-            Spacing="0"
-            SizeChanged="MainStackLayout_SizeChanged">
-        </StackLayout>
-    </ContentPage.Content>
+        Spacing="0"
+        Width="1200"
+        Height="1000"/>
 </ContentPage>
