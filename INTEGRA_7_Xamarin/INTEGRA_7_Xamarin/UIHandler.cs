@@ -261,8 +261,15 @@ namespace Integra_7_Xamarin
 
         private void PopHandleControlEvents()
         {
-            handleControlEvents = previousHandleControlEvents[previousHandleControlEvents.Count() - 1];
-            previousHandleControlEvents.RemoveAt(previousHandleControlEvents.Count() - 1);
+            if (previousHandleControlEvents.Count() > 0)
+            {
+                handleControlEvents = previousHandleControlEvents[previousHandleControlEvents.Count() - 1];
+                previousHandleControlEvents.RemoveAt(previousHandleControlEvents.Count() - 1);
+            }
+            else
+            {
+                handleControlEvents = true;
+            }
         }
 
         public void SetFontSizes(StackLayout stackLayout)
