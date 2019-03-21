@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using Plugin.FilePicker;
+using Plugin.FilePicker.Abstractions;
 
 namespace Integra_7_Xamarin
 {
@@ -142,6 +144,7 @@ namespace Integra_7_Xamarin
         public Boolean MotionalSurround_IsCreated = false;
         public Boolean Favorites_IsCreated = false;
         public MIDIState MidiState { get; set; }
+        public IMyFileIO myFileIO { get; set; }
 
 
         public static _appType appType;
@@ -170,7 +173,8 @@ namespace Integra_7_Xamarin
             colorSettings = new ColorSettings(_colorSettings.LIGHT);
             borderThicknesSettings = new BorderThicknesSettings(2);
             commonState = new CommonState(ref Librarian_btnPlay);
-            commonState.midi = DependencyService.Get<IMidi>();
+            commonState.Midi = DependencyService.Get<IMidi>();
+            myFileIO = DependencyService.Get<IMyFileIO>();
             rawData = new byte[0];
             IDeviceDependent deviceDependent;
             userToneNumbers = new UInt16[128];
@@ -356,7 +360,7 @@ namespace Integra_7_Xamarin
         {
             t.Trace("private void SetStudioSet (" + "byte[]" + number + ", " + ")");
             //commonState.CurrentStudioSet = number;
-            commonState.midi.ProgramChange((byte)15, (byte)85, (byte)0, (byte)(number + 1));
+            commonState.Midi.ProgramChange((byte)15, (byte)85, (byte)0, (byte)(number + 1));
         }
         
         //public void DrawPleaseWaitPage()

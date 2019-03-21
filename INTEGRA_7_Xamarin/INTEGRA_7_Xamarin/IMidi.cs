@@ -52,5 +52,7 @@ namespace Integra_7_Xamarin
         Task CheckForVenderDriver();
 
         Boolean VenderDriverDetected();
+
+        List<String> GetMidiDeviceList();
     }
 }

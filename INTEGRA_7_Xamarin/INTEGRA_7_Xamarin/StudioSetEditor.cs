@@ -605,7 +605,7 @@ namespace Integra_7_Xamarin
                 mainStackLayout.Children.Add(StudioSetEditor_StackLayout);
                 EditStudioSet_IsCreated = true;
                 PopHandleControlEvents();
-                commonState.studioSet = new StudioSet();
+                commonState.StudioSet = new StudioSet();
                 StudioSetEditor_Init();
                 PopulateComboBoxes();
                 setVisibility = true;
@@ -2302,8 +2302,8 @@ namespace Integra_7_Xamarin
                 //}
                 if (btnEditTone_Play != null)
                 {
-                    commonState.player.btnPlayStop = btnEditTone_Play;
-                    if (commonState.player.Playing)
+                    commonState.Player.btnPlayStop = btnEditTone_Play;
+                    if (commonState.Player.Playing)
                     {
                         btnEditTone_Play.Content = "Stop";
                     }
@@ -2316,13 +2316,13 @@ namespace Integra_7_Xamarin
             ResetComboBoxes();
             hex2Midi = new Hex2Midi();
             //commonState.midi.midiInPort.MessageReceived += EditStudioSet_MidiInPort_MessageReceived;
-            if (commonState.studioSetNames == null)
+            if (commonState.StudioSetNames == null)
             {
                 //grid_MainStudioSet.IsVisible = false;
                 //commonState.midi.midiInPort.MessageReceived += EditStudioSet_MidiInPort_MessageReceived;
                 // Get a list of all studio set names. Start by storing the current studio set number.
                 // Note that consequent queries will be sent from MidiInPort_MessageReceived and Timer_Tick.
-                commonState.studioSetNames = new List<String>();
+                commonState.StudioSetNames = new List<String>();
                 QueryCurrentStudioSetNumber(true); // And scan all studio set names.
 
             }
@@ -2958,7 +2958,7 @@ namespace Integra_7_Xamarin
 
                     // Set studio set back according to currentStudioSetNumber:
                     //commonState.midi.ProgramChange((byte)15, (byte)85, (byte)0, (byte)(currentStudioSetNumberAsBytes[2] + 1));
-                    commonState.midi.ProgramChange((byte)15, (byte)85, (byte)0, (byte)(commonState.CurrentStudioSet + 1));
+                    commonState.Midi.ProgramChange((byte)15, (byte)85, (byte)0, (byte)(commonState.CurrentStudioSet + 1));
 
                     // Set selector accordingly:
                     PushHandleControlEvents();
@@ -3088,27 +3088,27 @@ namespace Integra_7_Xamarin
                     ReadStudioSetPartToneName();
 
                     // Get current tone:
-                    commonState.currentTone = new Tone(commonState.toneList.Tones[commonState.toneList.Get(
-                        commonState.studioSet.PartMainSettings[cbStudioSetPartSelector.SelectedIndex].ToneBankSelectMSB,
-                        commonState.studioSet.PartMainSettings[cbStudioSetPartSelector.SelectedIndex].ToneBankSelectLSB,
-                        commonState.studioSet.PartMainSettings[cbStudioSetPartSelector.SelectedIndex].ToneProgramNumber)]);
-                    StudioSetCurrentToneName.Text = commonState.currentTone.Name;
+                    commonState.CurrentTone = new Tone(commonState.ToneList.Tones[commonState.ToneList.Get(
+                        commonState.StudioSet.PartMainSettings[cbStudioSetPartSelector.SelectedIndex].ToneBankSelectMSB,
+                        commonState.StudioSet.PartMainSettings[cbStudioSetPartSelector.SelectedIndex].ToneBankSelectLSB,
+                        commonState.StudioSet.PartMainSettings[cbStudioSetPartSelector.SelectedIndex].ToneProgramNumber)]);
+                    StudioSetCurrentToneName.Text = commonState.CurrentTone.Name;
 
                     // Get the current tone from commonState:
                     currentToneNumberAsBytes = new byte[3];
-                    currentToneNumberAsBytes[0] = (byte)(UInt16.Parse(commonState.toneList.Tones[commonState.currentTone.Index][4]));
-                    currentToneNumberAsBytes[1] = (byte)(UInt16.Parse(commonState.toneList.Tones[commonState.currentTone.Index][5]));
-                    currentToneNumberAsBytes[2] = (byte)(UInt16.Parse(commonState.toneList.Tones[commonState.currentTone.Index][7]));
+                    currentToneNumberAsBytes[0] = (byte)(UInt16.Parse(commonState.ToneList.Tones[commonState.CurrentTone.Index][4]));
+                    currentToneNumberAsBytes[1] = (byte)(UInt16.Parse(commonState.ToneList.Tones[commonState.CurrentTone.Index][5]));
+                    currentToneNumberAsBytes[2] = (byte)(UInt16.Parse(commonState.ToneList.Tones[commonState.CurrentTone.Index][7]));
 
                     // Now we have MSB, LSB and CB, set comboboxes:
                     PushHandleControlEvents();
                     PushHandleControlEvents();
                     PopulateCbStudioSetPartSettings1Group();
-                    cbStudioSetPartSettings1Group.SelectedItem = commonState.currentTone.Group;
+                    cbStudioSetPartSettings1Group.SelectedItem = commonState.CurrentTone.Group;
                     PopulateCbStudioSetPartSettings1Category();
-                    cbStudioSetPartSettings1Category.SelectedItem = commonState.currentTone.Category;
+                    cbStudioSetPartSettings1Category.SelectedItem = commonState.CurrentTone.Category;
                     PopulateCbStudioSetPartSettings1Program();
-                    cbStudioSetPartSettings1Program.SelectedItem = commonState.currentTone.Name;
+                    cbStudioSetPartSettings1Program.SelectedItem = commonState.CurrentTone.Name;
                     PopHandleControlEvents();
 
                     // Set current tone on I-7:
@@ -3182,7 +3182,7 @@ namespace Integra_7_Xamarin
                         ChorusChorus.IsVisible = false;
                         ChorusDelay.IsVisible = false;
                         ChorusGM2Chorus.IsVisible = false;
-                        switch (commonState.studioSet.CommonChorus.Type)
+                        switch (commonState.StudioSet.CommonChorus.Type)
                         {
                             case 1:
                                 ChorusChorus.IsVisible = true;
@@ -3339,19 +3339,19 @@ namespace Integra_7_Xamarin
                     ReadStudioSetPartToneName();
 
                     // Get current tone:
-                    StudioSetCurrentToneName.Text = commonState.currentTone.Name;
+                    StudioSetCurrentToneName.Text = commonState.CurrentTone.Name;
 
-                    Int32 toneNumber = commonState.toneList.Get(commonState.currentTone.BankMSB, commonState.currentTone.BankLSB, commonState.currentTone.Program);
+                    Int32 toneNumber = commonState.ToneList.Get(commonState.CurrentTone.BankMSB, commonState.CurrentTone.BankLSB, commonState.CurrentTone.Program);
 
                     // Now we have MSB, LSB and CB, fix comboboxes:
                     PushHandleControlEvents();
                     PushHandleControlEvents();
                     PopulateCbStudioSetPartSettings1Group();
-                    cbStudioSetPartSettings1Group.SelectedItem = commonState.toneList.Tones[toneNumber][0];// commonState.currentTone.Group;
+                    cbStudioSetPartSettings1Group.SelectedItem = commonState.ToneList.Tones[toneNumber][0];// commonState.currentTone.Group;
                     PopulateCbStudioSetPartSettings1Category();
-                    cbStudioSetPartSettings1Category.SelectedItem = commonState.toneList.Tones[toneNumber][1];//commonState.currentTone.Category;
+                    cbStudioSetPartSettings1Category.SelectedItem = commonState.ToneList.Tones[toneNumber][1];//commonState.currentTone.Category;
                     PopulateCbStudioSetPartSettings1Program();
-                    cbStudioSetPartSettings1Program.SelectedItem = commonState.toneList.Tones[toneNumber][3];//commonState.currentTone.Name;
+                    cbStudioSetPartSettings1Program.SelectedItem = commonState.ToneList.Tones[toneNumber][3];//commonState.currentTone.Name;
                     PopHandleControlEvents();
 
                     // Set current tone on I-7:
@@ -3392,7 +3392,7 @@ namespace Integra_7_Xamarin
                     // This will be handled, so...
                     studioSetEditor_State = StudioSetEditor_State.NONE;
 
-                    switch (commonState.studioSet.CommonChorus.Type)
+                    switch (commonState.StudioSet.CommonChorus.Type)
                     {
                         case 1:
                             ChorusChorus.IsVisible = true;
@@ -3441,7 +3441,7 @@ namespace Integra_7_Xamarin
                     {
                         text += (char)rawData[i];
                     }
-                    commonState.studioSetNames.Add(text);
+                    commonState.StudioSetNames.Add(text);
                     studioSetNumberTemp++;
                     pb_WaitingProgress.Progress = (Double)studioSetNumberTemp / (Double) 64;
 
@@ -3506,12 +3506,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetCommonToneControl1(Int32 p)
         {
-            commonState.studioSet.Common.ToneControlSource[0] = (byte)p;
+            commonState.StudioSet.Common.ToneControlSource[0] = (byte)p;
             byte[] address = { 0x18, 0x00, 0x00, 0x39 };
             byte[] value = { (byte)p };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void cbToneControl2_SelectionChanged(object sender, EventArgs e)
@@ -3529,12 +3529,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetCommonToneControl2(Int32 p)
         {
-            commonState.studioSet.Common.ToneControlSource[1] = (byte)p;
+            commonState.StudioSet.Common.ToneControlSource[1] = (byte)p;
             byte[] address = { 0x18, 0x00, 0x00, 0x3a };
             byte[] value = { (byte)p };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void cbToneControl3_SelectionChanged(object sender, EventArgs e)
@@ -3552,12 +3552,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetCommonToneControl3(Int32 p)
         {
-            commonState.studioSet.Common.ToneControlSource[2] = (byte)p;
+            commonState.StudioSet.Common.ToneControlSource[2] = (byte)p;
             byte[] address = { 0x18, 0x00, 0x00, 0x3b };
             byte[] value = { (byte)p };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void cbToneControl4_SelectionChanged(object sender, EventArgs e)
@@ -3575,12 +3575,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetCommonToneControl4(Int32 p)
         {
-            commonState.studioSet.Common.ToneControlSource[3] = (byte)p;
+            commonState.StudioSet.Common.ToneControlSource[3] = (byte)p;
             byte[] address = { 0x18, 0x00, 0x00, 0x3c };
             byte[] value = { (byte)p };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void slTempo_ValueChanged(object sender, EventArgs e)
@@ -3594,12 +3594,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetCommonTempo(Double p)
         {
-            commonState.studioSet.Common.Tempo = (byte)p;
+            commonState.StudioSet.Common.Tempo = (byte)p;
             tbTempo.Text = "Tempo " + p.ToString();
             byte[] address = { 0x18, 0x00, 0x00, 0x3d };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, Int32ToTwoByteArray((byte)p));
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, Int32ToTwoByteArray((byte)p));
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void cbSoloPart_SelectionChanged(object sender, EventArgs e)
@@ -3613,12 +3613,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetCommonSoloPart(Int32 p)
         {
-            commonState.studioSet.Common.SoloPart = (byte)p;
+            commonState.StudioSet.Common.SoloPart = (byte)p;
             byte[] address = { 0x18, 0x00, 0x00, 0x3f };
             byte[] value = { (byte)p };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void cbReverb_Click(object sender, EventArgs e)
@@ -3632,12 +3632,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetCommonReverb(Boolean p)
         {
-            commonState.studioSet.Common.Reverb = p;
+            commonState.StudioSet.Common.Reverb = p;
             byte[] address = { 0x18, 0x00, 0x00, 0x40 };
             byte[] value = { (byte)((p) ? 0x01 : 0x00) };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void cbChorus_Click(object sender, EventArgs e)
@@ -3651,12 +3651,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetCommonChorus(Boolean p)
         {
-            commonState.studioSet.Common.Chorus = p;
+            commonState.StudioSet.Common.Chorus = p;
             byte[] address = { 0x18, 0x00, 0x00, 0x41 };
             byte[] value = { (byte)(p ? 0x01 : 0x00) };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void cbMasterEQ_Click(object sender, EventArgs e)
@@ -3670,12 +3670,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetCommonMasterEQ(Boolean p)
         {
-            commonState.studioSet.Common.MasterEqualizer = p;
+            commonState.StudioSet.Common.MasterEqualizer = p;
             byte[] address = { 0x18, 0x00, 0x00, 0x42 };
             byte[] value = { (byte)(p ? 0x01 : 0x00) };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void cbDrumCompEQPart_SelectionChanged(object sender, EventArgs e)
@@ -3689,12 +3689,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetCommonEQPart(Int32 p)
         {
-            commonState.studioSet.Common.DrumCompressorAndEqualizerPart = (byte)p;
+            commonState.StudioSet.Common.DrumCompressorAndEqualizerPart = (byte)p;
             byte[] address = { 0x18, 0x00, 0x00, 0x44 };
             byte[] value = { (byte)p };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void cbDrumCompEQ1OutputAssign_SelectionChanged(object sender, EventArgs e)
@@ -3708,12 +3708,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetCommonEQ1OutputAssign(Int32 p)
         {
-            commonState.studioSet.Common.DrumCompressorAndEqualizerOutputAssign[0] = (byte)p;
+            commonState.StudioSet.Common.DrumCompressorAndEqualizerOutputAssign[0] = (byte)p;
             byte[] address = { 0x18, 0x00, 0x00, 0x45 };
             byte[] value = { (byte)p };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void cbDrumCompEQ2OutputAssign_SelectionChanged(object sender, EventArgs e)
@@ -3727,12 +3727,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetCommonEQ2OutputAssign(Int32 p)
         {
-            commonState.studioSet.Common.DrumCompressorAndEqualizerOutputAssign[1] = (byte)p;
+            commonState.StudioSet.Common.DrumCompressorAndEqualizerOutputAssign[1] = (byte)p;
             byte[] address = { 0x18, 0x00, 0x00, 0x46 };
             byte[] value = { (byte)p };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void cbDrumCompEQ3OutputAssign_SelectionChanged(object sender, EventArgs e)
@@ -3746,12 +3746,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetCommonEQ3OutputAssign(Int32 p)
         {
-            commonState.studioSet.Common.DrumCompressorAndEqualizerOutputAssign[2] = (byte)p;
+            commonState.StudioSet.Common.DrumCompressorAndEqualizerOutputAssign[2] = (byte)p;
             byte[] address = { 0x18, 0x00, 0x00, 0x47 };
             byte[] value = { (byte)p };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void cbDrumCompEQ4OutputAssign_SelectionChanged(object sender, EventArgs e)
@@ -3765,12 +3765,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetCommonEQ4OutputAssign(Int32 p)
         {
-            commonState.studioSet.Common.DrumCompressorAndEqualizerOutputAssign[3] = (byte)p;
+            commonState.StudioSet.Common.DrumCompressorAndEqualizerOutputAssign[3] = (byte)p;
             byte[] address = { 0x18, 0x00, 0x00, 0x48 };
             byte[] value = { (byte)p };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void cbDrumCompEQ5OutputAssign_SelectionChanged(object sender, EventArgs e)
@@ -3784,12 +3784,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetCommonEQ5OutputAssign(Int32 p)
         {
-            commonState.studioSet.Common.DrumCompressorAndEqualizerOutputAssign[4] = (byte)p;
+            commonState.StudioSet.Common.DrumCompressorAndEqualizerOutputAssign[4] = (byte)p;
             byte[] address = { 0x18, 0x00, 0x00, 0x49 };
             byte[] value = { (byte)p };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void cbDrumCompEQ6OutputAssign_SelectionChanged(object sender, EventArgs e)
@@ -3803,12 +3803,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetCommonEQ6OutputAssign(Int32 p)
         {
-            commonState.studioSet.Common.DrumCompressorAndEqualizerOutputAssign[5] = (byte)p;
+            commonState.StudioSet.Common.DrumCompressorAndEqualizerOutputAssign[5] = (byte)p;
             byte[] address = { 0x18, 0x00, 0x00, 0x4a };
             byte[] value = { (byte)p };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void cbDrumCompEQ_Click(object sender, EventArgs e)
@@ -3822,12 +3822,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetCompEQ_Click(Boolean p)
         {
-            commonState.studioSet.Common.DrumCompressorAndEqualizer = p;
+            commonState.StudioSet.Common.DrumCompressorAndEqualizer = p;
             byte[] address = { 0x18, 0x00, 0x00, 0x43 };
             byte[] value = { (byte)(p ? 0x01 : 0x00) };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void cbExtPartMute_Click(object sender, EventArgs e)
@@ -3841,12 +3841,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetExtPartMute(Boolean p)
         {
-            commonState.studioSet.Common.ExternalPartMute = p;
+            commonState.StudioSet.Common.ExternalPartMute = p;
             byte[] address = { 0x18, 0x00, 0x00, 0x4f };
             byte[] value = { (byte)(p ? 0x01 : 0x00) };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void slExtPartLevel_ValueChanged(object sender, EventArgs e)
@@ -3860,12 +3860,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetExtPartLevel(Double p)
         {
-            commonState.studioSet.Common.ExternalPartLevel = (byte)p;
+            commonState.StudioSet.Common.ExternalPartLevel = (byte)p;
             tbExtPartLevel.Text = "Ext part level " + p.ToString();
             byte[] address = { 0x18, 0x00, 0x00, 0x4c };
             byte[] value = { (byte)p };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
-            commonState.midi.SendSystemExclusive(bytes);
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void slExtPartChorusSend_ValueChanged(object sender, EventArgs e)
@@ -3879,13 +3879,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetExtPartChorusSend(Double p)
         {
-            commonState.studioSet.Common.ExternalPartChorusSendLevel = (byte)p;
+            commonState.StudioSet.Common.ExternalPartChorusSendLevel = (byte)p;
             tbExtPartChorusSend.Text = "Ext part chorus send level " + p.ToString();
             byte[] address = { 0x18, 0x00, 0x00, 0x4d };
             byte[] value = { (byte)p };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void slExtPartReverbSend_ValueChanged(object sender, EventArgs e)
@@ -3899,13 +3899,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetExtPartReverbSend(Double p)
         {
-            commonState.studioSet.Common.ExternalPartReverbSendLevel = (byte)p;
+            commonState.StudioSet.Common.ExternalPartReverbSendLevel = (byte)p;
             tbExtPartReverbSend.Text = "Ext part reverb send level " + p.ToString();
             byte[] address = { 0x18, 0x00, 0x00, 0x4e };
             byte[] value = { (byte)p };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         // Column 1
@@ -3966,17 +3966,17 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetSystemCommonMasterTune(Int32 p)
         {
-            commonState.studioSet.SystemCommon.MasterTune = p + 1024;
+            commonState.StudioSet.SystemCommon.MasterTune = p + 1024;
             tbSystemCommonMasterTune.Text = "Master tune " + (slSystemCommonMasterTune.Value / 10).ToString() + " cent";
             byte[] address = { 0x02, 0x00, 0x00, 0x00 };
             byte[] value = new byte[4];
-            value[0] = (byte)((commonState.studioSet.SystemCommon.MasterTune & 0xf000) >> 12);
-            value[1] = (byte)((commonState.studioSet.SystemCommon.MasterTune & 0x0f00) >> 8);
-            value[2] = (byte)((commonState.studioSet.SystemCommon.MasterTune & 0x00f0) >> 4);
-            value[3] = (byte)(commonState.studioSet.SystemCommon.MasterTune & 0x000f);
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            value[0] = (byte)((commonState.StudioSet.SystemCommon.MasterTune & 0xf000) >> 12);
+            value[1] = (byte)((commonState.StudioSet.SystemCommon.MasterTune & 0x0f00) >> 8);
+            value[2] = (byte)((commonState.StudioSet.SystemCommon.MasterTune & 0x00f0) >> 4);
+            value[3] = (byte)(commonState.StudioSet.SystemCommon.MasterTune & 0x000f);
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void slSystemCommonMasterKeyShift_ValueChanged(object sender, EventArgs e)
@@ -3990,13 +3990,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetSystemCommonMasterKeyShift(Int32 p)
         {
-            commonState.studioSet.SystemCommon.MasterKeyShift = (byte)(p + 64); // Translates 40 - 88 into -24 - +24
+            commonState.StudioSet.SystemCommon.MasterKeyShift = (byte)(p + 64); // Translates 40 - 88 into -24 - +24
             tbSystemCommonMasterKeyShift.Text = "Master key shift " + slSystemCommonMasterKeyShift.Value.ToString() + " keys";
             byte[] address = { 0x02, 0x00, 0x00, 0x04 };
-            byte[] value = { commonState.studioSet.SystemCommon.MasterKeyShift };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { commonState.StudioSet.SystemCommon.MasterKeyShift };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void slSystemCommonMasterLevel_ValueChanged(object sender, EventArgs e)
@@ -4010,13 +4010,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetSystemCommonMasterLevel(Int32 p)
         {
-            commonState.studioSet.SystemCommon.MasterLevel = (byte)p;
+            commonState.StudioSet.SystemCommon.MasterLevel = (byte)p;
             tbSystemCommonMasterLevel.Text = "Master level " + slSystemCommonMasterLevel.Value.ToString();
             byte[] address = { 0x02, 0x00, 0x00, 0x05 };
-            byte[] value = { (byte)commonState.studioSet.SystemCommon.MasterLevel };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.SystemCommon.MasterLevel };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void cbSystemCommonScaleTuneSwitch_Click(object sender, EventArgs e)
@@ -4030,12 +4030,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetSystemCommonScaleTuneSwitch(Boolean p)
         {
-            commonState.studioSet.SystemCommon.ScaleTuneSwitch = p;
+            commonState.StudioSet.SystemCommon.ScaleTuneSwitch = p;
             byte[] address = { 0x02, 0x00, 0x00, 0x06 };
-            byte[] value = { (byte)(commonState.studioSet.SystemCommon.ScaleTuneSwitch ? 1 : 0) };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)(commonState.StudioSet.SystemCommon.ScaleTuneSwitch ? 1 : 0) };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void cbSystemCommonStudioSetControlChannel_SelectionChanged(object sender, EventArgs e)
@@ -4049,12 +4049,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetSystemCommonStudioSetControlChannel(Int32 p)
         {
-            commonState.studioSet.SystemCommon.StudioSetControlChannel = (byte)p;
+            commonState.StudioSet.SystemCommon.StudioSetControlChannel = (byte)p;
             byte[] address = { 0x02, 0x00, 0x00, 0x11 };
-            byte[] value = { (byte)commonState.studioSet.SystemCommon.StudioSetControlChannel };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.SystemCommon.StudioSetControlChannel };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void cbSystemCommonSystemControlSource1_SelectedIndexChanged(object sender, EventArgs e)
@@ -4068,12 +4068,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetSystemCommonSystemControlSource1(Int32 p)
         {
-            commonState.studioSet.SystemCommon.SystemControl1Source = (byte)p;
+            commonState.StudioSet.SystemCommon.SystemControl1Source = (byte)p;
             byte[] address = { 0x02, 0x00, 0x00, 0x20 };
-            byte[] value = { (byte)commonState.studioSet.SystemCommon.SystemControl1Source };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.SystemCommon.SystemControl1Source };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void cbSystemCommonSystemControlSource2_SelectedIndexChanged(object sender, EventArgs e)
@@ -4087,12 +4087,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetSystemCommonSystemControlSource2(Int32 p)
         {
-            commonState.studioSet.SystemCommon.SystemControl2Source = (byte)p;
+            commonState.StudioSet.SystemCommon.SystemControl2Source = (byte)p;
             byte[] address = { 0x02, 0x00, 0x00, 0x21 };
-            byte[] value = { (byte)commonState.studioSet.SystemCommon.SystemControl2Source };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.SystemCommon.SystemControl2Source };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void cbSystemCommonSystemControlSource3_SelectedIndexChanged(object sender, EventArgs e)
@@ -4106,12 +4106,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetSystemCommonSystemControlSource3(Int32 p)
         {
-            commonState.studioSet.SystemCommon.SystemControl3Source = (byte)p;
+            commonState.StudioSet.SystemCommon.SystemControl3Source = (byte)p;
             byte[] address = { 0x02, 0x00, 0x00, 0x22 };
-            byte[] value = { (byte)commonState.studioSet.SystemCommon.SystemControl3Source };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.SystemCommon.SystemControl3Source };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void cbSystemCommonSystemControlSource4_SelectedIndexChanged(object sender, EventArgs e)
@@ -4125,12 +4125,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetSystemCommonSystemControlSource4(Int32 p)
         {
-            commonState.studioSet.SystemCommon.SystemControl4Source = (byte)p;
+            commonState.StudioSet.SystemCommon.SystemControl4Source = (byte)p;
             byte[] address = { 0x02, 0x00, 0x00, 0x23 };
-            byte[] value = { (byte)commonState.studioSet.SystemCommon.SystemControl4Source };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.SystemCommon.SystemControl4Source };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void cbSystemCommonControlSource_SelectionChanged(object sender, EventArgs e)
@@ -4144,12 +4144,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetSystemCommonControlSource(Int32 p)
         {
-            commonState.studioSet.SystemCommon.ControlSource = (byte)p;
+            commonState.StudioSet.SystemCommon.ControlSource = (byte)p;
             byte[] address = { 0x02, 0x00, 0x00, 0x24 };
-            byte[] value = { (byte)commonState.studioSet.SystemCommon.ControlSource };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.SystemCommon.ControlSource };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void cbSystemCommonSystemClockSource_SelectionChanged(object sender, EventArgs e)
@@ -4163,12 +4163,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetSystemCommonSystemClockSource(Int32 p)
         {
-            commonState.studioSet.SystemCommon.SystemClockSource = (byte)p;
+            commonState.StudioSet.SystemCommon.SystemClockSource = (byte)p;
             byte[] address = { 0x02, 0x00, 0x00, 0x25 };
-            byte[] value = { (byte)commonState.studioSet.SystemCommon.SystemClockSource };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.SystemCommon.SystemClockSource };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void slSystemCommonSystemTempo_ValueChanged(object sender, EventArgs e)
@@ -4183,12 +4183,12 @@ namespace Integra_7_Xamarin
         private void SetStudioSetSystemCommonSystemTempo(Int32 p)
         {
             tbSystemCommonSystemTempo.Text = "System tempo " + p.ToString();
-            commonState.studioSet.SystemCommon.SystemTempo = (byte)p;
+            commonState.StudioSet.SystemCommon.SystemTempo = (byte)p;
             byte[] address = { 0x02, 0x00, 0x00, 0x26 };
-            byte[] value = { (byte)(commonState.studioSet.SystemCommon.SystemTempo / 16), (byte)(commonState.studioSet.SystemCommon.SystemTempo % 16) };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)(commonState.StudioSet.SystemCommon.SystemTempo / 16), (byte)(commonState.StudioSet.SystemCommon.SystemTempo % 16) };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void cbSystemCommonTempoAssignSource_SelectionChanged(object sender, EventArgs e)
@@ -4202,12 +4202,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetSystemCommonTempoAssignSource(Int32 p)
         {
-            commonState.studioSet.SystemCommon.TempoAssignSource = (byte)p;
+            commonState.StudioSet.SystemCommon.TempoAssignSource = (byte)p;
             byte[] address = { 0x02, 0x00, 0x00, 0x28 };
-            byte[] value = { (byte)commonState.studioSet.SystemCommon.TempoAssignSource };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.SystemCommon.TempoAssignSource };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void cbSystemCommonReceiveProgramChange_Click(object sender, EventArgs e)
@@ -4221,12 +4221,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetSystemCommonReceiveProgramChange(Boolean p)
         {
-            commonState.studioSet.SystemCommon.ReceiveProgramChange = p;
+            commonState.StudioSet.SystemCommon.ReceiveProgramChange = p;
             byte[] address = { 0x02, 0x00, 0x00, 0x29 };
-            byte[] value = { (byte)(commonState.studioSet.SystemCommon.ReceiveProgramChange ? 1 : 0) };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)(commonState.StudioSet.SystemCommon.ReceiveProgramChange ? 1 : 0) };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void cbSystemCommonReceiveBankSelect_Click(object sender, EventArgs e)
@@ -4240,12 +4240,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetSystemCommonReceiveBankSelect(Boolean p)
         {
-            commonState.studioSet.SystemCommon.ReceiveBankSelect = p;
+            commonState.StudioSet.SystemCommon.ReceiveBankSelect = p;
             byte[] address = { 0x02, 0x00, 0x00, 0x2a };
-            byte[] value = { (byte)(commonState.studioSet.SystemCommon.ReceiveBankSelect ? 1 : 0) };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)(commonState.StudioSet.SystemCommon.ReceiveBankSelect ? 1 : 0) };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void cbSystemCommonSurroundCenterSpeakerSwitch_Click(object sender, EventArgs e)
@@ -4259,12 +4259,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetSystemCommonSurroundCenterSpeakerSwitch(Boolean p)
         {
-            commonState.studioSet.SystemCommon.SurroundCenterSpeakerSwitch = p;
+            commonState.StudioSet.SystemCommon.SurroundCenterSpeakerSwitch = p;
             byte[] address = { 0x02, 0x00, 0x00, 0x2b };
-            byte[] value = { (byte)(commonState.studioSet.SystemCommon.SurroundCenterSpeakerSwitch ? 1 : 0) };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)(commonState.StudioSet.SystemCommon.SurroundCenterSpeakerSwitch ? 1 : 0) };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void cbSystemCommonSurroundSubWooferSwitch_Click(object sender, EventArgs e)
@@ -4278,12 +4278,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetSystemCommonSurroundSubWooferSwitch(Boolean p)
         {
-            commonState.studioSet.SystemCommon.SurroundSubWooferSwitch = p;
+            commonState.StudioSet.SystemCommon.SurroundSubWooferSwitch = p;
             byte[] address = { 0x02, 0x00, 0x00, 0x2c };
-            byte[] value = { (byte)(commonState.studioSet.SystemCommon.SurroundSubWooferSwitch ? 1 : 0) };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)(commonState.StudioSet.SystemCommon.SurroundSubWooferSwitch ? 1 : 0) };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void cbSystemCommonStereoOutputMode_SelectionChanged(object sender, EventArgs e)
@@ -4298,12 +4298,12 @@ namespace Integra_7_Xamarin
         // Voice reserve events
         private void SetStudioSetSystemCommonStereoOutputMode(Int32 p)
         {
-            commonState.studioSet.SystemCommon.StereoOutputMode = (byte)p;
+            commonState.StudioSet.SystemCommon.StereoOutputMode = (byte)p;
             byte[] address = { 0x02, 0x00, 0x00, 0x2d };
-            byte[] value = { (byte)commonState.studioSet.SystemCommon.StereoOutputMode };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.SystemCommon.StereoOutputMode };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void slVoiceReserve01_ValueChanged(object sender, EventArgs e)
@@ -4317,12 +4317,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetVoiceReserve01(Int32 p)
         {
-            commonState.studioSet.Common.VoiceReserve[0] = (byte)p;
+            commonState.StudioSet.Common.VoiceReserve[0] = (byte)p;
             byte[] address = { 0x18, 0x00, 0x00, 0x18 };
-            byte[] value = { commonState.studioSet.Common.VoiceReserve[0] };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { commonState.StudioSet.Common.VoiceReserve[0] };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void slVoiceReserve02_ValueChanged(object sender, EventArgs e)
@@ -4336,12 +4336,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetVoiceReserve02(Int32 p)
         {
-            commonState.studioSet.Common.VoiceReserve[1] = (byte)p;
+            commonState.StudioSet.Common.VoiceReserve[1] = (byte)p;
             byte[] address = { 0x18, 0x00, 0x00, 0x19 };
-            byte[] value = { commonState.studioSet.Common.VoiceReserve[1] };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { commonState.StudioSet.Common.VoiceReserve[1] };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void slVoiceReserve03_ValueChanged(object sender, EventArgs e)
@@ -4355,12 +4355,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetVoiceReserve03(Int32 p)
         {
-            commonState.studioSet.Common.VoiceReserve[2] = (byte)p;
+            commonState.StudioSet.Common.VoiceReserve[2] = (byte)p;
             byte[] address = { 0x18, 0x00, 0x00, 0x1a };
-            byte[] value = { commonState.studioSet.Common.VoiceReserve[2] };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { commonState.StudioSet.Common.VoiceReserve[2] };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void slVoiceReserve04_ValueChanged(object sender, EventArgs e)
@@ -4374,12 +4374,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetVoiceReserve04(Int32 p)
         {
-            commonState.studioSet.Common.VoiceReserve[3] = (byte)p;
+            commonState.StudioSet.Common.VoiceReserve[3] = (byte)p;
             byte[] address = { 0x18, 0x00, 0x00, 0x1b };
-            byte[] value = { commonState.studioSet.Common.VoiceReserve[3] };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { commonState.StudioSet.Common.VoiceReserve[3] };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void slVoiceReserve05_ValueChanged(object sender, EventArgs e)
@@ -4393,12 +4393,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetVoiceReserve05(Int32 p)
         {
-            commonState.studioSet.Common.VoiceReserve[4] = (byte)p;
+            commonState.StudioSet.Common.VoiceReserve[4] = (byte)p;
             byte[] address = { 0x18, 0x00, 0x00, 0x1c };
-            byte[] value = { commonState.studioSet.Common.VoiceReserve[4] };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { commonState.StudioSet.Common.VoiceReserve[4] };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void slVoiceReserve06_ValueChanged(object sender, EventArgs e)
@@ -4412,12 +4412,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetVoiceReserve06(Int32 p)
         {
-            commonState.studioSet.Common.VoiceReserve[5] = (byte)p;
+            commonState.StudioSet.Common.VoiceReserve[5] = (byte)p;
             byte[] address = { 0x18, 0x00, 0x00, 0x1d };
-            byte[] value = { commonState.studioSet.Common.VoiceReserve[5] };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { commonState.StudioSet.Common.VoiceReserve[5] };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void slVoiceReserve07_ValueChanged(object sender, EventArgs e)
@@ -4431,12 +4431,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetVoiceReserve07(Int32 p)
         {
-            commonState.studioSet.Common.VoiceReserve[6] = (byte)p;
+            commonState.StudioSet.Common.VoiceReserve[6] = (byte)p;
             byte[] address = { 0x18, 0x00, 0x00, 0x1e };
-            byte[] value = { commonState.studioSet.Common.VoiceReserve[6] };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { commonState.StudioSet.Common.VoiceReserve[6] };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void slVoiceReserve08_ValueChanged(object sender, EventArgs e)
@@ -4450,12 +4450,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetVoiceReserve08(Int32 p)
         {
-            commonState.studioSet.Common.VoiceReserve[7] = (byte)p;
+            commonState.StudioSet.Common.VoiceReserve[7] = (byte)p;
             byte[] address = { 0x18, 0x00, 0x00, 0x1f };
-            byte[] value = { commonState.studioSet.Common.VoiceReserve[7] };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { commonState.StudioSet.Common.VoiceReserve[7] };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void slVoiceReserve09_ValueChanged(object sender, EventArgs e)
@@ -4469,12 +4469,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetVoiceReserve09(Int32 p)
         {
-            commonState.studioSet.Common.VoiceReserve[8] = (byte)p;
+            commonState.StudioSet.Common.VoiceReserve[8] = (byte)p;
             byte[] address = { 0x18, 0x00, 0x00, 0x20 };
-            byte[] value = { commonState.studioSet.Common.VoiceReserve[8] };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { commonState.StudioSet.Common.VoiceReserve[8] };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void slVoiceReserve10_ValueChanged(object sender, EventArgs e)
@@ -4488,12 +4488,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetVoiceReserve10(Int32 p)
         {
-            commonState.studioSet.Common.VoiceReserve[9] = (byte)p;
+            commonState.StudioSet.Common.VoiceReserve[9] = (byte)p;
             byte[] address = { 0x18, 0x00, 0x00, 0x21 };
-            byte[] value = { commonState.studioSet.Common.VoiceReserve[9] };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { commonState.StudioSet.Common.VoiceReserve[9] };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void slVoiceReserve11_ValueChanged(object sender, EventArgs e)
@@ -4507,12 +4507,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetVoiceReserve11(Int32 p)
         {
-            commonState.studioSet.Common.VoiceReserve[10] = (byte)p;
+            commonState.StudioSet.Common.VoiceReserve[10] = (byte)p;
             byte[] address = { 0x18, 0x00, 0x00, 0x22 };
-            byte[] value = { commonState.studioSet.Common.VoiceReserve[10] };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { commonState.StudioSet.Common.VoiceReserve[10] };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void slVoiceReserve12_ValueChanged(object sender, EventArgs e)
@@ -4526,12 +4526,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetVoiceReserve12(Int32 p)
         {
-            commonState.studioSet.Common.VoiceReserve[11] = (byte)p;
+            commonState.StudioSet.Common.VoiceReserve[11] = (byte)p;
             byte[] address = { 0x18, 0x00, 0x00, 0x23 };
-            byte[] value = { commonState.studioSet.Common.VoiceReserve[11] };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { commonState.StudioSet.Common.VoiceReserve[11] };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void slVoiceReserve13_ValueChanged(object sender, EventArgs e)
@@ -4545,12 +4545,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetVoiceReserve13(Int32 p)
         {
-            commonState.studioSet.Common.VoiceReserve[12] = (byte)p;
+            commonState.StudioSet.Common.VoiceReserve[12] = (byte)p;
             byte[] address = { 0x18, 0x00, 0x00, 0x24 };
-            byte[] value = { commonState.studioSet.Common.VoiceReserve[12] };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { commonState.StudioSet.Common.VoiceReserve[12] };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void slVoiceReserve14_ValueChanged(object sender, EventArgs e)
@@ -4564,12 +4564,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetVoiceReserve14(Int32 p)
         {
-            commonState.studioSet.Common.VoiceReserve[13] = (byte)p;
+            commonState.StudioSet.Common.VoiceReserve[13] = (byte)p;
             byte[] address = { 0x18, 0x00, 0x00, 0x25 };
-            byte[] value = { commonState.studioSet.Common.VoiceReserve[13] };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { commonState.StudioSet.Common.VoiceReserve[13] };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void slVoiceReserve15_ValueChanged(object sender, EventArgs e)
@@ -4583,12 +4583,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetVoiceReserve15(Int32 p)
         {
-            commonState.studioSet.Common.VoiceReserve[14] = (byte)p;
+            commonState.StudioSet.Common.VoiceReserve[14] = (byte)p;
             byte[] address = { 0x18, 0x00, 0x00, 0x26 };
-            byte[] value = { commonState.studioSet.Common.VoiceReserve[14] };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { commonState.StudioSet.Common.VoiceReserve[14] };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void slVoiceReserve16_ValueChanged(object sender, EventArgs e)
@@ -4602,12 +4602,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetVoiceReserve16(Int32 p)
         {
-            commonState.studioSet.Common.VoiceReserve[15] = (byte)p;
+            commonState.StudioSet.Common.VoiceReserve[15] = (byte)p;
             byte[] address = { 0x18, 0x00, 0x00, 0x27 };
-            byte[] value = { commonState.studioSet.Common.VoiceReserve[15] };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { commonState.StudioSet.Common.VoiceReserve[15] };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         // Chorus events
@@ -4622,7 +4622,7 @@ namespace Integra_7_Xamarin
                 //ChorusGM2Chorus.IsVisible = false;
                 byte p = (byte)cbStudioSetChorusType.SelectedIndex;
                 byte[] address = { 0x18, 0x00, 0x04, 0x00 };
-                byte[] value = { p, commonState.studioSet.CommonChorus.Level, 0x00, commonState.studioSet.CommonChorus.OutputSelect };
+                byte[] value = { p, commonState.StudioSet.CommonChorus.Level, 0x00, commonState.StudioSet.CommonChorus.OutputSelect };
                 byte[] bytes = new byte[0];
 
                 switch (p)
@@ -4631,21 +4631,21 @@ namespace Integra_7_Xamarin
                         break;
                     case 1:
                         //ChorusChorus.IsVisible = true;
-                        value = value.Concat(commonState.studioSet.CommonChorus.Chorus.GetData()).ToArray();
-                        bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
-                        commonState.midi.SendSystemExclusive(bytes);
+                        value = value.Concat(commonState.StudioSet.CommonChorus.Chorus.GetData()).ToArray();
+                        bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
+                        commonState.Midi.SendSystemExclusive(bytes);
                         break;
                     case 2:
                         //ChorusDelay.IsVisible = true;
-                        value = value.Concat(commonState.studioSet.CommonChorus.Delay.GetData()).ToArray();
-                        bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
-                        commonState.midi.SendSystemExclusive(bytes);
+                        value = value.Concat(commonState.StudioSet.CommonChorus.Delay.GetData()).ToArray();
+                        bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
+                        commonState.Midi.SendSystemExclusive(bytes);
                         break;
                     case 3:
                         //ChorusGM2Chorus.IsVisible = true;
-                        value = value.Concat(commonState.studioSet.CommonChorus.Gm2Chorus.GetData()).ToArray();
-                        bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
-                        commonState.midi.SendSystemExclusive(bytes);
+                        value = value.Concat(commonState.StudioSet.CommonChorus.Gm2Chorus.GetData()).ToArray();
+                        bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
+                        commonState.Midi.SendSystemExclusive(bytes);
                         break;
                 }
                 SetStudioSetStudioSetChorusType(p);
@@ -4662,20 +4662,20 @@ namespace Integra_7_Xamarin
             {
                 case 1:
                     ChorusChorus.IsVisible = true;
-                    cbChorusChorusFilterType.SelectedIndex = commonState.studioSet.CommonChorus.Chorus.FilterType;
+                    cbChorusChorusFilterType.SelectedIndex = commonState.StudioSet.CommonChorus.Chorus.FilterType;
                     tbChorusChorusFilterType.Text = "Filter Type: " + cbChorusChorusFilterType.SelectedItem;
-                    cbChorusChorusFilterCutoffFrequency.SelectedIndex = commonState.studioSet.CommonChorus.Chorus.FilterCutoffFrequency;
+                    cbChorusChorusFilterCutoffFrequency.SelectedIndex = commonState.StudioSet.CommonChorus.Chorus.FilterCutoffFrequency;
                     tbChorusChorusFilterCutoffFrequency.Text = "Cutoff Freq: " + cbChorusChorusFilterCutoffFrequency.SelectedItem;
-                    slChorusChorusPreDelay.Value = commonState.studioSet.CommonChorus.Chorus.PreDelay;
-                    tbChorusChorusPreDelay.Text = "Pre Delay: " + ((Double)commonState.studioSet.CommonChorus.Chorus.PreDelay / (Double)10).ToString();
-                    cbChorusChorusRateHzNote.SelectedIndex = commonState.studioSet.CommonChorus.Chorus.RateHzNote;
+                    slChorusChorusPreDelay.Value = commonState.StudioSet.CommonChorus.Chorus.PreDelay;
+                    tbChorusChorusPreDelay.Text = "Pre Delay: " + ((Double)commonState.StudioSet.CommonChorus.Chorus.PreDelay / (Double)10).ToString();
+                    cbChorusChorusRateHzNote.SelectedIndex = commonState.StudioSet.CommonChorus.Chorus.RateHzNote;
                     tbChorusChorusRateHz.Text = "Rate in " + cbChorusChorusRateHzNote.SelectedItem;
-                    commonState.studioSet.CommonChorus.Chorus.RateHzNote = (byte)cbChorusChorusRateHzNote.SelectedIndex;
-                    slChorusChorusRateHz.Value = commonState.studioSet.CommonChorus.Chorus.RateHz;
-                    tbChorusChorusRateHz.Text = "Rate : " + commonState.studioSet.CommonChorus.Chorus.RateHz.ToString();
-                    slChorusChorusRateNote.Value = commonState.studioSet.CommonChorus.Chorus.RateHz;
-                    tbChorusChorusRateNote.Text = "Rate : " + StudioSet.NoteString[commonState.studioSet.CommonChorus.Chorus.RateNote];
-                    if (commonState.studioSet.CommonChorus.Chorus.RateHzNote == 0)
+                    commonState.StudioSet.CommonChorus.Chorus.RateHzNote = (byte)cbChorusChorusRateHzNote.SelectedIndex;
+                    slChorusChorusRateHz.Value = commonState.StudioSet.CommonChorus.Chorus.RateHz;
+                    tbChorusChorusRateHz.Text = "Rate : " + commonState.StudioSet.CommonChorus.Chorus.RateHz.ToString();
+                    slChorusChorusRateNote.Value = commonState.StudioSet.CommonChorus.Chorus.RateHz;
+                    tbChorusChorusRateNote.Text = "Rate : " + StudioSet.NoteString[commonState.StudioSet.CommonChorus.Chorus.RateNote];
+                    if (commonState.StudioSet.CommonChorus.Chorus.RateHzNote == 0)
                     {
                         tbChorusChorusRateNote.IsVisible = false;
                         slChorusChorusRateNote.IsVisible = false;
@@ -4689,23 +4689,23 @@ namespace Integra_7_Xamarin
                         tbChorusChorusRateHz.IsVisible = false;
                         slChorusChorusRateNote.IsVisible = true;
                     }
-                    slChorusChorusDepth.Value = commonState.studioSet.CommonChorus.Chorus.Depth;
-                    tbChorusChorusDepth.Text = "Depth: " + commonState.studioSet.CommonChorus.Chorus.Depth.ToString();
-                    slChorusChorusPhase.Value = commonState.studioSet.CommonChorus.Chorus.Phase;
-                    tbChorusChorusPhase.Text = "Phase: " + (commonState.studioSet.CommonChorus.Chorus.Phase * 2).ToString();
-                    slChorusChorusFeedback.Value = commonState.studioSet.CommonChorus.Chorus.Feedback;
-                    tbChorusChorusFeedback.Text = "Feedback: " + commonState.studioSet.CommonChorus.Chorus.Feedback.ToString();
+                    slChorusChorusDepth.Value = commonState.StudioSet.CommonChorus.Chorus.Depth;
+                    tbChorusChorusDepth.Text = "Depth: " + commonState.StudioSet.CommonChorus.Chorus.Depth.ToString();
+                    slChorusChorusPhase.Value = commonState.StudioSet.CommonChorus.Chorus.Phase;
+                    tbChorusChorusPhase.Text = "Phase: " + (commonState.StudioSet.CommonChorus.Chorus.Phase * 2).ToString();
+                    slChorusChorusFeedback.Value = commonState.StudioSet.CommonChorus.Chorus.Feedback;
+                    tbChorusChorusFeedback.Text = "Feedback: " + commonState.StudioSet.CommonChorus.Chorus.Feedback.ToString();
                     break;
                 case 2:
                     ChorusDelay.IsVisible = true;
-                    commonState.studioSet.CommonChorus.Delay.LeftMsNote = (byte)cbChorusDelayLeftMsNote.SelectedIndex;
-                    slChorusDelayLeftLevel.Value = commonState.studioSet.CommonChorus.Delay.LeftMs;
-                    tbChorusDelayLeftLevel.Text = "Left Level: " + commonState.studioSet.CommonChorus.Delay.LeftLevel.ToString();
-                    slChorusDelayRightLevel.Value = commonState.studioSet.CommonChorus.Delay.RightMs;
-                    tbChorusDelayRightLevel.Text = "Right Level: " + commonState.studioSet.CommonChorus.Delay.RightLevel.ToString();
-                    slChorusDelayCenterLevel.Value = commonState.studioSet.CommonChorus.Delay.CenterMs;
-                    tbChorusDelayCenterLevel.Text = "Center Level: " + commonState.studioSet.CommonChorus.Delay.CenterLevel.ToString();
-                    if (commonState.studioSet.CommonChorus.Delay.LeftMsNote == 0)
+                    commonState.StudioSet.CommonChorus.Delay.LeftMsNote = (byte)cbChorusDelayLeftMsNote.SelectedIndex;
+                    slChorusDelayLeftLevel.Value = commonState.StudioSet.CommonChorus.Delay.LeftMs;
+                    tbChorusDelayLeftLevel.Text = "Left Level: " + commonState.StudioSet.CommonChorus.Delay.LeftLevel.ToString();
+                    slChorusDelayRightLevel.Value = commonState.StudioSet.CommonChorus.Delay.RightMs;
+                    tbChorusDelayRightLevel.Text = "Right Level: " + commonState.StudioSet.CommonChorus.Delay.RightLevel.ToString();
+                    slChorusDelayCenterLevel.Value = commonState.StudioSet.CommonChorus.Delay.CenterMs;
+                    tbChorusDelayCenterLevel.Text = "Center Level: " + commonState.StudioSet.CommonChorus.Delay.CenterLevel.ToString();
+                    if (commonState.StudioSet.CommonChorus.Delay.LeftMsNote == 0)
                     {
                         tbChorusDelayLeftNote.IsVisible = false;
                         slChorusDelayLeftNote.IsVisible = false;
@@ -4719,7 +4719,7 @@ namespace Integra_7_Xamarin
                         tbChorusDelayLeftNote.IsVisible = true;
                         slChorusDelayLeftNote.IsVisible = true;
                     }
-                    if (commonState.studioSet.CommonChorus.Delay.RightMsNote == 0)
+                    if (commonState.StudioSet.CommonChorus.Delay.RightMsNote == 0)
                     {
                         tbChorusDelayRightNote.IsVisible = false;
                         slChorusDelayRightNote.IsVisible = false;
@@ -4733,7 +4733,7 @@ namespace Integra_7_Xamarin
                         tbChorusDelayRightNote.IsVisible = true;
                         slChorusDelayRightNote.IsVisible = true;
                     }
-                    if (commonState.studioSet.CommonChorus.Delay.CenterMsNote == 0)
+                    if (commonState.StudioSet.CommonChorus.Delay.CenterMsNote == 0)
                     {
                         tbChorusDelayCenterNote.IsVisible = false;
                         slChorusDelayCenterNote.IsVisible = false;
@@ -4747,9 +4747,9 @@ namespace Integra_7_Xamarin
                         tbChorusDelayCenterNote.IsVisible = true;
                         slChorusDelayCenterNote.IsVisible = true;
                     }
-                    slChorusDelayCenterFeedback.Value = 2 * (commonState.studioSet.CommonChorus.Delay.CenterFeedback - 49);
-                    tbChorusDelayCenterFeedback.Text = "Center Feedback: " + commonState.studioSet.CommonChorus.Delay.CenterFeedback.ToString() + "%";
-                    cbChorusDelayHFDamp.SelectedIndex = commonState.studioSet.CommonChorus.Delay.HFDamp;
+                    slChorusDelayCenterFeedback.Value = 2 * (commonState.StudioSet.CommonChorus.Delay.CenterFeedback - 49);
+                    tbChorusDelayCenterFeedback.Text = "Center Feedback: " + commonState.StudioSet.CommonChorus.Delay.CenterFeedback.ToString() + "%";
+                    cbChorusDelayHFDamp.SelectedIndex = commonState.StudioSet.CommonChorus.Delay.HFDamp;
                     tbChorusDelayHFDamp.Text = "HF Damp: " + cbChorusDelayHFDamp.SelectedItem;
                     //slChorusDelayLeftLevel.Value = commonState.studioSet.CommonChorus.Delay.LeftLevel;
                     //tbChorusDelayLeftLevel.Text = "Left Level: " + commonState.studioSet.CommonChorus.Delay.LeftLevel.ToString();
@@ -4760,20 +4760,20 @@ namespace Integra_7_Xamarin
                     break;
                 case 3:
                     ChorusGM2Chorus.IsVisible = true;
-                    slChorusGM2ChorusPreLPF.Value = commonState.studioSet.CommonChorus.Gm2Chorus.PreLPF;
-                    tbChorusGM2ChorusPreLPF.Text = "Pre LPF: " + commonState.studioSet.CommonChorus.Gm2Chorus.PreLPF.ToString();
-                    slChorusGM2ChorusLevel.Value = commonState.studioSet.CommonChorus.Gm2Chorus.Level;
-                    tbChorusGM2ChorusLevel.Text = "Level: " + commonState.studioSet.CommonChorus.Gm2Chorus.Level.ToString();
-                    slChorusGM2ChorusFeedback.Value = commonState.studioSet.CommonChorus.Gm2Chorus.Feedback;
-                    tbChorusGM2ChorusFeedback.Text = "Feedback: " + commonState.studioSet.CommonChorus.Gm2Chorus.Feedback.ToString();
-                    slChorusGM2ChorusDelay.Value = commonState.studioSet.CommonChorus.Gm2Chorus.Delay;
-                    tbChorusGM2ChorusDelay.Text = "Delay: " + commonState.studioSet.CommonChorus.Gm2Chorus.Delay.ToString();
-                    slChorusGM2ChorusRate.Value = commonState.studioSet.CommonChorus.Gm2Chorus.Rate;
-                    tbChorusGM2ChorusRate.Text = "Rate: " + commonState.studioSet.CommonChorus.Gm2Chorus.Rate.ToString();
-                    slChorusGM2ChorusDepth.Value = commonState.studioSet.CommonChorus.Gm2Chorus.Depth;
-                    tbChorusGM2ChorusDepth.Text = "Depth: " + commonState.studioSet.CommonChorus.Gm2Chorus.Depth.ToString();
-                    slChorusGM2ChorusSendLevelToReverb.Value = commonState.studioSet.CommonChorus.Gm2Chorus.SendLevelToReverb;
-                    tbChorusGM2ChorusSendLevelToReverb.Text = "Send Level to Reverb: " + commonState.studioSet.CommonChorus.Gm2Chorus.SendLevelToReverb.ToString();
+                    slChorusGM2ChorusPreLPF.Value = commonState.StudioSet.CommonChorus.Gm2Chorus.PreLPF;
+                    tbChorusGM2ChorusPreLPF.Text = "Pre LPF: " + commonState.StudioSet.CommonChorus.Gm2Chorus.PreLPF.ToString();
+                    slChorusGM2ChorusLevel.Value = commonState.StudioSet.CommonChorus.Gm2Chorus.Level;
+                    tbChorusGM2ChorusLevel.Text = "Level: " + commonState.StudioSet.CommonChorus.Gm2Chorus.Level.ToString();
+                    slChorusGM2ChorusFeedback.Value = commonState.StudioSet.CommonChorus.Gm2Chorus.Feedback;
+                    tbChorusGM2ChorusFeedback.Text = "Feedback: " + commonState.StudioSet.CommonChorus.Gm2Chorus.Feedback.ToString();
+                    slChorusGM2ChorusDelay.Value = commonState.StudioSet.CommonChorus.Gm2Chorus.Delay;
+                    tbChorusGM2ChorusDelay.Text = "Delay: " + commonState.StudioSet.CommonChorus.Gm2Chorus.Delay.ToString();
+                    slChorusGM2ChorusRate.Value = commonState.StudioSet.CommonChorus.Gm2Chorus.Rate;
+                    tbChorusGM2ChorusRate.Text = "Rate: " + commonState.StudioSet.CommonChorus.Gm2Chorus.Rate.ToString();
+                    slChorusGM2ChorusDepth.Value = commonState.StudioSet.CommonChorus.Gm2Chorus.Depth;
+                    tbChorusGM2ChorusDepth.Text = "Depth: " + commonState.StudioSet.CommonChorus.Gm2Chorus.Depth.ToString();
+                    slChorusGM2ChorusSendLevelToReverb.Value = commonState.StudioSet.CommonChorus.Gm2Chorus.SendLevelToReverb;
+                    tbChorusGM2ChorusSendLevelToReverb.Text = "Send Level to Reverb: " + commonState.StudioSet.CommonChorus.Gm2Chorus.SendLevelToReverb.ToString();
                     break;
             }
             // Tell INTEGRA-7 to change chorus type:
@@ -4798,9 +4798,9 @@ namespace Integra_7_Xamarin
         {
             byte[] address = { 0x18, 0x00, 0x04, 0x01 };
             byte[] value = { (byte)p };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
             tbChorusLevel.Text = "Chorus level " + p.ToString();
         }
 
@@ -4827,18 +4827,18 @@ namespace Integra_7_Xamarin
         {
             byte[] address = { 0x18, 0x00, 0x04, 0x02 };
             byte[] value = { (byte)p };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void SetStudioSetChorusOutputSelect(Int32 p)
         {
             byte[] address = { 0x18, 0x00, 0x04, 0x03 };
             byte[] value = { (byte)p };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
 
@@ -4853,12 +4853,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetChorusChorusFilterType(Int32 p)
         {
-            commonState.studioSet.CommonChorus.Chorus.FilterType = (byte)p;
+            commonState.StudioSet.CommonChorus.Chorus.FilterType = (byte)p;
             byte[] address = { 0x18, 0x00, 0x04, 0x04 };
-            byte[] value = { 0x08, 0x00, 0x00, (byte)(commonState.studioSet.CommonChorus.Chorus.FilterType) };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { 0x08, 0x00, 0x00, (byte)(commonState.StudioSet.CommonChorus.Chorus.FilterType) };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void cbChorusChorusFilterCutoffFrequency_SelectionChanged(object sender, EventArgs e)
@@ -4872,13 +4872,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetChorusChorusFilterCutoffFrequency(Int32 p)
         {
-            commonState.studioSet.CommonChorus.Chorus.FilterCutoffFrequency = (byte)p;
+            commonState.StudioSet.CommonChorus.Chorus.FilterCutoffFrequency = (byte)p;
             byte[] address = { 0x18, 0x00, 0x04, 0x08 };
-            byte[] value = { 0x08, 0x00, (byte)(commonState.studioSet.CommonChorus.Chorus.FilterCutoffFrequency / 16),
-                    (byte)(commonState.studioSet.CommonChorus.Chorus.FilterCutoffFrequency % 16) };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { 0x08, 0x00, (byte)(commonState.StudioSet.CommonChorus.Chorus.FilterCutoffFrequency / 16),
+                    (byte)(commonState.StudioSet.CommonChorus.Chorus.FilterCutoffFrequency % 16) };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void slChorusChorusPreDelay_ValueChanged(object sender, EventArgs e)
@@ -4892,14 +4892,14 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetChorusChorusPreDelay(Int32 p)
         {
-            commonState.studioSet.CommonChorus.Chorus.PreDelay = (byte)p;
+            commonState.StudioSet.CommonChorus.Chorus.PreDelay = (byte)p;
             tbChorusChorusPreDelay.Text = CalculateChorusPreDelay((Int32)slChorusChorusPreDelay.Value);
             byte[] address = { 0x18, 0x00, 0x04, 0x0c };
-            byte[] value = { 0x08, 0x00, (byte)(commonState.studioSet.CommonChorus.Chorus.PreDelay / 16),
-                    (byte)(commonState.studioSet.CommonChorus.Chorus.PreDelay % 16) };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { 0x08, 0x00, (byte)(commonState.StudioSet.CommonChorus.Chorus.PreDelay / 16),
+                    (byte)(commonState.StudioSet.CommonChorus.Chorus.PreDelay % 16) };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void cbChorusChorusRateHzNote_SelectionChanged(object sender, EventArgs e)
@@ -4933,12 +4933,12 @@ namespace Integra_7_Xamarin
                     break;
             }
             PopHandleControlEvents();
-            commonState.studioSet.CommonChorus.Chorus.RateHzNote = (byte)p;
+            commonState.StudioSet.CommonChorus.Chorus.RateHzNote = (byte)p;
             byte[] address = { 0x18, 0x00, 0x04, 0x10 };
             byte[] value = { 0x08, 0x00, 0x00, (byte)p };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void slChorusChorusRateHz_ValueChanged(object sender, EventArgs e)
@@ -4953,13 +4953,13 @@ namespace Integra_7_Xamarin
         private void SetStudioSetChorusChorusRateHz(Int32 p)
         {
             tbChorusChorusRateHz.Text = "Rate " + CalculateTimeHz(p) + " Hz";
-            commonState.studioSet.CommonChorus.Chorus.RateHz = (byte)p;
+            commonState.StudioSet.CommonChorus.Chorus.RateHz = (byte)p;
             byte[] address = { 0x18, 0x00, 0x04, 0x14 };
-            byte[] value = { 0x08, 0x00, (byte)(commonState.studioSet.CommonChorus.Chorus.RateHz / 16),
-                (byte)(commonState.studioSet.CommonChorus.Chorus.RateHz % 16) };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { 0x08, 0x00, (byte)(commonState.StudioSet.CommonChorus.Chorus.RateHz / 16),
+                (byte)(commonState.StudioSet.CommonChorus.Chorus.RateHz % 16) };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void slChorusChorusRateNote_ValueChanged(object sender, EventArgs e)
@@ -4974,13 +4974,13 @@ namespace Integra_7_Xamarin
         private void SetStudioSetChorusChorusRateNote(Int32 p)
         {
             tbChorusChorusRateNote.Text = "Rate " + CalculateTimeNote(p) + " note";
-            commonState.studioSet.CommonChorus.Chorus.RateNote = (byte)p;
+            commonState.StudioSet.CommonChorus.Chorus.RateNote = (byte)p;
             byte[] address = { 0x18, 0x00, 0x04, 0x18 };
-            byte[] value = { 0x08, 0x00, (byte)(commonState.studioSet.CommonChorus.Chorus.RateNote / 16),
-                (byte)(commonState.studioSet.CommonChorus.Chorus.RateNote % 16) };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { 0x08, 0x00, (byte)(commonState.StudioSet.CommonChorus.Chorus.RateNote / 16),
+                (byte)(commonState.StudioSet.CommonChorus.Chorus.RateNote % 16) };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void slChorusChorusDepth_ValueChanged(object sender, EventArgs e)
@@ -4995,13 +4995,13 @@ namespace Integra_7_Xamarin
         private void SetStudioSetChorusChorusDepth(Int32 p)
         {
             tbChorusChorusDepth.Text = "Depth " + p.ToString();
-            commonState.studioSet.CommonChorus.Chorus.Depth = (byte)p;
+            commonState.StudioSet.CommonChorus.Chorus.Depth = (byte)p;
             byte[] address = { 0x18, 0x00, 0x04, 0x1c };
-            byte[] value = { 0x08, 0x00, (byte)(commonState.studioSet.CommonChorus.Chorus.Depth / 16),
-                (byte)(commonState.studioSet.CommonChorus.Chorus.Depth % 16) };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { 0x08, 0x00, (byte)(commonState.StudioSet.CommonChorus.Chorus.Depth / 16),
+                (byte)(commonState.StudioSet.CommonChorus.Chorus.Depth % 16) };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void slChorusChorusPhase_ValueChanged(object sender, EventArgs e)
@@ -5016,13 +5016,13 @@ namespace Integra_7_Xamarin
         private void SetStudioSetChorusChorusPhase(Int32 p)
         {
             tbChorusChorusPhase.Text = "Phase: " + (p * 2).ToString();
-            commonState.studioSet.CommonChorus.Chorus.Phase = (byte)p;
+            commonState.StudioSet.CommonChorus.Chorus.Phase = (byte)p;
             byte[] address = { 0x18, 0x00, 0x04, 0x20 };
-            byte[] value = { 0x08, 0x00, (byte)(commonState.studioSet.CommonChorus.Chorus.Phase / 16),
-                (byte)(commonState.studioSet.CommonChorus.Chorus.Phase % 16) };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { 0x08, 0x00, (byte)(commonState.StudioSet.CommonChorus.Chorus.Phase / 16),
+                (byte)(commonState.StudioSet.CommonChorus.Chorus.Phase % 16) };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void slChorusChorusFeedback_ValueChanged(object sender, EventArgs e)
@@ -5038,13 +5038,13 @@ namespace Integra_7_Xamarin
         private void SetStudioSetChorusChorusFeedback(Int32 p)
         {
             tbChorusChorusFeedback.Text = "Feedback " + p.ToString();
-            commonState.studioSet.CommonChorus.Chorus.Feedback = (byte)p;
+            commonState.StudioSet.CommonChorus.Chorus.Feedback = (byte)p;
             byte[] address = { 0x18, 0x00, 0x04, 0x24 };
-            byte[] value = { 0x08, 0x00, (byte)(commonState.studioSet.CommonChorus.Chorus.Feedback / 16),
-                (byte)(commonState.studioSet.CommonChorus.Chorus.Feedback % 16) };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { 0x08, 0x00, (byte)(commonState.StudioSet.CommonChorus.Chorus.Feedback / 16),
+                (byte)(commonState.StudioSet.CommonChorus.Chorus.Feedback % 16) };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void cbChorusDelayLeftMsNote_SelectionChanged(object sender, EventArgs e)
@@ -5068,7 +5068,7 @@ namespace Integra_7_Xamarin
                     tbChorusDelayLeftNote.IsVisible = false;
                     slChorusDelayLeftNote.IsVisible = false;
                     cbChorusDelayLeftMsNote.SelectedIndex = 0;
-                    commonState.studioSet.CommonChorus.Delay.LeftMs = (byte)p;
+                    commonState.StudioSet.CommonChorus.Delay.LeftMs = (byte)p;
                     break;
                 case 1:
                     tbChorusDelayLeftHz.IsVisible = false;
@@ -5080,8 +5080,8 @@ namespace Integra_7_Xamarin
             }
             byte[] address = { 0x18, 0x00, 0x04, 0x04 };
             byte[] value = { 0x08, 0x00, 0x00, (byte)p };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
-            commonState.midi.SendSystemExclusive(bytes);
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
+            commonState.Midi.SendSystemExclusive(bytes);
             PopHandleControlEvents();
         }
 
@@ -5097,15 +5097,15 @@ namespace Integra_7_Xamarin
         private void SetStudioSetChorusDelayLeftHz(Int32 p)
         {
             tbChorusDelayLeftHz.Text = "Delay left " + p + " ms";
-            commonState.studioSet.CommonChorus.Delay.LeftMs = (byte)p;
+            commonState.StudioSet.CommonChorus.Delay.LeftMs = (byte)p;
             byte[] address = { 0x18, 0x00, 0x04, 0x08 };
             byte[] value = { 0x08,
                 (byte)(p / 256),
                 (byte)((p - ((p / 256) * 256)) / 16),
                 (byte)((p - ((p / 256) * 256)) % 16) };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void slChorusDelayLeftNote_ValueChanged(object sender, EventArgs e)
@@ -5120,13 +5120,13 @@ namespace Integra_7_Xamarin
         private void SetStudioSetChorusDelayLeftNote(Int32 p)
         {
             tbChorusDelayLeftNote.Text = "Delay left " + CalculateTimeNote(p) + " note";
-            commonState.studioSet.CommonChorus.Delay.LeftNote = (byte)p;
+            commonState.StudioSet.CommonChorus.Delay.LeftNote = (byte)p;
             byte[] address = { 0x18, 0x00, 0x04, 0x0c };
-            byte[] value = { 0x08, 0x00, (byte)(commonState.studioSet.CommonChorus.Delay.LeftNote / 16),
-                    (byte)(commonState.studioSet.CommonChorus.Delay.LeftNote % 16) };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { 0x08, 0x00, (byte)(commonState.StudioSet.CommonChorus.Delay.LeftNote / 16),
+                    (byte)(commonState.StudioSet.CommonChorus.Delay.LeftNote % 16) };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void cbChorusDelayRightMsNote_SelectionChanged(object sender, EventArgs e)
@@ -5161,8 +5161,8 @@ namespace Integra_7_Xamarin
             }
             byte[] address = { 0x18, 0x00, 0x04, 0x10 };
             byte[] value = { 0x08, 0x00, 0x00, (byte)p };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
-            commonState.midi.SendSystemExclusive(bytes);
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
+            commonState.Midi.SendSystemExclusive(bytes);
             PopHandleControlEvents();
         }
 
@@ -5178,15 +5178,15 @@ namespace Integra_7_Xamarin
         private void SetStudioSetChorusDelayRightHz(Int32 p)
         {
             tbChorusDelayRightHz.Text = "Delay right " + p + " ms";
-            commonState.studioSet.CommonChorus.Delay.RightMs = (byte)p;
+            commonState.StudioSet.CommonChorus.Delay.RightMs = (byte)p;
             byte[] address = { 0x18, 0x00, 0x04, 0x14 };
             byte[] value = { 0x08,
                 (byte)(p / 256),
                 (byte)((p - ((p / 256) * 256)) / 16),
                 (byte)((p - ((p / 256) * 256)) % 16) };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void slChorusDelayRightNote_ValueChanged(object sender, EventArgs e)
@@ -5201,13 +5201,13 @@ namespace Integra_7_Xamarin
         private void SetStudioSetChorusDelayRightNote(Int32 p)
         {
             tbChorusDelayRightNote.Text = "Delay right " + CalculateTimeNote(p) + " note";
-            commonState.studioSet.CommonChorus.Delay.RightNote = (byte)p;
+            commonState.StudioSet.CommonChorus.Delay.RightNote = (byte)p;
             byte[] address = { 0x18, 0x00, 0x04, 0x18 };
-            byte[] value = { 0x08, 0x00, (byte)(commonState.studioSet.CommonChorus.Delay.RightNote / 16),
-                    (byte)(commonState.studioSet.CommonChorus.Delay.RightNote % 16) };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { 0x08, 0x00, (byte)(commonState.StudioSet.CommonChorus.Delay.RightNote / 16),
+                    (byte)(commonState.StudioSet.CommonChorus.Delay.RightNote % 16) };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void cbChorusDelayCenterMsNote_SelectionChanged(object sender, EventArgs e)
@@ -5242,8 +5242,8 @@ namespace Integra_7_Xamarin
             }
             byte[] address = { 0x18, 0x00, 0x04, 0x1c };
             byte[] value = { 0x08, 0x00, 0x00, (byte)p };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
-            commonState.midi.SendSystemExclusive(bytes);
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
+            commonState.Midi.SendSystemExclusive(bytes);
             PopHandleControlEvents();
         }
 
@@ -5259,15 +5259,15 @@ namespace Integra_7_Xamarin
         private void SetStudioSetChorusDelayCenterHz(Int32 p)
         {
             tbChorusDelayCenterHz.Text = "Delay Center " + p + " ms";
-            commonState.studioSet.CommonChorus.Delay.CenterMs = (byte)p;
+            commonState.StudioSet.CommonChorus.Delay.CenterMs = (byte)p;
             byte[] address = { 0x18, 0x00, 0x04, 0x20 };
             byte[] value = { 0x08,
                 (byte)(p / 256),
                 (byte)((p - ((p / 256) * 256)) / 16),
                 (byte)((p - ((p / 256) * 256)) % 16) };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void slChorusDelayCenterNote_ValueChanged(object sender, EventArgs e)
@@ -5282,13 +5282,13 @@ namespace Integra_7_Xamarin
         private void SetStudioSetChorusDelayCenterNote(Int32 p)
         {
             tbChorusDelayCenterNote.Text = "Delay Center " + CalculateTimeNote(p) + " note";
-            commonState.studioSet.CommonChorus.Delay.CenterNote = (byte)p;
+            commonState.StudioSet.CommonChorus.Delay.CenterNote = (byte)p;
             byte[] address = { 0x18, 0x00, 0x04, 0x24 };
-            byte[] value = { 0x08, 0x00, (byte)(commonState.studioSet.CommonChorus.Delay.CenterNote / 16),
-                        (byte)(commonState.studioSet.CommonChorus.Delay.CenterNote % 16) };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { 0x08, 0x00, (byte)(commonState.StudioSet.CommonChorus.Delay.CenterNote / 16),
+                        (byte)(commonState.StudioSet.CommonChorus.Delay.CenterNote % 16) };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void slChorusDelayCenterFeedback_ValueChanged(object sender, EventArgs e)
@@ -5303,13 +5303,13 @@ namespace Integra_7_Xamarin
         private void SetStudioSetChorusDelayCenterFeedback(Int32 p)
         {
             tbChorusDelayCenterFeedback.Text = "Center feedback " + p + "%";
-            commonState.studioSet.CommonChorus.Delay.CenterFeedback = (byte)((p / 2) + 49);
+            commonState.StudioSet.CommonChorus.Delay.CenterFeedback = (byte)((p / 2) + 49);
             byte[] address = { 0x18, 0x00, 0x04, 0x28 };
-            byte[] value = { 0x08, 0x00, (byte)(commonState.studioSet.CommonChorus.Delay.CenterFeedback / 16),
-                        (byte)(commonState.studioSet.CommonChorus.Delay.CenterFeedback % 16) };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { 0x08, 0x00, (byte)(commonState.StudioSet.CommonChorus.Delay.CenterFeedback / 16),
+                        (byte)(commonState.StudioSet.CommonChorus.Delay.CenterFeedback % 16) };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void cbChorusDelayHFDamp_SelectionChanged(object sender, EventArgs e)
@@ -5323,13 +5323,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetChorusDelayHFDamp(Int32 p)
         {
-            commonState.studioSet.CommonChorus.Delay.HFDamp = (byte)p;
+            commonState.StudioSet.CommonChorus.Delay.HFDamp = (byte)p;
             byte[] address = { 0x18, 0x00, 0x04, 0x2c };
-            byte[] value = { 0x08, 0x00, (byte)(commonState.studioSet.CommonChorus.Delay.HFDamp / 16),
-                        (byte)(commonState.studioSet.CommonChorus.Delay.HFDamp % 16) };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { 0x08, 0x00, (byte)(commonState.StudioSet.CommonChorus.Delay.HFDamp / 16),
+                        (byte)(commonState.StudioSet.CommonChorus.Delay.HFDamp % 16) };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void slChorusDelayLeftLevel_ValueChanged(object sender, EventArgs e)
@@ -5344,13 +5344,13 @@ namespace Integra_7_Xamarin
         private void SetStudioSetChorusDelayLeftLevel(Int32 p)
         {
             tbChorusDelayLeftLevel.Text = "Left level " + p.ToString();
-            commonState.studioSet.CommonChorus.Delay.LeftLevel = (byte)p;
+            commonState.StudioSet.CommonChorus.Delay.LeftLevel = (byte)p;
             byte[] address = { 0x18, 0x00, 0x04, 0x30 };
-            byte[] value = { 0x08, 0x00, (byte)(commonState.studioSet.CommonChorus.Delay.LeftLevel / 16),
-                        (byte)(commonState.studioSet.CommonChorus.Delay.LeftLevel % 16) };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { 0x08, 0x00, (byte)(commonState.StudioSet.CommonChorus.Delay.LeftLevel / 16),
+                        (byte)(commonState.StudioSet.CommonChorus.Delay.LeftLevel % 16) };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void slChorusDelayRightLevel_ValueChanged(object sender, EventArgs e)
@@ -5365,13 +5365,13 @@ namespace Integra_7_Xamarin
         private void SetStudioSetChorusDelayRightLevel(Int32 p)
         {
             tbChorusDelayRightLevel.Text = "Right level " + p.ToString();
-            commonState.studioSet.CommonChorus.Delay.RightLevel = (byte)p;
+            commonState.StudioSet.CommonChorus.Delay.RightLevel = (byte)p;
             byte[] address = { 0x18, 0x00, 0x04, 0x34 };
-            byte[] value = { 0x08, 0x00, (byte)(commonState.studioSet.CommonChorus.Delay.RightLevel / 16),
-                        (byte)(commonState.studioSet.CommonChorus.Delay.RightLevel % 16) };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { 0x08, 0x00, (byte)(commonState.StudioSet.CommonChorus.Delay.RightLevel / 16),
+                        (byte)(commonState.StudioSet.CommonChorus.Delay.RightLevel % 16) };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void slChorusDelayCenterLevel_ValueChanged(object sender, EventArgs e)
@@ -5386,13 +5386,13 @@ namespace Integra_7_Xamarin
         private void SetStudioSetChorusDelayCenterLevel(Int32 p)
         {
             tbChorusDelayCenterLevel.Text = "Center level " + p.ToString();
-            commonState.studioSet.CommonChorus.Delay.CenterLevel = (byte)p;
+            commonState.StudioSet.CommonChorus.Delay.CenterLevel = (byte)p;
             byte[] address = { 0x18, 0x00, 0x04, 0x38 };
-            byte[] value = { 0x08, 0x00, (byte)(commonState.studioSet.CommonChorus.Delay.CenterLevel / 16),
-                        (byte)(commonState.studioSet.CommonChorus.Delay.CenterLevel % 16) };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { 0x08, 0x00, (byte)(commonState.StudioSet.CommonChorus.Delay.CenterLevel / 16),
+                        (byte)(commonState.StudioSet.CommonChorus.Delay.CenterLevel % 16) };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         // Chorus GM2 event handlsers
@@ -5523,40 +5523,40 @@ namespace Integra_7_Xamarin
             StudioSetReverbGM2.IsVisible = false;
             StudioSetReverbReverb.IsVisible = false;
             byte[] address = new byte[] { 0x18, 0x00, 0x06, 0x00 };
-            byte[] value = new byte[] { (byte)cbStudioSetReverbType.SelectedIndex, commonState.studioSet.CommonReverb.Level, commonState.studioSet.CommonReverb.OutputAssign };
+            byte[] value = new byte[] { (byte)cbStudioSetReverbType.SelectedIndex, commonState.StudioSet.CommonReverb.Level, commonState.StudioSet.CommonReverb.OutputAssign };
             byte[] bytes = new byte[0];
 
             switch (p)
             {
                 case 1:
                     StudioSetReverbReverb.IsVisible = true;
-                    value = value.Concat(commonState.studioSet.CommonReverb.ReverbRoom1.GetData()).ToArray();
-                    commonState.midi.SendSystemExclusive(bytes);
+                    value = value.Concat(commonState.StudioSet.CommonReverb.ReverbRoom1.GetData()).ToArray();
+                    commonState.Midi.SendSystemExclusive(bytes);
                     break;
                 case 2:
                     StudioSetReverbReverb.IsVisible = true;
-                    value = value.Concat(commonState.studioSet.CommonReverb.ReverbRoom2.GetData()).ToArray();
-                    commonState.midi.SendSystemExclusive(bytes);
+                    value = value.Concat(commonState.StudioSet.CommonReverb.ReverbRoom2.GetData()).ToArray();
+                    commonState.Midi.SendSystemExclusive(bytes);
                     break;
                 case 3:
                     StudioSetReverbReverb.IsVisible = true;
-                    value = value.Concat(commonState.studioSet.CommonReverb.ReverbHall1.GetData()).ToArray();
-                    commonState.midi.SendSystemExclusive(bytes);
+                    value = value.Concat(commonState.StudioSet.CommonReverb.ReverbHall1.GetData()).ToArray();
+                    commonState.Midi.SendSystemExclusive(bytes);
                     break;
                 case 4:
                     StudioSetReverbReverb.IsVisible = true;
-                    value = value.Concat(commonState.studioSet.CommonReverb.ReverbHall2.GetData()).ToArray();
-                    commonState.midi.SendSystemExclusive(bytes);
+                    value = value.Concat(commonState.StudioSet.CommonReverb.ReverbHall2.GetData()).ToArray();
+                    commonState.Midi.SendSystemExclusive(bytes);
                     break;
                 case 5:
                     StudioSetReverbReverb.IsVisible = true;
-                    value = value.Concat(commonState.studioSet.CommonReverb.ReverbPlate.GetData()).ToArray();
-                    commonState.midi.SendSystemExclusive(bytes);
+                    value = value.Concat(commonState.StudioSet.CommonReverb.ReverbPlate.GetData()).ToArray();
+                    commonState.Midi.SendSystemExclusive(bytes);
                     break;
                 case 6:
                     StudioSetReverbGM2.IsVisible = true;
-                    value = value.Concat(commonState.studioSet.CommonReverb.GM2Reverb.GetData()).ToArray();
-                    commonState.midi.SendSystemExclusive(bytes);
+                    value = value.Concat(commonState.StudioSet.CommonReverb.GM2Reverb.GetData()).ToArray();
+                    commonState.Midi.SendSystemExclusive(bytes);
                     break;
             }
             //SetStudioSetCommonReverbControls(p);
@@ -5565,10 +5565,10 @@ namespace Integra_7_Xamarin
         private void SetStudioSetCommonReverbControls(Int32 p)
         {
             byte[] address = { 0x18, 0x00, 0x06, 0x00 };
-            byte[] value = { (byte)p, commonState.studioSet.CommonReverb.Level, commonState.studioSet.CommonReverb.OutputAssign };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)p, commonState.StudioSet.CommonReverb.Level, commonState.StudioSet.CommonReverb.OutputAssign };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
             StudioSet_CommonReverbReverb reverb = null;
             switch (p)
@@ -5576,19 +5576,19 @@ namespace Integra_7_Xamarin
                 // NOTE! The attributes was initially named after Hall1, but some names are incorrect
                 // while using the same address as Hall1 but control a different setting.
                 case 1:
-                    reverb = commonState.studioSet.CommonReverb.ReverbRoom1;
+                    reverb = commonState.StudioSet.CommonReverb.ReverbRoom1;
                     break;
                 case 2:
-                    reverb = commonState.studioSet.CommonReverb.ReverbRoom2;
+                    reverb = commonState.StudioSet.CommonReverb.ReverbRoom2;
                     break;
                 case 3:
-                    reverb = commonState.studioSet.CommonReverb.ReverbHall1;
+                    reverb = commonState.StudioSet.CommonReverb.ReverbHall1;
                     break;
                 case 4:
-                    reverb = commonState.studioSet.CommonReverb.ReverbHall2;
+                    reverb = commonState.StudioSet.CommonReverb.ReverbHall2;
                     break;
                 case 5:
-                    reverb = commonState.studioSet.CommonReverb.ReverbPlate;
+                    reverb = commonState.StudioSet.CommonReverb.ReverbPlate;
                     break;
             }
             // When the controls are updated below, their handlers will also send 
@@ -5596,9 +5596,9 @@ namespace Integra_7_Xamarin
             if (p == 6)
             {
                 slStudioSetReverbGM2Character.Value =
-                    commonState.studioSet.CommonReverb.GM2Reverb.Character;
+                    commonState.StudioSet.CommonReverb.GM2Reverb.Character;
                 slStudioSetReverbGM2Time.Value =
-                    commonState.studioSet.CommonReverb.GM2Reverb.Time;
+                    commonState.StudioSet.CommonReverb.GM2Reverb.Time;
             }
             else if (p > 0)
             {
@@ -5627,9 +5627,9 @@ namespace Integra_7_Xamarin
             tbStudioSetReverbLevel.Text = "Reverb level " + p.ToString();
             byte[] address = { 0x18, 0x00, 0x06, 0x01 };
             byte[] value = { (byte)p };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void cbStudioSetReverbOutputAssign_SelectionChanged(object sender, EventArgs e)
@@ -5646,9 +5646,9 @@ namespace Integra_7_Xamarin
 
             byte[] address = { 0x18, 0x00, 0x06, 0x02 };
             byte[] value = { (byte)p };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void slStudioSetReverbPreDelay_ValueChanged(object sender, EventArgs e)
@@ -5665,22 +5665,22 @@ namespace Integra_7_Xamarin
             byte[] address = { 0x18, 0x00, 0x06, 0x07 };
             SendHashMarkedMessage(address, p);
             tbStudioSetReverbPreDelay.Text = "Pre delay " + p.ToString() + " ms";
-            switch (commonState.studioSet.CommonReverb.Type)
+            switch (commonState.StudioSet.CommonReverb.Type)
             {
                 case 1:
-                    commonState.studioSet.CommonReverb.ReverbRoom1.PreDelay = (byte)p;
+                    commonState.StudioSet.CommonReverb.ReverbRoom1.PreDelay = (byte)p;
                     break;
                 case 2:
-                    commonState.studioSet.CommonReverb.ReverbRoom2.PreDelay = (byte)p;
+                    commonState.StudioSet.CommonReverb.ReverbRoom2.PreDelay = (byte)p;
                     break;
                 case 3:
-                    commonState.studioSet.CommonReverb.ReverbHall1.PreDelay = (byte)p;
+                    commonState.StudioSet.CommonReverb.ReverbHall1.PreDelay = (byte)p;
                     break;
                 case 4:
-                    commonState.studioSet.CommonReverb.ReverbHall2.PreDelay = (byte)p;
+                    commonState.StudioSet.CommonReverb.ReverbHall2.PreDelay = (byte)p;
                     break;
                 case 5:
-                    commonState.studioSet.CommonReverb.ReverbPlate.PreDelay = (byte)p;
+                    commonState.StudioSet.CommonReverb.ReverbPlate.PreDelay = (byte)p;
                     break;
             }
         }
@@ -5707,22 +5707,22 @@ namespace Integra_7_Xamarin
             }
             tbStudioSetReverbTime.Text = "Time " + sValue + " s";
 
-            switch (commonState.studioSet.CommonReverb.Type)
+            switch (commonState.StudioSet.CommonReverb.Type)
             {
                 case 1:
-                    commonState.studioSet.CommonReverb.ReverbRoom1.Time = (byte)p;
+                    commonState.StudioSet.CommonReverb.ReverbRoom1.Time = (byte)p;
                     break;
                 case 2:
-                    commonState.studioSet.CommonReverb.ReverbRoom2.Time = (byte)p;
+                    commonState.StudioSet.CommonReverb.ReverbRoom2.Time = (byte)p;
                     break;
                 case 3:
-                    commonState.studioSet.CommonReverb.ReverbHall1.Time = (byte)p;
+                    commonState.StudioSet.CommonReverb.ReverbHall1.Time = (byte)p;
                     break;
                 case 4:
-                    commonState.studioSet.CommonReverb.ReverbHall2.Time = (byte)p;
+                    commonState.StudioSet.CommonReverb.ReverbHall2.Time = (byte)p;
                     break;
                 case 5:
-                    commonState.studioSet.CommonReverb.ReverbPlate.Time = (byte)p;
+                    commonState.StudioSet.CommonReverb.ReverbPlate.Time = (byte)p;
                     break;
             }
         }
@@ -5875,12 +5875,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetMotionalSurround(Boolean p)
         {
-            commonState.studioSet.MotionalSurround.MotionalSurroundSwitch = p;
+            commonState.StudioSet.MotionalSurround.MotionalSurroundSwitch = p;
             byte[] address = { 0x18, 0x00, 0x08, 0x00 };
             byte[] value = { (byte)(p ? 0x01 : 0x00) };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void cbStudioSetMotionalSurroundRoomType_SelectionChanged(object sender, EventArgs e)
@@ -5894,12 +5894,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetMotionalSurroundRoomType(Int32 p)
         {
-            commonState.studioSet.MotionalSurround.RoomType = (byte)p;
+            commonState.StudioSet.MotionalSurround.RoomType = (byte)p;
             byte[] address = { 0x18, 0x00, 0x08, 0x01 };
             byte[] value = { (byte)p };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void slStudioSetMotionalSurroundAmbienceLevel_ValueChanged(object sender, EventArgs e)
@@ -5913,13 +5913,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetMotionalSurroundAmbienceLevel(Int32 p)
         {
-            commonState.studioSet.MotionalSurround.AmbienceLevel = (byte)p;
+            commonState.StudioSet.MotionalSurround.AmbienceLevel = (byte)p;
             tbStudioSetMotionalSurroundAmbienceLevel.Text = "Ambience level " + p.ToString();
             byte[] address = { 0x18, 0x00, 0x08, 0x02 };
             byte[] value = { (byte)p };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void cbStudioSetMotionalSurroundRoomSize_SelectionChanged(object sender, EventArgs e)
@@ -5933,12 +5933,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetMotionalSurroundRoomSize(Int32 p)
         {
-            commonState.studioSet.MotionalSurround.RoomSize = (byte)p;
+            commonState.StudioSet.MotionalSurround.RoomSize = (byte)p;
             byte[] address = { 0x18, 0x00, 0x08, 0x03 };
             byte[] value = { (byte)p };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void slStudioSetMotionalSurroundAmbienceTime_ValueChanged(object sender, EventArgs e)
@@ -5952,13 +5952,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetMotionalSurroundAmbienceTime(Int32 p)
         {
-            commonState.studioSet.MotionalSurround.AmbienceTime = (byte)p;
+            commonState.StudioSet.MotionalSurround.AmbienceTime = (byte)p;
             tbStudioSetMotionalSurroundAmbienceTime.Text = "Ambience time " + p.ToString();
             byte[] address = { 0x18, 0x00, 0x08, 0x04 };
             byte[] value = { (byte)p };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void slStudioSetMotionalSurroundAmbienceDensity_ValueChanged(object sender, EventArgs e)
@@ -5972,13 +5972,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetMotionalSurroundAmbienceDensity(Int32 p)
         {
-            commonState.studioSet.MotionalSurround.AmbienceDensity = (byte)p;
+            commonState.StudioSet.MotionalSurround.AmbienceDensity = (byte)p;
             tbStudioSetMotionalSurroundAmbienceDensity.Text = "Ambience density " + p.ToString();
             byte[] address = { 0x18, 0x00, 0x08, 0x05 };
             byte[] value = { (byte)p };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void slStudioSetMotionalSurroundAmbienceHFDamp_ValueChanged(object sender, EventArgs e)
@@ -5992,13 +5992,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetMotionalSurroundAmbienceHFDamp(Int32 p)
         {
-            commonState.studioSet.MotionalSurround.AmbienceHFDamp = (byte)p;
+            commonState.StudioSet.MotionalSurround.AmbienceHFDamp = (byte)p;
             tbStudioSetMotionalSurroundAmbienceHFDamp.Text = "Ambience HF damp " + p.ToString();
             byte[] address = { 0x18, 0x00, 0x08, 0x06 };
             byte[] value = { (byte)p };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void slStudioSetMotionalSurroundExternalPartLR_ValueChanged(object sender, EventArgs e)
@@ -6012,13 +6012,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetMotionalSurroundExternalPartLR(Int32 p)
         {
-            commonState.studioSet.MotionalSurround.ExtPartLR = (byte)(p + 64);
+            commonState.StudioSet.MotionalSurround.ExtPartLR = (byte)(p + 64);
             tbStudioSetMotionalSurroundExternalPartLR.Text = "External part L-R " + p.ToString();
             byte[] address = { 0x18, 0x00, 0x08, 0x07 };
-            byte[] value = { (byte)commonState.studioSet.MotionalSurround.ExtPartLR };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.MotionalSurround.ExtPartLR };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void slStudioSetMotionalSurroundExternalPartFB_ValueChanged(object sender, EventArgs e)
@@ -6032,13 +6032,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetMotionalSurroundExternalPartFB(Int32 p)
         {
-            commonState.studioSet.MotionalSurround.ExtPartFB = (byte)(p + 64);
+            commonState.StudioSet.MotionalSurround.ExtPartFB = (byte)(p + 64);
             tbStudioSetMotionalSurroundExternalPartFB.Text = "External part F-B " + p.ToString();
             byte[] address = { 0x18, 0x00, 0x08, 0x08 };
-            byte[] value = { commonState.studioSet.MotionalSurround.ExtPartFB };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { commonState.StudioSet.MotionalSurround.ExtPartFB };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void slStudioSetMotionalSurroundExtPartWidth_ValueChanged(object sender, EventArgs e)
@@ -6052,13 +6052,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetMotionalSurroundExtPartWidth(Int32 p)
         {
-            commonState.studioSet.MotionalSurround.ExtPartWidth = (byte)p;
+            commonState.StudioSet.MotionalSurround.ExtPartWidth = (byte)p;
             tbStudioSetMotionalSurroundExtPartWidth.Text = "External part width " + p.ToString();
             byte[] address = { 0x18, 0x00, 0x08, 0x09 };
-            byte[] value = { commonState.studioSet.MotionalSurround.ExtPartWidth };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { commonState.StudioSet.MotionalSurround.ExtPartWidth };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void slStudioSetMotionalSurroundExtpartAmbienceSend_ValueChanged(object sender, EventArgs e)
@@ -6072,13 +6072,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetMotionalSurroundExtpartAmbienceSend(Int32 p)
         {
-            commonState.studioSet.MotionalSurround.ExtPartAmbienceSendLevel = (byte)p;
+            commonState.StudioSet.MotionalSurround.ExtPartAmbienceSendLevel = (byte)p;
             tbStudioSetMotionalSurroundExtpartAmbienceSend.Text = "External part ambience send" + p.ToString();
             byte[] address = { 0x18, 0x00, 0x08, 0x0a };
-            byte[] value = { commonState.studioSet.MotionalSurround.ExtPartAmbienceSendLevel };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { commonState.StudioSet.MotionalSurround.ExtPartAmbienceSendLevel };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void cbStudioSetMotionalSurroundExtPartControl_SelectionChanged(object sender, EventArgs e)
@@ -6092,12 +6092,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetMotionalSurroundExtPartControl(Int32 p)
         {
-            commonState.studioSet.MotionalSurround.ExtPartControlChannel = (byte)p;
+            commonState.StudioSet.MotionalSurround.ExtPartControlChannel = (byte)p;
             byte[] address = { 0x18, 0x00, 0x08, 0x0b };
-            byte[] value = { commonState.studioSet.MotionalSurround.ExtPartControlChannel };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { commonState.StudioSet.MotionalSurround.ExtPartControlChannel };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void slStudioSetMotionalSurroundDepth_ValueChanged(object sender, EventArgs e)
@@ -6111,13 +6111,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetMotionalSurroundDepth(Int32 p)
         {
-            commonState.studioSet.MotionalSurround.MotionalSurroundDepth = (byte)p;
+            commonState.StudioSet.MotionalSurround.MotionalSurroundDepth = (byte)p;
             tbStudioSetMotionalSurroundDepth.Text = "Motional surround depth " + p.ToString();
             byte[] address = { 0x18, 0x00, 0x08, 0x0c };
-            byte[] value = { commonState.studioSet.MotionalSurround.MotionalSurroundDepth };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { commonState.StudioSet.MotionalSurround.MotionalSurroundDepth };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         // Master equalizer 18 00 09 00
@@ -6132,12 +6132,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetMasterEqLowFreq(Int32 p)
         {
-            commonState.studioSet.MasterEQ.EQLowFreq = (byte)p;
+            commonState.StudioSet.MasterEQ.EQLowFreq = (byte)p;
             byte[] address = { 0x18, 0x00, 0x09, 0x00 };
-            byte[] value = { commonState.studioSet.MasterEQ.EQLowFreq };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { commonState.StudioSet.MasterEQ.EQLowFreq };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void slStudioSetMasterEqLowGain_ValueChanged(object sender, EventArgs e)
@@ -6151,13 +6151,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetMasterEqLowGain(Int32 p)
         {
-            commonState.studioSet.MasterEQ.EQLowGain = (byte)(p + 15);
+            commonState.StudioSet.MasterEQ.EQLowGain = (byte)(p + 15);
             tbStudioSetMasterEqLowGain.Text = "EQ low gain " + (p).ToString() + " dB";
             byte[] address = { 0x18, 0x00, 0x09, 0x01 };
-            byte[] value = { commonState.studioSet.MasterEQ.EQLowGain };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { commonState.StudioSet.MasterEQ.EQLowGain };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void cbStudioSetMasterEqMidFreq_SelectionChanged(object sender, EventArgs e)
@@ -6171,12 +6171,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetMasterEqMidFreq(Int32 p)
         {
-            commonState.studioSet.MasterEQ.EQMidFreq = (byte)p;
+            commonState.StudioSet.MasterEQ.EQMidFreq = (byte)p;
             byte[] address = { 0x18, 0x00, 0x09, 0x02 };
-            byte[] value = { commonState.studioSet.MasterEQ.EQMidFreq };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { commonState.StudioSet.MasterEQ.EQMidFreq };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void slStudioSetMasterEqMidGain_ValueChanged(object sender, EventArgs e)
@@ -6190,13 +6190,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetMasterEqMidGain(Int32 p)
         {
-            commonState.studioSet.MasterEQ.EQMidGain = (byte)(p + 15);
+            commonState.StudioSet.MasterEQ.EQMidGain = (byte)(p + 15);
             tbStudioSetMasterEqMidGain.Text = "EQ mid gain " + p.ToString() + " dB";
             byte[] address = { 0x18, 0x00, 0x09, 0x03 };
-            byte[] value = { commonState.studioSet.MasterEQ.EQMidGain };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { commonState.StudioSet.MasterEQ.EQMidGain };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void cbStudioSetMasterEqMidQ_SelectionChanged(object sender, EventArgs e)
@@ -6210,12 +6210,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetMasterEqMidQ(Int32 p)
         {
-            commonState.studioSet.MasterEQ.EQMidQ = (byte)p;
+            commonState.StudioSet.MasterEQ.EQMidQ = (byte)p;
             byte[] address = { 0x18, 0x00, 0x09, 0x04 };
-            byte[] value = { commonState.studioSet.MasterEQ.EQMidQ };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { commonState.StudioSet.MasterEQ.EQMidQ };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void cbStudioSetMasterEqHighFreq_SelectionChanged(object sender, EventArgs e)
@@ -6229,12 +6229,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetMasterEqHighFreq(Int32 p)
         {
-            commonState.studioSet.MasterEQ.EQHighFreq = (byte)p;
+            commonState.StudioSet.MasterEQ.EQHighFreq = (byte)p;
             byte[] address = { 0x18, 0x00, 0x09, 0x05 };
-            byte[] value = { commonState.studioSet.MasterEQ.EQHighFreq };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { commonState.StudioSet.MasterEQ.EQHighFreq };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void slStudioSetMasterEqHighGain_ValueChanged(object sender, EventArgs e)
@@ -6248,13 +6248,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetMasterEqHighGain(Int32 p)
         {
-            commonState.studioSet.MasterEQ.EQHighGain = (byte)(p + 15);
+            commonState.StudioSet.MasterEQ.EQHighGain = (byte)(p + 15);
             tbStudioSetMasterEqHighGain.Text = "EQ high gain " + p.ToString() + " dB";
             byte[] address = { 0x18, 0x00, 0x09, 0x06 };
-            byte[] value = { commonState.studioSet.MasterEQ.EQHighGain };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { commonState.StudioSet.MasterEQ.EQHighGain };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         // Column 2
@@ -6270,7 +6270,7 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartSelector(Int32 p)
         {
-            commonState.midi.SetMidiOutPortChannel((byte)p); // We are actually talking part here, not MIDI channel. MIDI channel migth be changed and is stored in commonState.PartChannels[cbStudioSetPartSelector.SelectedIndex]
+            commonState.Midi.SetMidiOutPortChannel((byte)p); // We are actually talking part here, not MIDI channel. MIDI channel migth be changed and is stored in commonState.PartChannels[cbStudioSetPartSelector.SelectedIndex]
             QueryStudioSetPart();
         }
 
@@ -6341,12 +6341,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartSettings1ReceiveChannel(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartMainSettings[part].ReceiveChannel = (byte)p;
+            commonState.StudioSet.PartMainSettings[part].ReceiveChannel = (byte)p;
             byte[] address = { 0x18, 0x00, (byte)(0x20 + part), 0x00 };
-            byte[] value = { commonState.studioSet.PartMainSettings[part].ReceiveChannel };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { commonState.StudioSet.PartMainSettings[part].ReceiveChannel };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void cbStudioSetPartSettings1Receive_Click(object sender, EventArgs e)
@@ -6360,12 +6360,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartSettings1Receive(Boolean p, Int32 part)
         {
-            commonState.studioSet.PartMainSettings[cbStudioSetPartSelector.SelectedIndex].ReceiveSwitch = (Boolean)p;
+            commonState.StudioSet.PartMainSettings[cbStudioSetPartSelector.SelectedIndex].ReceiveSwitch = (Boolean)p;
             byte[] address = { 0x18, 0x00, (byte)(0x20 + cbStudioSetPartSelector.SelectedIndex), 0x01 };
-            byte[] value = { (byte)(commonState.studioSet.PartMainSettings[cbStudioSetPartSelector.SelectedIndex].ReceiveSwitch ? 1 : 0) };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)(commonState.StudioSet.PartMainSettings[cbStudioSetPartSelector.SelectedIndex].ReceiveSwitch ? 1 : 0) };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -6441,7 +6441,7 @@ namespace Integra_7_Xamarin
             cbStudioSetSelector.Items.Clear();
             cbStudioSetSlot.Items.Clear();
             UInt16 i = 1;
-            foreach (String s in commonState.studioSetNames)
+            foreach (String s in commonState.StudioSetNames)
             {
                 String num = i.ToString();
                 if (num.Length < 2)
@@ -6468,9 +6468,9 @@ namespace Integra_7_Xamarin
             // Request studio set name:
             byte[] address = { 0x18, 0x00, 0x00, 0x00 };
             byte[] length = { 0x00, 0x00, 0x00, 0x10 };
-            byte[] bytes = commonState.midi.SystemExclusiveRQ1Message(address, length);
+            byte[] bytes = commonState.Midi.SystemExclusiveRQ1Message(address, length);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes); // Answer will be caught in MidiInPort_MessageReceived.
+            commonState.Midi.SendSystemExclusive(bytes); // Answer will be caught in MidiInPort_MessageReceived.
             currentStudioSetEditorMidiRequest = StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_TITLES;
         }
 
@@ -6492,9 +6492,9 @@ namespace Integra_7_Xamarin
             studioSetEditor_State = StudioSetEditor_State.QUERYING_CURRENT_STUDIO_SET_NUMBER;
             byte[] address = { 0x01, 0x00, 0x00, 0x04 };
             byte[] length = { 0x00, 0x00, 0x00, 0x03 };
-            byte[] bytes = commonState.midi.SystemExclusiveRQ1Message(address, length);
+            byte[] bytes = commonState.Midi.SystemExclusiveRQ1Message(address, length);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes); // Answer will be caught in MidiInPort_MessageReceived.
+            commonState.Midi.SendSystemExclusive(bytes); // Answer will be caught in MidiInPort_MessageReceived.
         }
 
         private void QuerySystemCommon()
@@ -6505,9 +6505,9 @@ namespace Integra_7_Xamarin
             currentStudioSetEditorMidiRequest = StudioSetEditor_currentStudioSetEditorMidiRequest.SYSTEM_COMMON;
             byte[] address = { 0x02, 0x00, 0x00, 0x00 };
             byte[] length = { 0x00, 0x00, 0x00, 0x2f };
-            byte[] bytes = commonState.midi.SystemExclusiveRQ1Message(address, length);
+            byte[] bytes = commonState.Midi.SystemExclusiveRQ1Message(address, length);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
+            commonState.Midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
         }
 
         private void QueryStudioSetCommon()
@@ -6518,9 +6518,9 @@ namespace Integra_7_Xamarin
             currentStudioSetEditorMidiRequest = StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_COMMON;
             byte[] address = { 0x18, 0x00, 0x00, 0x00 };
             byte[] length = { 0x00, 0x00, 0x00, 0x54 };
-            byte[] bytes = commonState.midi.SystemExclusiveRQ1Message(address, length);
+            byte[] bytes = commonState.Midi.SystemExclusiveRQ1Message(address, length);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
+            commonState.Midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
         }
 
         //private void QueryStudioSetChorus(/*Int32 Selection = 0*/)
@@ -6618,9 +6618,9 @@ namespace Integra_7_Xamarin
             currentStudioSetEditorMidiRequest = StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_CHORUS_CHORUS;
             byte[] address = { 0x18, 0x00, 0x04, 0x00 };
             byte[] length = { 0x00, 0x00, 0x00, 0x54 };
-            byte[] bytes = commonState.midi.SystemExclusiveRQ1Message(address, length);
+            byte[] bytes = commonState.Midi.SystemExclusiveRQ1Message(address, length);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
+            commonState.Midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
         }
 
         private void QueryStudioSetChorusDelay()
@@ -6631,9 +6631,9 @@ namespace Integra_7_Xamarin
             currentStudioSetEditorMidiRequest = StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_CHORUS_DELAY;
             byte[] address = { 0x18, 0x00, 0x04, 0x00 };
             byte[] length = { 0x00, 0x00, 0x00, 0x54 };
-            byte[] bytes = commonState.midi.SystemExclusiveRQ1Message(address, length);
+            byte[] bytes = commonState.Midi.SystemExclusiveRQ1Message(address, length);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
+            commonState.Midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
         }
 
         private void QueryStudioSetChorusGM2Chorus()
@@ -6644,9 +6644,9 @@ namespace Integra_7_Xamarin
             currentStudioSetEditorMidiRequest = StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_CHORUS_GM2_CHORUS;
             byte[] address = { 0x18, 0x00, 0x04, 0x00 };
             byte[] length = { 0x00, 0x00, 0x00, 0x54 };
-            byte[] bytes = commonState.midi.SystemExclusiveRQ1Message(address, length);
+            byte[] bytes = commonState.Midi.SystemExclusiveRQ1Message(address, length);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
+            commonState.Midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
         }
 
         private void QueryStudioSetChorus()
@@ -6657,9 +6657,9 @@ namespace Integra_7_Xamarin
             currentStudioSetEditorMidiRequest = StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_CHORUS;
             byte[] address = { 0x18, 0x00, 0x04, 0x00 };
             byte[] length = { 0x00, 0x00, 0x00, 0x54 };
-            byte[] bytes = commonState.midi.SystemExclusiveRQ1Message(address, length);
+            byte[] bytes = commonState.Midi.SystemExclusiveRQ1Message(address, length);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
+            commonState.Midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
         }
 
         private void QueryStudioSetReverb()
@@ -6670,9 +6670,9 @@ namespace Integra_7_Xamarin
             currentStudioSetEditorMidiRequest = StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_REVERB;
             byte[] address = { 0x18, 0x00, 0x06, 0x00 };
             byte[] length = { 0x00, 0x00, 0x00, 0x63 };
-            byte[] bytes = commonState.midi.SystemExclusiveRQ1Message(address, length);
+            byte[] bytes = commonState.Midi.SystemExclusiveRQ1Message(address, length);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
+            commonState.Midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
         }
 
         private void QueryStudioSetMotionalSurround()
@@ -6683,9 +6683,9 @@ namespace Integra_7_Xamarin
             currentStudioSetEditorMidiRequest = StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_MOTIONAL_SURROUND;
             byte[] address = { 0x18, 0x00, 0x08, 0x00 };
             byte[] length = { 0x00, 0x00, 0x00, 0x10 };
-            byte[] bytes = commonState.midi.SystemExclusiveRQ1Message(address, length);
+            byte[] bytes = commonState.Midi.SystemExclusiveRQ1Message(address, length);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
+            commonState.Midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
         }
 
         private void QueryStudioSetMasterEQ()
@@ -6695,9 +6695,9 @@ namespace Integra_7_Xamarin
             currentStudioSetEditorMidiRequest = StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_MASTER_EQ;
             byte[] address = { 0x18, 0x00, 0x09, 0x00 };
             byte[] length = { 0x00, 0x00, 0x00, 0x07 };
-            byte[] bytes = commonState.midi.SystemExclusiveRQ1Message(address, length);
+            byte[] bytes = commonState.Midi.SystemExclusiveRQ1Message(address, length);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
+            commonState.Midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
         }
 
         private void QueryStudioSetPart(Int32 partToRead = -1)
@@ -6715,9 +6715,9 @@ namespace Integra_7_Xamarin
                 address = new byte[] { 0x18, 0x00, (byte)(0x20 + cbStudioSetPartSelector.SelectedIndex), 0x00 };
             }
             byte[] length = { 0x00, 0x00, 0x00, 0x4d };
-            byte[] bytes = commonState.midi.SystemExclusiveRQ1Message(address, length);
+            byte[] bytes = commonState.Midi.SystemExclusiveRQ1Message(address, length);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
+            commonState.Midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
         }
 
         private void QueryStudioSetPartToneName()
@@ -6726,9 +6726,9 @@ namespace Integra_7_Xamarin
             studioSetEditor_State = StudioSetEditor_State.QUERYING_STUDIO_SET_PART_TONE_NAME;
             currentStudioSetEditorMidiRequest = StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_PART_TONE_NAME;
             // Set tone on INTEGRA-7:
-            byte msb = commonState.studioSet.PartMainSettings[cbStudioSetPartSelector.SelectedIndex].ToneBankSelectMSB;
-            byte lsb = commonState.studioSet.PartMainSettings[cbStudioSetPartSelector.SelectedIndex].ToneBankSelectLSB;
-            byte pc = commonState.studioSet.PartMainSettings[cbStudioSetPartSelector.SelectedIndex].ToneProgramNumber;
+            byte msb = commonState.StudioSet.PartMainSettings[cbStudioSetPartSelector.SelectedIndex].ToneBankSelectMSB;
+            byte lsb = commonState.StudioSet.PartMainSettings[cbStudioSetPartSelector.SelectedIndex].ToneBankSelectLSB;
+            byte pc = commonState.StudioSet.PartMainSettings[cbStudioSetPartSelector.SelectedIndex].ToneProgramNumber;
             commonState.GetToneType(msb, lsb, pc);
             byte[] length = null;
             byte[] address = null;
@@ -6760,9 +6760,9 @@ namespace Integra_7_Xamarin
                     length = new byte[] { 0x00, 0x00, 0x00, 0x14 };
                     break;
             }
-            byte[] message = commonState.midi.SystemExclusiveRQ1Message(address, length);
+            byte[] message = commonState.Midi.SystemExclusiveRQ1Message(address, length);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(message); // This will be caught in MidiInPort_MessageReceived
+            commonState.Midi.SendSystemExclusive(message); // This will be caught in MidiInPort_MessageReceived
         }
 
         private void QueryStudioSetPartMidiPhaselock()
@@ -6772,9 +6772,9 @@ namespace Integra_7_Xamarin
             currentStudioSetEditorMidiRequest = StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_PART_MIDI_PHASELOCK;
             byte[] address = { 0x18, 0x00, (byte)(0x10 + cbStudioSetPartSelector.SelectedIndex), 0x00 };
             byte[] length = { 0x00, 0x00, 0x00, 0x01 };
-            byte[] bytes = commonState.midi.SystemExclusiveRQ1Message(address, length);
+            byte[] bytes = commonState.Midi.SystemExclusiveRQ1Message(address, length);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
+            commonState.Midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
         }
 
         private void QueryStudioSetPartEQ(Int32 partToRead = -1)
@@ -6788,9 +6788,9 @@ namespace Integra_7_Xamarin
             currentStudioSetEditorMidiRequest = StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_PART_EQ;
             byte[] address = { 0x18, 0x00, (byte)(0x50 + (byte)partToRead), 0x00 };
             byte[] length = { 0x00, 0x00, 0x00, 0x08 };
-            byte[] bytes = commonState.midi.SystemExclusiveRQ1Message(address, length);
+            byte[] bytes = commonState.Midi.SystemExclusiveRQ1Message(address, length);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
+            commonState.Midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
         }
 
         private void ReadSystemCommon()
@@ -6799,30 +6799,30 @@ namespace Integra_7_Xamarin
             try
             {
                 // Unpack system common parameters and update controls:
-                commonState.studioSet.SystemCommon = new StudioSet_SystemCommon(new ReceivedData(rawData));
+                commonState.StudioSet.SystemCommon = new StudioSet_SystemCommon(new ReceivedData(rawData));
                 PushHandleControlEvents();
                 PushHandleControlEvents();
-                slSystemCommonMasterTune.Value = commonState.studioSet.SystemCommon.MasterTune;
+                slSystemCommonMasterTune.Value = commonState.StudioSet.SystemCommon.MasterTune;
                 tbSystemCommonMasterTune.Text = "Master tune " + (slSystemCommonMasterTune.Value / 10).ToString() + " cent";
-                slSystemCommonMasterKeyShift.Value = commonState.studioSet.SystemCommon.MasterKeyShift;
+                slSystemCommonMasterKeyShift.Value = commonState.StudioSet.SystemCommon.MasterKeyShift;
                 tbSystemCommonMasterKeyShift.Text = "Master key shift " + slSystemCommonMasterKeyShift.Value.ToString() + " keys";
-                slSystemCommonMasterLevel.Value = commonState.studioSet.SystemCommon.MasterLevel;
+                slSystemCommonMasterLevel.Value = commonState.StudioSet.SystemCommon.MasterLevel;
                 tbSystemCommonMasterLevel.Text = "Master level " + slSystemCommonMasterLevel.Value.ToString();
-                cbSystemCommonScaleTuneSwitch.IsChecked = commonState.studioSet.SystemCommon.ScaleTuneSwitch;
-                cbSystemCommonStudioSetControlChannel.SelectedIndex = commonState.studioSet.SystemCommon.StudioSetControlChannel;
-                cbSystemCommonSystemControlSource1.SelectedIndex = commonState.studioSet.SystemCommon.SystemControl1Source;
-                cbSystemCommonSystemControlSource2.SelectedIndex = commonState.studioSet.SystemCommon.SystemControl2Source;
-                cbSystemCommonSystemControlSource3.SelectedIndex = commonState.studioSet.SystemCommon.SystemControl3Source;
-                cbSystemCommonSystemControlSource4.SelectedIndex = commonState.studioSet.SystemCommon.SystemControl4Source;
-                cbSystemCommonControlSource.SelectedIndex = commonState.studioSet.SystemCommon.ControlSource;
-                cbSystemCommonSystemClockSource.SelectedIndex = commonState.studioSet.SystemCommon.SystemClockSource;
-                slSystemCommonSystemTempo.Value = commonState.studioSet.SystemCommon.SystemTempo;
-                cbSystemCommonTempoAssignSource.SelectedIndex = commonState.studioSet.SystemCommon.TempoAssignSource;
-                cbSystemCommonReceiveProgramChange.IsChecked = commonState.studioSet.SystemCommon.ReceiveProgramChange;
-                cbSystemCommonReceiveBankSelect.IsChecked = commonState.studioSet.SystemCommon.ReceiveBankSelect;
-                cbSystemCommonSurroundCenterSpeakerSwitch.IsChecked = commonState.studioSet.SystemCommon.SurroundCenterSpeakerSwitch;
-                cbSystemCommonSurroundSubWooferSwitch.IsChecked = commonState.studioSet.SystemCommon.SurroundSubWooferSwitch;
-                cbSystemCommonStereoOutputMode.SelectedIndex = commonState.studioSet.SystemCommon.StereoOutputMode;
+                cbSystemCommonScaleTuneSwitch.IsChecked = commonState.StudioSet.SystemCommon.ScaleTuneSwitch;
+                cbSystemCommonStudioSetControlChannel.SelectedIndex = commonState.StudioSet.SystemCommon.StudioSetControlChannel;
+                cbSystemCommonSystemControlSource1.SelectedIndex = commonState.StudioSet.SystemCommon.SystemControl1Source;
+                cbSystemCommonSystemControlSource2.SelectedIndex = commonState.StudioSet.SystemCommon.SystemControl2Source;
+                cbSystemCommonSystemControlSource3.SelectedIndex = commonState.StudioSet.SystemCommon.SystemControl3Source;
+                cbSystemCommonSystemControlSource4.SelectedIndex = commonState.StudioSet.SystemCommon.SystemControl4Source;
+                cbSystemCommonControlSource.SelectedIndex = commonState.StudioSet.SystemCommon.ControlSource;
+                cbSystemCommonSystemClockSource.SelectedIndex = commonState.StudioSet.SystemCommon.SystemClockSource;
+                slSystemCommonSystemTempo.Value = commonState.StudioSet.SystemCommon.SystemTempo;
+                cbSystemCommonTempoAssignSource.SelectedIndex = commonState.StudioSet.SystemCommon.TempoAssignSource;
+                cbSystemCommonReceiveProgramChange.IsChecked = commonState.StudioSet.SystemCommon.ReceiveProgramChange;
+                cbSystemCommonReceiveBankSelect.IsChecked = commonState.StudioSet.SystemCommon.ReceiveBankSelect;
+                cbSystemCommonSurroundCenterSpeakerSwitch.IsChecked = commonState.StudioSet.SystemCommon.SurroundCenterSpeakerSwitch;
+                cbSystemCommonSurroundSubWooferSwitch.IsChecked = commonState.StudioSet.SystemCommon.SurroundSubWooferSwitch;
+                cbSystemCommonStereoOutputMode.SelectedIndex = commonState.StudioSet.SystemCommon.StereoOutputMode;
                 PopHandleControlEvents();
             }
             catch (Exception e)
@@ -6839,45 +6839,45 @@ namespace Integra_7_Xamarin
             try
             {
                 // Unpack studio set common and update controls:
-                commonState.studioSet.Common = new StudioSet_Common(new ReceivedData(rawData));
-                cbStudioSetSelector.SelectedItem = commonState.studioSet.Common.Name;
-                slVoiceReserve01.Value = commonState.studioSet.Common.VoiceReserve[0];
-                slVoiceReserve02.Value = commonState.studioSet.Common.VoiceReserve[1];
-                slVoiceReserve03.Value = commonState.studioSet.Common.VoiceReserve[2];
-                slVoiceReserve04.Value = commonState.studioSet.Common.VoiceReserve[3];
-                slVoiceReserve05.Value = commonState.studioSet.Common.VoiceReserve[4];
-                slVoiceReserve06.Value = commonState.studioSet.Common.VoiceReserve[5];
-                slVoiceReserve07.Value = commonState.studioSet.Common.VoiceReserve[6];
-                slVoiceReserve08.Value = commonState.studioSet.Common.VoiceReserve[7];
-                slVoiceReserve09.Value = commonState.studioSet.Common.VoiceReserve[8];
-                slVoiceReserve10.Value = commonState.studioSet.Common.VoiceReserve[9];
-                slVoiceReserve11.Value = commonState.studioSet.Common.VoiceReserve[10];
-                slVoiceReserve12.Value = commonState.studioSet.Common.VoiceReserve[11];
-                slVoiceReserve13.Value = commonState.studioSet.Common.VoiceReserve[12];
-                slVoiceReserve14.Value = commonState.studioSet.Common.VoiceReserve[13];
-                slVoiceReserve15.Value = commonState.studioSet.Common.VoiceReserve[14];
-                slVoiceReserve16.Value = commonState.studioSet.Common.VoiceReserve[15];
-                cbToneControl1.SelectedIndex = commonState.studioSet.Common.ToneControlSource[0];
-                cbToneControl2.SelectedIndex = commonState.studioSet.Common.ToneControlSource[1];
-                cbToneControl3.SelectedIndex = commonState.studioSet.Common.ToneControlSource[2];
-                cbToneControl4.SelectedIndex = commonState.studioSet.Common.ToneControlSource[3];
-                slTempo.Value = commonState.studioSet.Common.Tempo;
-                cbSoloPart.SelectedIndex = commonState.studioSet.Common.SoloPart;
-                cbReverb.IsChecked = commonState.studioSet.Common.Reverb;
-                cbChorus.IsChecked = commonState.studioSet.Common.Chorus;
-                cbMasterEQ.IsChecked = commonState.studioSet.Common.MasterEqualizer;
-                cbDrumCompEQ.IsChecked = commonState.studioSet.Common.DrumCompressorAndEqualizer;
-                cbDrumCompEQPart.SelectedIndex = commonState.studioSet.Common.DrumCompressorAndEqualizerPart;
-                cbDrumCompEQ1OutputAssign.SelectedIndex = commonState.studioSet.Common.DrumCompressorAndEqualizerOutputAssign[0];
-                cbDrumCompEQ2OutputAssign.SelectedIndex = commonState.studioSet.Common.DrumCompressorAndEqualizerOutputAssign[1];
-                cbDrumCompEQ3OutputAssign.SelectedIndex = commonState.studioSet.Common.DrumCompressorAndEqualizerOutputAssign[2];
-                cbDrumCompEQ4OutputAssign.SelectedIndex = commonState.studioSet.Common.DrumCompressorAndEqualizerOutputAssign[3];
-                cbDrumCompEQ5OutputAssign.SelectedIndex = commonState.studioSet.Common.DrumCompressorAndEqualizerOutputAssign[4];
-                cbDrumCompEQ6OutputAssign.SelectedIndex = commonState.studioSet.Common.DrumCompressorAndEqualizerOutputAssign[5];
-                slExtPartLevel.Value = commonState.studioSet.Common.ExternalPartLevel;
-                slExtPartChorusSend.Value = commonState.studioSet.Common.ExternalPartChorusSendLevel;
-                slExtPartReverbSend.Value = commonState.studioSet.Common.ExternalPartReverbSendLevel;
-                cbExtPartMute.IsChecked = commonState.studioSet.Common.ExternalPartMute;
+                commonState.StudioSet.Common = new StudioSet_Common(new ReceivedData(rawData));
+                cbStudioSetSelector.SelectedItem = commonState.StudioSet.Common.Name;
+                slVoiceReserve01.Value = commonState.StudioSet.Common.VoiceReserve[0];
+                slVoiceReserve02.Value = commonState.StudioSet.Common.VoiceReserve[1];
+                slVoiceReserve03.Value = commonState.StudioSet.Common.VoiceReserve[2];
+                slVoiceReserve04.Value = commonState.StudioSet.Common.VoiceReserve[3];
+                slVoiceReserve05.Value = commonState.StudioSet.Common.VoiceReserve[4];
+                slVoiceReserve06.Value = commonState.StudioSet.Common.VoiceReserve[5];
+                slVoiceReserve07.Value = commonState.StudioSet.Common.VoiceReserve[6];
+                slVoiceReserve08.Value = commonState.StudioSet.Common.VoiceReserve[7];
+                slVoiceReserve09.Value = commonState.StudioSet.Common.VoiceReserve[8];
+                slVoiceReserve10.Value = commonState.StudioSet.Common.VoiceReserve[9];
+                slVoiceReserve11.Value = commonState.StudioSet.Common.VoiceReserve[10];
+                slVoiceReserve12.Value = commonState.StudioSet.Common.VoiceReserve[11];
+                slVoiceReserve13.Value = commonState.StudioSet.Common.VoiceReserve[12];
+                slVoiceReserve14.Value = commonState.StudioSet.Common.VoiceReserve[13];
+                slVoiceReserve15.Value = commonState.StudioSet.Common.VoiceReserve[14];
+                slVoiceReserve16.Value = commonState.StudioSet.Common.VoiceReserve[15];
+                cbToneControl1.SelectedIndex = commonState.StudioSet.Common.ToneControlSource[0];
+                cbToneControl2.SelectedIndex = commonState.StudioSet.Common.ToneControlSource[1];
+                cbToneControl3.SelectedIndex = commonState.StudioSet.Common.ToneControlSource[2];
+                cbToneControl4.SelectedIndex = commonState.StudioSet.Common.ToneControlSource[3];
+                slTempo.Value = commonState.StudioSet.Common.Tempo;
+                cbSoloPart.SelectedIndex = commonState.StudioSet.Common.SoloPart;
+                cbReverb.IsChecked = commonState.StudioSet.Common.Reverb;
+                cbChorus.IsChecked = commonState.StudioSet.Common.Chorus;
+                cbMasterEQ.IsChecked = commonState.StudioSet.Common.MasterEqualizer;
+                cbDrumCompEQ.IsChecked = commonState.StudioSet.Common.DrumCompressorAndEqualizer;
+                cbDrumCompEQPart.SelectedIndex = commonState.StudioSet.Common.DrumCompressorAndEqualizerPart;
+                cbDrumCompEQ1OutputAssign.SelectedIndex = commonState.StudioSet.Common.DrumCompressorAndEqualizerOutputAssign[0];
+                cbDrumCompEQ2OutputAssign.SelectedIndex = commonState.StudioSet.Common.DrumCompressorAndEqualizerOutputAssign[1];
+                cbDrumCompEQ3OutputAssign.SelectedIndex = commonState.StudioSet.Common.DrumCompressorAndEqualizerOutputAssign[2];
+                cbDrumCompEQ4OutputAssign.SelectedIndex = commonState.StudioSet.Common.DrumCompressorAndEqualizerOutputAssign[3];
+                cbDrumCompEQ5OutputAssign.SelectedIndex = commonState.StudioSet.Common.DrumCompressorAndEqualizerOutputAssign[4];
+                cbDrumCompEQ6OutputAssign.SelectedIndex = commonState.StudioSet.Common.DrumCompressorAndEqualizerOutputAssign[5];
+                slExtPartLevel.Value = commonState.StudioSet.Common.ExternalPartLevel;
+                slExtPartChorusSend.Value = commonState.StudioSet.Common.ExternalPartChorusSendLevel;
+                slExtPartReverbSend.Value = commonState.StudioSet.Common.ExternalPartReverbSendLevel;
+                cbExtPartMute.IsChecked = commonState.StudioSet.Common.ExternalPartMute;
             }
             catch (Exception e)
             {
@@ -6925,7 +6925,7 @@ namespace Integra_7_Xamarin
         private void ReadStudioSetChorus(byte Selection)
         {
             t.Trace("private void ReadStudioSetChorus (" + "byte" + Selection + ", " + ")");
-            commonState.studioSet.CommonChorus = new StudioSet_CommonChorus(new ReceivedData(rawData));
+            commonState.StudioSet.CommonChorus = new StudioSet_CommonChorus(new ReceivedData(rawData));
             UpdateStudioSetChorusControls(rawData[11]);
         }
 
@@ -6934,9 +6934,9 @@ namespace Integra_7_Xamarin
             PushHandleControlEvents();
             PushHandleControlEvents();
             cbStudioSetChorusType.SelectedIndex = Selection;
-            slChorusLevel.Value = commonState.studioSet.CommonChorus.Level;
-            cbChorusOutputAssign.SelectedIndex = commonState.studioSet.CommonChorus.OutputAssign;
-            cbChorusOutputSelect.SelectedIndex = commonState.studioSet.CommonChorus.OutputSelect;
+            slChorusLevel.Value = commonState.StudioSet.CommonChorus.Level;
+            cbChorusOutputAssign.SelectedIndex = commonState.StudioSet.CommonChorus.OutputAssign;
+            cbChorusOutputSelect.SelectedIndex = commonState.StudioSet.CommonChorus.OutputSelect;
             try
             {
                 switch (Selection)
@@ -6944,19 +6944,19 @@ namespace Integra_7_Xamarin
                     case 1:
                         // Type is chorus
                         //cbChorusChorusFilterType.SelectedIndex = -1;
-                        cbChorusChorusFilterType.SelectedIndex = commonState.studioSet.CommonChorus.Chorus.FilterType;
+                        cbChorusChorusFilterType.SelectedIndex = commonState.StudioSet.CommonChorus.Chorus.FilterType;
                         //cbChorusChorusFilterCutoffFrequency.SelectedIndex = -1;
-                        cbChorusChorusFilterCutoffFrequency.SelectedIndex = commonState.studioSet.CommonChorus.Chorus.FilterCutoffFrequency;
-                        tbChorusChorusPreDelay.Text = CalculateChorusPreDelay(commonState.studioSet.CommonChorus.Chorus.PreDelay);
-                        slChorusChorusPreDelay.Value = commonState.studioSet.CommonChorus.Chorus.PreDelay;
+                        cbChorusChorusFilterCutoffFrequency.SelectedIndex = commonState.StudioSet.CommonChorus.Chorus.FilterCutoffFrequency;
+                        tbChorusChorusPreDelay.Text = CalculateChorusPreDelay(commonState.StudioSet.CommonChorus.Chorus.PreDelay);
+                        slChorusChorusPreDelay.Value = commonState.StudioSet.CommonChorus.Chorus.PreDelay;
                         //cbChorusChorusRateHzNote.SelectedIndex = -1;
-                        cbChorusChorusRateHzNote.SelectedIndex = commonState.studioSet.CommonChorus.Chorus.RateHzNote;
+                        cbChorusChorusRateHzNote.SelectedIndex = commonState.StudioSet.CommonChorus.Chorus.RateHzNote;
                         ChorusChorus.IsVisible = true;
-                        tbChorusChorusRateHz.Text = "Rate " + CalculateTimeHz(commonState.studioSet.CommonChorus.Chorus.RateHz) + " Hz";
+                        tbChorusChorusRateHz.Text = "Rate " + CalculateTimeHz(commonState.StudioSet.CommonChorus.Chorus.RateHz) + " Hz";
                         slChorusChorusRateHz.Value = (Double)(16 * rawData[33] + rawData[34]) / 20.0;
-                        tbChorusChorusRateNote.Text = "Rate " + CalculateTimeNote(commonState.studioSet.CommonChorus.Chorus.RateNote) + " note";
+                        tbChorusChorusRateNote.Text = "Rate " + CalculateTimeNote(commonState.StudioSet.CommonChorus.Chorus.RateNote) + " note";
                         slChorusChorusRateNote.Value = 16 * rawData[33] + rawData[34];
-                        switch (commonState.studioSet.CommonChorus.Chorus.RateHzNote)
+                        switch (commonState.StudioSet.CommonChorus.Chorus.RateHzNote)
                         {
                             case 0:
                                 slChorusChorusRateNote.IsVisible = false;
@@ -6971,20 +6971,20 @@ namespace Integra_7_Xamarin
                                 tbChorusChorusRateNote.IsVisible = true;
                                 break;
                         }
-                        slChorusChorusDepth.Value = commonState.studioSet.CommonChorus.Chorus.Depth;
-                        tbChorusChorusDepth.Text = "Depth: " + commonState.studioSet.CommonChorus.Chorus.Depth.ToString();
-                        slChorusChorusPhase.Value = commonState.studioSet.CommonChorus.Chorus.Phase;
-                        tbChorusChorusPhase.Text = "Phase: " + (commonState.studioSet.CommonChorus.Chorus.Phase * 2).ToString();
-                        slChorusChorusFeedback.Value = commonState.studioSet.CommonChorus.Chorus.Feedback;
-                        tbChorusChorusFeedback.Text = "Feedback: " + commonState.studioSet.CommonChorus.Chorus.Feedback.ToString();
+                        slChorusChorusDepth.Value = commonState.StudioSet.CommonChorus.Chorus.Depth;
+                        tbChorusChorusDepth.Text = "Depth: " + commonState.StudioSet.CommonChorus.Chorus.Depth.ToString();
+                        slChorusChorusPhase.Value = commonState.StudioSet.CommonChorus.Chorus.Phase;
+                        tbChorusChorusPhase.Text = "Phase: " + (commonState.StudioSet.CommonChorus.Chorus.Phase * 2).ToString();
+                        slChorusChorusFeedback.Value = commonState.StudioSet.CommonChorus.Chorus.Feedback;
+                        tbChorusChorusFeedback.Text = "Feedback: " + commonState.StudioSet.CommonChorus.Chorus.Feedback.ToString();
                         break;
                     case 2:
                         // Type is delay
                         //cbChorusDelayLeftMsNote.SelectedIndex = -1;
-                        cbChorusDelayLeftMsNote.SelectedIndex = commonState.studioSet.CommonChorus.Delay.LeftMsNote;
-                        slChorusDelayLeftHz.Value = commonState.studioSet.CommonChorus.Delay.LeftMs;
-                        slChorusDelayLeftNote.Value = commonState.studioSet.CommonChorus.Delay.LeftNote;
-                        switch (commonState.studioSet.CommonChorus.Delay.LeftMsNote)
+                        cbChorusDelayLeftMsNote.SelectedIndex = commonState.StudioSet.CommonChorus.Delay.LeftMsNote;
+                        slChorusDelayLeftHz.Value = commonState.StudioSet.CommonChorus.Delay.LeftMs;
+                        slChorusDelayLeftNote.Value = commonState.StudioSet.CommonChorus.Delay.LeftNote;
+                        switch (commonState.StudioSet.CommonChorus.Delay.LeftMsNote)
                         {
                             case 0:
                                 tbChorusDelayLeftHz.IsVisible = true;
@@ -7000,10 +7000,10 @@ namespace Integra_7_Xamarin
                                 break;
                         }
                         //cbChorusDelayRightMsNote.SelectedIndex = -1;
-                        cbChorusDelayRightMsNote.SelectedIndex = commonState.studioSet.CommonChorus.Delay.RightMsNote;
-                        slChorusDelayRightHz.Value = commonState.studioSet.CommonChorus.Delay.RightMs;
-                        slChorusDelayRightNote.Value = commonState.studioSet.CommonChorus.Delay.RightNote;
-                        switch (commonState.studioSet.CommonChorus.Delay.RightMsNote)
+                        cbChorusDelayRightMsNote.SelectedIndex = commonState.StudioSet.CommonChorus.Delay.RightMsNote;
+                        slChorusDelayRightHz.Value = commonState.StudioSet.CommonChorus.Delay.RightMs;
+                        slChorusDelayRightNote.Value = commonState.StudioSet.CommonChorus.Delay.RightNote;
+                        switch (commonState.StudioSet.CommonChorus.Delay.RightMsNote)
                         {
                             case 0:
                                 tbChorusDelayRightNote.IsVisible = false;
@@ -7019,10 +7019,10 @@ namespace Integra_7_Xamarin
                                 break;
                         }
                         //cbChorusDelayCenterMsNote.SelectedIndex = -1;
-                        cbChorusDelayCenterMsNote.SelectedIndex = commonState.studioSet.CommonChorus.Delay.CenterMsNote;
-                        slChorusDelayCenterHz.Value = commonState.studioSet.CommonChorus.Delay.CenterMs;
-                        slChorusDelayCenterNote.Value = commonState.studioSet.CommonChorus.Delay.CenterNote;
-                        switch (commonState.studioSet.CommonChorus.Delay.CenterMsNote)
+                        cbChorusDelayCenterMsNote.SelectedIndex = commonState.StudioSet.CommonChorus.Delay.CenterMsNote;
+                        slChorusDelayCenterHz.Value = commonState.StudioSet.CommonChorus.Delay.CenterMs;
+                        slChorusDelayCenterNote.Value = commonState.StudioSet.CommonChorus.Delay.CenterNote;
+                        switch (commonState.StudioSet.CommonChorus.Delay.CenterMsNote)
                         {
                             case 0:
                                 tbChorusDelayCenterNote.IsVisible = false;
@@ -7037,29 +7037,29 @@ namespace Integra_7_Xamarin
                                 slChorusDelayCenterNote.IsVisible = true;
                                 break;
                         }
-                        slChorusDelayCenterFeedback.Value = 2 * (commonState.studioSet.CommonChorus.Delay.CenterFeedback - 49);
+                        slChorusDelayCenterFeedback.Value = 2 * (commonState.StudioSet.CommonChorus.Delay.CenterFeedback - 49);
                         //cbChorusDelayHFDamp.SelectedIndex = -1;
-                        cbChorusDelayHFDamp.SelectedIndex = commonState.studioSet.CommonChorus.Delay.HFDamp;
-                        slChorusDelayLeftLevel.Value = commonState.studioSet.CommonChorus.Delay.LeftLevel;
-                        slChorusDelayRightLevel.Value = commonState.studioSet.CommonChorus.Delay.LeftLevel;
-                        slChorusDelayCenterLevel.Value = commonState.studioSet.CommonChorus.Delay.CenterLevel;
+                        cbChorusDelayHFDamp.SelectedIndex = commonState.StudioSet.CommonChorus.Delay.HFDamp;
+                        slChorusDelayLeftLevel.Value = commonState.StudioSet.CommonChorus.Delay.LeftLevel;
+                        slChorusDelayRightLevel.Value = commonState.StudioSet.CommonChorus.Delay.LeftLevel;
+                        slChorusDelayCenterLevel.Value = commonState.StudioSet.CommonChorus.Delay.CenterLevel;
                         ChorusDelay.IsVisible = true;
                         break;
                     case 3:
                         // Type is GM2 chorus
-                        slChorusGM2ChorusPreLPF.Value = commonState.studioSet.CommonChorus.Gm2Chorus.PreLPF;
+                        slChorusGM2ChorusPreLPF.Value = commonState.StudioSet.CommonChorus.Gm2Chorus.PreLPF;
                         tbChorusGM2ChorusPreLPF.Text = "Pre-LPF " + slChorusGM2ChorusPreLPF.Value.ToString();
-                        slChorusGM2ChorusLevel.Value = commonState.studioSet.CommonChorus.Gm2Chorus.Level;
+                        slChorusGM2ChorusLevel.Value = commonState.StudioSet.CommonChorus.Gm2Chorus.Level;
                         tbChorusGM2ChorusLevel.Text = "Level " + slChorusGM2ChorusLevel.Value.ToString();
-                        slChorusGM2ChorusFeedback.Value = commonState.studioSet.CommonChorus.Gm2Chorus.Feedback;
+                        slChorusGM2ChorusFeedback.Value = commonState.StudioSet.CommonChorus.Gm2Chorus.Feedback;
                         tbChorusGM2ChorusFeedback.Text = "Feedback " + slChorusGM2ChorusFeedback.Value.ToString();
-                        slChorusGM2ChorusDelay.Value = commonState.studioSet.CommonChorus.Gm2Chorus.Delay;
+                        slChorusGM2ChorusDelay.Value = commonState.StudioSet.CommonChorus.Gm2Chorus.Delay;
                         tbChorusGM2ChorusDelay.Text = "Delay " + slChorusGM2ChorusDelay.Value.ToString();
-                        slChorusGM2ChorusRate.Value = commonState.studioSet.CommonChorus.Gm2Chorus.Rate;
+                        slChorusGM2ChorusRate.Value = commonState.StudioSet.CommonChorus.Gm2Chorus.Rate;
                         tbChorusGM2ChorusRate.Text = "Rate " + slChorusGM2ChorusRate.Value.ToString();
-                        slChorusGM2ChorusDepth.Value = commonState.studioSet.CommonChorus.Gm2Chorus.Depth;
+                        slChorusGM2ChorusDepth.Value = commonState.StudioSet.CommonChorus.Gm2Chorus.Depth;
                         tbChorusGM2ChorusDepth.Text = "Depth " + slChorusGM2ChorusDepth.Value.ToString();
-                        slChorusGM2ChorusSendLevelToReverb.Value = commonState.studioSet.CommonChorus.Gm2Chorus.SendLevelToReverb;
+                        slChorusGM2ChorusSendLevelToReverb.Value = commonState.StudioSet.CommonChorus.Gm2Chorus.SendLevelToReverb;
                         tbChorusGM2ChorusSendLevelToReverb.Text = "Send level to reverb " + slChorusGM2ChorusSendLevelToReverb.Value.ToString();
                         break;
                 }
@@ -7081,110 +7081,110 @@ namespace Integra_7_Xamarin
         private void ReadStudioSetReverb(byte Selection)
         {
             t.Trace("private void ReadStudioSetReverb (" + "byte" + Selection + ", " + ")");
-            commonState.studioSet.CommonReverb = new StudioSet_CommonReverb(new ReceivedData(rawData));
+            commonState.StudioSet.CommonReverb = new StudioSet_CommonReverb(new ReceivedData(rawData));
             PushHandleControlEvents();
             PushHandleControlEvents();
             cbStudioSetReverbType.SelectedIndex = Selection;
-            slStudioSetReverbLevel.Value = commonState.studioSet.CommonReverb.Level;
-            cbStudioSetReverbOutputAssign.SelectedIndex = commonState.studioSet.CommonReverb.OutputAssign;
+            slStudioSetReverbLevel.Value = commonState.StudioSet.CommonReverb.Level;
+            cbStudioSetReverbOutputAssign.SelectedIndex = commonState.StudioSet.CommonReverb.OutputAssign;
 
             switch (Selection)
             {
                 case 1:
-                    slStudioSetReverbPreDelay.Value = commonState.studioSet.CommonReverb.ReverbRoom1.PreDelay;
-                    tbStudioSetReverbPreDelay.Text = "Pre delay " + commonState.studioSet.CommonReverb.ReverbRoom1.PreDelay.ToString();
-                    slStudioSetReverbTime.Value = commonState.studioSet.CommonReverb.ReverbRoom1.Time;
-                    tbStudioSetReverbTime.Text = "Time " + commonState.studioSet.CommonReverb.ReverbRoom1.Time.ToString();
-                    slStudioSetReverbDensity.Value = commonState.studioSet.CommonReverb.ReverbRoom1.Density;
-                    tbStudioSetReverbDensity.Text = "Density " + commonState.studioSet.CommonReverb.ReverbRoom1.Density.ToString();
-                    slStudioSetReverbDiffusion.Value = commonState.studioSet.CommonReverb.ReverbRoom1.Diffusion;
-                    tbStudioSetReverbDiffusion.Text = "Diffusion " + commonState.studioSet.CommonReverb.ReverbRoom1.Diffusion.ToString();
-                    slStudioSetReverbLFDamp.Value = commonState.studioSet.CommonReverb.ReverbRoom1.LFDamp;
-                    tbStudioSetReverbLFDamp.Text = "LF damp " + commonState.studioSet.CommonReverb.ReverbRoom1.LFDamp.ToString();
-                    slStudioSetReverbHFDamp.Value = commonState.studioSet.CommonReverb.ReverbRoom1.HFDamp;
-                    tbStudioSetReverbHFDamp.Text = "HF damp " + commonState.studioSet.CommonReverb.ReverbRoom1.HFDamp.ToString();
-                    slStudioSetReverbSpread.Value = commonState.studioSet.CommonReverb.ReverbRoom1.Spread;
-                    tbStudioSetReverbSpread.Text = "Spread " + commonState.studioSet.CommonReverb.ReverbRoom1.Spread.ToString();
-                    slStudioSetReverbTone.Value = commonState.studioSet.CommonReverb.ReverbRoom1.Tone;
-                    tbStudioSetReverbTone.Text = "Tone " + commonState.studioSet.CommonReverb.ReverbRoom1.Tone.ToString();
+                    slStudioSetReverbPreDelay.Value = commonState.StudioSet.CommonReverb.ReverbRoom1.PreDelay;
+                    tbStudioSetReverbPreDelay.Text = "Pre delay " + commonState.StudioSet.CommonReverb.ReverbRoom1.PreDelay.ToString();
+                    slStudioSetReverbTime.Value = commonState.StudioSet.CommonReverb.ReverbRoom1.Time;
+                    tbStudioSetReverbTime.Text = "Time " + commonState.StudioSet.CommonReverb.ReverbRoom1.Time.ToString();
+                    slStudioSetReverbDensity.Value = commonState.StudioSet.CommonReverb.ReverbRoom1.Density;
+                    tbStudioSetReverbDensity.Text = "Density " + commonState.StudioSet.CommonReverb.ReverbRoom1.Density.ToString();
+                    slStudioSetReverbDiffusion.Value = commonState.StudioSet.CommonReverb.ReverbRoom1.Diffusion;
+                    tbStudioSetReverbDiffusion.Text = "Diffusion " + commonState.StudioSet.CommonReverb.ReverbRoom1.Diffusion.ToString();
+                    slStudioSetReverbLFDamp.Value = commonState.StudioSet.CommonReverb.ReverbRoom1.LFDamp;
+                    tbStudioSetReverbLFDamp.Text = "LF damp " + commonState.StudioSet.CommonReverb.ReverbRoom1.LFDamp.ToString();
+                    slStudioSetReverbHFDamp.Value = commonState.StudioSet.CommonReverb.ReverbRoom1.HFDamp;
+                    tbStudioSetReverbHFDamp.Text = "HF damp " + commonState.StudioSet.CommonReverb.ReverbRoom1.HFDamp.ToString();
+                    slStudioSetReverbSpread.Value = commonState.StudioSet.CommonReverb.ReverbRoom1.Spread;
+                    tbStudioSetReverbSpread.Text = "Spread " + commonState.StudioSet.CommonReverb.ReverbRoom1.Spread.ToString();
+                    slStudioSetReverbTone.Value = commonState.StudioSet.CommonReverb.ReverbRoom1.Tone;
+                    tbStudioSetReverbTone.Text = "Tone " + commonState.StudioSet.CommonReverb.ReverbRoom1.Tone.ToString();
                     break;
                 case 2:
-                    slStudioSetReverbPreDelay.Value = commonState.studioSet.CommonReverb.ReverbRoom2.PreDelay;
-                    tbStudioSetReverbPreDelay.Text = "Pre delay " + commonState.studioSet.CommonReverb.ReverbRoom2.PreDelay.ToString();
-                    slStudioSetReverbTime.Value = commonState.studioSet.CommonReverb.ReverbRoom2.Time;
-                    tbStudioSetReverbTime.Text = "Time " + commonState.studioSet.CommonReverb.ReverbRoom2.Time.ToString();
-                    slStudioSetReverbDensity.Value = commonState.studioSet.CommonReverb.ReverbRoom2.Density;
-                    tbStudioSetReverbDensity.Text = "Density " + commonState.studioSet.CommonReverb.ReverbRoom2.Density.ToString();
-                    slStudioSetReverbDiffusion.Value = commonState.studioSet.CommonReverb.ReverbRoom2.Diffusion;
-                    tbStudioSetReverbDiffusion.Text = "Diffusion " + commonState.studioSet.CommonReverb.ReverbRoom2.Diffusion.ToString();
-                    slStudioSetReverbLFDamp.Value = commonState.studioSet.CommonReverb.ReverbRoom2.LFDamp;
-                    tbStudioSetReverbLFDamp.Text = "LF damp " + commonState.studioSet.CommonReverb.ReverbRoom2.LFDamp.ToString();
-                    slStudioSetReverbHFDamp.Value = commonState.studioSet.CommonReverb.ReverbRoom2.HFDamp;
-                    tbStudioSetReverbHFDamp.Text = "HF damp " + commonState.studioSet.CommonReverb.ReverbRoom2.HFDamp.ToString();
-                    slStudioSetReverbSpread.Value = commonState.studioSet.CommonReverb.ReverbRoom2.Spread;
-                    tbStudioSetReverbSpread.Text = "Spread " + commonState.studioSet.CommonReverb.ReverbRoom2.Spread.ToString();
-                    slStudioSetReverbTone.Value = commonState.studioSet.CommonReverb.ReverbRoom2.Tone;
-                    tbStudioSetReverbTone.Text = "Tone " + commonState.studioSet.CommonReverb.ReverbRoom2.Tone.ToString();
+                    slStudioSetReverbPreDelay.Value = commonState.StudioSet.CommonReverb.ReverbRoom2.PreDelay;
+                    tbStudioSetReverbPreDelay.Text = "Pre delay " + commonState.StudioSet.CommonReverb.ReverbRoom2.PreDelay.ToString();
+                    slStudioSetReverbTime.Value = commonState.StudioSet.CommonReverb.ReverbRoom2.Time;
+                    tbStudioSetReverbTime.Text = "Time " + commonState.StudioSet.CommonReverb.ReverbRoom2.Time.ToString();
+                    slStudioSetReverbDensity.Value = commonState.StudioSet.CommonReverb.ReverbRoom2.Density;
+                    tbStudioSetReverbDensity.Text = "Density " + commonState.StudioSet.CommonReverb.ReverbRoom2.Density.ToString();
+                    slStudioSetReverbDiffusion.Value = commonState.StudioSet.CommonReverb.ReverbRoom2.Diffusion;
+                    tbStudioSetReverbDiffusion.Text = "Diffusion " + commonState.StudioSet.CommonReverb.ReverbRoom2.Diffusion.ToString();
+                    slStudioSetReverbLFDamp.Value = commonState.StudioSet.CommonReverb.ReverbRoom2.LFDamp;
+                    tbStudioSetReverbLFDamp.Text = "LF damp " + commonState.StudioSet.CommonReverb.ReverbRoom2.LFDamp.ToString();
+                    slStudioSetReverbHFDamp.Value = commonState.StudioSet.CommonReverb.ReverbRoom2.HFDamp;
+                    tbStudioSetReverbHFDamp.Text = "HF damp " + commonState.StudioSet.CommonReverb.ReverbRoom2.HFDamp.ToString();
+                    slStudioSetReverbSpread.Value = commonState.StudioSet.CommonReverb.ReverbRoom2.Spread;
+                    tbStudioSetReverbSpread.Text = "Spread " + commonState.StudioSet.CommonReverb.ReverbRoom2.Spread.ToString();
+                    slStudioSetReverbTone.Value = commonState.StudioSet.CommonReverb.ReverbRoom2.Tone;
+                    tbStudioSetReverbTone.Text = "Tone " + commonState.StudioSet.CommonReverb.ReverbRoom2.Tone.ToString();
                     break;
                 case 3:
-                    slStudioSetReverbPreDelay.Value = commonState.studioSet.CommonReverb.ReverbHall1.PreDelay;
-                    tbStudioSetReverbPreDelay.Text = "Pre delay " + commonState.studioSet.CommonReverb.ReverbHall1.PreDelay.ToString();
-                    slStudioSetReverbTime.Value = commonState.studioSet.CommonReverb.ReverbHall1.Time;
-                    tbStudioSetReverbTime.Text = "Time " + commonState.studioSet.CommonReverb.ReverbHall1.Time.ToString();
-                    slStudioSetReverbDensity.Value = commonState.studioSet.CommonReverb.ReverbHall1.Density;
-                    tbStudioSetReverbDensity.Text = "Density " + commonState.studioSet.CommonReverb.ReverbHall1.Density.ToString();
-                    slStudioSetReverbDiffusion.Value = commonState.studioSet.CommonReverb.ReverbHall1.Diffusion;
-                    tbStudioSetReverbDiffusion.Text = "Diffusion " + commonState.studioSet.CommonReverb.ReverbHall1.Diffusion.ToString();
-                    slStudioSetReverbLFDamp.Value = commonState.studioSet.CommonReverb.ReverbHall1.LFDamp;
-                    tbStudioSetReverbLFDamp.Text = "LF damp " + commonState.studioSet.CommonReverb.ReverbHall1.LFDamp.ToString();
-                    slStudioSetReverbHFDamp.Value = commonState.studioSet.CommonReverb.ReverbHall1.HFDamp;
-                    tbStudioSetReverbHFDamp.Text = "HF damp " + commonState.studioSet.CommonReverb.ReverbHall1.HFDamp.ToString();
-                    slStudioSetReverbSpread.Value = commonState.studioSet.CommonReverb.ReverbHall1.Spread;
-                    tbStudioSetReverbSpread.Text = "Spread " + commonState.studioSet.CommonReverb.ReverbHall1.Spread.ToString();
-                    slStudioSetReverbTone.Value = commonState.studioSet.CommonReverb.ReverbHall1.Tone;
-                    tbStudioSetReverbTone.Text = "Tone " + commonState.studioSet.CommonReverb.ReverbHall1.Tone.ToString();
+                    slStudioSetReverbPreDelay.Value = commonState.StudioSet.CommonReverb.ReverbHall1.PreDelay;
+                    tbStudioSetReverbPreDelay.Text = "Pre delay " + commonState.StudioSet.CommonReverb.ReverbHall1.PreDelay.ToString();
+                    slStudioSetReverbTime.Value = commonState.StudioSet.CommonReverb.ReverbHall1.Time;
+                    tbStudioSetReverbTime.Text = "Time " + commonState.StudioSet.CommonReverb.ReverbHall1.Time.ToString();
+                    slStudioSetReverbDensity.Value = commonState.StudioSet.CommonReverb.ReverbHall1.Density;
+                    tbStudioSetReverbDensity.Text = "Density " + commonState.StudioSet.CommonReverb.ReverbHall1.Density.ToString();
+                    slStudioSetReverbDiffusion.Value = commonState.StudioSet.CommonReverb.ReverbHall1.Diffusion;
+                    tbStudioSetReverbDiffusion.Text = "Diffusion " + commonState.StudioSet.CommonReverb.ReverbHall1.Diffusion.ToString();
+                    slStudioSetReverbLFDamp.Value = commonState.StudioSet.CommonReverb.ReverbHall1.LFDamp;
+                    tbStudioSetReverbLFDamp.Text = "LF damp " + commonState.StudioSet.CommonReverb.ReverbHall1.LFDamp.ToString();
+                    slStudioSetReverbHFDamp.Value = commonState.StudioSet.CommonReverb.ReverbHall1.HFDamp;
+                    tbStudioSetReverbHFDamp.Text = "HF damp " + commonState.StudioSet.CommonReverb.ReverbHall1.HFDamp.ToString();
+                    slStudioSetReverbSpread.Value = commonState.StudioSet.CommonReverb.ReverbHall1.Spread;
+                    tbStudioSetReverbSpread.Text = "Spread " + commonState.StudioSet.CommonReverb.ReverbHall1.Spread.ToString();
+                    slStudioSetReverbTone.Value = commonState.StudioSet.CommonReverb.ReverbHall1.Tone;
+                    tbStudioSetReverbTone.Text = "Tone " + commonState.StudioSet.CommonReverb.ReverbHall1.Tone.ToString();
                     break;
                 case 4:
-                    slStudioSetReverbPreDelay.Value = commonState.studioSet.CommonReverb.ReverbHall2.PreDelay;
-                    tbStudioSetReverbPreDelay.Text = "Pre delay " + commonState.studioSet.CommonReverb.ReverbHall2.PreDelay.ToString();
-                    slStudioSetReverbTime.Value = commonState.studioSet.CommonReverb.ReverbHall2.Time;
-                    tbStudioSetReverbTime.Text = "Time " + commonState.studioSet.CommonReverb.ReverbHall2.Time.ToString();
-                    slStudioSetReverbDensity.Value = commonState.studioSet.CommonReverb.ReverbHall2.Density;
-                    tbStudioSetReverbDensity.Text = "Density " + commonState.studioSet.CommonReverb.ReverbHall2.Density.ToString();
-                    slStudioSetReverbDiffusion.Value = commonState.studioSet.CommonReverb.ReverbHall2.Diffusion;
-                    tbStudioSetReverbDiffusion.Text = "Diffusion " + commonState.studioSet.CommonReverb.ReverbHall2.Diffusion.ToString();
-                    slStudioSetReverbLFDamp.Value = commonState.studioSet.CommonReverb.ReverbHall2.LFDamp;
-                    tbStudioSetReverbLFDamp.Text = "LF damp " + commonState.studioSet.CommonReverb.ReverbHall2.LFDamp.ToString();
-                    slStudioSetReverbHFDamp.Value = commonState.studioSet.CommonReverb.ReverbHall2.HFDamp;
-                    tbStudioSetReverbHFDamp.Text = "HF damp " + commonState.studioSet.CommonReverb.ReverbHall2.HFDamp.ToString();
-                    slStudioSetReverbSpread.Value = commonState.studioSet.CommonReverb.ReverbHall2.Spread;
-                    tbStudioSetReverbSpread.Text = "Spread " + commonState.studioSet.CommonReverb.ReverbHall2.Spread.ToString();
-                    slStudioSetReverbTone.Value = commonState.studioSet.CommonReverb.ReverbHall2.Tone;
-                    tbStudioSetReverbTone.Text = "Tone " + commonState.studioSet.CommonReverb.ReverbHall2.Tone.ToString();
+                    slStudioSetReverbPreDelay.Value = commonState.StudioSet.CommonReverb.ReverbHall2.PreDelay;
+                    tbStudioSetReverbPreDelay.Text = "Pre delay " + commonState.StudioSet.CommonReverb.ReverbHall2.PreDelay.ToString();
+                    slStudioSetReverbTime.Value = commonState.StudioSet.CommonReverb.ReverbHall2.Time;
+                    tbStudioSetReverbTime.Text = "Time " + commonState.StudioSet.CommonReverb.ReverbHall2.Time.ToString();
+                    slStudioSetReverbDensity.Value = commonState.StudioSet.CommonReverb.ReverbHall2.Density;
+                    tbStudioSetReverbDensity.Text = "Density " + commonState.StudioSet.CommonReverb.ReverbHall2.Density.ToString();
+                    slStudioSetReverbDiffusion.Value = commonState.StudioSet.CommonReverb.ReverbHall2.Diffusion;
+                    tbStudioSetReverbDiffusion.Text = "Diffusion " + commonState.StudioSet.CommonReverb.ReverbHall2.Diffusion.ToString();
+                    slStudioSetReverbLFDamp.Value = commonState.StudioSet.CommonReverb.ReverbHall2.LFDamp;
+                    tbStudioSetReverbLFDamp.Text = "LF damp " + commonState.StudioSet.CommonReverb.ReverbHall2.LFDamp.ToString();
+                    slStudioSetReverbHFDamp.Value = commonState.StudioSet.CommonReverb.ReverbHall2.HFDamp;
+                    tbStudioSetReverbHFDamp.Text = "HF damp " + commonState.StudioSet.CommonReverb.ReverbHall2.HFDamp.ToString();
+                    slStudioSetReverbSpread.Value = commonState.StudioSet.CommonReverb.ReverbHall2.Spread;
+                    tbStudioSetReverbSpread.Text = "Spread " + commonState.StudioSet.CommonReverb.ReverbHall2.Spread.ToString();
+                    slStudioSetReverbTone.Value = commonState.StudioSet.CommonReverb.ReverbHall2.Tone;
+                    tbStudioSetReverbTone.Text = "Tone " + commonState.StudioSet.CommonReverb.ReverbHall2.Tone.ToString();
                     break;
                 case 5:
-                    slStudioSetReverbPreDelay.Value = commonState.studioSet.CommonReverb.ReverbPlate.PreDelay;
-                    tbStudioSetReverbPreDelay.Text = "Pre delay " + commonState.studioSet.CommonReverb.ReverbPlate.PreDelay.ToString();
-                    slStudioSetReverbTime.Value = commonState.studioSet.CommonReverb.ReverbPlate.Time;
-                    tbStudioSetReverbTime.Text = "Time " + commonState.studioSet.CommonReverb.ReverbPlate.Time.ToString();
-                    slStudioSetReverbDensity.Value = commonState.studioSet.CommonReverb.ReverbPlate.Density;
-                    tbStudioSetReverbDensity.Text = "Density " + commonState.studioSet.CommonReverb.ReverbPlate.Density.ToString();
-                    slStudioSetReverbDiffusion.Value = commonState.studioSet.CommonReverb.ReverbPlate.Diffusion;
-                    tbStudioSetReverbDiffusion.Text = "Diffusion " + commonState.studioSet.CommonReverb.ReverbPlate.Diffusion.ToString();
-                    slStudioSetReverbLFDamp.Value = commonState.studioSet.CommonReverb.ReverbPlate.LFDamp;
-                    tbStudioSetReverbLFDamp.Text = "LF damp " + commonState.studioSet.CommonReverb.ReverbPlate.LFDamp.ToString();
-                    slStudioSetReverbHFDamp.Value = commonState.studioSet.CommonReverb.ReverbPlate.HFDamp;
-                    tbStudioSetReverbHFDamp.Text = "HF damp " + commonState.studioSet.CommonReverb.ReverbPlate.HFDamp.ToString();
-                    slStudioSetReverbSpread.Value = commonState.studioSet.CommonReverb.ReverbPlate.Spread;
-                    tbStudioSetReverbSpread.Text = "Spread " + commonState.studioSet.CommonReverb.ReverbPlate.Spread.ToString();
-                    slStudioSetReverbTone.Value = commonState.studioSet.CommonReverb.ReverbPlate.Tone;
-                    tbStudioSetReverbTone.Text = "Tone " + commonState.studioSet.CommonReverb.ReverbPlate.Tone.ToString();
+                    slStudioSetReverbPreDelay.Value = commonState.StudioSet.CommonReverb.ReverbPlate.PreDelay;
+                    tbStudioSetReverbPreDelay.Text = "Pre delay " + commonState.StudioSet.CommonReverb.ReverbPlate.PreDelay.ToString();
+                    slStudioSetReverbTime.Value = commonState.StudioSet.CommonReverb.ReverbPlate.Time;
+                    tbStudioSetReverbTime.Text = "Time " + commonState.StudioSet.CommonReverb.ReverbPlate.Time.ToString();
+                    slStudioSetReverbDensity.Value = commonState.StudioSet.CommonReverb.ReverbPlate.Density;
+                    tbStudioSetReverbDensity.Text = "Density " + commonState.StudioSet.CommonReverb.ReverbPlate.Density.ToString();
+                    slStudioSetReverbDiffusion.Value = commonState.StudioSet.CommonReverb.ReverbPlate.Diffusion;
+                    tbStudioSetReverbDiffusion.Text = "Diffusion " + commonState.StudioSet.CommonReverb.ReverbPlate.Diffusion.ToString();
+                    slStudioSetReverbLFDamp.Value = commonState.StudioSet.CommonReverb.ReverbPlate.LFDamp;
+                    tbStudioSetReverbLFDamp.Text = "LF damp " + commonState.StudioSet.CommonReverb.ReverbPlate.LFDamp.ToString();
+                    slStudioSetReverbHFDamp.Value = commonState.StudioSet.CommonReverb.ReverbPlate.HFDamp;
+                    tbStudioSetReverbHFDamp.Text = "HF damp " + commonState.StudioSet.CommonReverb.ReverbPlate.HFDamp.ToString();
+                    slStudioSetReverbSpread.Value = commonState.StudioSet.CommonReverb.ReverbPlate.Spread;
+                    tbStudioSetReverbSpread.Text = "Spread " + commonState.StudioSet.CommonReverb.ReverbPlate.Spread.ToString();
+                    slStudioSetReverbTone.Value = commonState.StudioSet.CommonReverb.ReverbPlate.Tone;
+                    tbStudioSetReverbTone.Text = "Tone " + commonState.StudioSet.CommonReverb.ReverbPlate.Tone.ToString();
                     break;
                 case 6:
-                    slStudioSetReverbGM2Character.Value = commonState.studioSet.CommonReverb.GM2Reverb.Character;
-                    tbStudioSetReverbGM2Time.Text = "Character " + commonState.studioSet.CommonReverb.GM2Reverb.Character.ToString();
-                    slStudioSetReverbGM2Time.Value = commonState.studioSet.CommonReverb.GM2Reverb.Time;
-                    tbStudioSetReverbGM2Time.Text = "Time " + commonState.studioSet.CommonReverb.GM2Reverb.Time.ToString();
+                    slStudioSetReverbGM2Character.Value = commonState.StudioSet.CommonReverb.GM2Reverb.Character;
+                    tbStudioSetReverbGM2Time.Text = "Character " + commonState.StudioSet.CommonReverb.GM2Reverb.Character.ToString();
+                    slStudioSetReverbGM2Time.Value = commonState.StudioSet.CommonReverb.GM2Reverb.Time;
+                    tbStudioSetReverbGM2Time.Text = "Time " + commonState.StudioSet.CommonReverb.GM2Reverb.Time.ToString();
                     break;
             }
             PopHandleControlEvents();
@@ -7193,22 +7193,22 @@ namespace Integra_7_Xamarin
         private void ReadMotionalSurround()
         {
             t.Trace("private void ReadMotionalSurround()");
-            commonState.studioSet.MotionalSurround = new StudioSet_MotionalSurround(new ReceivedData(rawData));
+            commonState.StudioSet.MotionalSurround = new StudioSet_MotionalSurround(new ReceivedData(rawData));
             PushHandleControlEvents();
             PushHandleControlEvents();
-            cbStudioSetMotionalSurround.IsChecked = commonState.studioSet.MotionalSurround.MotionalSurroundSwitch;
-            cbStudioSetMotionalSurroundRoomType.SelectedIndex = commonState.studioSet.MotionalSurround.RoomType;
-            slStudioSetMotionalSurroundAmbienceLevel.Value = commonState.studioSet.MotionalSurround.AmbienceLevel;
-            cbStudioSetMotionalSurroundRoomSize.SelectedIndex = commonState.studioSet.MotionalSurround.RoomSize;
-            slStudioSetMotionalSurroundAmbienceTime.Value = commonState.studioSet.MotionalSurround.AmbienceTime;
-            slStudioSetMotionalSurroundAmbienceDensity.Value = commonState.studioSet.MotionalSurround.AmbienceDensity;
-            slStudioSetMotionalSurroundAmbienceHFDamp.Value = commonState.studioSet.MotionalSurround.AmbienceHFDamp;
-            slStudioSetMotionalSurroundExternalPartLR.Value = commonState.studioSet.MotionalSurround.ExtPartLR - 64;
-            slStudioSetMotionalSurroundExternalPartFB.Value = commonState.studioSet.MotionalSurround.ExtPartFB - 64;
-            slStudioSetMotionalSurroundExtPartWidth.Value = commonState.studioSet.MotionalSurround.ExtPartWidth;
-            slStudioSetMotionalSurroundExtpartAmbienceSend.Value = commonState.studioSet.MotionalSurround.ExtPartAmbienceSendLevel;
-            cbStudioSetMotionalSurroundExtPartControl.SelectedIndex = commonState.studioSet.MotionalSurround.ExtPartControlChannel;
-            slStudioSetMotionalSurroundDepth.Value = commonState.studioSet.MotionalSurround.MotionalSurroundDepth;
+            cbStudioSetMotionalSurround.IsChecked = commonState.StudioSet.MotionalSurround.MotionalSurroundSwitch;
+            cbStudioSetMotionalSurroundRoomType.SelectedIndex = commonState.StudioSet.MotionalSurround.RoomType;
+            slStudioSetMotionalSurroundAmbienceLevel.Value = commonState.StudioSet.MotionalSurround.AmbienceLevel;
+            cbStudioSetMotionalSurroundRoomSize.SelectedIndex = commonState.StudioSet.MotionalSurround.RoomSize;
+            slStudioSetMotionalSurroundAmbienceTime.Value = commonState.StudioSet.MotionalSurround.AmbienceTime;
+            slStudioSetMotionalSurroundAmbienceDensity.Value = commonState.StudioSet.MotionalSurround.AmbienceDensity;
+            slStudioSetMotionalSurroundAmbienceHFDamp.Value = commonState.StudioSet.MotionalSurround.AmbienceHFDamp;
+            slStudioSetMotionalSurroundExternalPartLR.Value = commonState.StudioSet.MotionalSurround.ExtPartLR - 64;
+            slStudioSetMotionalSurroundExternalPartFB.Value = commonState.StudioSet.MotionalSurround.ExtPartFB - 64;
+            slStudioSetMotionalSurroundExtPartWidth.Value = commonState.StudioSet.MotionalSurround.ExtPartWidth;
+            slStudioSetMotionalSurroundExtpartAmbienceSend.Value = commonState.StudioSet.MotionalSurround.ExtPartAmbienceSendLevel;
+            cbStudioSetMotionalSurroundExtPartControl.SelectedIndex = commonState.StudioSet.MotionalSurround.ExtPartControlChannel;
+            slStudioSetMotionalSurroundDepth.Value = commonState.StudioSet.MotionalSurround.MotionalSurroundDepth;
             tbStudioSetMotionalSurroundAmbienceLevel.Text = "Ambience level " + slStudioSetMotionalSurroundAmbienceLevel.Value.ToString();
             tbStudioSetMotionalSurroundAmbienceTime.Text = "Ambience time " + slStudioSetMotionalSurroundAmbienceTime.Value.ToString();
             tbStudioSetMotionalSurroundAmbienceDensity.Text = "Ambience density " + slStudioSetMotionalSurroundAmbienceDensity.Value.ToString();
@@ -7224,16 +7224,16 @@ namespace Integra_7_Xamarin
         private void ReadStudioSetMasterEQ()
         {
             t.Trace("private void ReadStudioSetMasterEQ()");
-            commonState.studioSet.MasterEQ = new StudioSet_MasterEQ(new ReceivedData(rawData));
+            commonState.StudioSet.MasterEQ = new StudioSet_MasterEQ(new ReceivedData(rawData));
             PushHandleControlEvents();
             PushHandleControlEvents();
-            cbStudioSetMasterEqLowFreq.SelectedIndex = commonState.studioSet.MasterEQ.EQHighFreq;
-            slStudioSetMasterEqLowGain.Value = commonState.studioSet.MasterEQ.EQHighGain - 15;
-            cbStudioSetMasterEqMidFreq.SelectedIndex = commonState.studioSet.MasterEQ.EQMidFreq;
-            slStudioSetMasterEqMidGain.Value = commonState.studioSet.MasterEQ.EQMidGain - 15;
-            cbStudioSetMasterEqMidQ.SelectedIndex = commonState.studioSet.MasterEQ.EQMidQ;
-            cbStudioSetMasterEqHighFreq.SelectedIndex = commonState.studioSet.MasterEQ.EQHighFreq;
-            slStudioSetMasterEqHighGain.Value = commonState.studioSet.MasterEQ.EQHighGain - 15;
+            cbStudioSetMasterEqLowFreq.SelectedIndex = commonState.StudioSet.MasterEQ.EQHighFreq;
+            slStudioSetMasterEqLowGain.Value = commonState.StudioSet.MasterEQ.EQHighGain - 15;
+            cbStudioSetMasterEqMidFreq.SelectedIndex = commonState.StudioSet.MasterEQ.EQMidFreq;
+            slStudioSetMasterEqMidGain.Value = commonState.StudioSet.MasterEQ.EQMidGain - 15;
+            cbStudioSetMasterEqMidQ.SelectedIndex = commonState.StudioSet.MasterEQ.EQMidQ;
+            cbStudioSetMasterEqHighFreq.SelectedIndex = commonState.StudioSet.MasterEQ.EQHighFreq;
+            slStudioSetMasterEqHighGain.Value = commonState.StudioSet.MasterEQ.EQHighGain - 15;
             tbStudioSetMasterEqLowGain.Text = "EQ low gain " + (slStudioSetMasterEqLowGain.Value).ToString() + " dB";
             tbStudioSetMasterEqMidGain.Text = "EQ mid gain " + (slStudioSetMasterEqMidGain.Value).ToString() + " dB";
             tbStudioSetMasterEqHighGain.Text = "EQ high gain " + (slStudioSetMasterEqHighGain.Value).ToString() + " dB";
@@ -7249,142 +7249,142 @@ namespace Integra_7_Xamarin
             t.Trace("private void ReadStudioSetPart()");
             // This is a bit different since the read rawData is split into several classes.
             ReceivedData Data = new ReceivedData(rawData);
-            commonState.studioSet.PartMainSettings[(byte)partToRead] = new StudioSet_PartMainSettings(Data);
-            commonState.studioSet.PartKeyboard[(byte)partToRead] = new StudioSet_PartKeyboard(Data);
-            commonState.studioSet.PartScaleTune[(byte)partToRead] = new StudioSet_PartScaleTune(Data);
-            commonState.studioSet.PartMidi[(byte)partToRead] = new StudioSet_PartMidi(Data);
-            commonState.studioSet.PartMotionalSurround[(byte)partToRead] = new StudioSet_PartMotionalSurround(Data);
+            commonState.StudioSet.PartMainSettings[(byte)partToRead] = new StudioSet_PartMainSettings(Data);
+            commonState.StudioSet.PartKeyboard[(byte)partToRead] = new StudioSet_PartKeyboard(Data);
+            commonState.StudioSet.PartScaleTune[(byte)partToRead] = new StudioSet_PartScaleTune(Data);
+            commonState.StudioSet.PartMidi[(byte)partToRead] = new StudioSet_PartMidi(Data);
+            commonState.StudioSet.PartMotionalSurround[(byte)partToRead] = new StudioSet_PartMotionalSurround(Data);
             PushHandleControlEvents();
             PushHandleControlEvents();
             // Part settings 1 page
             if (cbStudioSetPartSelector.SelectedIndex > -1 && cbStudioSetPartSelector.SelectedIndex == partToRead)
             {
-                cbStudioSetPartSettings1ReceiveChannel.SelectedIndex = commonState.studioSet.PartMainSettings[(byte)partToRead].ReceiveChannel;
-                cbStudioSetPartSettings1Receive.IsChecked = commonState.studioSet.PartMainSettings[(byte)partToRead].ReceiveSwitch;
+                cbStudioSetPartSettings1ReceiveChannel.SelectedIndex = commonState.StudioSet.PartMainSettings[(byte)partToRead].ReceiveChannel;
+                cbStudioSetPartSettings1Receive.IsChecked = commonState.StudioSet.PartMainSettings[(byte)partToRead].ReceiveSwitch;
                 // These will be set after part is read (and the slider is now a ComboBox)
                 //cbStudioSetPartSettings1Group.SelectedIndex = MsbToCbIndex(commonState.studioSet.PartMainSettings[(byte)partToRead].ToneBankSelectMSB);
-                commonState.currentTone.BankMSB = commonState.studioSet.PartMainSettings[(byte)partToRead].ToneBankSelectMSB;
+                commonState.CurrentTone.BankMSB = commonState.StudioSet.PartMainSettings[(byte)partToRead].ToneBankSelectMSB;
                 //cbStudioSetPartSettings1Category.SelectedIndex = LsbToCbIndex(commonState.studioSet.PartMainSettings[(byte)partToRead].ToneBankSelectLSB);
-                commonState.currentTone.BankLSB = commonState.studioSet.PartMainSettings[(byte)partToRead].ToneBankSelectLSB;
+                commonState.CurrentTone.BankLSB = commonState.StudioSet.PartMainSettings[(byte)partToRead].ToneBankSelectLSB;
                 //cbStudioSetPartSettings1Program.SelectedIndex = commonState.studioSet.PartMainSettings[(byte)partToRead].ToneProgramNumber + 1;
-                commonState.currentTone.Program = commonState.studioSet.PartMainSettings[(byte)partToRead].ToneProgramNumber;
-                slStudioSetPartSettings1Level.Value = commonState.studioSet.PartMainSettings[(byte)partToRead].Level;
-                slStudioSetPartSettings1Pan.Value = commonState.studioSet.PartMainSettings[(byte)partToRead].Pan - 64;
-                slStudioSetPartSettings1CoarseTune.Value = commonState.studioSet.PartMainSettings[(byte)partToRead].CoarseTune - 64;
-                slStudioSetPartSettings1FineTune.Value = commonState.studioSet.PartMainSettings[(byte)partToRead].FineTune - 64;
-                cbStudioSetPartSettings1MonoPoly.SelectedIndex = commonState.studioSet.PartMainSettings[(byte)partToRead].MonoPoly;
-                cbStudioSetPartSettings1Legato.SelectedIndex = commonState.studioSet.PartMainSettings[(byte)partToRead].Legato;
-                slStudioSetPartSettings1PitchBendRange.Value = commonState.studioSet.PartMainSettings[(byte)partToRead].PitchBendRange;
-                cbStudioSetPartSettings1Portamento.SelectedIndex = commonState.studioSet.PartMainSettings[(byte)partToRead].PortamentoSwitch;
-                slStudioSetPartSettings1PortamentoTime.Value = commonState.studioSet.PartMainSettings[(byte)partToRead].PortamentoTime;
+                commonState.CurrentTone.Program = commonState.StudioSet.PartMainSettings[(byte)partToRead].ToneProgramNumber;
+                slStudioSetPartSettings1Level.Value = commonState.StudioSet.PartMainSettings[(byte)partToRead].Level;
+                slStudioSetPartSettings1Pan.Value = commonState.StudioSet.PartMainSettings[(byte)partToRead].Pan - 64;
+                slStudioSetPartSettings1CoarseTune.Value = commonState.StudioSet.PartMainSettings[(byte)partToRead].CoarseTune - 64;
+                slStudioSetPartSettings1FineTune.Value = commonState.StudioSet.PartMainSettings[(byte)partToRead].FineTune - 64;
+                cbStudioSetPartSettings1MonoPoly.SelectedIndex = commonState.StudioSet.PartMainSettings[(byte)partToRead].MonoPoly;
+                cbStudioSetPartSettings1Legato.SelectedIndex = commonState.StudioSet.PartMainSettings[(byte)partToRead].Legato;
+                slStudioSetPartSettings1PitchBendRange.Value = commonState.StudioSet.PartMainSettings[(byte)partToRead].PitchBendRange;
+                cbStudioSetPartSettings1Portamento.SelectedIndex = commonState.StudioSet.PartMainSettings[(byte)partToRead].PortamentoSwitch;
+                slStudioSetPartSettings1PortamentoTime.Value = commonState.StudioSet.PartMainSettings[(byte)partToRead].PortamentoTime;
                 // Part settings 2 page
-                slStudioSetPartSettings2CutoffOffset.Value = commonState.studioSet.PartMainSettings[(byte)partToRead].CutoffOffset - 64;
-                slStudioSetPartSettings2ResonanceOffset.Value = commonState.studioSet.PartMainSettings[(byte)partToRead].ResonanceOffset - 64;
-                slStudioSetPartSettings2AttackTimeOffset.Value = commonState.studioSet.PartMainSettings[(byte)partToRead].AttackTimeOffset - 64;
-                slStudioSetPartSettings2DecayTimeOffset.Value = commonState.studioSet.PartMainSettings[(byte)partToRead].DecayTimeOffset - 64;
-                slStudioSetPartSettings2ResonanceOffset.Value = commonState.studioSet.PartMainSettings[(byte)partToRead].ReleaseTimeOffset - 64;
-                slStudioSetPartSettings2VibratoRate.Value = commonState.studioSet.PartMainSettings[(byte)partToRead].VibratoRate - 64;
-                slStudioSetPartSettings2VibratoDepth.Value = commonState.studioSet.PartMainSettings[(byte)partToRead].VibratoDepth - 64;
-                slStudioSetPartSettings2VibratoDelay.Value = commonState.studioSet.PartMainSettings[(byte)partToRead].VibratoDelay - 64;
+                slStudioSetPartSettings2CutoffOffset.Value = commonState.StudioSet.PartMainSettings[(byte)partToRead].CutoffOffset - 64;
+                slStudioSetPartSettings2ResonanceOffset.Value = commonState.StudioSet.PartMainSettings[(byte)partToRead].ResonanceOffset - 64;
+                slStudioSetPartSettings2AttackTimeOffset.Value = commonState.StudioSet.PartMainSettings[(byte)partToRead].AttackTimeOffset - 64;
+                slStudioSetPartSettings2DecayTimeOffset.Value = commonState.StudioSet.PartMainSettings[(byte)partToRead].DecayTimeOffset - 64;
+                slStudioSetPartSettings2ResonanceOffset.Value = commonState.StudioSet.PartMainSettings[(byte)partToRead].ReleaseTimeOffset - 64;
+                slStudioSetPartSettings2VibratoRate.Value = commonState.StudioSet.PartMainSettings[(byte)partToRead].VibratoRate - 64;
+                slStudioSetPartSettings2VibratoDepth.Value = commonState.StudioSet.PartMainSettings[(byte)partToRead].VibratoDepth - 64;
+                slStudioSetPartSettings2VibratoDelay.Value = commonState.StudioSet.PartMainSettings[(byte)partToRead].VibratoDelay - 64;
                 // Part effects (continues previous page):
-                slStudioSetPartEffectsChorusSendLevel.Value = commonState.studioSet.PartMainSettings[(byte)partToRead].ChorusSendLevel;
-                slStudioSetPartEffectsReverbSendLevel.Value = commonState.studioSet.PartMainSettings[(byte)partToRead].ReverbSendLevel;
-                cbStudioSetPartEffectsOutputAssign.SelectedIndex = commonState.studioSet.PartMainSettings[(byte)partToRead].OutputAssign;
+                slStudioSetPartEffectsChorusSendLevel.Value = commonState.StudioSet.PartMainSettings[(byte)partToRead].ChorusSendLevel;
+                slStudioSetPartEffectsReverbSendLevel.Value = commonState.StudioSet.PartMainSettings[(byte)partToRead].ReverbSendLevel;
+                cbStudioSetPartEffectsOutputAssign.SelectedIndex = commonState.StudioSet.PartMainSettings[(byte)partToRead].OutputAssign;
                 // Part keyboard page
-                slStudioSetPartKeyboardOctaveShift.Value = commonState.studioSet.PartKeyboard[(byte)partToRead].OctaveShift - 64;
-                slStudioSetPartKeyboardVelocitySenseOffset.Value = commonState.studioSet.PartKeyboard[(byte)partToRead].VelocitySenseOffset - 64;
-                slStudioSetPartKeyboardRangeLower.Value = commonState.studioSet.PartKeyboard[(byte)partToRead].RangeLower;
-                slStudioSetPartKeyboardRangeUpper.Value = commonState.studioSet.PartKeyboard[(byte)partToRead].RangeUpper;
-                slStudioSetPartKeyboardFadeWidthLower.Value = commonState.studioSet.PartKeyboard[(byte)partToRead].FadeWidthLower;
-                slStudioSetPartKeyboardFadeWidthUpper.Value = commonState.studioSet.PartKeyboard[(byte)partToRead].FadeWidthUpper;
-                slStudioSetPartKeyboardVelocityRangeLower.Value = commonState.studioSet.PartKeyboard[(byte)partToRead].VelocityRangeLower;
-                slStudioSetPartKeyboardVelocityRangeUpper.Value = commonState.studioSet.PartKeyboard[(byte)partToRead].VelocityRangeUpper;
-                slStudioSetPartKeyboardVelocityFadeWidthLower.Value = commonState.studioSet.PartKeyboard[(byte)partToRead].VelocityFadeWidthLower;
-                slStudioSetPartKeyboardVelocityFadeWidthUpper.Value = commonState.studioSet.PartKeyboard[(byte)partToRead].VelocityFadeWidthUpper;
-                cbStudioSetPartKeyboardVelocityCurveType.SelectedIndex = commonState.studioSet.PartKeyboard[(byte)partToRead].VelocityCurveType;
-                cbStudioSetPartKeyboardMute.IsChecked = commonState.studioSet.PartKeyboard[(byte)partToRead].Mute;
+                slStudioSetPartKeyboardOctaveShift.Value = commonState.StudioSet.PartKeyboard[(byte)partToRead].OctaveShift - 64;
+                slStudioSetPartKeyboardVelocitySenseOffset.Value = commonState.StudioSet.PartKeyboard[(byte)partToRead].VelocitySenseOffset - 64;
+                slStudioSetPartKeyboardRangeLower.Value = commonState.StudioSet.PartKeyboard[(byte)partToRead].RangeLower;
+                slStudioSetPartKeyboardRangeUpper.Value = commonState.StudioSet.PartKeyboard[(byte)partToRead].RangeUpper;
+                slStudioSetPartKeyboardFadeWidthLower.Value = commonState.StudioSet.PartKeyboard[(byte)partToRead].FadeWidthLower;
+                slStudioSetPartKeyboardFadeWidthUpper.Value = commonState.StudioSet.PartKeyboard[(byte)partToRead].FadeWidthUpper;
+                slStudioSetPartKeyboardVelocityRangeLower.Value = commonState.StudioSet.PartKeyboard[(byte)partToRead].VelocityRangeLower;
+                slStudioSetPartKeyboardVelocityRangeUpper.Value = commonState.StudioSet.PartKeyboard[(byte)partToRead].VelocityRangeUpper;
+                slStudioSetPartKeyboardVelocityFadeWidthLower.Value = commonState.StudioSet.PartKeyboard[(byte)partToRead].VelocityFadeWidthLower;
+                slStudioSetPartKeyboardVelocityFadeWidthUpper.Value = commonState.StudioSet.PartKeyboard[(byte)partToRead].VelocityFadeWidthUpper;
+                cbStudioSetPartKeyboardVelocityCurveType.SelectedIndex = commonState.StudioSet.PartKeyboard[(byte)partToRead].VelocityCurveType;
+                cbStudioSetPartKeyboardMute.IsChecked = commonState.StudioSet.PartKeyboard[(byte)partToRead].Mute;
                 // Scale tune page
-                cbStudioSetPartScaleTuneType.SelectedIndex = commonState.studioSet.PartScaleTune[(byte)partToRead].Type;
-                cbStudioSetPartScaleTuneKey.SelectedIndex = commonState.studioSet.PartScaleTune[(byte)partToRead].Key;
-                slStudioSetPartScaleTuneC.Value = commonState.studioSet.PartScaleTune[(byte)partToRead].C - 64;
-                slStudioSetPartScaleTuneCi.Value = commonState.studioSet.PartScaleTune[(byte)partToRead].Ci - 64;
-                slStudioSetPartScaleTuneD.Value = commonState.studioSet.PartScaleTune[(byte)partToRead].D - 64;
-                slStudioSetPartScaleTuneDi.Value = commonState.studioSet.PartScaleTune[(byte)partToRead].Di - 64;
-                slStudioSetPartScaleTuneE.Value = commonState.studioSet.PartScaleTune[(byte)partToRead].E - 64;
-                slStudioSetPartScaleTuneF.Value = commonState.studioSet.PartScaleTune[(byte)partToRead].F - 64;
-                slStudioSetPartScaleTuneFi.Value = commonState.studioSet.PartScaleTune[(byte)partToRead].Fi - 64;
-                slStudioSetPartScaleTuneG.Value = commonState.studioSet.PartScaleTune[(byte)partToRead].G - 64;
-                slStudioSetPartScaleTuneGi.Value = commonState.studioSet.PartScaleTune[(byte)partToRead].Gi - 64;
-                slStudioSetPartScaleTuneA.Value = commonState.studioSet.PartScaleTune[(byte)partToRead].A - 64;
-                slStudioSetPartScaleTuneAi.Value = commonState.studioSet.PartScaleTune[(byte)partToRead].Ai - 64;
-                slStudioSetPartScaleTuneB.Value = commonState.studioSet.PartScaleTune[(byte)partToRead].B - 64;
+                cbStudioSetPartScaleTuneType.SelectedIndex = commonState.StudioSet.PartScaleTune[(byte)partToRead].Type;
+                cbStudioSetPartScaleTuneKey.SelectedIndex = commonState.StudioSet.PartScaleTune[(byte)partToRead].Key;
+                slStudioSetPartScaleTuneC.Value = commonState.StudioSet.PartScaleTune[(byte)partToRead].C - 64;
+                slStudioSetPartScaleTuneCi.Value = commonState.StudioSet.PartScaleTune[(byte)partToRead].Ci - 64;
+                slStudioSetPartScaleTuneD.Value = commonState.StudioSet.PartScaleTune[(byte)partToRead].D - 64;
+                slStudioSetPartScaleTuneDi.Value = commonState.StudioSet.PartScaleTune[(byte)partToRead].Di - 64;
+                slStudioSetPartScaleTuneE.Value = commonState.StudioSet.PartScaleTune[(byte)partToRead].E - 64;
+                slStudioSetPartScaleTuneF.Value = commonState.StudioSet.PartScaleTune[(byte)partToRead].F - 64;
+                slStudioSetPartScaleTuneFi.Value = commonState.StudioSet.PartScaleTune[(byte)partToRead].Fi - 64;
+                slStudioSetPartScaleTuneG.Value = commonState.StudioSet.PartScaleTune[(byte)partToRead].G - 64;
+                slStudioSetPartScaleTuneGi.Value = commonState.StudioSet.PartScaleTune[(byte)partToRead].Gi - 64;
+                slStudioSetPartScaleTuneA.Value = commonState.StudioSet.PartScaleTune[(byte)partToRead].A - 64;
+                slStudioSetPartScaleTuneAi.Value = commonState.StudioSet.PartScaleTune[(byte)partToRead].Ai - 64;
+                slStudioSetPartScaleTuneB.Value = commonState.StudioSet.PartScaleTune[(byte)partToRead].B - 64;
                 // Midi page (all but Phase lock)
-                cbStudioSetPartMidiReceiveProgramChange.IsChecked = commonState.studioSet.PartMidi[(byte)partToRead].ReceiveProgramChange;
-                cbStudioSetPartMidiReceiveBankSelect.IsChecked = commonState.studioSet.PartMidi[(byte)partToRead].ReceiveBankSelect;
-                cbStudioSetPartMidiReceivePitchBend.IsChecked = commonState.studioSet.PartMidi[(byte)partToRead].ReceivePitchBend;
-                cbStudioSetPartMidiReceivePolyphonicKeyPressure.IsChecked = commonState.studioSet.PartMidi[(byte)partToRead].ReceivePolyphonicKeyPressure;
-                cbStudioSetPartMidiReceiveChannelPressure.IsChecked = commonState.studioSet.PartMidi[(byte)partToRead].ReceiveChannelPressure;
-                cbStudioSetPartMidiReceiveModulation.IsChecked = commonState.studioSet.PartMidi[(byte)partToRead].ReceiveModulation;
-                cbStudioSetPartMidiReceiveVolume.IsChecked = commonState.studioSet.PartMidi[(byte)partToRead].ReceiveVolume;
-                cbStudioSetPartMidiReceivePan.IsChecked = commonState.studioSet.PartMidi[(byte)partToRead].ReceivePan;
-                cbStudioSetPartMidiReceiveExpression.IsChecked = commonState.studioSet.PartMidi[(byte)partToRead].ReceiveExpression;
-                cbStudioSetPartMidiReceiveHold1.IsChecked = commonState.studioSet.PartMidi[(byte)partToRead].ReceiveHold1;
+                cbStudioSetPartMidiReceiveProgramChange.IsChecked = commonState.StudioSet.PartMidi[(byte)partToRead].ReceiveProgramChange;
+                cbStudioSetPartMidiReceiveBankSelect.IsChecked = commonState.StudioSet.PartMidi[(byte)partToRead].ReceiveBankSelect;
+                cbStudioSetPartMidiReceivePitchBend.IsChecked = commonState.StudioSet.PartMidi[(byte)partToRead].ReceivePitchBend;
+                cbStudioSetPartMidiReceivePolyphonicKeyPressure.IsChecked = commonState.StudioSet.PartMidi[(byte)partToRead].ReceivePolyphonicKeyPressure;
+                cbStudioSetPartMidiReceiveChannelPressure.IsChecked = commonState.StudioSet.PartMidi[(byte)partToRead].ReceiveChannelPressure;
+                cbStudioSetPartMidiReceiveModulation.IsChecked = commonState.StudioSet.PartMidi[(byte)partToRead].ReceiveModulation;
+                cbStudioSetPartMidiReceiveVolume.IsChecked = commonState.StudioSet.PartMidi[(byte)partToRead].ReceiveVolume;
+                cbStudioSetPartMidiReceivePan.IsChecked = commonState.StudioSet.PartMidi[(byte)partToRead].ReceivePan;
+                cbStudioSetPartMidiReceiveExpression.IsChecked = commonState.StudioSet.PartMidi[(byte)partToRead].ReceiveExpression;
+                cbStudioSetPartMidiReceiveHold1.IsChecked = commonState.StudioSet.PartMidi[(byte)partToRead].ReceiveHold1;
                 // Motional surround page
-                slStudioSetPartMotionalSurroundLR.Value = commonState.studioSet.PartMotionalSurround[(byte)partToRead].LR;
-                slStudioSetPartMotionalSurroundFB.Value = commonState.studioSet.PartMotionalSurround[(byte)partToRead].FB;
-                slStudioSetPartMotionalSurroundWidth.Value = commonState.studioSet.PartMotionalSurround[(byte)partToRead].Width;
-                slStudioSetPartMotionalSurroundAmbienceSendLevel.Value = commonState.studioSet.PartMotionalSurround[(byte)partToRead].AmbienceSendLevel;
+                slStudioSetPartMotionalSurroundLR.Value = commonState.StudioSet.PartMotionalSurround[(byte)partToRead].LR;
+                slStudioSetPartMotionalSurroundFB.Value = commonState.StudioSet.PartMotionalSurround[(byte)partToRead].FB;
+                slStudioSetPartMotionalSurroundWidth.Value = commonState.StudioSet.PartMotionalSurround[(byte)partToRead].Width;
+                slStudioSetPartMotionalSurroundAmbienceSendLevel.Value = commonState.StudioSet.PartMotionalSurround[(byte)partToRead].AmbienceSendLevel;
                 // Texts for sliders, Part settings 1
-                tbStudioSetPartSettings1Group.Text = "Bank select MSB " + (commonState.studioSet.PartMainSettings[(byte)partToRead].ToneBankSelectMSB).ToString();
-                tbStudioSetPartSettings1Category.Text = "Bank select LSB " + (commonState.studioSet.PartMainSettings[(byte)partToRead].ToneBankSelectLSB).ToString();
-                tbStudioSetPartSettings1Program.Text = "Program number " + (commonState.studioSet.PartMainSettings[(byte)partToRead].ToneProgramNumber + 1).ToString();
-                tbStudioSetPartSettings1Level.Text = "Level " + (commonState.studioSet.PartMainSettings[(byte)partToRead].Level).ToString();
-                tbStudioSetPartSettings1Pan.Text = "Pan " + (commonState.studioSet.PartMainSettings[(byte)partToRead].Pan - 64).ToString();
-                tbStudioSetPartSettings1CoarseTune.Text = "Coarse tune " + (commonState.studioSet.PartMainSettings[(byte)partToRead].CoarseTune - 64).ToString();
-                tbStudioSetPartSettings1FineTune.Text = "Fine tune " + (commonState.studioSet.PartMainSettings[(byte)partToRead].FineTune - 64).ToString();
-                tbStudioSetPartSettings1PitchBendRange.Text = "Pitch bend range " + (commonState.studioSet.PartMainSettings[(byte)partToRead].PitchBendRange).ToString();
-                tbStudioSetPartSettings1PortamentoTime.Text = "Portamento time " + (commonState.studioSet.PartMainSettings[(byte)partToRead].PortamentoTime).ToString();
+                tbStudioSetPartSettings1Group.Text = "Bank select MSB " + (commonState.StudioSet.PartMainSettings[(byte)partToRead].ToneBankSelectMSB).ToString();
+                tbStudioSetPartSettings1Category.Text = "Bank select LSB " + (commonState.StudioSet.PartMainSettings[(byte)partToRead].ToneBankSelectLSB).ToString();
+                tbStudioSetPartSettings1Program.Text = "Program number " + (commonState.StudioSet.PartMainSettings[(byte)partToRead].ToneProgramNumber + 1).ToString();
+                tbStudioSetPartSettings1Level.Text = "Level " + (commonState.StudioSet.PartMainSettings[(byte)partToRead].Level).ToString();
+                tbStudioSetPartSettings1Pan.Text = "Pan " + (commonState.StudioSet.PartMainSettings[(byte)partToRead].Pan - 64).ToString();
+                tbStudioSetPartSettings1CoarseTune.Text = "Coarse tune " + (commonState.StudioSet.PartMainSettings[(byte)partToRead].CoarseTune - 64).ToString();
+                tbStudioSetPartSettings1FineTune.Text = "Fine tune " + (commonState.StudioSet.PartMainSettings[(byte)partToRead].FineTune - 64).ToString();
+                tbStudioSetPartSettings1PitchBendRange.Text = "Pitch bend range " + (commonState.StudioSet.PartMainSettings[(byte)partToRead].PitchBendRange).ToString();
+                tbStudioSetPartSettings1PortamentoTime.Text = "Portamento time " + (commonState.StudioSet.PartMainSettings[(byte)partToRead].PortamentoTime).ToString();
                 // Part settings 2
-                tbStudioSetPartSettings2CutoffOffset.Text = "Cutoff offset " + (commonState.studioSet.PartMainSettings[(byte)partToRead].CutoffOffset - 64).ToString();
-                tbStudioSetPartSettings2ResonanceOffset.Text = "Resonance offset " + (commonState.studioSet.PartMainSettings[(byte)partToRead].ResonanceOffset - 64).ToString();
-                tbStudioSetPartSettings2AttackTimeOffset.Text = "Attack time offset " + (commonState.studioSet.PartMainSettings[(byte)partToRead].AttackTimeOffset - 64).ToString();
-                tbStudioSetPartSettings2DecayTimeOffset.Text = "Decay time offset " + (commonState.studioSet.PartMainSettings[(byte)partToRead].DecayTimeOffset - 64).ToString();
-                tbStudioSetPartSettings2ReleaseTimeOffset.Text = "Release time offset " + (commonState.studioSet.PartMainSettings[(byte)partToRead].ReleaseTimeOffset - 64).ToString();
-                tbStudioSetPartSettings2VibratoRate.Text = "Vibrato rate " + (commonState.studioSet.PartMainSettings[(byte)partToRead].VibratoRate - 64).ToString();
-                tbStudioSetPartSettings2VibratoDepth.Text = "Vibrato depth " + (commonState.studioSet.PartMainSettings[(byte)partToRead].VibratoDepth - 64).ToString();
-                tbStudioSetPartSettings2VibratoDelay.Text = "Vibrato delay " + (commonState.studioSet.PartMainSettings[(byte)partToRead].VibratoDelay - 64).ToString();
+                tbStudioSetPartSettings2CutoffOffset.Text = "Cutoff offset " + (commonState.StudioSet.PartMainSettings[(byte)partToRead].CutoffOffset - 64).ToString();
+                tbStudioSetPartSettings2ResonanceOffset.Text = "Resonance offset " + (commonState.StudioSet.PartMainSettings[(byte)partToRead].ResonanceOffset - 64).ToString();
+                tbStudioSetPartSettings2AttackTimeOffset.Text = "Attack time offset " + (commonState.StudioSet.PartMainSettings[(byte)partToRead].AttackTimeOffset - 64).ToString();
+                tbStudioSetPartSettings2DecayTimeOffset.Text = "Decay time offset " + (commonState.StudioSet.PartMainSettings[(byte)partToRead].DecayTimeOffset - 64).ToString();
+                tbStudioSetPartSettings2ReleaseTimeOffset.Text = "Release time offset " + (commonState.StudioSet.PartMainSettings[(byte)partToRead].ReleaseTimeOffset - 64).ToString();
+                tbStudioSetPartSettings2VibratoRate.Text = "Vibrato rate " + (commonState.StudioSet.PartMainSettings[(byte)partToRead].VibratoRate - 64).ToString();
+                tbStudioSetPartSettings2VibratoDepth.Text = "Vibrato depth " + (commonState.StudioSet.PartMainSettings[(byte)partToRead].VibratoDepth - 64).ToString();
+                tbStudioSetPartSettings2VibratoDelay.Text = "Vibrato delay " + (commonState.StudioSet.PartMainSettings[(byte)partToRead].VibratoDelay - 64).ToString();
                 // Part effects:
-                tbStudioSetPartEffectsChorusSendLevel.Text = "Chorus send level " + commonState.studioSet.PartMainSettings[(byte)partToRead].ChorusSendLevel.ToString();
-                tbStudioSetPartEffectsReverbSendLevel.Text = "Reverb send level " + commonState.studioSet.PartMainSettings[(byte)partToRead].ReverbSendLevel.ToString();
+                tbStudioSetPartEffectsChorusSendLevel.Text = "Chorus send level " + commonState.StudioSet.PartMainSettings[(byte)partToRead].ChorusSendLevel.ToString();
+                tbStudioSetPartEffectsReverbSendLevel.Text = "Reverb send level " + commonState.StudioSet.PartMainSettings[(byte)partToRead].ReverbSendLevel.ToString();
                 // Part keyboard:
-                tbStudioSetPartKeyboardOctaveShift.Text = "Octave shift " + (commonState.studioSet.PartKeyboard[(byte)partToRead].OctaveShift - 64).ToString();
-                tbStudioSetPartKeyboardVelocitySenseOffset.Text = "Velocity sense offset " + (commonState.studioSet.PartKeyboard[(byte)partToRead].VelocitySenseOffset - 63).ToString();
-                tbStudioSetPartKeyboardRangeLower.Text = "Range lower " + (commonState.studioSet.PartKeyboard[(byte)partToRead].RangeLower).ToString();
-                tbStudioSetPartKeyboardRangeUpper.Text = "Range upper " + (commonState.studioSet.PartKeyboard[(byte)partToRead].RangeUpper).ToString();
-                tbStudioSetPartKeyboardFadeWidthLower.Text = "Fade width lower " + (commonState.studioSet.PartKeyboard[(byte)partToRead].FadeWidthLower).ToString();
-                tbStudioSetPartKeyboardFadeWidthUpper.Text = "Fade width uppper " + (commonState.studioSet.PartKeyboard[(byte)partToRead].FadeWidthUpper).ToString();
-                tbStudioSetPartKeyboardVelocityRangeLower.Text = "Velocity range lower " + (commonState.studioSet.PartKeyboard[(byte)partToRead].VelocityRangeLower).ToString();
-                tbStudioSetPartKeyboardVelocityRangeUpper.Text = "Velocity range upper " + (commonState.studioSet.PartKeyboard[(byte)partToRead].VelocityRangeUpper).ToString();
-                tbStudioSetPartKeyboardVelocityFadeWidthLower.Text = "Vel. fade width lower " + (commonState.studioSet.PartKeyboard[(byte)partToRead].VelocityFadeWidthLower).ToString();
-                tbStudioSetPartKeyboardVelocityFadeWidthUpper.Text = "Vel. fade width upper " + (commonState.studioSet.PartKeyboard[(byte)partToRead].VelocityFadeWidthUpper).ToString();
+                tbStudioSetPartKeyboardOctaveShift.Text = "Octave shift " + (commonState.StudioSet.PartKeyboard[(byte)partToRead].OctaveShift - 64).ToString();
+                tbStudioSetPartKeyboardVelocitySenseOffset.Text = "Velocity sense offset " + (commonState.StudioSet.PartKeyboard[(byte)partToRead].VelocitySenseOffset - 63).ToString();
+                tbStudioSetPartKeyboardRangeLower.Text = "Range lower " + (commonState.StudioSet.PartKeyboard[(byte)partToRead].RangeLower).ToString();
+                tbStudioSetPartKeyboardRangeUpper.Text = "Range upper " + (commonState.StudioSet.PartKeyboard[(byte)partToRead].RangeUpper).ToString();
+                tbStudioSetPartKeyboardFadeWidthLower.Text = "Fade width lower " + (commonState.StudioSet.PartKeyboard[(byte)partToRead].FadeWidthLower).ToString();
+                tbStudioSetPartKeyboardFadeWidthUpper.Text = "Fade width uppper " + (commonState.StudioSet.PartKeyboard[(byte)partToRead].FadeWidthUpper).ToString();
+                tbStudioSetPartKeyboardVelocityRangeLower.Text = "Velocity range lower " + (commonState.StudioSet.PartKeyboard[(byte)partToRead].VelocityRangeLower).ToString();
+                tbStudioSetPartKeyboardVelocityRangeUpper.Text = "Velocity range upper " + (commonState.StudioSet.PartKeyboard[(byte)partToRead].VelocityRangeUpper).ToString();
+                tbStudioSetPartKeyboardVelocityFadeWidthLower.Text = "Vel. fade width lower " + (commonState.StudioSet.PartKeyboard[(byte)partToRead].VelocityFadeWidthLower).ToString();
+                tbStudioSetPartKeyboardVelocityFadeWidthUpper.Text = "Vel. fade width upper " + (commonState.StudioSet.PartKeyboard[(byte)partToRead].VelocityFadeWidthUpper).ToString();
                 // Scale tune:
-                tbStudioSetPartScaleTuneC.Text = "C " + (commonState.studioSet.PartScaleTune[(byte)partToRead].C).ToString();
-                tbStudioSetPartScaleTuneCi.Text = "C# " + (commonState.studioSet.PartScaleTune[(byte)partToRead].Ci).ToString();
-                tbStudioSetPartScaleTuneD.Text = "D " + (commonState.studioSet.PartScaleTune[(byte)partToRead].D).ToString();
-                tbStudioSetPartScaleTuneDi.Text = "D# " + (commonState.studioSet.PartScaleTune[(byte)partToRead].Di).ToString();
-                tbStudioSetPartScaleTuneE.Text = "E " + (commonState.studioSet.PartScaleTune[(byte)partToRead].E).ToString();
-                tbStudioSetPartScaleTuneF.Text = "F " + (commonState.studioSet.PartScaleTune[(byte)partToRead].F).ToString();
-                tbStudioSetPartScaleTuneFi.Text = "F# " + (commonState.studioSet.PartScaleTune[(byte)partToRead].Fi).ToString();
-                tbStudioSetPartScaleTuneG.Text = "G " + (commonState.studioSet.PartScaleTune[(byte)partToRead].G).ToString();
-                tbStudioSetPartScaleTuneGi.Text = "G# " + (commonState.studioSet.PartScaleTune[(byte)partToRead].Gi).ToString();
-                tbStudioSetPartScaleTuneA.Text = "A " + (commonState.studioSet.PartScaleTune[(byte)partToRead].A).ToString();
-                tbStudioSetPartScaleTuneAi.Text = "A# " + (commonState.studioSet.PartScaleTune[(byte)partToRead].Ai).ToString();
-                tbStudioSetPartScaleTuneB.Text = "B " + (commonState.studioSet.PartScaleTune[(byte)partToRead].B).ToString();
+                tbStudioSetPartScaleTuneC.Text = "C " + (commonState.StudioSet.PartScaleTune[(byte)partToRead].C).ToString();
+                tbStudioSetPartScaleTuneCi.Text = "C# " + (commonState.StudioSet.PartScaleTune[(byte)partToRead].Ci).ToString();
+                tbStudioSetPartScaleTuneD.Text = "D " + (commonState.StudioSet.PartScaleTune[(byte)partToRead].D).ToString();
+                tbStudioSetPartScaleTuneDi.Text = "D# " + (commonState.StudioSet.PartScaleTune[(byte)partToRead].Di).ToString();
+                tbStudioSetPartScaleTuneE.Text = "E " + (commonState.StudioSet.PartScaleTune[(byte)partToRead].E).ToString();
+                tbStudioSetPartScaleTuneF.Text = "F " + (commonState.StudioSet.PartScaleTune[(byte)partToRead].F).ToString();
+                tbStudioSetPartScaleTuneFi.Text = "F# " + (commonState.StudioSet.PartScaleTune[(byte)partToRead].Fi).ToString();
+                tbStudioSetPartScaleTuneG.Text = "G " + (commonState.StudioSet.PartScaleTune[(byte)partToRead].G).ToString();
+                tbStudioSetPartScaleTuneGi.Text = "G# " + (commonState.StudioSet.PartScaleTune[(byte)partToRead].Gi).ToString();
+                tbStudioSetPartScaleTuneA.Text = "A " + (commonState.StudioSet.PartScaleTune[(byte)partToRead].A).ToString();
+                tbStudioSetPartScaleTuneAi.Text = "A# " + (commonState.StudioSet.PartScaleTune[(byte)partToRead].Ai).ToString();
+                tbStudioSetPartScaleTuneB.Text = "B " + (commonState.StudioSet.PartScaleTune[(byte)partToRead].B).ToString();
                 // Motional surround:
-                tbStudioSetPartMotionalSurroundLR.Text = "L-R " + (commonState.studioSet.PartMotionalSurround[(byte)partToRead].LR).ToString();
-                tbStudioSetPartMotionalSurroundFB.Text = "F-B " + (commonState.studioSet.PartMotionalSurround[(byte)partToRead].FB).ToString();
-                tbStudioSetPartMotionalSurroundWidth.Text = "Width " + (commonState.studioSet.PartMotionalSurround[(byte)partToRead].Width).ToString();
-                tbStudioSetPartMotionalSurroundAmbienceSendLevel.Text = "Ambience send level " + (commonState.studioSet.PartMotionalSurround[(byte)partToRead].AmbienceSendLevel).ToString();
+                tbStudioSetPartMotionalSurroundLR.Text = "L-R " + (commonState.StudioSet.PartMotionalSurround[(byte)partToRead].LR).ToString();
+                tbStudioSetPartMotionalSurroundFB.Text = "F-B " + (commonState.StudioSet.PartMotionalSurround[(byte)partToRead].FB).ToString();
+                tbStudioSetPartMotionalSurroundWidth.Text = "Width " + (commonState.StudioSet.PartMotionalSurround[(byte)partToRead].Width).ToString();
+                tbStudioSetPartMotionalSurroundAmbienceSendLevel.Text = "Ambience send level " + (commonState.StudioSet.PartMotionalSurround[(byte)partToRead].AmbienceSendLevel).ToString();
                 PopHandleControlEvents();
             }
         }
@@ -7400,27 +7400,27 @@ namespace Integra_7_Xamarin
                 case CommonState.SimpleToneTypes.PCM_SYNTH_TONE:
                     pCMSynthTone = new PCMSynthTone(Data);
                     StudioSetCurrentToneName.Text = commonState.ToneSource +  " PCMS: " + pCMSynthTone.pCMSynthToneCommon.Name;
-                    commonState.currentTone.Name = pCMSynthTone.pCMSynthToneCommon.Name;
+                    commonState.CurrentTone.Name = pCMSynthTone.pCMSynthToneCommon.Name;
                     break;
                 case CommonState.SimpleToneTypes.PCM_DRUM_KIT:
                     pCMDrumKit = new PCMDrumKit(Data);
                     StudioSetCurrentToneName.Text = commonState.ToneSource + " PCMD: " + pCMDrumKit.pCMDrumKitCommon.Name;
-                    commonState.currentTone.Name = pCMDrumKit.pCMDrumKitCommon.Name;
+                    commonState.CurrentTone.Name = pCMDrumKit.pCMDrumKitCommon.Name;
                     break;
                 case CommonState.SimpleToneTypes.SUPERNATURAL_ACOUSTIC_TONE:
                     superNATURALAcousticTone = new SuperNATURALAcousticTone(Data);
                     StudioSetCurrentToneName.Text = commonState.ToneSource + " SN-A: " + superNATURALAcousticTone.superNATURALAcousticToneCommon.Name;
-                    commonState.currentTone.Name = superNATURALAcousticTone.superNATURALAcousticToneCommon.Name;
+                    commonState.CurrentTone.Name = superNATURALAcousticTone.superNATURALAcousticToneCommon.Name;
                     break;
                 case CommonState.SimpleToneTypes.SUPERNATURAL_SYNTH_TONE:
                     superNATURALSynthTone = new SuperNATURALSynthTone(Data);
                     StudioSetCurrentToneName.Text = commonState.ToneSource + " SN-S: " + superNATURALSynthTone.superNATURALSynthToneCommon.Name;
-                    commonState.currentTone.Name = superNATURALSynthTone.superNATURALSynthToneCommon.Name;
+                    commonState.CurrentTone.Name = superNATURALSynthTone.superNATURALSynthToneCommon.Name;
                     break;
                 case CommonState.SimpleToneTypes.SUPERNATURAL_DRUM_KIT:
                     superNATURALDrumKit = new SuperNATURALDrumKit(Data);
                     StudioSetCurrentToneName.Text = commonState.ToneSource + " SN-D: " + superNATURALDrumKit.superNATURALDrumKitCommon.Name;
-                    commonState.currentTone.Name = superNATURALDrumKit.superNATURALDrumKitCommon.Name;
+                    commonState.CurrentTone.Name = superNATURALDrumKit.superNATURALDrumKitCommon.Name;
                     break;
             }
             PopHandleControlEvents();
@@ -7433,7 +7433,7 @@ namespace Integra_7_Xamarin
             ReceivedData Data = new ReceivedData(rawData);
             PushHandleControlEvents();
             PushHandleControlEvents();
-            cbStudioSetPartMidiPhaseLock.IsChecked = commonState.studioSet.PartMidi[cbStudioSetPartSelector.SelectedIndex].PhaseLock;
+            cbStudioSetPartMidiPhaseLock.IsChecked = commonState.StudioSet.PartMidi[cbStudioSetPartSelector.SelectedIndex].PhaseLock;
             PopHandleControlEvents();
         }
 
@@ -7444,21 +7444,21 @@ namespace Integra_7_Xamarin
             {
                 partToRead = cbStudioSetPartSelector.SelectedIndex;
             }
-            commonState.studioSet.PartEQ[partToRead] = new StudioSet_PartEQ(new ReceivedData(rawData));
+            commonState.StudioSet.PartEQ[partToRead] = new StudioSet_PartEQ(new ReceivedData(rawData));
             PushHandleControlEvents();
             PushHandleControlEvents();
-            cbStudioSetPartEQSwitch.IsChecked = commonState.studioSet.PartEQ[(byte)partToRead].EqSwitch;
-            cbStudioSetPartEQLowFreq.SelectedIndex = commonState.studioSet.PartEQ[(byte)partToRead].EqLowFreq;
-            slStudioSetPartEQLowGain.Value = commonState.studioSet.PartEQ[(byte)partToRead].EqLowGain;
-            cbStudioSetPartEQMidFreq.SelectedIndex = commonState.studioSet.PartEQ[(byte)partToRead].EqMidFreq;
-            slStudioSetPartEQMidGain.Value = commonState.studioSet.PartEQ[(byte)partToRead].EqMidGain;
-            cbStudioSetPartEQMidQ.SelectedIndex = commonState.studioSet.PartEQ[(byte)partToRead].EqMidQ;
-            cbStudioSetPartEQHighFreq.SelectedIndex = commonState.studioSet.PartEQ[(byte)partToRead].EqHighFreq;
-            slStudioSetPartEQHighGain.Value = commonState.studioSet.PartEQ[(byte)partToRead].EqHighGain;
+            cbStudioSetPartEQSwitch.IsChecked = commonState.StudioSet.PartEQ[(byte)partToRead].EqSwitch;
+            cbStudioSetPartEQLowFreq.SelectedIndex = commonState.StudioSet.PartEQ[(byte)partToRead].EqLowFreq;
+            slStudioSetPartEQLowGain.Value = commonState.StudioSet.PartEQ[(byte)partToRead].EqLowGain;
+            cbStudioSetPartEQMidFreq.SelectedIndex = commonState.StudioSet.PartEQ[(byte)partToRead].EqMidFreq;
+            slStudioSetPartEQMidGain.Value = commonState.StudioSet.PartEQ[(byte)partToRead].EqMidGain;
+            cbStudioSetPartEQMidQ.SelectedIndex = commonState.StudioSet.PartEQ[(byte)partToRead].EqMidQ;
+            cbStudioSetPartEQHighFreq.SelectedIndex = commonState.StudioSet.PartEQ[(byte)partToRead].EqHighFreq;
+            slStudioSetPartEQHighGain.Value = commonState.StudioSet.PartEQ[(byte)partToRead].EqHighGain;
             // Slider texts:
-            tbStudioSetPartEQLowGain.Text = "Low gain " + (commonState.studioSet.PartEQ[(byte)partToRead].EqLowGain).ToString();
-            tbStudioSetPartEQMidGain.Text = "Mid gain " + (commonState.studioSet.PartEQ[(byte)partToRead].EqMidGain).ToString();
-            tbStudioSetPartEQHighGain.Text = "High gain " + (commonState.studioSet.PartEQ[(byte)partToRead].EqHighGain).ToString();
+            tbStudioSetPartEQLowGain.Text = "Low gain " + (commonState.StudioSet.PartEQ[(byte)partToRead].EqLowGain).ToString();
+            tbStudioSetPartEQMidGain.Text = "Mid gain " + (commonState.StudioSet.PartEQ[(byte)partToRead].EqMidGain).ToString();
+            tbStudioSetPartEQHighGain.Text = "High gain " + (commonState.StudioSet.PartEQ[(byte)partToRead].EqHighGain).ToString();
             PopHandleControlEvents();
         }
 
@@ -7467,22 +7467,22 @@ namespace Integra_7_Xamarin
             // Update StudioSetCurrentToneName:
             StudioSetCurrentToneName.Text = (String)cbStudioSetPartSettings1Program.SelectedItem;
             // Update commonState:
-            commonState.currentTone.Group = (String)cbStudioSetPartSettings1Group.SelectedItem;
-            commonState.currentTone.Category = (String)cbStudioSetPartSettings1Category.SelectedItem;
-            commonState.currentTone.Name = (String)cbStudioSetPartSettings1Program.SelectedItem;
-            commonState.currentTone.Index = commonState.toneList.Get(commonState.currentTone);
+            commonState.CurrentTone.Group = (String)cbStudioSetPartSettings1Group.SelectedItem;
+            commonState.CurrentTone.Category = (String)cbStudioSetPartSettings1Category.SelectedItem;
+            commonState.CurrentTone.Name = (String)cbStudioSetPartSettings1Program.SelectedItem;
+            commonState.CurrentTone.Index = commonState.ToneList.Get(commonState.CurrentTone);
             // Update  commonState.studioSet:
-            commonState.studioSet.PartMainSettings[cbStudioSetPartSelector.SelectedIndex].ToneBankSelectMSB =
-                byte.Parse(commonState.toneList.Tones[commonState.currentTone.Index][4]);
-            commonState.studioSet.PartMainSettings[cbStudioSetPartSelector.SelectedIndex].ToneBankSelectLSB =
-                byte.Parse(commonState.toneList.Tones[commonState.currentTone.Index][5]);
-            commonState.studioSet.PartMainSettings[cbStudioSetPartSelector.SelectedIndex].ToneProgramNumber =
-                byte.Parse(commonState.toneList.Tones[commonState.currentTone.Index][7]);
+            commonState.StudioSet.PartMainSettings[cbStudioSetPartSelector.SelectedIndex].ToneBankSelectMSB =
+                byte.Parse(commonState.ToneList.Tones[commonState.CurrentTone.Index][4]);
+            commonState.StudioSet.PartMainSettings[cbStudioSetPartSelector.SelectedIndex].ToneBankSelectLSB =
+                byte.Parse(commonState.ToneList.Tones[commonState.CurrentTone.Index][5]);
+            commonState.StudioSet.PartMainSettings[cbStudioSetPartSelector.SelectedIndex].ToneProgramNumber =
+                byte.Parse(commonState.ToneList.Tones[commonState.CurrentTone.Index][7]);
             // Update  I-7:
-            commonState.midi.ProgramChange((byte)cbStudioSetPartSelector.SelectedIndex,
-                byte.Parse(commonState.toneList.Tones[commonState.currentTone.Index][4]),
-                byte.Parse(commonState.toneList.Tones[commonState.currentTone.Index][5]),
-                byte.Parse(commonState.toneList.Tones[commonState.currentTone.Index][7]));
+            commonState.Midi.ProgramChange((byte)cbStudioSetPartSelector.SelectedIndex,
+                byte.Parse(commonState.ToneList.Tones[commonState.CurrentTone.Index][4]),
+                byte.Parse(commonState.ToneList.Tones[commonState.CurrentTone.Index][5]),
+                byte.Parse(commonState.ToneList.Tones[commonState.CurrentTone.Index][7]));
         }
 
         private void SendProgramChangeToI_7()
@@ -7491,12 +7491,12 @@ namespace Integra_7_Xamarin
             if (MidiChannelIsSameAsPart())
             {
                 byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)cbStudioSetPartSelector.SelectedIndex), 0x06 };
-                byte[] value = { (byte)commonState.studioSet.PartMainSettings[(byte)cbStudioSetPartSelector.SelectedIndex].ToneBankSelectMSB,
-                    (byte)commonState.studioSet.PartMainSettings[(byte)cbStudioSetPartSelector.SelectedIndex].ToneBankSelectLSB,
-                    (byte)(commonState.studioSet.PartMainSettings[(byte)cbStudioSetPartSelector.SelectedIndex].ToneProgramNumber % 128) };
-                byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+                byte[] value = { (byte)commonState.StudioSet.PartMainSettings[(byte)cbStudioSetPartSelector.SelectedIndex].ToneBankSelectMSB,
+                    (byte)commonState.StudioSet.PartMainSettings[(byte)cbStudioSetPartSelector.SelectedIndex].ToneBankSelectLSB,
+                    (byte)(commonState.StudioSet.PartMainSettings[(byte)cbStudioSetPartSelector.SelectedIndex].ToneProgramNumber % 128) };
+                byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
                 waitingForResponseFromIntegra7 = 500;
-                commonState.midi.SendSystemExclusive(bytes);
+                commonState.Midi.SendSystemExclusive(bytes);
             }
         }
 
@@ -7511,13 +7511,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartSettings1Level(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartMainSettings[(byte)part].Level = (byte)p;
-            tbStudioSetPartSettings1Level.Text = "Level " + (commonState.studioSet.PartMainSettings[(byte)part].Level).ToString();
+            commonState.StudioSet.PartMainSettings[(byte)part].Level = (byte)p;
+            tbStudioSetPartSettings1Level.Text = "Level " + (commonState.StudioSet.PartMainSettings[(byte)part].Level).ToString();
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x09 };
-            byte[] value = { (byte)commonState.studioSet.PartMainSettings[(byte)part].Level };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.PartMainSettings[(byte)part].Level };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -7532,13 +7532,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartSettings1Pan(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartMainSettings[(byte)part].Pan = (byte)(p + 64);
-            tbStudioSetPartSettings1Pan.Text = "Pan " + (commonState.studioSet.PartMainSettings[(byte)part].Pan - 64).ToString();
+            commonState.StudioSet.PartMainSettings[(byte)part].Pan = (byte)(p + 64);
+            tbStudioSetPartSettings1Pan.Text = "Pan " + (commonState.StudioSet.PartMainSettings[(byte)part].Pan - 64).ToString();
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x0a };
-            byte[] value = { (byte)commonState.studioSet.PartMainSettings[(byte)part].Pan };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.PartMainSettings[(byte)part].Pan };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -7553,13 +7553,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartSettings1CoarseTune(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartMainSettings[(byte)part].CoarseTune = (byte)(p + 64);
-            tbStudioSetPartSettings1CoarseTune.Text = "Coarse tune " + (commonState.studioSet.PartMainSettings[(byte)part].CoarseTune - 64).ToString();
+            commonState.StudioSet.PartMainSettings[(byte)part].CoarseTune = (byte)(p + 64);
+            tbStudioSetPartSettings1CoarseTune.Text = "Coarse tune " + (commonState.StudioSet.PartMainSettings[(byte)part].CoarseTune - 64).ToString();
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x0b };
-            byte[] value = { (byte)commonState.studioSet.PartMainSettings[(byte)part].CoarseTune };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.PartMainSettings[(byte)part].CoarseTune };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -7574,13 +7574,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartSettings1FineTune(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartMainSettings[(byte)part].FineTune = (byte)(p + 64);
-            tbStudioSetPartSettings1FineTune.Text = "Fine tune " + (commonState.studioSet.PartMainSettings[(byte)part].FineTune - 64).ToString();
+            commonState.StudioSet.PartMainSettings[(byte)part].FineTune = (byte)(p + 64);
+            tbStudioSetPartSettings1FineTune.Text = "Fine tune " + (commonState.StudioSet.PartMainSettings[(byte)part].FineTune - 64).ToString();
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x0c };
-            byte[] value = { (byte)commonState.studioSet.PartMainSettings[(byte)part].FineTune };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.PartMainSettings[(byte)part].FineTune };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -7595,12 +7595,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartSettings1Poly(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartMainSettings[(byte)part].MonoPoly = (byte)p;
+            commonState.StudioSet.PartMainSettings[(byte)part].MonoPoly = (byte)p;
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x0d };
-            byte[] value = { (byte)commonState.studioSet.PartMainSettings[(byte)part].MonoPoly };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.PartMainSettings[(byte)part].MonoPoly };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -7615,12 +7615,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartSettings1Legato(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartMainSettings[(byte)part].Legato = (byte)p;
+            commonState.StudioSet.PartMainSettings[(byte)part].Legato = (byte)p;
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x0e };
-            byte[] value = { (byte)commonState.studioSet.PartMainSettings[(byte)part].Legato };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.PartMainSettings[(byte)part].Legato };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -7635,15 +7635,15 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartSettings1BendRange(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartMainSettings[(byte)part].PitchBendRange = (byte)p;
+            commonState.StudioSet.PartMainSettings[(byte)part].PitchBendRange = (byte)p;
             tbStudioSetPartSettings1PitchBendRange.Text = "Pitch bend range " +
-                (commonState.studioSet.PartMainSettings[(byte)part].PitchBendRange > 24 ? "Tone" :
-                (commonState.studioSet.PartMainSettings[(byte)part].PitchBendRange).ToString());
+                (commonState.StudioSet.PartMainSettings[(byte)part].PitchBendRange > 24 ? "Tone" :
+                (commonState.StudioSet.PartMainSettings[(byte)part].PitchBendRange).ToString());
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x0f };
-            byte[] value = { (byte)commonState.studioSet.PartMainSettings[(byte)part].PitchBendRange };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.PartMainSettings[(byte)part].PitchBendRange };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -7658,12 +7658,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartSettings1Portamento(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartMainSettings[(byte)part].PortamentoSwitch = (byte)p;
+            commonState.StudioSet.PartMainSettings[(byte)part].PortamentoSwitch = (byte)p;
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x10 };
-            byte[] value = { (byte)commonState.studioSet.PartMainSettings[(byte)part].PortamentoSwitch };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.PartMainSettings[(byte)part].PortamentoSwitch };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -7679,15 +7679,15 @@ namespace Integra_7_Xamarin
         //Part settings 2
         private void SetStudioSetStudioSetPartSettings1PortamentoTime(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartMainSettings[(byte)part].PortamentoTime = (byte)p;
+            commonState.StudioSet.PartMainSettings[(byte)part].PortamentoTime = (byte)p;
             tbStudioSetPartSettings1PortamentoTime.Text = "Portamento time " +
-                (commonState.studioSet.PartMainSettings[(byte)part].PortamentoTime > 127 ? "Tone" :
-                (commonState.studioSet.PartMainSettings[(byte)part].PortamentoTime).ToString());
+                (commonState.StudioSet.PartMainSettings[(byte)part].PortamentoTime > 127 ? "Tone" :
+                (commonState.StudioSet.PartMainSettings[(byte)part].PortamentoTime).ToString());
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x11 };
-            byte[] value = { (byte)(commonState.studioSet.PartMainSettings[(byte)part].PortamentoTime / 16), (byte)(commonState.studioSet.PartMainSettings[(byte)part].PortamentoTime % 16) };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)(commonState.StudioSet.PartMainSettings[(byte)part].PortamentoTime / 16), (byte)(commonState.StudioSet.PartMainSettings[(byte)part].PortamentoTime % 16) };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -7702,13 +7702,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartSettings2CutoffOffset(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartMainSettings[(byte)part].CutoffOffset = (byte)(p + 64);
-            tbStudioSetPartSettings2CutoffOffset.Text = "Cutoff offset " + (commonState.studioSet.PartMainSettings[(byte)part].CutoffOffset - 64).ToString();
+            commonState.StudioSet.PartMainSettings[(byte)part].CutoffOffset = (byte)(p + 64);
+            tbStudioSetPartSettings2CutoffOffset.Text = "Cutoff offset " + (commonState.StudioSet.PartMainSettings[(byte)part].CutoffOffset - 64).ToString();
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x13 };
-            byte[] value = { (byte)commonState.studioSet.PartMainSettings[(byte)part].CutoffOffset };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.PartMainSettings[(byte)part].CutoffOffset };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -7723,13 +7723,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartSettings2ResonanceOffset(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartMainSettings[(byte)part].ResonanceOffset = (byte)(p + 64);
-            tbStudioSetPartSettings2ResonanceOffset.Text = "Resonance offset " + (commonState.studioSet.PartMainSettings[(byte)part].ResonanceOffset - 64).ToString();
+            commonState.StudioSet.PartMainSettings[(byte)part].ResonanceOffset = (byte)(p + 64);
+            tbStudioSetPartSettings2ResonanceOffset.Text = "Resonance offset " + (commonState.StudioSet.PartMainSettings[(byte)part].ResonanceOffset - 64).ToString();
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x14 };
-            byte[] value = { (byte)commonState.studioSet.PartMainSettings[(byte)part].ResonanceOffset };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.PartMainSettings[(byte)part].ResonanceOffset };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -7744,13 +7744,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartSettings2AttackTimeOffset(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartMainSettings[(byte)part].AttackTimeOffset = (byte)(p + 64);
-            tbStudioSetPartSettings2AttackTimeOffset.Text = "Attack time offset " + (commonState.studioSet.PartMainSettings[(byte)part].AttackTimeOffset - 64).ToString();
+            commonState.StudioSet.PartMainSettings[(byte)part].AttackTimeOffset = (byte)(p + 64);
+            tbStudioSetPartSettings2AttackTimeOffset.Text = "Attack time offset " + (commonState.StudioSet.PartMainSettings[(byte)part].AttackTimeOffset - 64).ToString();
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x15 };
-            byte[] value = { (byte)commonState.studioSet.PartMainSettings[(byte)part].AttackTimeOffset };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.PartMainSettings[(byte)part].AttackTimeOffset };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -7765,13 +7765,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartSettings2DecayTimeOffset(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartMainSettings[(byte)part].DecayTimeOffset = (byte)(p + 64);
-            tbStudioSetPartSettings2DecayTimeOffset.Text = "Decay time offset " + (commonState.studioSet.PartMainSettings[(byte)part].DecayTimeOffset - 64).ToString();
+            commonState.StudioSet.PartMainSettings[(byte)part].DecayTimeOffset = (byte)(p + 64);
+            tbStudioSetPartSettings2DecayTimeOffset.Text = "Decay time offset " + (commonState.StudioSet.PartMainSettings[(byte)part].DecayTimeOffset - 64).ToString();
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x16 };
-            byte[] value = { (byte)commonState.studioSet.PartMainSettings[(byte)part].DecayTimeOffset };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.PartMainSettings[(byte)part].DecayTimeOffset };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -7786,13 +7786,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartSettings2ReleaseTimeOffset(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartMainSettings[(byte)part].ReleaseTimeOffset = (byte)(p + 64);
-            tbStudioSetPartSettings2ReleaseTimeOffset.Text = "Release time offset " + (commonState.studioSet.PartMainSettings[(byte)part].ReleaseTimeOffset - 64).ToString();
+            commonState.StudioSet.PartMainSettings[(byte)part].ReleaseTimeOffset = (byte)(p + 64);
+            tbStudioSetPartSettings2ReleaseTimeOffset.Text = "Release time offset " + (commonState.StudioSet.PartMainSettings[(byte)part].ReleaseTimeOffset - 64).ToString();
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x17 };
-            byte[] value = { (byte)commonState.studioSet.PartMainSettings[(byte)part].ReleaseTimeOffset };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.PartMainSettings[(byte)part].ReleaseTimeOffset };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -7807,13 +7807,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartSettings2VibratoRate(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartMainSettings[(byte)part].VibratoRate = (byte)(p + 64);
-            tbStudioSetPartSettings2VibratoRate.Text = "Vibrato rate " + (commonState.studioSet.PartMainSettings[(byte)part].VibratoRate - 64).ToString();
+            commonState.StudioSet.PartMainSettings[(byte)part].VibratoRate = (byte)(p + 64);
+            tbStudioSetPartSettings2VibratoRate.Text = "Vibrato rate " + (commonState.StudioSet.PartMainSettings[(byte)part].VibratoRate - 64).ToString();
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x18 };
-            byte[] value = { (byte)commonState.studioSet.PartMainSettings[(byte)part].VibratoRate };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.PartMainSettings[(byte)part].VibratoRate };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -7828,13 +7828,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartSettings2VibratoDepth(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartMainSettings[(byte)part].VibratoDepth = (byte)(p + 64);
-            tbStudioSetPartSettings2VibratoDepth.Text = "Vibrato depth " + (commonState.studioSet.PartMainSettings[(byte)part].VibratoDepth - 64).ToString();
+            commonState.StudioSet.PartMainSettings[(byte)part].VibratoDepth = (byte)(p + 64);
+            tbStudioSetPartSettings2VibratoDepth.Text = "Vibrato depth " + (commonState.StudioSet.PartMainSettings[(byte)part].VibratoDepth - 64).ToString();
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x19 };
-            byte[] value = { (byte)commonState.studioSet.PartMainSettings[(byte)part].VibratoDepth };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.PartMainSettings[(byte)part].VibratoDepth };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -7849,13 +7849,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartSettings2VibratoDelay(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartMainSettings[(byte)part].VibratoDelay = (byte)(p + 64);
-            tbStudioSetPartSettings2VibratoDelay.Text = "Vibrato delay " + (commonState.studioSet.PartMainSettings[(byte)part].VibratoDelay - 64).ToString();
+            commonState.StudioSet.PartMainSettings[(byte)part].VibratoDelay = (byte)(p + 64);
+            tbStudioSetPartSettings2VibratoDelay.Text = "Vibrato delay " + (commonState.StudioSet.PartMainSettings[(byte)part].VibratoDelay - 64).ToString();
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x1a };
-            byte[] value = { (byte)commonState.studioSet.PartMainSettings[(byte)part].VibratoDelay };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.PartMainSettings[(byte)part].VibratoDelay };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -7870,13 +7870,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartEffectsChorusSendLevel(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartMainSettings[(byte)part].ChorusSendLevel = (byte)p;
-            tbStudioSetPartEffectsChorusSendLevel.Text = "Chorus send level " + commonState.studioSet.PartMainSettings[(byte)part].ChorusSendLevel.ToString();
+            commonState.StudioSet.PartMainSettings[(byte)part].ChorusSendLevel = (byte)p;
+            tbStudioSetPartEffectsChorusSendLevel.Text = "Chorus send level " + commonState.StudioSet.PartMainSettings[(byte)part].ChorusSendLevel.ToString();
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x27 };
-            byte[] value = { (byte)commonState.studioSet.PartMainSettings[(byte)part].ChorusSendLevel };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.PartMainSettings[(byte)part].ChorusSendLevel };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -7891,13 +7891,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartEffectsReverbSendLevel(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartMainSettings[(byte)part].ReverbSendLevel = (byte)(p);
-            tbStudioSetPartEffectsReverbSendLevel.Text = "Reverb send level " + (commonState.studioSet.PartMainSettings[(byte)part].ReverbSendLevel).ToString();
+            commonState.StudioSet.PartMainSettings[(byte)part].ReverbSendLevel = (byte)(p);
+            tbStudioSetPartEffectsReverbSendLevel.Text = "Reverb send level " + (commonState.StudioSet.PartMainSettings[(byte)part].ReverbSendLevel).ToString();
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x28 };
-            byte[] value = { (byte)commonState.studioSet.PartMainSettings[(byte)part].ReverbSendLevel };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.PartMainSettings[(byte)part].ReverbSendLevel };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -7913,12 +7913,12 @@ namespace Integra_7_Xamarin
         // Keyboard parameters
         private void SetStudioSetStudioSetPartEffectsOutputAssign(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartMainSettings[(byte)part].OutputAssign = (byte)p;
+            commonState.StudioSet.PartMainSettings[(byte)part].OutputAssign = (byte)p;
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x29 };
-            byte[] value = { (byte)commonState.studioSet.PartMainSettings[(byte)part].OutputAssign };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.PartMainSettings[(byte)part].OutputAssign };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -7933,13 +7933,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartKeyboardOctaveShift(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartKeyboard[(byte)part].OctaveShift = (byte)(p + 64);
-            tbStudioSetPartKeyboardOctaveShift.Text = "Octave shift " + (commonState.studioSet.PartKeyboard[(byte)part].OctaveShift - 64).ToString();
+            commonState.StudioSet.PartKeyboard[(byte)part].OctaveShift = (byte)(p + 64);
+            tbStudioSetPartKeyboardOctaveShift.Text = "Octave shift " + (commonState.StudioSet.PartKeyboard[(byte)part].OctaveShift - 64).ToString();
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x1b };
-            byte[] value = { (byte)commonState.studioSet.PartKeyboard[(byte)part].OctaveShift };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.PartKeyboard[(byte)part].OctaveShift };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -7954,13 +7954,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartKeyboardVelocitySenseOffset(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartKeyboard[(byte)part].VelocitySenseOffset = (byte)(p + 63);
-            tbStudioSetPartKeyboardVelocitySenseOffset.Text = "Velocity sense offset " + (commonState.studioSet.PartKeyboard[(byte)part].VelocitySenseOffset - 63).ToString();
+            commonState.StudioSet.PartKeyboard[(byte)part].VelocitySenseOffset = (byte)(p + 63);
+            tbStudioSetPartKeyboardVelocitySenseOffset.Text = "Velocity sense offset " + (commonState.StudioSet.PartKeyboard[(byte)part].VelocitySenseOffset - 63).ToString();
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x1c };
-            byte[] value = { (byte)commonState.studioSet.PartKeyboard[(byte)part].VelocitySenseOffset };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.PartKeyboard[(byte)part].VelocitySenseOffset };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -7975,13 +7975,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartKeyboardRangeLower(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartKeyboard[(byte)part].RangeLower = (byte)p;
-            tbStudioSetPartKeyboardRangeLower.Text = "Range lower " + (commonState.studioSet.PartKeyboard[(byte)part].RangeLower).ToString();
+            commonState.StudioSet.PartKeyboard[(byte)part].RangeLower = (byte)p;
+            tbStudioSetPartKeyboardRangeLower.Text = "Range lower " + (commonState.StudioSet.PartKeyboard[(byte)part].RangeLower).ToString();
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x1d };
-            byte[] value = { (byte)commonState.studioSet.PartKeyboard[(byte)part].RangeLower };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.PartKeyboard[(byte)part].RangeLower };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -7996,13 +7996,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartKeyboardRangeUpper(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartKeyboard[(byte)part].RangeUpper = (byte)p;
-            tbStudioSetPartKeyboardRangeUpper.Text = "Range upper " + (commonState.studioSet.PartKeyboard[(byte)part].RangeUpper).ToString();
+            commonState.StudioSet.PartKeyboard[(byte)part].RangeUpper = (byte)p;
+            tbStudioSetPartKeyboardRangeUpper.Text = "Range upper " + (commonState.StudioSet.PartKeyboard[(byte)part].RangeUpper).ToString();
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x1e };
-            byte[] value = { (byte)commonState.studioSet.PartKeyboard[(byte)part].RangeUpper };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.PartKeyboard[(byte)part].RangeUpper };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -8017,13 +8017,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartKeyboardFadeWidthLower(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartKeyboard[(byte)part].FadeWidthLower = (byte)p;
-            tbStudioSetPartKeyboardFadeWidthLower.Text = "Fade width lower " + (commonState.studioSet.PartKeyboard[(byte)part].FadeWidthLower).ToString();
+            commonState.StudioSet.PartKeyboard[(byte)part].FadeWidthLower = (byte)p;
+            tbStudioSetPartKeyboardFadeWidthLower.Text = "Fade width lower " + (commonState.StudioSet.PartKeyboard[(byte)part].FadeWidthLower).ToString();
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x1f };
-            byte[] value = { (byte)commonState.studioSet.PartKeyboard[(byte)part].FadeWidthLower };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.PartKeyboard[(byte)part].FadeWidthLower };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -8038,13 +8038,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartKeyboardFadeWidthUpper(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartKeyboard[(byte)part].FadeWidthUpper = (byte)p;
-            tbStudioSetPartKeyboardFadeWidthUpper.Text = "Fade width uppper " + (commonState.studioSet.PartKeyboard[(byte)part].FadeWidthUpper).ToString();
+            commonState.StudioSet.PartKeyboard[(byte)part].FadeWidthUpper = (byte)p;
+            tbStudioSetPartKeyboardFadeWidthUpper.Text = "Fade width uppper " + (commonState.StudioSet.PartKeyboard[(byte)part].FadeWidthUpper).ToString();
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x20 };
-            byte[] value = { (byte)commonState.studioSet.PartKeyboard[(byte)part].FadeWidthUpper };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.PartKeyboard[(byte)part].FadeWidthUpper };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -8059,13 +8059,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartKeyboardVelocityRangeLower(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartKeyboard[(byte)part].VelocityRangeLower = (byte)p;
-            tbStudioSetPartKeyboardVelocityRangeLower.Text = "Velocity range lower " + (commonState.studioSet.PartKeyboard[(byte)part].VelocityRangeLower).ToString();
+            commonState.StudioSet.PartKeyboard[(byte)part].VelocityRangeLower = (byte)p;
+            tbStudioSetPartKeyboardVelocityRangeLower.Text = "Velocity range lower " + (commonState.StudioSet.PartKeyboard[(byte)part].VelocityRangeLower).ToString();
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x21 };
-            byte[] value = { (byte)commonState.studioSet.PartKeyboard[(byte)part].VelocityRangeLower };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.PartKeyboard[(byte)part].VelocityRangeLower };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -8080,13 +8080,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartKeyboardVelocityRangeUpper(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartKeyboard[(byte)part].VelocityRangeUpper = (byte)p;
-            tbStudioSetPartKeyboardVelocityRangeUpper.Text = "Velocity range upper " + (commonState.studioSet.PartKeyboard[(byte)part].VelocityRangeUpper).ToString();
+            commonState.StudioSet.PartKeyboard[(byte)part].VelocityRangeUpper = (byte)p;
+            tbStudioSetPartKeyboardVelocityRangeUpper.Text = "Velocity range upper " + (commonState.StudioSet.PartKeyboard[(byte)part].VelocityRangeUpper).ToString();
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x22 };
-            byte[] value = { (byte)commonState.studioSet.PartKeyboard[(byte)part].VelocityRangeUpper };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.PartKeyboard[(byte)part].VelocityRangeUpper };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -8101,13 +8101,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartKeyboardVelocityFadeWidthLower(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartKeyboard[(byte)part].VelocityFadeWidthLower = (byte)p;
-            tbStudioSetPartKeyboardVelocityFadeWidthLower.Text = "Vel. fade width lower " + (commonState.studioSet.PartKeyboard[(byte)part].VelocityFadeWidthLower).ToString();
+            commonState.StudioSet.PartKeyboard[(byte)part].VelocityFadeWidthLower = (byte)p;
+            tbStudioSetPartKeyboardVelocityFadeWidthLower.Text = "Vel. fade width lower " + (commonState.StudioSet.PartKeyboard[(byte)part].VelocityFadeWidthLower).ToString();
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x23 };
-            byte[] value = { (byte)commonState.studioSet.PartKeyboard[(byte)part].VelocityFadeWidthLower };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.PartKeyboard[(byte)part].VelocityFadeWidthLower };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -8122,13 +8122,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartKeyboardVelocityFadeWidthUpper(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartKeyboard[(byte)part].VelocityFadeWidthUpper = (byte)p;
-            tbStudioSetPartKeyboardVelocityFadeWidthUpper.Text = "Vel. fade width upper " + (commonState.studioSet.PartKeyboard[(byte)part].VelocityFadeWidthUpper).ToString();
+            commonState.StudioSet.PartKeyboard[(byte)part].VelocityFadeWidthUpper = (byte)p;
+            tbStudioSetPartKeyboardVelocityFadeWidthUpper.Text = "Vel. fade width upper " + (commonState.StudioSet.PartKeyboard[(byte)part].VelocityFadeWidthUpper).ToString();
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x24 };
-            byte[] value = { (byte)commonState.studioSet.PartKeyboard[(byte)part].VelocityFadeWidthUpper };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.PartKeyboard[(byte)part].VelocityFadeWidthUpper };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -8143,7 +8143,7 @@ namespace Integra_7_Xamarin
 
         private void BtnVelocity1Curve_Clicked(object sender, EventArgs e)
         {
-            if (commonState.studioSet.PartKeyboard[cbStudioSetPartSelector.SelectedIndex].VelocityCurveType == 1)
+            if (commonState.StudioSet.PartKeyboard[cbStudioSetPartSelector.SelectedIndex].VelocityCurveType == 1)
             {
                 // This one is selected, turn it off:
                 cbStudioSetPartKeyboardVelocityCurveType.SelectedIndex = 0;
@@ -8156,7 +8156,7 @@ namespace Integra_7_Xamarin
 
         private void BtnVelocity2Curve_Clicked(object sender, EventArgs e)
         {
-            if (commonState.studioSet.PartKeyboard[cbStudioSetPartSelector.SelectedIndex].VelocityCurveType == 2)
+            if (commonState.StudioSet.PartKeyboard[cbStudioSetPartSelector.SelectedIndex].VelocityCurveType == 2)
             {
                 // This one is selected, turn it off:
                 cbStudioSetPartKeyboardVelocityCurveType.SelectedIndex = 0;
@@ -8169,7 +8169,7 @@ namespace Integra_7_Xamarin
 
         private void BtnVelocity3Curve_Clicked(object sender, EventArgs e)
         {
-            if (commonState.studioSet.PartKeyboard[cbStudioSetPartSelector.SelectedIndex].VelocityCurveType == 3)
+            if (commonState.StudioSet.PartKeyboard[cbStudioSetPartSelector.SelectedIndex].VelocityCurveType == 3)
             {
                 // This one is selected, turn it off:
                 cbStudioSetPartKeyboardVelocityCurveType.SelectedIndex = 0;
@@ -8182,7 +8182,7 @@ namespace Integra_7_Xamarin
 
         private void BtnVelocity4Curve_Clicked(object sender, EventArgs e)
         {
-            if (commonState.studioSet.PartKeyboard[cbStudioSetPartSelector.SelectedIndex].VelocityCurveType == 4)
+            if (commonState.StudioSet.PartKeyboard[cbStudioSetPartSelector.SelectedIndex].VelocityCurveType == 4)
             {
                 // This one is selected, turn it off:
                 cbStudioSetPartKeyboardVelocityCurveType.SelectedIndex = 0;
@@ -8195,12 +8195,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartKeyboardVelocityCurveType(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartKeyboard[(byte)part].VelocityCurveType = (byte)p;
+            commonState.StudioSet.PartKeyboard[(byte)part].VelocityCurveType = (byte)p;
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x43 };
-            byte[] value = { (byte)commonState.studioSet.PartKeyboard[(byte)part].VelocityCurveType };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.PartKeyboard[(byte)part].VelocityCurveType };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
             switch (p)
             {
                 case 0:
@@ -8267,12 +8267,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartKeyboard(Boolean p, Int32 part)
         {
-            commonState.studioSet.PartKeyboard[(byte)part].Mute = (Boolean)p;
+            commonState.StudioSet.PartKeyboard[(byte)part].Mute = (Boolean)p;
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x25 };
-            byte[] value = { (byte)(commonState.studioSet.PartKeyboard[(byte)part].Mute ? 1 : 0) };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)(commonState.StudioSet.PartKeyboard[(byte)part].Mute ? 1 : 0) };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -8288,12 +8288,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartScaleTuneType(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartScaleTune[(byte)part].Type = (byte)p;
+            commonState.StudioSet.PartScaleTune[(byte)part].Type = (byte)p;
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x2b };
-            byte[] value = { (byte)commonState.studioSet.PartScaleTune[(byte)part].Type };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.PartScaleTune[(byte)part].Type };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -8308,12 +8308,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartScaleTune(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartScaleTune[(byte)part].Key = (byte)p;
+            commonState.StudioSet.PartScaleTune[(byte)part].Key = (byte)p;
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x2c };
-            byte[] value = { (byte)commonState.studioSet.PartScaleTune[(byte)part].Key };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.PartScaleTune[(byte)part].Key };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -8328,13 +8328,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartScaleTuneC(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartScaleTune[(byte)part].C = (byte)p;
-            tbStudioSetPartScaleTuneC.Text = "C " + (commonState.studioSet.PartScaleTune[(byte)part].C).ToString();
+            commonState.StudioSet.PartScaleTune[(byte)part].C = (byte)p;
+            tbStudioSetPartScaleTuneC.Text = "C " + (commonState.StudioSet.PartScaleTune[(byte)part].C).ToString();
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x2d };
-            byte[] value = { (byte)commonState.studioSet.PartScaleTune[(byte)part].C };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.PartScaleTune[(byte)part].C };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -8349,13 +8349,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartScaleTuneCi(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartScaleTune[(byte)part].Ci = (byte)p;
-            tbStudioSetPartScaleTuneCi.Text = "C# " + (commonState.studioSet.PartScaleTune[(byte)part].Ci).ToString();
+            commonState.StudioSet.PartScaleTune[(byte)part].Ci = (byte)p;
+            tbStudioSetPartScaleTuneCi.Text = "C# " + (commonState.StudioSet.PartScaleTune[(byte)part].Ci).ToString();
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x2e };
-            byte[] value = { (byte)commonState.studioSet.PartScaleTune[(byte)part].Ci };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.PartScaleTune[(byte)part].Ci };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -8370,13 +8370,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartScaleTuneD(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartScaleTune[(byte)part].D = (byte)p;
-            tbStudioSetPartScaleTuneD.Text = "D " + (commonState.studioSet.PartScaleTune[(byte)part].D).ToString();
+            commonState.StudioSet.PartScaleTune[(byte)part].D = (byte)p;
+            tbStudioSetPartScaleTuneD.Text = "D " + (commonState.StudioSet.PartScaleTune[(byte)part].D).ToString();
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x2f };
-            byte[] value = { (byte)commonState.studioSet.PartScaleTune[(byte)part].D };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.PartScaleTune[(byte)part].D };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -8391,13 +8391,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartScaleTuneDi(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartScaleTune[(byte)part].Di = (byte)p;
-            tbStudioSetPartScaleTuneDi.Text = "D# " + (commonState.studioSet.PartScaleTune[(byte)part].Di).ToString();
+            commonState.StudioSet.PartScaleTune[(byte)part].Di = (byte)p;
+            tbStudioSetPartScaleTuneDi.Text = "D# " + (commonState.StudioSet.PartScaleTune[(byte)part].Di).ToString();
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x30 };
-            byte[] value = { (byte)commonState.studioSet.PartScaleTune[(byte)part].Di };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.PartScaleTune[(byte)part].Di };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -8412,13 +8412,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartScaleTuneE(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartScaleTune[(byte)part].E = (byte)p;
-            tbStudioSetPartScaleTuneE.Text = "E " + (commonState.studioSet.PartScaleTune[(byte)part].E).ToString();
+            commonState.StudioSet.PartScaleTune[(byte)part].E = (byte)p;
+            tbStudioSetPartScaleTuneE.Text = "E " + (commonState.StudioSet.PartScaleTune[(byte)part].E).ToString();
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x31 };
-            byte[] value = { (byte)commonState.studioSet.PartScaleTune[(byte)part].E };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.PartScaleTune[(byte)part].E };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -8433,13 +8433,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartScaleTuneF(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartScaleTune[(byte)part].F = (byte)p;
-            tbStudioSetPartScaleTuneF.Text = "F " + (commonState.studioSet.PartScaleTune[(byte)part].F).ToString();
+            commonState.StudioSet.PartScaleTune[(byte)part].F = (byte)p;
+            tbStudioSetPartScaleTuneF.Text = "F " + (commonState.StudioSet.PartScaleTune[(byte)part].F).ToString();
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x32 };
-            byte[] value = { (byte)commonState.studioSet.PartScaleTune[(byte)part].F };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.PartScaleTune[(byte)part].F };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -8454,13 +8454,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartScaleTuneFi(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartScaleTune[(byte)part].Fi = (byte)p;
-            tbStudioSetPartScaleTuneFi.Text = "F# " + (commonState.studioSet.PartScaleTune[(byte)part].Fi).ToString();
+            commonState.StudioSet.PartScaleTune[(byte)part].Fi = (byte)p;
+            tbStudioSetPartScaleTuneFi.Text = "F# " + (commonState.StudioSet.PartScaleTune[(byte)part].Fi).ToString();
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x33 };
-            byte[] value = { (byte)commonState.studioSet.PartScaleTune[(byte)part].Fi };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.PartScaleTune[(byte)part].Fi };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -8475,13 +8475,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartScaleTuneG(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartScaleTune[(byte)part].G = (byte)p;
-            tbStudioSetPartScaleTuneG.Text = "G " + (commonState.studioSet.PartScaleTune[(byte)part].G).ToString();
+            commonState.StudioSet.PartScaleTune[(byte)part].G = (byte)p;
+            tbStudioSetPartScaleTuneG.Text = "G " + (commonState.StudioSet.PartScaleTune[(byte)part].G).ToString();
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x34 };
-            byte[] value = { (byte)commonState.studioSet.PartScaleTune[(byte)part].G };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.PartScaleTune[(byte)part].G };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -8496,13 +8496,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartScaleTuneGi(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartScaleTune[(byte)part].Gi = (byte)p;
-            tbStudioSetPartScaleTuneGi.Text = "G# " + (commonState.studioSet.PartScaleTune[(byte)part].Gi).ToString();
+            commonState.StudioSet.PartScaleTune[(byte)part].Gi = (byte)p;
+            tbStudioSetPartScaleTuneGi.Text = "G# " + (commonState.StudioSet.PartScaleTune[(byte)part].Gi).ToString();
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x35 };
-            byte[] value = { (byte)commonState.studioSet.PartScaleTune[(byte)part].Gi };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.PartScaleTune[(byte)part].Gi };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -8517,13 +8517,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartScaleTuneA(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartScaleTune[(byte)part].A = (byte)p;
-            tbStudioSetPartScaleTuneA.Text = "A " + (commonState.studioSet.PartScaleTune[(byte)part].A).ToString();
+            commonState.StudioSet.PartScaleTune[(byte)part].A = (byte)p;
+            tbStudioSetPartScaleTuneA.Text = "A " + (commonState.StudioSet.PartScaleTune[(byte)part].A).ToString();
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x36 };
-            byte[] value = { (byte)commonState.studioSet.PartScaleTune[(byte)part].A };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.PartScaleTune[(byte)part].A };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -8538,13 +8538,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartScaleTuneAi(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartScaleTune[(byte)part].Ai = (byte)p;
-            tbStudioSetPartScaleTuneAi.Text = "A# " + (commonState.studioSet.PartScaleTune[(byte)part].Ai).ToString();
+            commonState.StudioSet.PartScaleTune[(byte)part].Ai = (byte)p;
+            tbStudioSetPartScaleTuneAi.Text = "A# " + (commonState.StudioSet.PartScaleTune[(byte)part].Ai).ToString();
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x37 };
-            byte[] value = { (byte)commonState.studioSet.PartScaleTune[(byte)part].Ai };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.PartScaleTune[(byte)part].Ai };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -8559,13 +8559,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartScaleTuneB(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartScaleTune[(byte)part].B = (byte)p;
-            tbStudioSetPartScaleTuneB.Text = "B " + (commonState.studioSet.PartScaleTune[(byte)part].B).ToString();
+            commonState.StudioSet.PartScaleTune[(byte)part].B = (byte)p;
+            tbStudioSetPartScaleTuneB.Text = "B " + (commonState.StudioSet.PartScaleTune[(byte)part].B).ToString();
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x38 };
-            byte[] value = { (byte)commonState.studioSet.PartScaleTune[(byte)part].B };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.PartScaleTune[(byte)part].B };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -8581,12 +8581,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartMidiReceiveProgramChange(Boolean p, Int32 part)
         {
-            commonState.studioSet.PartMidi[(byte)part].ReceiveProgramChange = (Boolean)p;
+            commonState.StudioSet.PartMidi[(byte)part].ReceiveProgramChange = (Boolean)p;
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x39 };
-            byte[] value = { (byte)(commonState.studioSet.PartMidi[(byte)part].ReceiveProgramChange ? 1 : 0) };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)(commonState.StudioSet.PartMidi[(byte)part].ReceiveProgramChange ? 1 : 0) };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -8601,12 +8601,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartMidiReceiveBankSelect(Boolean p, Int32 part)
         {
-            commonState.studioSet.PartMidi[(byte)part].ReceiveBankSelect = (Boolean)p;
+            commonState.StudioSet.PartMidi[(byte)part].ReceiveBankSelect = (Boolean)p;
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x3a };
-            byte[] value = { (byte)(commonState.studioSet.PartMidi[(byte)part].ReceiveBankSelect ? 1 : 0) };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)(commonState.StudioSet.PartMidi[(byte)part].ReceiveBankSelect ? 1 : 0) };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -8621,12 +8621,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartMidiReceivePitchBend(Boolean p, Int32 part)
         {
-            commonState.studioSet.PartMidi[(byte)part].ReceivePitchBend = (Boolean)p;
+            commonState.StudioSet.PartMidi[(byte)part].ReceivePitchBend = (Boolean)p;
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x3b };
-            byte[] value = { (byte)(commonState.studioSet.PartMidi[(byte)part].ReceivePitchBend ? 1 : 0) };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)(commonState.StudioSet.PartMidi[(byte)part].ReceivePitchBend ? 1 : 0) };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -8641,12 +8641,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartMidiReceivePolyphonicKeyPressure(Boolean p, Int32 part)
         {
-            commonState.studioSet.PartMidi[(byte)part].ReceivePolyphonicKeyPressure = (Boolean)p;
+            commonState.StudioSet.PartMidi[(byte)part].ReceivePolyphonicKeyPressure = (Boolean)p;
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x3c };
-            byte[] value = { (byte)(commonState.studioSet.PartMidi[(byte)part].ReceivePolyphonicKeyPressure ? 1 : 0) };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)(commonState.StudioSet.PartMidi[(byte)part].ReceivePolyphonicKeyPressure ? 1 : 0) };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -8661,12 +8661,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetPartMidiReceiveChannelPressure(Boolean p, Int32 part)
         {
-            commonState.studioSet.PartMidi[(byte)part].ReceiveChannelPressure = (Boolean)p;
+            commonState.StudioSet.PartMidi[(byte)part].ReceiveChannelPressure = (Boolean)p;
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x3d };
-            byte[] value = { (byte)(commonState.studioSet.PartMidi[(byte)part].ReceiveChannelPressure ? 1 : 0) };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)(commonState.StudioSet.PartMidi[(byte)part].ReceiveChannelPressure ? 1 : 0) };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -8681,12 +8681,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartMidiReceiveModulation(Boolean p, Int32 part)
         {
-            commonState.studioSet.PartMidi[(byte)part].ReceiveModulation = (Boolean)p;
+            commonState.StudioSet.PartMidi[(byte)part].ReceiveModulation = (Boolean)p;
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x3e };
-            byte[] value = { (byte)(commonState.studioSet.PartMidi[(byte)part].ReceiveModulation ? 1 : 0) };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)(commonState.StudioSet.PartMidi[(byte)part].ReceiveModulation ? 1 : 0) };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -8701,12 +8701,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartMidiReceiveVolume(Boolean p, Int32 part)
         {
-            commonState.studioSet.PartMidi[(byte)part].ReceiveVolume = (Boolean)p;
+            commonState.StudioSet.PartMidi[(byte)part].ReceiveVolume = (Boolean)p;
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x3f };
-            byte[] value = { (byte)(commonState.studioSet.PartMidi[(byte)part].ReceiveVolume ? 1 : 0) };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)(commonState.StudioSet.PartMidi[(byte)part].ReceiveVolume ? 1 : 0) };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -8721,12 +8721,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartMidiReceivePan(Boolean p, Int32 part)
         {
-            commonState.studioSet.PartMidi[(byte)part].ReceivePan = (Boolean)p;
+            commonState.StudioSet.PartMidi[(byte)part].ReceivePan = (Boolean)p;
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x40 };
-            byte[] value = { (byte)(commonState.studioSet.PartMidi[(byte)part].ReceivePan ? 1 : 0) };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)(commonState.StudioSet.PartMidi[(byte)part].ReceivePan ? 1 : 0) };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -8741,12 +8741,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartMidiReceiveExpression(Boolean p, Int32 part)
         {
-            commonState.studioSet.PartMidi[(byte)part].ReceiveExpression = (Boolean)p;
+            commonState.StudioSet.PartMidi[(byte)part].ReceiveExpression = (Boolean)p;
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x41 };
-            byte[] value = { (byte)(commonState.studioSet.PartMidi[(byte)part].ReceiveExpression ? 1 : 0) };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)(commonState.StudioSet.PartMidi[(byte)part].ReceiveExpression ? 1 : 0) };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -8761,12 +8761,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartMidiReceiveHold1(Boolean p, Int32 part)
         {
-            commonState.studioSet.PartMidi[(byte)part].ReceiveHold1 = (Boolean)p;
+            commonState.StudioSet.PartMidi[(byte)part].ReceiveHold1 = (Boolean)p;
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x42 };
-            byte[] value = { (byte)(commonState.studioSet.PartMidi[(byte)part].ReceiveHold1 ? 1 : 0) };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)(commonState.StudioSet.PartMidi[(byte)part].ReceiveHold1 ? 1 : 0) };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -8782,12 +8782,12 @@ namespace Integra_7_Xamarin
         // Motional surround
         private void SetStudioSetStudioSetPartMidiPhaseLock(Boolean p, Int32 part)
         {
-            commonState.studioSet.PartMidi[(byte)part].PhaseLock = (Boolean)p;
+            commonState.StudioSet.PartMidi[(byte)part].PhaseLock = (Boolean)p;
             byte[] address = { 0x18, 0x00, (byte)(0x10 + (byte)part), 0x00 };
-            byte[] value = { (byte)(commonState.studioSet.PartMidi[(byte)part].PhaseLock ? 1 : 0) };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)(commonState.StudioSet.PartMidi[(byte)part].PhaseLock ? 1 : 0) };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -8802,13 +8802,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartMotionalSurroundLR(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartMotionalSurround[(byte)part].LR = (byte)p;
-            tbStudioSetPartMotionalSurroundLR.Text = "L-R " + (commonState.studioSet.PartMotionalSurround[(byte)part].LR).ToString();
+            commonState.StudioSet.PartMotionalSurround[(byte)part].LR = (byte)p;
+            tbStudioSetPartMotionalSurroundLR.Text = "L-R " + (commonState.StudioSet.PartMotionalSurround[(byte)part].LR).ToString();
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x44 };
-            byte[] value = { (byte)commonState.studioSet.PartMotionalSurround[(byte)part].LR };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.PartMotionalSurround[(byte)part].LR };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -8823,13 +8823,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartMotionalSurroundFB(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartMotionalSurround[(byte)part].FB = (byte)p;
-            tbStudioSetPartMotionalSurroundFB.Text = "F-B " + (commonState.studioSet.PartMotionalSurround[(byte)part].FB).ToString();
+            commonState.StudioSet.PartMotionalSurround[(byte)part].FB = (byte)p;
+            tbStudioSetPartMotionalSurroundFB.Text = "F-B " + (commonState.StudioSet.PartMotionalSurround[(byte)part].FB).ToString();
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x46 };
-            byte[] value = { (byte)commonState.studioSet.PartMotionalSurround[(byte)part].FB };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.PartMotionalSurround[(byte)part].FB };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -8844,13 +8844,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartMotionalSurroundWidth(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartMotionalSurround[(byte)part].Width = (byte)p;
-            tbStudioSetPartMotionalSurroundWidth.Text = "Width " + (commonState.studioSet.PartMotionalSurround[(byte)part].Width).ToString();
+            commonState.StudioSet.PartMotionalSurround[(byte)part].Width = (byte)p;
+            tbStudioSetPartMotionalSurroundWidth.Text = "Width " + (commonState.StudioSet.PartMotionalSurround[(byte)part].Width).ToString();
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x48 };
-            byte[] value = { (byte)commonState.studioSet.PartMotionalSurround[(byte)part].Width };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.PartMotionalSurround[(byte)part].Width };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -8866,13 +8866,13 @@ namespace Integra_7_Xamarin
         // Equalizer settings
         private void SetStudioSetStudioSetPartMotionalSurroundAmbienceSendLevel(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartMotionalSurround[(byte)part].AmbienceSendLevel = (byte)p;
-            tbStudioSetPartMotionalSurroundAmbienceSendLevel.Text = "Ambience send level " + (commonState.studioSet.PartMotionalSurround[(byte)part].AmbienceSendLevel).ToString();
+            commonState.StudioSet.PartMotionalSurround[(byte)part].AmbienceSendLevel = (byte)p;
+            tbStudioSetPartMotionalSurroundAmbienceSendLevel.Text = "Ambience send level " + (commonState.StudioSet.PartMotionalSurround[(byte)part].AmbienceSendLevel).ToString();
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x49 };
-            byte[] value = { (byte)commonState.studioSet.PartMotionalSurround[(byte)part].AmbienceSendLevel };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.PartMotionalSurround[(byte)part].AmbienceSendLevel };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -8887,12 +8887,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartEQ(Boolean p, Int32 part)
         {
-            commonState.studioSet.PartEQ[(byte)part].EqSwitch = (Boolean)p;
+            commonState.StudioSet.PartEQ[(byte)part].EqSwitch = (Boolean)p;
             byte[] address = { 0x18, 0x00, (byte)(0x50 + (byte)part), 0x00 };
-            byte[] value = { (byte)(commonState.studioSet.PartEQ[(byte)part].EqSwitch ? 1 : 0) };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)(commonState.StudioSet.PartEQ[(byte)part].EqSwitch ? 1 : 0) };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -8907,12 +8907,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartEQLoqFreq(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartEQ[(byte)part].EqLowFreq = (byte)p;
+            commonState.StudioSet.PartEQ[(byte)part].EqLowFreq = (byte)p;
             byte[] address = { 0x18, 0x00, (byte)(0x50 + (byte)part), 0x01 };
-            byte[] value = { (byte)commonState.studioSet.PartEQ[(byte)part].EqLowFreq };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.PartEQ[(byte)part].EqLowFreq };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -8927,13 +8927,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartEQLowGain(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartEQ[cbStudioSetPartSelector.SelectedIndex].EqLowGain = (byte)(p + 15);
-            tbStudioSetPartEQLowGain.Text = "Low gain " + (commonState.studioSet.PartEQ[cbStudioSetPartSelector.SelectedIndex].EqLowGain - 15).ToString();
+            commonState.StudioSet.PartEQ[cbStudioSetPartSelector.SelectedIndex].EqLowGain = (byte)(p + 15);
+            tbStudioSetPartEQLowGain.Text = "Low gain " + (commonState.StudioSet.PartEQ[cbStudioSetPartSelector.SelectedIndex].EqLowGain - 15).ToString();
             byte[] address = { 0x18, 0x00, (byte)(0x50 + cbStudioSetPartSelector.SelectedIndex), 0x02 };
-            byte[] value = { (byte)(commonState.studioSet.PartEQ[cbStudioSetPartSelector.SelectedIndex].EqLowGain) };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)(commonState.StudioSet.PartEQ[cbStudioSetPartSelector.SelectedIndex].EqLowGain) };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -8948,12 +8948,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartEQMidFreq(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartEQ[cbStudioSetPartSelector.SelectedIndex].EqMidFreq = (byte)p;
+            commonState.StudioSet.PartEQ[cbStudioSetPartSelector.SelectedIndex].EqMidFreq = (byte)p;
             byte[] address = { 0x18, 0x00, (byte)(0x50 + cbStudioSetPartSelector.SelectedIndex), 0x03 };
-            byte[] value = { (byte)commonState.studioSet.PartEQ[cbStudioSetPartSelector.SelectedIndex].EqMidFreq };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.PartEQ[cbStudioSetPartSelector.SelectedIndex].EqMidFreq };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -8968,13 +8968,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartEQMidGain(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartEQ[cbStudioSetPartSelector.SelectedIndex].EqMidGain = (byte)(p + 15);
-            tbStudioSetPartEQMidGain.Text = "Mid gain " + (commonState.studioSet.PartEQ[cbStudioSetPartSelector.SelectedIndex].EqMidGain - 15).ToString();
+            commonState.StudioSet.PartEQ[cbStudioSetPartSelector.SelectedIndex].EqMidGain = (byte)(p + 15);
+            tbStudioSetPartEQMidGain.Text = "Mid gain " + (commonState.StudioSet.PartEQ[cbStudioSetPartSelector.SelectedIndex].EqMidGain - 15).ToString();
             byte[] address = { 0x18, 0x00, (byte)(0x50 + cbStudioSetPartSelector.SelectedIndex), 0x04 };
-            byte[] value = { (byte)(commonState.studioSet.PartEQ[cbStudioSetPartSelector.SelectedIndex].EqMidGain) };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)(commonState.StudioSet.PartEQ[cbStudioSetPartSelector.SelectedIndex].EqMidGain) };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -8989,12 +8989,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartEQMidQ(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartEQ[cbStudioSetPartSelector.SelectedIndex].EqMidQ = (byte)p;
+            commonState.StudioSet.PartEQ[cbStudioSetPartSelector.SelectedIndex].EqMidQ = (byte)p;
             byte[] address = { 0x18, 0x00, (byte)(0x50 + cbStudioSetPartSelector.SelectedIndex), 0x05 };
-            byte[] value = { (byte)commonState.studioSet.PartEQ[cbStudioSetPartSelector.SelectedIndex].EqMidQ };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.PartEQ[cbStudioSetPartSelector.SelectedIndex].EqMidQ };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -9009,12 +9009,12 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartEQHighFreq(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartEQ[cbStudioSetPartSelector.SelectedIndex].EqHighFreq = (byte)p;
+            commonState.StudioSet.PartEQ[cbStudioSetPartSelector.SelectedIndex].EqHighFreq = (byte)p;
             byte[] address = { 0x18, 0x00, (byte)(0x50 + cbStudioSetPartSelector.SelectedIndex), 0x06 };
-            byte[] value = { (byte)commonState.studioSet.PartEQ[cbStudioSetPartSelector.SelectedIndex].EqHighFreq };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)commonState.StudioSet.PartEQ[cbStudioSetPartSelector.SelectedIndex].EqHighFreq };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -9029,13 +9029,13 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetStudioSetPartEQHighGain(Int32 p, Int32 part)
         {
-            commonState.studioSet.PartEQ[cbStudioSetPartSelector.SelectedIndex].EqHighGain = (byte)((Int32)p + 15);
-            tbStudioSetPartEQHighGain.Text = "High gain " + (commonState.studioSet.PartEQ[cbStudioSetPartSelector.SelectedIndex].EqHighGain - 15).ToString();
+            commonState.StudioSet.PartEQ[cbStudioSetPartSelector.SelectedIndex].EqHighGain = (byte)((Int32)p + 15);
+            tbStudioSetPartEQHighGain.Text = "High gain " + (commonState.StudioSet.PartEQ[cbStudioSetPartSelector.SelectedIndex].EqHighGain - 15).ToString();
             byte[] address = { 0x18, 0x00, (byte)(0x50 + cbStudioSetPartSelector.SelectedIndex), 0x07 };
-            byte[] value = { (byte)(commonState.studioSet.PartEQ[cbStudioSetPartSelector.SelectedIndex].EqHighGain) };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
+            byte[] value = { (byte)(commonState.StudioSet.PartEQ[cbStudioSetPartSelector.SelectedIndex].EqHighGain) };
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
 
         }
 
@@ -9108,23 +9108,23 @@ namespace Integra_7_Xamarin
                         }
                         byte[] address = { 0x18, 0x00, 0x00, 0x00 };
                         byte[] data = Encoding.UTF8.GetBytes(name);
-                        byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, data);
+                        byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, data);
                         waitingForResponseFromIntegra7 = 500;
-                        commonState.midi.SendSystemExclusive(bytes);
+                        commonState.Midi.SendSystemExclusive(bytes);
                         // Save all partials:
 
                         // Make INTEGRA-7 save the Studio Set:
                         address = new byte[] { 0x0f, 0x00, 0x10, 0x00 };
                         data = new byte[] { 0x55, 0x00, (byte)(cbStudioSetSlot.SelectedIndex), 0x7f };
-                        bytes = commonState.midi.SystemExclusiveRQ1Message(address, data);
+                        bytes = commonState.Midi.SystemExclusiveRQ1Message(address, data);
                         waitingForResponseFromIntegra7 = 500;
-                        commonState.midi.SendSystemExclusive(bytes);
+                        commonState.Midi.SendSystemExclusive(bytes);
 
                         // Add the new studio set name to the studio set selector:
                         cbStudioSetSelector.Items[cbStudioSetSlot.SelectedIndex] = cbStudioSetSlot.SelectedIndex.ToString() + " " + tbStudioSetName.Text;
 
                         // Add the new studio set name to commonState.studioSetNames.
-                        commonState.studioSetNames[cbStudioSetSlot.SelectedIndex] = tbStudioSetName.Text;
+                        commonState.StudioSetNames[cbStudioSetSlot.SelectedIndex] = tbStudioSetName.Text;
 
                         // Select the new studio set:
                         PushHandleControlEvents();
@@ -9165,27 +9165,27 @@ namespace Integra_7_Xamarin
                     // Change the name:
                     byte[] address = { 0x18, 0x00, 0x00, 0x00 };
                     byte[] data = Encoding.UTF8.GetBytes("INIT STUDIO     ");
-                    byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, data);
+                    byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, data);
                     waitingForResponseFromIntegra7 = 500;
-                    commonState.midi.SendSystemExclusive(bytes);
+                    commonState.Midi.SendSystemExclusive(bytes);
                     // InitializeComponent the studio set:
                     address = new byte[] { 0x0f, 0x00, (byte)(cbStudioSetSlot.SelectedIndex), 0x00 };
                     data = new byte[] { 0x7f, 0x7f, 0x00, 0x00 };
-                    bytes = commonState.midi.SystemExclusiveRQ1Message(address, data);
+                    bytes = commonState.Midi.SystemExclusiveRQ1Message(address, data);
                     waitingForResponseFromIntegra7 = 500;
-                    commonState.midi.SendSystemExclusive(bytes);
+                    commonState.Midi.SendSystemExclusive(bytes);
                     // Save the studio set:
                     address = new byte[] { 0x0f, 0x00, 0x10, 0x00 };
                     data = new byte[] { 0x55, 0x00, (byte)(cbStudioSetSlot.SelectedIndex + 16), 0x7f };
-                    bytes = commonState.midi.SystemExclusiveRQ1Message(address, data);
+                    bytes = commonState.Midi.SystemExclusiveRQ1Message(address, data);
                     waitingForResponseFromIntegra7 = 500;
-                    commonState.midi.SendSystemExclusive(bytes);
+                    commonState.Midi.SendSystemExclusive(bytes);
 
                     // Remove the new studio set name from the studio set selector:
                     cbStudioSetSelector.Items[cbStudioSetSlot.SelectedIndex] = "INIT STUDIO";
 
                     // Remove the new studio set name from commonState.studioSetNames.
-                    commonState.studioSetNames[cbStudioSetSlot.SelectedIndex] = "INIT STUDIO";
+                    commonState.StudioSetNames[cbStudioSetSlot.SelectedIndex] = "INIT STUDIO";
 
                     // Now, get the freshly initiated part:
                     QueryStudioSetPart();
@@ -9214,7 +9214,7 @@ namespace Integra_7_Xamarin
                     catch { }
                     String searchString = cbStudioSetPartSettings1Search.Text.ToLower();
                     // Search voices:
-                    foreach (List<String> tone in commonState.toneList.Tones)
+                    foreach (List<String> tone in commonState.ToneList.Tones)
                     {
                         if (tone[3].ToLower().Contains(searchString))
                         {
@@ -9232,43 +9232,43 @@ namespace Integra_7_Xamarin
             Boolean drumMap = false;
             if (!String.IsNullOrEmpty(soundName))
             {
-                commonState.currentTone.Name = soundName;
+                commonState.CurrentTone.Name = soundName;
             }
             if (!String.IsNullOrEmpty(cbStudioSetPartSettings1Search.Text))
             {
-                if (commonState.currentTone.Name.EndsWith("\t"))
+                if (commonState.CurrentTone.Name.EndsWith("\t"))
                 {
                     drumMap = true;
-                    commonState.currentTone.Name = commonState.currentTone.Name.TrimEnd('\t');
+                    commonState.CurrentTone.Name = commonState.CurrentTone.Name.TrimEnd('\t');
                 }
-                String[] parts = commonState.currentTone.Name.Split(',');
+                String[] parts = commonState.CurrentTone.Name.Split(',');
                 if (parts.Length == 3)
                 {
                     if (drumMap)
                     {
-                        commonState.currentTone.Group = parts[1].TrimStart();
-                        commonState.currentTone.Category = "Drum";
-                        commonState.currentTone.Name = parts[2].TrimStart();
+                        commonState.CurrentTone.Group = parts[1].TrimStart();
+                        commonState.CurrentTone.Category = "Drum";
+                        commonState.CurrentTone.Name = parts[2].TrimStart();
                     }
                     else
                     {
-                        commonState.currentTone.Group = parts[1].TrimStart();
-                        commonState.currentTone.Category = parts[2].TrimStart();
-                        commonState.currentTone.Name = parts[0].TrimStart();
+                        commonState.CurrentTone.Group = parts[1].TrimStart();
+                        commonState.CurrentTone.Category = parts[2].TrimStart();
+                        commonState.CurrentTone.Name = parts[0].TrimStart();
                     }
                     Boolean currentHandleControlEvents = handleControlEvents;
                     PushHandleControlEvents();
-                    cbStudioSetPartSettings1Group.SelectedItem = commonState.currentTone.Group;
+                    cbStudioSetPartSettings1Group.SelectedItem = commonState.CurrentTone.Group;
                     PopulateCbStudioSetPartSettings1Category();
-                    cbStudioSetPartSettings1Category.SelectedItem = commonState.currentTone.Category;
+                    cbStudioSetPartSettings1Category.SelectedItem = commonState.CurrentTone.Category;
                     PopulateCbStudioSetPartSettings1Program();
-                    cbStudioSetPartSettings1Program.SelectedItem = commonState.currentTone.Name;
+                    cbStudioSetPartSettings1Program.SelectedItem = commonState.CurrentTone.Name;
                     PopHandleControlEvents();
                     cbStudioSetPartSettings1Search.Text = "";
-                    commonState.currentTone.Index = 
-                        commonState.toneList.Get(cbStudioSetPartSettings1Group.SelectedItem.ToString(),
+                    commonState.CurrentTone.Index = 
+                        commonState.ToneList.Get(cbStudioSetPartSettings1Group.SelectedItem.ToString(),
                         cbStudioSetPartSettings1Category.SelectedItem.ToString(),
-                        commonState.currentTone.Name);
+                        commonState.CurrentTone.Name);
                     UpdateToneFromControls();
                 }
             }
@@ -9276,14 +9276,14 @@ namespace Integra_7_Xamarin
 
         private async void btnFileSave_Click(object sender, EventArgs e)
         {
-            await StudioSet.Serialize<StudioSet>(commonState.studioSet);
+            await StudioSet.Serialize<StudioSet>(commonState.StudioSet);
         }
 
         private async void btnFileLoad_Click(object sender, EventArgs e)
         {
             PushHandleControlEvents();
             PushHandleControlEvents();
-            commonState.studioSet = await StudioSet.Deserialize<StudioSet>(commonState.studioSet);
+            commonState.StudioSet = await StudioSet.Deserialize<StudioSet>(commonState.StudioSet);
             UpdateControlsAndIntegra7FromClasses(cbStudioSetPartSelector.SelectedIndex);
             PopHandleControlEvents();
             ;
@@ -9301,7 +9301,7 @@ namespace Integra_7_Xamarin
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         private Boolean MidiChannelIsSameAsPart()
         {
-            if (commonState.studioSet.PartMainSettings[cbStudioSetPartSelector.SelectedIndex].ReceiveChannel == (byte)cbStudioSetPartSelector.SelectedIndex)
+            if (commonState.StudioSet.PartMainSettings[cbStudioSetPartSelector.SelectedIndex].ReceiveChannel == (byte)cbStudioSetPartSelector.SelectedIndex)
             {
                 return true;
             }
@@ -9343,7 +9343,7 @@ namespace Integra_7_Xamarin
             PushHandleControlEvents();
             PushHandleControlEvents();
             cbStudioSetPartSettings1Group.Items.Clear();
-            foreach (List<String> tone in commonState.toneList.Tones)
+            foreach (List<String> tone in commonState.ToneList.Tones)
             {
                 if (!cbStudioSetPartSettings1Group.Items.Contains(tone[0]))
                 {
@@ -9427,7 +9427,7 @@ namespace Integra_7_Xamarin
             PushHandleControlEvents();
             PushHandleControlEvents();
             cbStudioSetPartSettings1Category.Items.Clear();
-            foreach (List<String> line in commonState.toneList.Tones.OrderBy(o => o[1]))
+            foreach (List<String> line in commonState.ToneList.Tones.OrderBy(o => o[1]))
             {
                 //if (line[0] == group && line[1] != lastCategory && !CategoriesSource.Contains(line[1]))
                 if (line[0] == (String)cbStudioSetPartSettings1Group.SelectedItem && line[1] != lastCategory && !cbStudioSetPartSettings1Category.Items.Contains(line[1]))
@@ -9458,7 +9458,7 @@ namespace Integra_7_Xamarin
 
                     }
                 }
-                foreach (List<String> tone in commonState.toneList.Tones.OrderBy(o => o[3]))
+                foreach (List<String> tone in commonState.ToneList.Tones.OrderBy(o => o[3]))
                 {
                     if (tone[0] == (String)cbStudioSetPartSettings1Group.SelectedItem && tone[1] == (String)cbStudioSetPartSettings1Category.SelectedItem)
                     {
@@ -9507,13 +9507,13 @@ namespace Integra_7_Xamarin
         {
             t.Trace("private Int32 MaxValidPc()");
             Int32 max = 1;
-            switch (commonState.studioSet.PartMainSettings[cbStudioSetPartSelector.SelectedIndex].ToneBankSelectMSB)
+            switch (commonState.StudioSet.PartMainSettings[cbStudioSetPartSelector.SelectedIndex].ToneBankSelectMSB)
             {
                 case 85:
                     max = 64;
                     break;
                 case 86:
-                    switch (commonState.studioSet.PartMainSettings[cbStudioSetPartSelector.SelectedIndex].ToneBankSelectLSB)
+                    switch (commonState.StudioSet.PartMainSettings[cbStudioSetPartSelector.SelectedIndex].ToneBankSelectLSB)
                     {
                         case 0:
                             max = 32;
@@ -9524,7 +9524,7 @@ namespace Integra_7_Xamarin
                     }
                     break;
                 case 87:
-                    switch (commonState.studioSet.PartMainSettings[cbStudioSetPartSelector.SelectedIndex].ToneBankSelectLSB)
+                    switch (commonState.StudioSet.PartMainSettings[cbStudioSetPartSelector.SelectedIndex].ToneBankSelectLSB)
                     {
                         case 0:
                         case 1:
@@ -9542,7 +9542,7 @@ namespace Integra_7_Xamarin
                     }
                     break;
                 case 88:
-                    switch (commonState.studioSet.PartMainSettings[cbStudioSetPartSelector.SelectedIndex].ToneBankSelectLSB)
+                    switch (commonState.StudioSet.PartMainSettings[cbStudioSetPartSelector.SelectedIndex].ToneBankSelectLSB)
                     {
                         case 0:
                             max = 64;
@@ -9556,7 +9556,7 @@ namespace Integra_7_Xamarin
                     }
                     break;
                 case 89:
-                    switch (commonState.studioSet.PartMainSettings[cbStudioSetPartSelector.SelectedIndex].ToneBankSelectLSB)
+                    switch (commonState.StudioSet.PartMainSettings[cbStudioSetPartSelector.SelectedIndex].ToneBankSelectLSB)
                     {
                         case 0:
                         case 1:
@@ -9572,7 +9572,7 @@ namespace Integra_7_Xamarin
                     }
                     break;
                 case 92:
-                    switch (commonState.studioSet.PartMainSettings[cbStudioSetPartSelector.SelectedIndex].ToneBankSelectLSB)
+                    switch (commonState.StudioSet.PartMainSettings[cbStudioSetPartSelector.SelectedIndex].ToneBankSelectLSB)
                     {
                         case 0:
                             max = 79;
@@ -9598,7 +9598,7 @@ namespace Integra_7_Xamarin
                     }
                     break;
                 case 93:
-                    switch (commonState.studioSet.PartMainSettings[cbStudioSetPartSelector.SelectedIndex].ToneBankSelectLSB)
+                    switch (commonState.StudioSet.PartMainSettings[cbStudioSetPartSelector.SelectedIndex].ToneBankSelectLSB)
                     {
                         case 0:
                             max = 41;
@@ -9651,7 +9651,7 @@ namespace Integra_7_Xamarin
                     }
                     break;
                 case 95:
-                    switch (commonState.studioSet.PartMainSettings[cbStudioSetPartSelector.SelectedIndex].ToneBankSelectLSB)
+                    switch (commonState.StudioSet.PartMainSettings[cbStudioSetPartSelector.SelectedIndex].ToneBankSelectLSB)
                     {
                         case 0:
                         case 1:
@@ -9676,7 +9676,7 @@ namespace Integra_7_Xamarin
                     max = 19;
                     break;
                 case 97:
-                    switch (commonState.studioSet.PartMainSettings[cbStudioSetPartSelector.SelectedIndex].ToneBankSelectLSB)
+                    switch (commonState.StudioSet.PartMainSettings[cbStudioSetPartSelector.SelectedIndex].ToneBankSelectLSB)
                     {
                         case 0:
                         case 1:
@@ -9690,7 +9690,7 @@ namespace Integra_7_Xamarin
                     max = 9;
                     break;
                 case 121:
-                    switch (commonState.studioSet.PartMainSettings[cbStudioSetPartSelector.SelectedIndex].ToneBankSelectLSB)
+                    switch (commonState.StudioSet.PartMainSettings[cbStudioSetPartSelector.SelectedIndex].ToneBankSelectLSB)
                     {
                         case 0:
                         case 1:
@@ -9821,16 +9821,16 @@ namespace Integra_7_Xamarin
             // Since there are no values that takes more than 2 bytes, set first two to 0x08 and 0x00
             // as they are already set in the INTEGRA-7. Split Value into MSB and LSB and send.
             byte[] value = { 0x08, 0x00, (byte)((Value) / 16), (byte)((Value) % 16) };
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(Address, value);
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(Address, value);
             waitingForResponseFromIntegra7 = 500;
-            commonState.midi.SendSystemExclusive(bytes);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private void UpdateChorusChorusSubwindow()
         {
             t.Trace("private void UpdateChorusChorusSubwindow()");
 
-            switch (commonState.studioSet.CommonChorus.Type)
+            switch (commonState.StudioSet.CommonChorus.Type)
             {
                 case 0:
                     // Off:
@@ -9869,11 +9869,11 @@ namespace Integra_7_Xamarin
             StudioSetReverbReverb.IsVisible = false;
             StudioSetReverbGM2.IsVisible = false;
 
-            if (commonState.studioSet.CommonReverb.Type == 5)
+            if (commonState.StudioSet.CommonReverb.Type == 5)
             {
                 StudioSetReverbGM2.IsVisible = true;
             }
-            else if (commonState.studioSet.CommonReverb.Type > 0)
+            else if (commonState.StudioSet.CommonReverb.Type > 0)
             {
                 StudioSetReverbReverb.IsVisible = true;
             }
@@ -9882,316 +9882,316 @@ namespace Integra_7_Xamarin
 
         private void UpdateControlsAndIntegra7FromClasses(Int32 part)
         {
-            if (cbToneControl1.SelectedIndex != commonState.studioSet.Common.ToneControlSource[0])
+            if (cbToneControl1.SelectedIndex != commonState.StudioSet.Common.ToneControlSource[0])
             {
-                cbToneControl1.SelectedIndex = commonState.studioSet.Common.ToneControlSource[0];
-                SetStudioSetCommonToneControl1(commonState.studioSet.Common.ToneControlSource[0]);
+                cbToneControl1.SelectedIndex = commonState.StudioSet.Common.ToneControlSource[0];
+                SetStudioSetCommonToneControl1(commonState.StudioSet.Common.ToneControlSource[0]);
             }
-            if (cbToneControl2.SelectedIndex != commonState.studioSet.Common.ToneControlSource[1])
+            if (cbToneControl2.SelectedIndex != commonState.StudioSet.Common.ToneControlSource[1])
             {
-                cbToneControl2.SelectedIndex = commonState.studioSet.Common.ToneControlSource[1];
-                SetStudioSetCommonToneControl2(commonState.studioSet.Common.ToneControlSource[1]);
+                cbToneControl2.SelectedIndex = commonState.StudioSet.Common.ToneControlSource[1];
+                SetStudioSetCommonToneControl2(commonState.StudioSet.Common.ToneControlSource[1]);
             }
-            if (cbToneControl3.SelectedIndex != commonState.studioSet.Common.ToneControlSource[2])
+            if (cbToneControl3.SelectedIndex != commonState.StudioSet.Common.ToneControlSource[2])
             {
-                cbToneControl3.SelectedIndex = commonState.studioSet.Common.ToneControlSource[2];
-                SetStudioSetCommonToneControl3(commonState.studioSet.Common.ToneControlSource[2]);
+                cbToneControl3.SelectedIndex = commonState.StudioSet.Common.ToneControlSource[2];
+                SetStudioSetCommonToneControl3(commonState.StudioSet.Common.ToneControlSource[2]);
             }
-            if (cbToneControl4.SelectedIndex != commonState.studioSet.Common.ToneControlSource[3])
+            if (cbToneControl4.SelectedIndex != commonState.StudioSet.Common.ToneControlSource[3])
             {
-                cbToneControl4.SelectedIndex = commonState.studioSet.Common.ToneControlSource[3];
-                SetStudioSetCommonToneControl4(commonState.studioSet.Common.ToneControlSource[3]);
+                cbToneControl4.SelectedIndex = commonState.StudioSet.Common.ToneControlSource[3];
+                SetStudioSetCommonToneControl4(commonState.StudioSet.Common.ToneControlSource[3]);
             }
-            if (slTempo.Value != commonState.studioSet.Common.Tempo)
+            if (slTempo.Value != commonState.StudioSet.Common.Tempo)
             {
-                slTempo.Value = commonState.studioSet.Common.Tempo;
-                SetStudioSetCommonTempo(commonState.studioSet.Common.Tempo);
+                slTempo.Value = commonState.StudioSet.Common.Tempo;
+                SetStudioSetCommonTempo(commonState.StudioSet.Common.Tempo);
             }
-            if (cbSoloPart.SelectedIndex != commonState.studioSet.Common.SoloPart)
+            if (cbSoloPart.SelectedIndex != commonState.StudioSet.Common.SoloPart)
             {
-                cbSoloPart.SelectedIndex = commonState.studioSet.Common.SoloPart;
-                SetStudioSetCommonSoloPart(commonState.studioSet.Common.SoloPart);
+                cbSoloPart.SelectedIndex = commonState.StudioSet.Common.SoloPart;
+                SetStudioSetCommonSoloPart(commonState.StudioSet.Common.SoloPart);
             }
-            if (cbReverb.IsChecked != commonState.studioSet.Common.Reverb)
+            if (cbReverb.IsChecked != commonState.StudioSet.Common.Reverb)
             {
-                cbReverb.IsChecked = commonState.studioSet.Common.Reverb;
-                SetStudioSetCommonReverb((Boolean)commonState.studioSet.Common.Reverb);
+                cbReverb.IsChecked = commonState.StudioSet.Common.Reverb;
+                SetStudioSetCommonReverb((Boolean)commonState.StudioSet.Common.Reverb);
             }
-            if (cbChorus.IsChecked != commonState.studioSet.Common.Chorus)
+            if (cbChorus.IsChecked != commonState.StudioSet.Common.Chorus)
             {
-                cbChorus.IsChecked = commonState.studioSet.Common.Chorus;
-                SetStudioSetCommonChorus((Boolean)commonState.studioSet.Common.Chorus);
+                cbChorus.IsChecked = commonState.StudioSet.Common.Chorus;
+                SetStudioSetCommonChorus((Boolean)commonState.StudioSet.Common.Chorus);
             }
-            if (cbMasterEQ.IsChecked != commonState.studioSet.Common.MasterEqualizer)
+            if (cbMasterEQ.IsChecked != commonState.StudioSet.Common.MasterEqualizer)
             {
-                cbMasterEQ.IsChecked = commonState.studioSet.Common.MasterEqualizer;
-                SetStudioSetCommonMasterEQ((Boolean)commonState.studioSet.Common.MasterEqualizer);
+                cbMasterEQ.IsChecked = commonState.StudioSet.Common.MasterEqualizer;
+                SetStudioSetCommonMasterEQ((Boolean)commonState.StudioSet.Common.MasterEqualizer);
             }
-            if (cbDrumCompEQPart.SelectedIndex != commonState.studioSet.Common.DrumCompressorAndEqualizerPart)
+            if (cbDrumCompEQPart.SelectedIndex != commonState.StudioSet.Common.DrumCompressorAndEqualizerPart)
             {
-                cbDrumCompEQPart.SelectedIndex = commonState.studioSet.Common.DrumCompressorAndEqualizerPart;
-                SetStudioSetCommonEQPart(commonState.studioSet.Common.DrumCompressorAndEqualizerPart);
+                cbDrumCompEQPart.SelectedIndex = commonState.StudioSet.Common.DrumCompressorAndEqualizerPart;
+                SetStudioSetCommonEQPart(commonState.StudioSet.Common.DrumCompressorAndEqualizerPart);
             }
-            if (cbDrumCompEQ1OutputAssign.SelectedIndex != commonState.studioSet.Common.DrumCompressorAndEqualizerOutputAssign[0])
+            if (cbDrumCompEQ1OutputAssign.SelectedIndex != commonState.StudioSet.Common.DrumCompressorAndEqualizerOutputAssign[0])
             {
-                cbDrumCompEQ1OutputAssign.SelectedIndex = commonState.studioSet.Common.DrumCompressorAndEqualizerOutputAssign[0];
-                SetStudioSetCommonEQ1OutputAssign(commonState.studioSet.Common.DrumCompressorAndEqualizerOutputAssign[0]);
+                cbDrumCompEQ1OutputAssign.SelectedIndex = commonState.StudioSet.Common.DrumCompressorAndEqualizerOutputAssign[0];
+                SetStudioSetCommonEQ1OutputAssign(commonState.StudioSet.Common.DrumCompressorAndEqualizerOutputAssign[0]);
             }
-            if (cbDrumCompEQ2OutputAssign.SelectedIndex != commonState.studioSet.Common.DrumCompressorAndEqualizerOutputAssign[1])
+            if (cbDrumCompEQ2OutputAssign.SelectedIndex != commonState.StudioSet.Common.DrumCompressorAndEqualizerOutputAssign[1])
             {
-                cbDrumCompEQ2OutputAssign.SelectedIndex = commonState.studioSet.Common.DrumCompressorAndEqualizerOutputAssign[1];
-                SetStudioSetCommonEQ2OutputAssign(commonState.studioSet.Common.DrumCompressorAndEqualizerOutputAssign[1]);
+                cbDrumCompEQ2OutputAssign.SelectedIndex = commonState.StudioSet.Common.DrumCompressorAndEqualizerOutputAssign[1];
+                SetStudioSetCommonEQ2OutputAssign(commonState.StudioSet.Common.DrumCompressorAndEqualizerOutputAssign[1]);
             }
-            if (cbDrumCompEQ3OutputAssign.SelectedIndex != commonState.studioSet.Common.DrumCompressorAndEqualizerOutputAssign[2])
+            if (cbDrumCompEQ3OutputAssign.SelectedIndex != commonState.StudioSet.Common.DrumCompressorAndEqualizerOutputAssign[2])
             {
-                cbDrumCompEQ3OutputAssign.SelectedIndex = commonState.studioSet.Common.DrumCompressorAndEqualizerOutputAssign[2];
-                SetStudioSetCommonEQ3OutputAssign(commonState.studioSet.Common.DrumCompressorAndEqualizerOutputAssign[2]);
+                cbDrumCompEQ3OutputAssign.SelectedIndex = commonState.StudioSet.Common.DrumCompressorAndEqualizerOutputAssign[2];
+                SetStudioSetCommonEQ3OutputAssign(commonState.StudioSet.Common.DrumCompressorAndEqualizerOutputAssign[2]);
             }
-            if (cbDrumCompEQ4OutputAssign.SelectedIndex != commonState.studioSet.Common.DrumCompressorAndEqualizerOutputAssign[3])
+            if (cbDrumCompEQ4OutputAssign.SelectedIndex != commonState.StudioSet.Common.DrumCompressorAndEqualizerOutputAssign[3])
             {
-                cbDrumCompEQ4OutputAssign.SelectedIndex = commonState.studioSet.Common.DrumCompressorAndEqualizerOutputAssign[3];
-                SetStudioSetCommonEQ4OutputAssign(commonState.studioSet.Common.DrumCompressorAndEqualizerOutputAssign[3]);
+                cbDrumCompEQ4OutputAssign.SelectedIndex = commonState.StudioSet.Common.DrumCompressorAndEqualizerOutputAssign[3];
+                SetStudioSetCommonEQ4OutputAssign(commonState.StudioSet.Common.DrumCompressorAndEqualizerOutputAssign[3]);
             }
-            if (cbDrumCompEQ5OutputAssign.SelectedIndex != commonState.studioSet.Common.DrumCompressorAndEqualizerOutputAssign[4])
+            if (cbDrumCompEQ5OutputAssign.SelectedIndex != commonState.StudioSet.Common.DrumCompressorAndEqualizerOutputAssign[4])
             {
-                cbDrumCompEQ5OutputAssign.SelectedIndex = commonState.studioSet.Common.DrumCompressorAndEqualizerOutputAssign[4];
-                SetStudioSetCommonEQ5OutputAssign(commonState.studioSet.Common.DrumCompressorAndEqualizerOutputAssign[4]);
+                cbDrumCompEQ5OutputAssign.SelectedIndex = commonState.StudioSet.Common.DrumCompressorAndEqualizerOutputAssign[4];
+                SetStudioSetCommonEQ5OutputAssign(commonState.StudioSet.Common.DrumCompressorAndEqualizerOutputAssign[4]);
             }
-            if (cbDrumCompEQ6OutputAssign.SelectedIndex != commonState.studioSet.Common.DrumCompressorAndEqualizerOutputAssign[5])
+            if (cbDrumCompEQ6OutputAssign.SelectedIndex != commonState.StudioSet.Common.DrumCompressorAndEqualizerOutputAssign[5])
             {
-                cbDrumCompEQ6OutputAssign.SelectedIndex = commonState.studioSet.Common.DrumCompressorAndEqualizerOutputAssign[5];
-                SetStudioSetCommonEQ6OutputAssign(commonState.studioSet.Common.DrumCompressorAndEqualizerOutputAssign[5]);
+                cbDrumCompEQ6OutputAssign.SelectedIndex = commonState.StudioSet.Common.DrumCompressorAndEqualizerOutputAssign[5];
+                SetStudioSetCommonEQ6OutputAssign(commonState.StudioSet.Common.DrumCompressorAndEqualizerOutputAssign[5]);
             }
-            if (cbDrumCompEQ.IsChecked != commonState.studioSet.Common.DrumCompressorAndEqualizer)
+            if (cbDrumCompEQ.IsChecked != commonState.StudioSet.Common.DrumCompressorAndEqualizer)
             {
-                cbDrumCompEQ.IsChecked = commonState.studioSet.Common.DrumCompressorAndEqualizer;
-                SetStudioSetCompEQ_Click((Boolean)commonState.studioSet.Common.DrumCompressorAndEqualizer);
+                cbDrumCompEQ.IsChecked = commonState.StudioSet.Common.DrumCompressorAndEqualizer;
+                SetStudioSetCompEQ_Click((Boolean)commonState.StudioSet.Common.DrumCompressorAndEqualizer);
             }
-            if (cbExtPartMute.IsChecked != commonState.studioSet.Common.ExternalPartMute)
+            if (cbExtPartMute.IsChecked != commonState.StudioSet.Common.ExternalPartMute)
             {
-                cbExtPartMute.IsChecked = commonState.studioSet.Common.ExternalPartMute;
-                SetStudioSetExtPartMute((Boolean)commonState.studioSet.Common.ExternalPartMute);
+                cbExtPartMute.IsChecked = commonState.StudioSet.Common.ExternalPartMute;
+                SetStudioSetExtPartMute((Boolean)commonState.StudioSet.Common.ExternalPartMute);
             }
-            if (slExtPartLevel.Value != commonState.studioSet.Common.ExternalPartLevel)
+            if (slExtPartLevel.Value != commonState.StudioSet.Common.ExternalPartLevel)
             {
-                slExtPartLevel.Value = commonState.studioSet.Common.ExternalPartLevel;
-                SetStudioSetExtPartLevel(commonState.studioSet.Common.ExternalPartLevel);
+                slExtPartLevel.Value = commonState.StudioSet.Common.ExternalPartLevel;
+                SetStudioSetExtPartLevel(commonState.StudioSet.Common.ExternalPartLevel);
             }
-            if (slExtPartChorusSend.Value != commonState.studioSet.Common.ExternalPartChorusSendLevel)
+            if (slExtPartChorusSend.Value != commonState.StudioSet.Common.ExternalPartChorusSendLevel)
             {
-                slExtPartChorusSend.Value = commonState.studioSet.Common.ExternalPartChorusSendLevel;
-                SetStudioSetExtPartChorusSend(commonState.studioSet.Common.ExternalPartChorusSendLevel);
+                slExtPartChorusSend.Value = commonState.StudioSet.Common.ExternalPartChorusSendLevel;
+                SetStudioSetExtPartChorusSend(commonState.StudioSet.Common.ExternalPartChorusSendLevel);
             }
-            if (slExtPartReverbSend.Value != commonState.studioSet.Common.ExternalPartReverbSendLevel)
+            if (slExtPartReverbSend.Value != commonState.StudioSet.Common.ExternalPartReverbSendLevel)
             {
-                slExtPartReverbSend.Value = commonState.studioSet.Common.ExternalPartReverbSendLevel;
-                SetStudioSetExtPartReverbSend(commonState.studioSet.Common.ExternalPartReverbSendLevel);
+                slExtPartReverbSend.Value = commonState.StudioSet.Common.ExternalPartReverbSendLevel;
+                SetStudioSetExtPartReverbSend(commonState.StudioSet.Common.ExternalPartReverbSendLevel);
             }
-            if (slSystemCommonMasterTune.Value != commonState.studioSet.SystemCommon.MasterTune)
+            if (slSystemCommonMasterTune.Value != commonState.StudioSet.SystemCommon.MasterTune)
             {
-                slSystemCommonMasterTune.Value = commonState.studioSet.SystemCommon.MasterTune;
+                slSystemCommonMasterTune.Value = commonState.StudioSet.SystemCommon.MasterTune;
                 SetStudioSetSystemCommonMasterTune((Int32)slSystemCommonMasterTune.Value);
             }
-            if (slSystemCommonMasterKeyShift.Value != commonState.studioSet.SystemCommon.MasterKeyShift)
+            if (slSystemCommonMasterKeyShift.Value != commonState.StudioSet.SystemCommon.MasterKeyShift)
             {
-                slSystemCommonMasterKeyShift.Value = commonState.studioSet.SystemCommon.MasterKeyShift;
+                slSystemCommonMasterKeyShift.Value = commonState.StudioSet.SystemCommon.MasterKeyShift;
                 SetStudioSetSystemCommonMasterKeyShift((Int32)slSystemCommonMasterKeyShift.Value);
             }
-            if (slSystemCommonMasterLevel.Value != commonState.studioSet.SystemCommon.MasterLevel)
+            if (slSystemCommonMasterLevel.Value != commonState.StudioSet.SystemCommon.MasterLevel)
             {
-                slSystemCommonMasterLevel.Value = commonState.studioSet.SystemCommon.MasterLevel;
+                slSystemCommonMasterLevel.Value = commonState.StudioSet.SystemCommon.MasterLevel;
                 SetStudioSetSystemCommonMasterLevel((Int32)slSystemCommonMasterLevel.Value);
             }
-            if (cbSystemCommonScaleTuneSwitch.IsChecked != commonState.studioSet.SystemCommon.ScaleTuneSwitch)
+            if (cbSystemCommonScaleTuneSwitch.IsChecked != commonState.StudioSet.SystemCommon.ScaleTuneSwitch)
             {
-                cbSystemCommonScaleTuneSwitch.IsChecked = commonState.studioSet.SystemCommon.ScaleTuneSwitch;
+                cbSystemCommonScaleTuneSwitch.IsChecked = commonState.StudioSet.SystemCommon.ScaleTuneSwitch;
                 SetStudioSetSystemCommonScaleTuneSwitch((Boolean)cbSystemCommonScaleTuneSwitch.IsChecked);
             }
-            if (cbSystemCommonStudioSetControlChannel.SelectedIndex != commonState.studioSet.SystemCommon.StudioSetControlChannel)
+            if (cbSystemCommonStudioSetControlChannel.SelectedIndex != commonState.StudioSet.SystemCommon.StudioSetControlChannel)
             {
-                cbSystemCommonStudioSetControlChannel.SelectedIndex = commonState.studioSet.SystemCommon.StudioSetControlChannel;
+                cbSystemCommonStudioSetControlChannel.SelectedIndex = commonState.StudioSet.SystemCommon.StudioSetControlChannel;
                 SetStudioSetSystemCommonStudioSetControlChannel(cbSystemCommonStudioSetControlChannel.SelectedIndex);
             }
-            if (cbSystemCommonSystemControlSource1.SelectedIndex != commonState.studioSet.SystemCommon.SystemControl1Source)
+            if (cbSystemCommonSystemControlSource1.SelectedIndex != commonState.StudioSet.SystemCommon.SystemControl1Source)
             {
-                cbSystemCommonSystemControlSource1.SelectedIndex = commonState.studioSet.SystemCommon.SystemControl1Source;
+                cbSystemCommonSystemControlSource1.SelectedIndex = commonState.StudioSet.SystemCommon.SystemControl1Source;
                 SetStudioSetSystemCommonSystemControlSource1(cbSystemCommonSystemControlSource1.SelectedIndex);
             }
-            if (cbSystemCommonSystemControlSource2.SelectedIndex != commonState.studioSet.SystemCommon.SystemControl2Source)
+            if (cbSystemCommonSystemControlSource2.SelectedIndex != commonState.StudioSet.SystemCommon.SystemControl2Source)
             {
-                cbSystemCommonSystemControlSource2.SelectedIndex = commonState.studioSet.SystemCommon.SystemControl2Source;
+                cbSystemCommonSystemControlSource2.SelectedIndex = commonState.StudioSet.SystemCommon.SystemControl2Source;
                 SetStudioSetSystemCommonSystemControlSource2(cbSystemCommonSystemControlSource2.SelectedIndex);
             }
-            if (cbSystemCommonSystemControlSource3.SelectedIndex != commonState.studioSet.SystemCommon.SystemControl3Source)
+            if (cbSystemCommonSystemControlSource3.SelectedIndex != commonState.StudioSet.SystemCommon.SystemControl3Source)
             {
-                cbSystemCommonSystemControlSource3.SelectedIndex = commonState.studioSet.SystemCommon.SystemControl3Source;
+                cbSystemCommonSystemControlSource3.SelectedIndex = commonState.StudioSet.SystemCommon.SystemControl3Source;
                 SetStudioSetSystemCommonSystemControlSource3(cbSystemCommonSystemControlSource3.SelectedIndex);
             }
-            if (cbSystemCommonSystemControlSource4.SelectedIndex != commonState.studioSet.SystemCommon.SystemControl4Source)
+            if (cbSystemCommonSystemControlSource4.SelectedIndex != commonState.StudioSet.SystemCommon.SystemControl4Source)
             {
-                cbSystemCommonSystemControlSource4.SelectedIndex = commonState.studioSet.SystemCommon.SystemControl4Source;
+                cbSystemCommonSystemControlSource4.SelectedIndex = commonState.StudioSet.SystemCommon.SystemControl4Source;
                 SetStudioSetSystemCommonSystemControlSource4(cbSystemCommonSystemControlSource4.SelectedIndex);
             }
-            if (cbSystemCommonControlSource.SelectedIndex != commonState.studioSet.SystemCommon.ControlSource)
+            if (cbSystemCommonControlSource.SelectedIndex != commonState.StudioSet.SystemCommon.ControlSource)
             {
-                cbSystemCommonControlSource.SelectedIndex = commonState.studioSet.SystemCommon.ControlSource;
+                cbSystemCommonControlSource.SelectedIndex = commonState.StudioSet.SystemCommon.ControlSource;
                 SetStudioSetSystemCommonControlSource(cbSystemCommonControlSource.SelectedIndex);
             }
-            if (cbSystemCommonSystemClockSource.SelectedIndex != commonState.studioSet.SystemCommon.SystemClockSource)
+            if (cbSystemCommonSystemClockSource.SelectedIndex != commonState.StudioSet.SystemCommon.SystemClockSource)
             {
-                cbSystemCommonSystemClockSource.SelectedIndex = commonState.studioSet.SystemCommon.SystemClockSource;
+                cbSystemCommonSystemClockSource.SelectedIndex = commonState.StudioSet.SystemCommon.SystemClockSource;
                 SetStudioSetSystemCommonSystemClockSource(cbSystemCommonSystemClockSource.SelectedIndex);
             }
-            if (slSystemCommonSystemTempo.Value != commonState.studioSet.SystemCommon.SystemTempo)
+            if (slSystemCommonSystemTempo.Value != commonState.StudioSet.SystemCommon.SystemTempo)
             {
-                slSystemCommonSystemTempo.Value = commonState.studioSet.SystemCommon.SystemTempo;
+                slSystemCommonSystemTempo.Value = commonState.StudioSet.SystemCommon.SystemTempo;
                 SetStudioSetSystemCommonSystemTempo((Int32)slSystemCommonSystemTempo.Value);
             }
-            if (cbSystemCommonTempoAssignSource.SelectedIndex != commonState.studioSet.SystemCommon.TempoAssignSource)
+            if (cbSystemCommonTempoAssignSource.SelectedIndex != commonState.StudioSet.SystemCommon.TempoAssignSource)
             {
-                cbSystemCommonTempoAssignSource.SelectedIndex = commonState.studioSet.SystemCommon.TempoAssignSource;
+                cbSystemCommonTempoAssignSource.SelectedIndex = commonState.StudioSet.SystemCommon.TempoAssignSource;
                 SetStudioSetSystemCommonTempoAssignSource(cbSystemCommonTempoAssignSource.SelectedIndex);
             }
-            if (cbSystemCommonReceiveProgramChange.IsChecked != commonState.studioSet.SystemCommon.ReceiveProgramChange)
+            if (cbSystemCommonReceiveProgramChange.IsChecked != commonState.StudioSet.SystemCommon.ReceiveProgramChange)
             {
-                cbSystemCommonReceiveProgramChange.IsChecked = commonState.studioSet.SystemCommon.ReceiveProgramChange;
+                cbSystemCommonReceiveProgramChange.IsChecked = commonState.StudioSet.SystemCommon.ReceiveProgramChange;
                 SetStudioSetSystemCommonReceiveProgramChange((Boolean)cbSystemCommonReceiveProgramChange.IsChecked);
             }
-            if (cbSystemCommonReceiveBankSelect.IsChecked != commonState.studioSet.SystemCommon.ReceiveBankSelect)
+            if (cbSystemCommonReceiveBankSelect.IsChecked != commonState.StudioSet.SystemCommon.ReceiveBankSelect)
             {
-                cbSystemCommonReceiveBankSelect.IsChecked = commonState.studioSet.SystemCommon.ReceiveBankSelect;
+                cbSystemCommonReceiveBankSelect.IsChecked = commonState.StudioSet.SystemCommon.ReceiveBankSelect;
                 SetStudioSetSystemCommonReceiveBankSelect((Boolean)cbSystemCommonReceiveBankSelect.IsChecked);
             }
-            if (cbSystemCommonSurroundCenterSpeakerSwitch.IsChecked != commonState.studioSet.SystemCommon.SurroundCenterSpeakerSwitch)
+            if (cbSystemCommonSurroundCenterSpeakerSwitch.IsChecked != commonState.StudioSet.SystemCommon.SurroundCenterSpeakerSwitch)
             {
-                cbSystemCommonSurroundCenterSpeakerSwitch.IsChecked = commonState.studioSet.SystemCommon.SurroundCenterSpeakerSwitch;
+                cbSystemCommonSurroundCenterSpeakerSwitch.IsChecked = commonState.StudioSet.SystemCommon.SurroundCenterSpeakerSwitch;
                 SetStudioSetSystemCommonSurroundCenterSpeakerSwitch((Boolean)cbSystemCommonSurroundCenterSpeakerSwitch.IsChecked);
             }
-            if (cbSystemCommonSurroundSubWooferSwitch.IsChecked != commonState.studioSet.SystemCommon.SurroundSubWooferSwitch)
+            if (cbSystemCommonSurroundSubWooferSwitch.IsChecked != commonState.StudioSet.SystemCommon.SurroundSubWooferSwitch)
             {
-                cbSystemCommonSurroundSubWooferSwitch.IsChecked = commonState.studioSet.SystemCommon.SurroundSubWooferSwitch;
+                cbSystemCommonSurroundSubWooferSwitch.IsChecked = commonState.StudioSet.SystemCommon.SurroundSubWooferSwitch;
                 SetStudioSetSystemCommonSurroundSubWooferSwitch((Boolean)cbSystemCommonSurroundSubWooferSwitch.IsChecked);
             }
-            if (cbSystemCommonStereoOutputMode.SelectedIndex != commonState.studioSet.SystemCommon.StereoOutputMode)
+            if (cbSystemCommonStereoOutputMode.SelectedIndex != commonState.StudioSet.SystemCommon.StereoOutputMode)
             {
-                cbSystemCommonStereoOutputMode.SelectedIndex = commonState.studioSet.SystemCommon.StereoOutputMode;
+                cbSystemCommonStereoOutputMode.SelectedIndex = commonState.StudioSet.SystemCommon.StereoOutputMode;
                 SetStudioSetSystemCommonStereoOutputMode(cbSystemCommonStereoOutputMode.SelectedIndex);
             }
-            if (slVoiceReserve01.Value != commonState.studioSet.Common.VoiceReserve[0])
+            if (slVoiceReserve01.Value != commonState.StudioSet.Common.VoiceReserve[0])
             {
-                slVoiceReserve01.Value = commonState.studioSet.Common.VoiceReserve[0];
+                slVoiceReserve01.Value = commonState.StudioSet.Common.VoiceReserve[0];
                 SetStudioSetVoiceReserve01((Int32)slVoiceReserve01.Value);
             }
-            if (slVoiceReserve02.Value != commonState.studioSet.Common.VoiceReserve[1])
+            if (slVoiceReserve02.Value != commonState.StudioSet.Common.VoiceReserve[1])
             {
-                slVoiceReserve02.Value = commonState.studioSet.Common.VoiceReserve[1];
+                slVoiceReserve02.Value = commonState.StudioSet.Common.VoiceReserve[1];
                 SetStudioSetVoiceReserve02((Int32)slVoiceReserve02.Value);
             }
-            if (slVoiceReserve03.Value != commonState.studioSet.Common.VoiceReserve[2])
+            if (slVoiceReserve03.Value != commonState.StudioSet.Common.VoiceReserve[2])
             {
-                slVoiceReserve03.Value = commonState.studioSet.Common.VoiceReserve[2];
+                slVoiceReserve03.Value = commonState.StudioSet.Common.VoiceReserve[2];
                 SetStudioSetVoiceReserve03((Int32)slVoiceReserve03.Value);
             }
-            if (slVoiceReserve04.Value != commonState.studioSet.Common.VoiceReserve[3])
+            if (slVoiceReserve04.Value != commonState.StudioSet.Common.VoiceReserve[3])
             {
-                slVoiceReserve04.Value = commonState.studioSet.Common.VoiceReserve[3];
+                slVoiceReserve04.Value = commonState.StudioSet.Common.VoiceReserve[3];
                 SetStudioSetVoiceReserve04((Int32)slVoiceReserve04.Value);
             }
-            if (slVoiceReserve05.Value != commonState.studioSet.Common.VoiceReserve[4])
+            if (slVoiceReserve05.Value != commonState.StudioSet.Common.VoiceReserve[4])
             {
-                slVoiceReserve05.Value = commonState.studioSet.Common.VoiceReserve[4];
+                slVoiceReserve05.Value = commonState.StudioSet.Common.VoiceReserve[4];
                 SetStudioSetVoiceReserve05((Int32)slVoiceReserve05.Value);
             }
-            if (slVoiceReserve06.Value != commonState.studioSet.Common.VoiceReserve[5])
+            if (slVoiceReserve06.Value != commonState.StudioSet.Common.VoiceReserve[5])
             {
-                slVoiceReserve06.Value = commonState.studioSet.Common.VoiceReserve[5];
+                slVoiceReserve06.Value = commonState.StudioSet.Common.VoiceReserve[5];
                 SetStudioSetVoiceReserve06((Int32)slVoiceReserve06.Value);
             }
-            if (slVoiceReserve07.Value != commonState.studioSet.Common.VoiceReserve[6])
+            if (slVoiceReserve07.Value != commonState.StudioSet.Common.VoiceReserve[6])
             {
-                slVoiceReserve07.Value = commonState.studioSet.Common.VoiceReserve[6];
+                slVoiceReserve07.Value = commonState.StudioSet.Common.VoiceReserve[6];
                 SetStudioSetVoiceReserve07((Int32)slVoiceReserve07.Value);
             }
-            if (slVoiceReserve08.Value != commonState.studioSet.Common.VoiceReserve[7])
+            if (slVoiceReserve08.Value != commonState.StudioSet.Common.VoiceReserve[7])
             {
-                slVoiceReserve08.Value = commonState.studioSet.Common.VoiceReserve[7];
+                slVoiceReserve08.Value = commonState.StudioSet.Common.VoiceReserve[7];
                 SetStudioSetVoiceReserve08((Int32)slVoiceReserve08.Value);
             }
-            if (slVoiceReserve09.Value != commonState.studioSet.Common.VoiceReserve[8])
+            if (slVoiceReserve09.Value != commonState.StudioSet.Common.VoiceReserve[8])
             {
-                slVoiceReserve09.Value = commonState.studioSet.Common.VoiceReserve[8];
+                slVoiceReserve09.Value = commonState.StudioSet.Common.VoiceReserve[8];
                 SetStudioSetVoiceReserve09((Int32)slVoiceReserve09.Value);
             }
-            if (slVoiceReserve10.Value != commonState.studioSet.Common.VoiceReserve[9])
+            if (slVoiceReserve10.Value != commonState.StudioSet.Common.VoiceReserve[9])
             {
-                slVoiceReserve10.Value = commonState.studioSet.Common.VoiceReserve[9];
+                slVoiceReserve10.Value = commonState.StudioSet.Common.VoiceReserve[9];
                 SetStudioSetVoiceReserve10((Int32)slVoiceReserve10.Value);
             }
-            if (slVoiceReserve11.Value != commonState.studioSet.Common.VoiceReserve[10])
+            if (slVoiceReserve11.Value != commonState.StudioSet.Common.VoiceReserve[10])
             {
-                slVoiceReserve11.Value = commonState.studioSet.Common.VoiceReserve[10];
+                slVoiceReserve11.Value = commonState.StudioSet.Common.VoiceReserve[10];
                 SetStudioSetVoiceReserve11((Int32)slVoiceReserve11.Value);
             }
-            if (slVoiceReserve12.Value != commonState.studioSet.Common.VoiceReserve[11])
+            if (slVoiceReserve12.Value != commonState.StudioSet.Common.VoiceReserve[11])
             {
-                slVoiceReserve12.Value = commonState.studioSet.Common.VoiceReserve[11];
+                slVoiceReserve12.Value = commonState.StudioSet.Common.VoiceReserve[11];
                 SetStudioSetVoiceReserve12((Int32)slVoiceReserve12.Value);
             }
-            if (slVoiceReserve13.Value != commonState.studioSet.Common.VoiceReserve[12])
+            if (slVoiceReserve13.Value != commonState.StudioSet.Common.VoiceReserve[12])
             {
-                slVoiceReserve13.Value = commonState.studioSet.Common.VoiceReserve[12];
+                slVoiceReserve13.Value = commonState.StudioSet.Common.VoiceReserve[12];
                 SetStudioSetVoiceReserve13((Int32)slVoiceReserve13.Value);
             }
-            if (slVoiceReserve14.Value != commonState.studioSet.Common.VoiceReserve[13])
+            if (slVoiceReserve14.Value != commonState.StudioSet.Common.VoiceReserve[13])
             {
-                slVoiceReserve14.Value = commonState.studioSet.Common.VoiceReserve[13];
+                slVoiceReserve14.Value = commonState.StudioSet.Common.VoiceReserve[13];
                 SetStudioSetVoiceReserve14((Int32)slVoiceReserve14.Value);
             }
-            if (slVoiceReserve15.Value != commonState.studioSet.Common.VoiceReserve[14])
+            if (slVoiceReserve15.Value != commonState.StudioSet.Common.VoiceReserve[14])
             {
-                slVoiceReserve15.Value = commonState.studioSet.Common.VoiceReserve[14];
+                slVoiceReserve15.Value = commonState.StudioSet.Common.VoiceReserve[14];
                 SetStudioSetVoiceReserve15((Int32)slVoiceReserve15.Value);
             }
-            if (slVoiceReserve16.Value != commonState.studioSet.Common.VoiceReserve[15])
+            if (slVoiceReserve16.Value != commonState.StudioSet.Common.VoiceReserve[15])
             {
-                slVoiceReserve16.Value = commonState.studioSet.Common.VoiceReserve[15];
+                slVoiceReserve16.Value = commonState.StudioSet.Common.VoiceReserve[15];
                 SetStudioSetVoiceReserve16((Int32)slVoiceReserve16.Value);
             }
             //if (cbStudioSetChorusType.SelectedIndex != commonState.studioSet.CommonChorus.Type)
             {
-                cbStudioSetChorusType.SelectedIndex = commonState.studioSet.CommonChorus.Type;
+                cbStudioSetChorusType.SelectedIndex = commonState.StudioSet.CommonChorus.Type;
                 SetStudioSetStudioSetChorusType(cbStudioSetChorusType.SelectedIndex);
             }
-            if (slChorusLevel.Value != commonState.studioSet.CommonChorus.Level)
+            if (slChorusLevel.Value != commonState.StudioSet.CommonChorus.Level)
             {
-                slChorusLevel.Value = commonState.studioSet.CommonChorus.Level;
+                slChorusLevel.Value = commonState.StudioSet.CommonChorus.Level;
                 SetStudioSetChorusLevel((Int32)slChorusLevel.Value);
             }
-            if (cbChorusOutputAssign.SelectedIndex != commonState.studioSet.CommonChorus.OutputAssign)
+            if (cbChorusOutputAssign.SelectedIndex != commonState.StudioSet.CommonChorus.OutputAssign)
             {
-                cbChorusOutputAssign.SelectedIndex = commonState.studioSet.CommonChorus.OutputAssign;
+                cbChorusOutputAssign.SelectedIndex = commonState.StudioSet.CommonChorus.OutputAssign;
                 SetStudioSetChorusOutputAssign(cbChorusOutputAssign.SelectedIndex);
             }
-            if (cbChorusChorusFilterType.SelectedIndex != commonState.studioSet.CommonChorus.Chorus.FilterType)
+            if (cbChorusChorusFilterType.SelectedIndex != commonState.StudioSet.CommonChorus.Chorus.FilterType)
             {
-                cbChorusChorusFilterType.SelectedIndex = commonState.studioSet.CommonChorus.Chorus.FilterType;
+                cbChorusChorusFilterType.SelectedIndex = commonState.StudioSet.CommonChorus.Chorus.FilterType;
                 SetStudioSetChorusChorusFilterType(cbChorusChorusFilterType.SelectedIndex);
             }
-            if (cbChorusChorusFilterCutoffFrequency.SelectedIndex != commonState.studioSet.CommonChorus.Chorus.FilterCutoffFrequency)
+            if (cbChorusChorusFilterCutoffFrequency.SelectedIndex != commonState.StudioSet.CommonChorus.Chorus.FilterCutoffFrequency)
             {
-                cbChorusChorusFilterCutoffFrequency.SelectedIndex = commonState.studioSet.CommonChorus.Chorus.FilterCutoffFrequency;
+                cbChorusChorusFilterCutoffFrequency.SelectedIndex = commonState.StudioSet.CommonChorus.Chorus.FilterCutoffFrequency;
                 SetStudioSetChorusChorusFilterCutoffFrequency(cbChorusChorusFilterCutoffFrequency.SelectedIndex);
             }
-            if (slChorusChorusPreDelay.Value != commonState.studioSet.CommonChorus.Chorus.PreDelay)
+            if (slChorusChorusPreDelay.Value != commonState.StudioSet.CommonChorus.Chorus.PreDelay)
             {
-                slChorusChorusPreDelay.Value = commonState.studioSet.CommonChorus.Chorus.PreDelay;
+                slChorusChorusPreDelay.Value = commonState.StudioSet.CommonChorus.Chorus.PreDelay;
                 SetStudioSetChorusChorusPreDelay((Int32)slChorusChorusPreDelay.Value);
             }
-            if (cbChorusChorusRateHzNote.SelectedIndex != commonState.studioSet.CommonChorus.Chorus.RateHzNote)
+            if (cbChorusChorusRateHzNote.SelectedIndex != commonState.StudioSet.CommonChorus.Chorus.RateHzNote)
             {
                 try
                 {
-                    cbChorusChorusRateHzNote.SelectedIndex = commonState.studioSet.CommonChorus.Chorus.RateHzNote;
+                    cbChorusChorusRateHzNote.SelectedIndex = commonState.StudioSet.CommonChorus.Chorus.RateHzNote;
                     SetStudioSetChorusChorusRate(cbChorusChorusRateHzNote.SelectedIndex);
                 }
                 catch (Exception e)
@@ -10199,36 +10199,36 @@ namespace Integra_7_Xamarin
                     t.Trace(e.Message + " setting cbChorusChorusRateHzNote");
                 }
             }
-            if (slChorusChorusRateHz.Value != commonState.studioSet.CommonChorus.Chorus.RateHz)
+            if (slChorusChorusRateHz.Value != commonState.StudioSet.CommonChorus.Chorus.RateHz)
             {
-                slChorusChorusRateHz.Value = commonState.studioSet.CommonChorus.Chorus.RateHz;
+                slChorusChorusRateHz.Value = commonState.StudioSet.CommonChorus.Chorus.RateHz;
                 SetStudioSetChorusChorusRateHz((Int32)slChorusChorusRateHz.Value);
             }
-            if (slChorusChorusRateNote.Value != commonState.studioSet.CommonChorus.Chorus.RateNote)
+            if (slChorusChorusRateNote.Value != commonState.StudioSet.CommonChorus.Chorus.RateNote)
             {
-                slChorusChorusRateNote.Value = commonState.studioSet.CommonChorus.Chorus.RateNote;
+                slChorusChorusRateNote.Value = commonState.StudioSet.CommonChorus.Chorus.RateNote;
                 SetStudioSetChorusChorusRateNote((Int32)slChorusChorusRateNote.Value);
             }
-            if (slChorusChorusDepth.Value != commonState.studioSet.CommonChorus.Chorus.Depth)
+            if (slChorusChorusDepth.Value != commonState.StudioSet.CommonChorus.Chorus.Depth)
             {
-                slChorusChorusDepth.Value = commonState.studioSet.CommonChorus.Chorus.Depth;
+                slChorusChorusDepth.Value = commonState.StudioSet.CommonChorus.Chorus.Depth;
                 SetStudioSetChorusChorusDepth((Int32)slChorusChorusDepth.Value);
             }
-            if (slChorusChorusPhase.Value != commonState.studioSet.CommonChorus.Chorus.Phase)
+            if (slChorusChorusPhase.Value != commonState.StudioSet.CommonChorus.Chorus.Phase)
             {
-                slChorusChorusPhase.Value = commonState.studioSet.CommonChorus.Chorus.Phase;
+                slChorusChorusPhase.Value = commonState.StudioSet.CommonChorus.Chorus.Phase;
                 SetStudioSetChorusChorusPhase((Int32)slChorusChorusPhase.Value);
             }
-            if (slChorusChorusFeedback.Value != commonState.studioSet.CommonChorus.Chorus.Feedback)
+            if (slChorusChorusFeedback.Value != commonState.StudioSet.CommonChorus.Chorus.Feedback)
             {
-                slChorusChorusFeedback.Value = commonState.studioSet.CommonChorus.Chorus.Feedback;
+                slChorusChorusFeedback.Value = commonState.StudioSet.CommonChorus.Chorus.Feedback;
                 SetStudioSetChorusChorusFeedback((Int32)slChorusChorusFeedback.Value);
             }
-            if (cbChorusDelayLeftMsNote.SelectedIndex != commonState.studioSet.CommonChorus.Delay.LeftMsNote)
+            if (cbChorusDelayLeftMsNote.SelectedIndex != commonState.StudioSet.CommonChorus.Delay.LeftMsNote)
             {
                 try
                 {
-                    cbChorusDelayLeftMsNote.SelectedIndex = commonState.studioSet.CommonChorus.Delay.LeftMsNote;
+                    cbChorusDelayLeftMsNote.SelectedIndex = commonState.StudioSet.CommonChorus.Delay.LeftMsNote;
                     SetStudioSetChorusDelayLeft(cbChorusDelayLeftMsNote.SelectedIndex);
                 }
                 catch (Exception e)
@@ -10236,21 +10236,21 @@ namespace Integra_7_Xamarin
                     t.Trace(e.Message + " setting cbChorusDelayLeftMsNote");
                 }
             }
-            if (slChorusDelayLeftHz.Value != commonState.studioSet.CommonChorus.Delay.LeftMs)
+            if (slChorusDelayLeftHz.Value != commonState.StudioSet.CommonChorus.Delay.LeftMs)
             {
-                slChorusDelayLeftHz.Value = commonState.studioSet.CommonChorus.Delay.LeftMs;
+                slChorusDelayLeftHz.Value = commonState.StudioSet.CommonChorus.Delay.LeftMs;
                 SetStudioSetChorusDelayLeftHz((Int32)slChorusDelayLeftHz.Value);
             }
-            if (slChorusDelayLeftNote.Value != commonState.studioSet.CommonChorus.Delay.LeftNote)
+            if (slChorusDelayLeftNote.Value != commonState.StudioSet.CommonChorus.Delay.LeftNote)
             {
-                slChorusDelayLeftNote.Value = commonState.studioSet.CommonChorus.Delay.LeftNote;
+                slChorusDelayLeftNote.Value = commonState.StudioSet.CommonChorus.Delay.LeftNote;
                 SetStudioSetChorusDelayLeftNote((Int32)slChorusDelayLeftNote.Value);
             }
-            if (cbChorusDelayRightMsNote.SelectedIndex != commonState.studioSet.CommonChorus.Delay.RightMsNote)
+            if (cbChorusDelayRightMsNote.SelectedIndex != commonState.StudioSet.CommonChorus.Delay.RightMsNote)
             {
                 try
                 {
-                    cbChorusDelayRightMsNote.SelectedIndex = commonState.studioSet.CommonChorus.Delay.RightMsNote;
+                    cbChorusDelayRightMsNote.SelectedIndex = commonState.StudioSet.CommonChorus.Delay.RightMsNote;
                     SetStudioSetChorusDelayRight(cbChorusDelayRightMsNote.SelectedIndex);
                 }
                 catch (Exception e)
@@ -10258,21 +10258,21 @@ namespace Integra_7_Xamarin
                     t.Trace(e.Message + " setting cbChorusDelayRightMsNote");
                 }
             }
-            if (slChorusDelayRightHz.Value != commonState.studioSet.CommonChorus.Delay.RightMs)
+            if (slChorusDelayRightHz.Value != commonState.StudioSet.CommonChorus.Delay.RightMs)
             {
-                slChorusDelayRightHz.Value = commonState.studioSet.CommonChorus.Delay.RightMs;
+                slChorusDelayRightHz.Value = commonState.StudioSet.CommonChorus.Delay.RightMs;
                 SetStudioSetChorusDelayRightHz((Int32)slChorusDelayRightHz.Value);
             }
-            if (slChorusDelayRightNote.Value != commonState.studioSet.CommonChorus.Delay.RightNote)
+            if (slChorusDelayRightNote.Value != commonState.StudioSet.CommonChorus.Delay.RightNote)
             {
-                slChorusDelayRightNote.Value = commonState.studioSet.CommonChorus.Delay.RightNote;
+                slChorusDelayRightNote.Value = commonState.StudioSet.CommonChorus.Delay.RightNote;
                 SetStudioSetChorusDelayRightNote((Int32)slChorusDelayRightNote.Value);
             }
-            if (cbChorusDelayCenterMsNote.SelectedIndex != commonState.studioSet.CommonChorus.Delay.CenterMsNote)
+            if (cbChorusDelayCenterMsNote.SelectedIndex != commonState.StudioSet.CommonChorus.Delay.CenterMsNote)
             {
                 try
                 {
-                    cbChorusDelayCenterMsNote.SelectedIndex = commonState.studioSet.CommonChorus.Delay.CenterMsNote;
+                    cbChorusDelayCenterMsNote.SelectedIndex = commonState.StudioSet.CommonChorus.Delay.CenterMsNote;
                     SetStudioSetChorusDelayCenter(cbChorusDelayCenterMsNote.SelectedIndex);
                 }
                 catch (Exception e)
@@ -10280,422 +10280,422 @@ namespace Integra_7_Xamarin
                     t.Trace(e.Message + " setting cbChorusDelayCenterMsNote");
                 }
             }
-            if (slChorusDelayCenterHz.Value != commonState.studioSet.CommonChorus.Delay.CenterMs)
+            if (slChorusDelayCenterHz.Value != commonState.StudioSet.CommonChorus.Delay.CenterMs)
             {
-                slChorusDelayCenterHz.Value = commonState.studioSet.CommonChorus.Delay.CenterMs;
+                slChorusDelayCenterHz.Value = commonState.StudioSet.CommonChorus.Delay.CenterMs;
                 SetStudioSetChorusDelayCenterHz((Int32)slChorusDelayCenterHz.Value);
             }
-            if (slChorusDelayCenterNote.Value != commonState.studioSet.CommonChorus.Delay.CenterNote)
+            if (slChorusDelayCenterNote.Value != commonState.StudioSet.CommonChorus.Delay.CenterNote)
             {
-                slChorusDelayCenterNote.Value = commonState.studioSet.CommonChorus.Delay.CenterNote;
+                slChorusDelayCenterNote.Value = commonState.StudioSet.CommonChorus.Delay.CenterNote;
                 SetStudioSetChorusDelayCenterNote((Int32)slChorusDelayCenterNote.Value);
             }
-            if (slChorusDelayCenterFeedback.Value != commonState.studioSet.CommonChorus.Delay.CenterFeedback)
+            if (slChorusDelayCenterFeedback.Value != commonState.StudioSet.CommonChorus.Delay.CenterFeedback)
             {
-                slChorusDelayCenterFeedback.Value = 2 * (commonState.studioSet.CommonChorus.Delay.CenterFeedback - 49);
+                slChorusDelayCenterFeedback.Value = 2 * (commonState.StudioSet.CommonChorus.Delay.CenterFeedback - 49);
                 SetStudioSetChorusDelayCenterFeedback((Int32)slChorusDelayCenterFeedback.Value);
             }
-            if (cbChorusDelayHFDamp.SelectedIndex != commonState.studioSet.CommonChorus.Delay.HFDamp)
+            if (cbChorusDelayHFDamp.SelectedIndex != commonState.StudioSet.CommonChorus.Delay.HFDamp)
             {
-                cbChorusDelayHFDamp.SelectedIndex = commonState.studioSet.CommonChorus.Delay.HFDamp;
+                cbChorusDelayHFDamp.SelectedIndex = commonState.StudioSet.CommonChorus.Delay.HFDamp;
                 SetStudioSetChorusDelayHFDamp(cbChorusDelayHFDamp.SelectedIndex);
             }
-            if (slChorusDelayLeftLevel.Value != commonState.studioSet.CommonChorus.Delay.LeftLevel)
+            if (slChorusDelayLeftLevel.Value != commonState.StudioSet.CommonChorus.Delay.LeftLevel)
             {
-                slChorusDelayLeftLevel.Value = commonState.studioSet.CommonChorus.Delay.LeftLevel;
+                slChorusDelayLeftLevel.Value = commonState.StudioSet.CommonChorus.Delay.LeftLevel;
                 SetStudioSetChorusDelayLeftLevel((Int32)slChorusDelayLeftLevel.Value);
             }
-            if (slChorusDelayRightLevel.Value != commonState.studioSet.CommonChorus.Delay.RightLevel)
+            if (slChorusDelayRightLevel.Value != commonState.StudioSet.CommonChorus.Delay.RightLevel)
             {
-                slChorusDelayRightLevel.Value = commonState.studioSet.CommonChorus.Delay.RightLevel;
+                slChorusDelayRightLevel.Value = commonState.StudioSet.CommonChorus.Delay.RightLevel;
                 SetStudioSetChorusDelayRightLevel((Int32)slChorusDelayRightLevel.Value);
             }
-            if (slChorusDelayCenterLevel.Value != commonState.studioSet.CommonChorus.Delay.CenterLevel)
+            if (slChorusDelayCenterLevel.Value != commonState.StudioSet.CommonChorus.Delay.CenterLevel)
             {
-                slChorusDelayCenterLevel.Value = commonState.studioSet.CommonChorus.Delay.CenterLevel;
+                slChorusDelayCenterLevel.Value = commonState.StudioSet.CommonChorus.Delay.CenterLevel;
                 SetStudioSetChorusDelayCenterLevel((Int32)slChorusDelayCenterLevel.Value);
             }
-            if (slChorusGM2ChorusPreLPF.Value != commonState.studioSet.CommonChorus.Gm2Chorus.PreLPF)
+            if (slChorusGM2ChorusPreLPF.Value != commonState.StudioSet.CommonChorus.Gm2Chorus.PreLPF)
             {
-                slChorusGM2ChorusPreLPF.Value = commonState.studioSet.CommonChorus.Gm2Chorus.PreLPF;
+                slChorusGM2ChorusPreLPF.Value = commonState.StudioSet.CommonChorus.Gm2Chorus.PreLPF;
                 SetStudioSetChorusGM2ChorusPreLPF((Int32)slChorusGM2ChorusPreLPF.Value);
             }
-            if (slChorusGM2ChorusLevel.Value != commonState.studioSet.CommonChorus.Gm2Chorus.Level)
+            if (slChorusGM2ChorusLevel.Value != commonState.StudioSet.CommonChorus.Gm2Chorus.Level)
             {
-                slChorusGM2ChorusLevel.Value = commonState.studioSet.CommonChorus.Gm2Chorus.Level;
+                slChorusGM2ChorusLevel.Value = commonState.StudioSet.CommonChorus.Gm2Chorus.Level;
                 SetStudioSetChorusGM2ChorusLevel((Int32)slChorusGM2ChorusLevel.Value);
             }
-            if (slChorusGM2ChorusFeedback.Value != commonState.studioSet.CommonChorus.Gm2Chorus.Feedback)
+            if (slChorusGM2ChorusFeedback.Value != commonState.StudioSet.CommonChorus.Gm2Chorus.Feedback)
             {
-                slChorusGM2ChorusFeedback.Value = commonState.studioSet.CommonChorus.Gm2Chorus.Feedback;
+                slChorusGM2ChorusFeedback.Value = commonState.StudioSet.CommonChorus.Gm2Chorus.Feedback;
                 SetStudioSetChorusGM2ChorusFeedback((Int32)slChorusGM2ChorusFeedback.Value);
             }
-            if (slChorusGM2ChorusDelay.Value != commonState.studioSet.CommonChorus.Gm2Chorus.Delay)
+            if (slChorusGM2ChorusDelay.Value != commonState.StudioSet.CommonChorus.Gm2Chorus.Delay)
             {
-                slChorusGM2ChorusDelay.Value = commonState.studioSet.CommonChorus.Gm2Chorus.Delay;
+                slChorusGM2ChorusDelay.Value = commonState.StudioSet.CommonChorus.Gm2Chorus.Delay;
                 SetStudioSetChorusGM2ChorusDelay((Int32)slChorusGM2ChorusDelay.Value);
             }
-            if (slChorusGM2ChorusRate.Value != commonState.studioSet.CommonChorus.Gm2Chorus.Rate)
+            if (slChorusGM2ChorusRate.Value != commonState.StudioSet.CommonChorus.Gm2Chorus.Rate)
             {
-                slChorusGM2ChorusRate.Value = commonState.studioSet.CommonChorus.Gm2Chorus.Rate;
+                slChorusGM2ChorusRate.Value = commonState.StudioSet.CommonChorus.Gm2Chorus.Rate;
                 SetStudioSetChorusGM2ChorusRate((Int32)slChorusGM2ChorusRate.Value);
             }
-            if (slChorusGM2ChorusDepth.Value != commonState.studioSet.CommonChorus.Gm2Chorus.Depth)
+            if (slChorusGM2ChorusDepth.Value != commonState.StudioSet.CommonChorus.Gm2Chorus.Depth)
             {
-                slChorusGM2ChorusDepth.Value = commonState.studioSet.CommonChorus.Gm2Chorus.Depth;
+                slChorusGM2ChorusDepth.Value = commonState.StudioSet.CommonChorus.Gm2Chorus.Depth;
                 SetStudioSetChorusGM2ChorusDepth((Int32)slChorusGM2ChorusDepth.Value);
             }
-            if (slChorusGM2ChorusLevel.Value != commonState.studioSet.CommonChorus.Gm2Chorus.Level)
+            if (slChorusGM2ChorusLevel.Value != commonState.StudioSet.CommonChorus.Gm2Chorus.Level)
             {
-                slChorusGM2ChorusLevel.Value = commonState.studioSet.CommonChorus.Gm2Chorus.Level;
+                slChorusGM2ChorusLevel.Value = commonState.StudioSet.CommonChorus.Gm2Chorus.Level;
                 SetStudioSetChorusGM2ChorusSendLevelToReverb((Int32)slChorusGM2ChorusLevel.Value);
             }
             //if (cbStudioSetReverbType.SelectedIndex != commonState.studioSet.CommonReverb.Type)
             {
-                cbStudioSetReverbType.SelectedIndex = commonState.studioSet.CommonReverb.Type;
+                cbStudioSetReverbType.SelectedIndex = commonState.StudioSet.CommonReverb.Type;
                 SetStudioSetStudioSetReverbType((Int32)cbStudioSetReverbType.SelectedIndex);
             }
-            if (slStudioSetReverbLevel.Value != commonState.studioSet.CommonReverb.Level)
+            if (slStudioSetReverbLevel.Value != commonState.StudioSet.CommonReverb.Level)
             {
-                slStudioSetReverbLevel.Value = commonState.studioSet.CommonReverb.Level;
+                slStudioSetReverbLevel.Value = commonState.StudioSet.CommonReverb.Level;
                 SetStudioSetReverbLevel((Int32)slStudioSetReverbLevel.Value);
             }
-            if (cbStudioSetReverbOutputAssign.SelectedIndex != commonState.studioSet.CommonReverb.OutputAssign)
+            if (cbStudioSetReverbOutputAssign.SelectedIndex != commonState.StudioSet.CommonReverb.OutputAssign)
             {
-                cbStudioSetReverbOutputAssign.SelectedIndex = commonState.studioSet.CommonReverb.OutputAssign;
+                cbStudioSetReverbOutputAssign.SelectedIndex = commonState.StudioSet.CommonReverb.OutputAssign;
                 SetStudioSetStudioSetReverbOutputAssign(cbStudioSetReverbOutputAssign.SelectedIndex);
             }
-            switch (commonState.studioSet.CommonReverb.Type)
+            switch (commonState.StudioSet.CommonReverb.Type)
             {
                 case 1:
-                    if (slStudioSetReverbPreDelay.Value != commonState.studioSet.CommonReverb.ReverbRoom1.PreDelay)
+                    if (slStudioSetReverbPreDelay.Value != commonState.StudioSet.CommonReverb.ReverbRoom1.PreDelay)
                     {
-                        slStudioSetReverbPreDelay.Value = commonState.studioSet.CommonReverb.ReverbRoom1.PreDelay;
+                        slStudioSetReverbPreDelay.Value = commonState.StudioSet.CommonReverb.ReverbRoom1.PreDelay;
                         SetStudioSetStudioSetReverbPreDelay((Int32)slStudioSetReverbPreDelay.Value);
                     }
-                    if (slStudioSetReverbTime.Value != commonState.studioSet.CommonReverb.ReverbRoom1.Time)
+                    if (slStudioSetReverbTime.Value != commonState.StudioSet.CommonReverb.ReverbRoom1.Time)
                     {
-                        slStudioSetReverbTime.Value = commonState.studioSet.CommonReverb.ReverbRoom1.Time;
+                        slStudioSetReverbTime.Value = commonState.StudioSet.CommonReverb.ReverbRoom1.Time;
                         SetStudioSetStudioSetReverbTime((Int32)slStudioSetReverbTime.Value);
                     }
-                    if (slStudioSetReverbDensity.Value != commonState.studioSet.CommonReverb.ReverbRoom1.Density)
+                    if (slStudioSetReverbDensity.Value != commonState.StudioSet.CommonReverb.ReverbRoom1.Density)
                     {
-                        slStudioSetReverbDensity.Value = commonState.studioSet.CommonReverb.ReverbRoom1.Density;
+                        slStudioSetReverbDensity.Value = commonState.StudioSet.CommonReverb.ReverbRoom1.Density;
                         SetStudioSetStudioSetReverbDensity((Int32)slStudioSetReverbDensity.Value);
                     }
-                    if (slStudioSetReverbDiffusion.Value != commonState.studioSet.CommonReverb.ReverbRoom1.Diffusion)
+                    if (slStudioSetReverbDiffusion.Value != commonState.StudioSet.CommonReverb.ReverbRoom1.Diffusion)
                     {
-                        slStudioSetReverbDiffusion.Value = commonState.studioSet.CommonReverb.ReverbRoom1.Diffusion;
+                        slStudioSetReverbDiffusion.Value = commonState.StudioSet.CommonReverb.ReverbRoom1.Diffusion;
                         SetStudioSetStudioSetReverbDiffusion((Int32)slStudioSetReverbDiffusion.Value);
                     }
-                    if (slStudioSetReverbLFDamp.Value != commonState.studioSet.CommonReverb.ReverbRoom1.LFDamp)
+                    if (slStudioSetReverbLFDamp.Value != commonState.StudioSet.CommonReverb.ReverbRoom1.LFDamp)
                     {
-                        slStudioSetReverbLFDamp.Value = commonState.studioSet.CommonReverb.ReverbRoom1.LFDamp;
+                        slStudioSetReverbLFDamp.Value = commonState.StudioSet.CommonReverb.ReverbRoom1.LFDamp;
                         SetStudioSetStudioSetReverbLFDamp((Int32)slStudioSetReverbLFDamp.Value);
                     }
-                    if (slStudioSetReverbHFDamp.Value != commonState.studioSet.CommonReverb.ReverbRoom1.HFDamp)
+                    if (slStudioSetReverbHFDamp.Value != commonState.StudioSet.CommonReverb.ReverbRoom1.HFDamp)
                     {
-                        slStudioSetReverbHFDamp.Value = commonState.studioSet.CommonReverb.ReverbRoom1.HFDamp;
+                        slStudioSetReverbHFDamp.Value = commonState.StudioSet.CommonReverb.ReverbRoom1.HFDamp;
                         SetStudioSetStudioSetReverbHFDamp((Int32)slStudioSetReverbHFDamp.Value);
                     }
-                    if (slStudioSetReverbSpread.Value != commonState.studioSet.CommonReverb.ReverbRoom1.Spread)
+                    if (slStudioSetReverbSpread.Value != commonState.StudioSet.CommonReverb.ReverbRoom1.Spread)
                     {
-                        slStudioSetReverbSpread.Value = commonState.studioSet.CommonReverb.ReverbRoom1.Spread;
+                        slStudioSetReverbSpread.Value = commonState.StudioSet.CommonReverb.ReverbRoom1.Spread;
                         SetStudioSetStudioSetReverbSpread((Int32)slStudioSetReverbSpread.Value);
                     }
-                    if (slStudioSetReverbTone.Value != commonState.studioSet.CommonReverb.ReverbRoom1.Tone)
+                    if (slStudioSetReverbTone.Value != commonState.StudioSet.CommonReverb.ReverbRoom1.Tone)
                     {
-                        slStudioSetReverbTone.Value = commonState.studioSet.CommonReverb.ReverbRoom1.Tone;
+                        slStudioSetReverbTone.Value = commonState.StudioSet.CommonReverb.ReverbRoom1.Tone;
                         SetStudioSetStudioSetReverbTone((Int32)slStudioSetReverbTone.Value);
                     }
                     break;
                 case 2:
-                    if (slStudioSetReverbPreDelay.Value != commonState.studioSet.CommonReverb.ReverbRoom2.PreDelay)
+                    if (slStudioSetReverbPreDelay.Value != commonState.StudioSet.CommonReverb.ReverbRoom2.PreDelay)
                     {
-                        slStudioSetReverbPreDelay.Value = commonState.studioSet.CommonReverb.ReverbRoom2.PreDelay;
+                        slStudioSetReverbPreDelay.Value = commonState.StudioSet.CommonReverb.ReverbRoom2.PreDelay;
                         SetStudioSetStudioSetReverbPreDelay((Int32)slStudioSetReverbPreDelay.Value);
                     }
-                    if (slStudioSetReverbTime.Value != commonState.studioSet.CommonReverb.ReverbRoom2.Time)
+                    if (slStudioSetReverbTime.Value != commonState.StudioSet.CommonReverb.ReverbRoom2.Time)
                     {
-                        slStudioSetReverbTime.Value = commonState.studioSet.CommonReverb.ReverbRoom2.Time;
+                        slStudioSetReverbTime.Value = commonState.StudioSet.CommonReverb.ReverbRoom2.Time;
                         SetStudioSetStudioSetReverbTime((Int32)slStudioSetReverbTime.Value);
                     }
-                    if (slStudioSetReverbDensity.Value != commonState.studioSet.CommonReverb.ReverbRoom2.Density)
+                    if (slStudioSetReverbDensity.Value != commonState.StudioSet.CommonReverb.ReverbRoom2.Density)
                     {
-                        slStudioSetReverbDensity.Value = commonState.studioSet.CommonReverb.ReverbRoom2.Density;
+                        slStudioSetReverbDensity.Value = commonState.StudioSet.CommonReverb.ReverbRoom2.Density;
                         SetStudioSetStudioSetReverbDensity((Int32)slStudioSetReverbDensity.Value);
                     }
-                    if (slStudioSetReverbDiffusion.Value != commonState.studioSet.CommonReverb.ReverbRoom2.Diffusion)
+                    if (slStudioSetReverbDiffusion.Value != commonState.StudioSet.CommonReverb.ReverbRoom2.Diffusion)
                     {
-                        slStudioSetReverbDiffusion.Value = commonState.studioSet.CommonReverb.ReverbRoom2.Diffusion;
+                        slStudioSetReverbDiffusion.Value = commonState.StudioSet.CommonReverb.ReverbRoom2.Diffusion;
                         SetStudioSetStudioSetReverbDiffusion((Int32)slStudioSetReverbDiffusion.Value);
                     }
-                    if (slStudioSetReverbLFDamp.Value != commonState.studioSet.CommonReverb.ReverbRoom2.LFDamp)
+                    if (slStudioSetReverbLFDamp.Value != commonState.StudioSet.CommonReverb.ReverbRoom2.LFDamp)
                     {
-                        slStudioSetReverbLFDamp.Value = commonState.studioSet.CommonReverb.ReverbRoom2.LFDamp;
+                        slStudioSetReverbLFDamp.Value = commonState.StudioSet.CommonReverb.ReverbRoom2.LFDamp;
                         SetStudioSetStudioSetReverbLFDamp((Int32)slStudioSetReverbLFDamp.Value);
                     }
-                    if (slStudioSetReverbHFDamp.Value != commonState.studioSet.CommonReverb.ReverbRoom2.HFDamp)
+                    if (slStudioSetReverbHFDamp.Value != commonState.StudioSet.CommonReverb.ReverbRoom2.HFDamp)
                     {
-                        slStudioSetReverbHFDamp.Value = commonState.studioSet.CommonReverb.ReverbRoom2.HFDamp;
+                        slStudioSetReverbHFDamp.Value = commonState.StudioSet.CommonReverb.ReverbRoom2.HFDamp;
                         SetStudioSetStudioSetReverbHFDamp((Int32)slStudioSetReverbHFDamp.Value);
                     }
-                    if (slStudioSetReverbSpread.Value != commonState.studioSet.CommonReverb.ReverbRoom2.Spread)
+                    if (slStudioSetReverbSpread.Value != commonState.StudioSet.CommonReverb.ReverbRoom2.Spread)
                     {
-                        slStudioSetReverbSpread.Value = commonState.studioSet.CommonReverb.ReverbRoom2.Spread;
+                        slStudioSetReverbSpread.Value = commonState.StudioSet.CommonReverb.ReverbRoom2.Spread;
                         SetStudioSetStudioSetReverbSpread((Int32)slStudioSetReverbSpread.Value);
                     }
-                    if (slStudioSetReverbTone.Value != commonState.studioSet.CommonReverb.ReverbRoom2.Tone)
+                    if (slStudioSetReverbTone.Value != commonState.StudioSet.CommonReverb.ReverbRoom2.Tone)
                     {
-                        slStudioSetReverbTone.Value = commonState.studioSet.CommonReverb.ReverbRoom2.Tone;
+                        slStudioSetReverbTone.Value = commonState.StudioSet.CommonReverb.ReverbRoom2.Tone;
                         SetStudioSetStudioSetReverbTone((Int32)slStudioSetReverbTone.Value);
                     }
                     break;
                 case 3:
-                    if (slStudioSetReverbPreDelay.Value != commonState.studioSet.CommonReverb.ReverbHall1.PreDelay)
+                    if (slStudioSetReverbPreDelay.Value != commonState.StudioSet.CommonReverb.ReverbHall1.PreDelay)
                     {
-                        slStudioSetReverbPreDelay.Value = commonState.studioSet.CommonReverb.ReverbHall1.PreDelay;
+                        slStudioSetReverbPreDelay.Value = commonState.StudioSet.CommonReverb.ReverbHall1.PreDelay;
                         SetStudioSetStudioSetReverbPreDelay((Int32)slStudioSetReverbPreDelay.Value);
                     }
-                    if (slStudioSetReverbTime.Value != commonState.studioSet.CommonReverb.ReverbHall1.Time)
+                    if (slStudioSetReverbTime.Value != commonState.StudioSet.CommonReverb.ReverbHall1.Time)
                     {
-                        slStudioSetReverbTime.Value = commonState.studioSet.CommonReverb.ReverbHall1.Time;
+                        slStudioSetReverbTime.Value = commonState.StudioSet.CommonReverb.ReverbHall1.Time;
                         SetStudioSetStudioSetReverbTime((Int32)slStudioSetReverbTime.Value);
                     }
-                    if (slStudioSetReverbDensity.Value != commonState.studioSet.CommonReverb.ReverbHall1.Density)
+                    if (slStudioSetReverbDensity.Value != commonState.StudioSet.CommonReverb.ReverbHall1.Density)
                     {
-                        slStudioSetReverbDensity.Value = commonState.studioSet.CommonReverb.ReverbHall1.Density;
+                        slStudioSetReverbDensity.Value = commonState.StudioSet.CommonReverb.ReverbHall1.Density;
                         SetStudioSetStudioSetReverbDensity((Int32)slStudioSetReverbDensity.Value);
                     }
-                    if (slStudioSetReverbDiffusion.Value != commonState.studioSet.CommonReverb.ReverbHall1.Diffusion)
+                    if (slStudioSetReverbDiffusion.Value != commonState.StudioSet.CommonReverb.ReverbHall1.Diffusion)
                     {
-                        slStudioSetReverbDiffusion.Value = commonState.studioSet.CommonReverb.ReverbHall1.Diffusion;
+                        slStudioSetReverbDiffusion.Value = commonState.StudioSet.CommonReverb.ReverbHall1.Diffusion;
                         SetStudioSetStudioSetReverbDiffusion((Int32)slStudioSetReverbDiffusion.Value);
                     }
-                    if (slStudioSetReverbLFDamp.Value != commonState.studioSet.CommonReverb.ReverbHall1.LFDamp)
+                    if (slStudioSetReverbLFDamp.Value != commonState.StudioSet.CommonReverb.ReverbHall1.LFDamp)
                     {
-                        slStudioSetReverbLFDamp.Value = commonState.studioSet.CommonReverb.ReverbHall1.LFDamp;
+                        slStudioSetReverbLFDamp.Value = commonState.StudioSet.CommonReverb.ReverbHall1.LFDamp;
                         SetStudioSetStudioSetReverbLFDamp((Int32)slStudioSetReverbLFDamp.Value);
                     }
-                    if (slStudioSetReverbHFDamp.Value != commonState.studioSet.CommonReverb.ReverbHall1.HFDamp)
+                    if (slStudioSetReverbHFDamp.Value != commonState.StudioSet.CommonReverb.ReverbHall1.HFDamp)
                     {
-                        slStudioSetReverbHFDamp.Value = commonState.studioSet.CommonReverb.ReverbHall1.HFDamp;
+                        slStudioSetReverbHFDamp.Value = commonState.StudioSet.CommonReverb.ReverbHall1.HFDamp;
                         SetStudioSetStudioSetReverbHFDamp((Int32)slStudioSetReverbHFDamp.Value);
                     }
-                    if (slStudioSetReverbSpread.Value != commonState.studioSet.CommonReverb.ReverbHall1.Spread)
+                    if (slStudioSetReverbSpread.Value != commonState.StudioSet.CommonReverb.ReverbHall1.Spread)
                     {
-                        slStudioSetReverbSpread.Value = commonState.studioSet.CommonReverb.ReverbHall1.Spread;
+                        slStudioSetReverbSpread.Value = commonState.StudioSet.CommonReverb.ReverbHall1.Spread;
                         SetStudioSetStudioSetReverbSpread((Int32)slStudioSetReverbSpread.Value);
                     }
-                    if (slStudioSetReverbTone.Value != commonState.studioSet.CommonReverb.ReverbHall1.Tone)
+                    if (slStudioSetReverbTone.Value != commonState.StudioSet.CommonReverb.ReverbHall1.Tone)
                     {
-                        slStudioSetReverbTone.Value = commonState.studioSet.CommonReverb.ReverbHall1.Tone;
+                        slStudioSetReverbTone.Value = commonState.StudioSet.CommonReverb.ReverbHall1.Tone;
                         SetStudioSetStudioSetReverbTone((Int32)slStudioSetReverbTone.Value);
                     }
                     break;
                 case 4:
-                    if (slStudioSetReverbPreDelay.Value != commonState.studioSet.CommonReverb.ReverbHall2.PreDelay)
+                    if (slStudioSetReverbPreDelay.Value != commonState.StudioSet.CommonReverb.ReverbHall2.PreDelay)
                     {
-                        slStudioSetReverbPreDelay.Value = commonState.studioSet.CommonReverb.ReverbHall2.PreDelay;
+                        slStudioSetReverbPreDelay.Value = commonState.StudioSet.CommonReverb.ReverbHall2.PreDelay;
                         SetStudioSetStudioSetReverbPreDelay((Int32)slStudioSetReverbPreDelay.Value);
                     }
-                    if (slStudioSetReverbTime.Value != commonState.studioSet.CommonReverb.ReverbHall2.Time)
+                    if (slStudioSetReverbTime.Value != commonState.StudioSet.CommonReverb.ReverbHall2.Time)
                     {
-                        slStudioSetReverbTime.Value = commonState.studioSet.CommonReverb.ReverbHall2.Time;
+                        slStudioSetReverbTime.Value = commonState.StudioSet.CommonReverb.ReverbHall2.Time;
                         SetStudioSetStudioSetReverbTime((Int32)slStudioSetReverbTime.Value);
                     }
-                    if (slStudioSetReverbDensity.Value != commonState.studioSet.CommonReverb.ReverbHall2.Density)
+                    if (slStudioSetReverbDensity.Value != commonState.StudioSet.CommonReverb.ReverbHall2.Density)
                     {
-                        slStudioSetReverbDensity.Value = commonState.studioSet.CommonReverb.ReverbHall2.Density;
+                        slStudioSetReverbDensity.Value = commonState.StudioSet.CommonReverb.ReverbHall2.Density;
                         SetStudioSetStudioSetReverbDensity((Int32)slStudioSetReverbDensity.Value);
                     }
-                    if (slStudioSetReverbDiffusion.Value != commonState.studioSet.CommonReverb.ReverbHall2.Diffusion)
+                    if (slStudioSetReverbDiffusion.Value != commonState.StudioSet.CommonReverb.ReverbHall2.Diffusion)
                     {
-                        slStudioSetReverbDiffusion.Value = commonState.studioSet.CommonReverb.ReverbHall2.Diffusion;
+                        slStudioSetReverbDiffusion.Value = commonState.StudioSet.CommonReverb.ReverbHall2.Diffusion;
                         SetStudioSetStudioSetReverbDiffusion((Int32)slStudioSetReverbDiffusion.Value);
                     }
-                    if (slStudioSetReverbLFDamp.Value != commonState.studioSet.CommonReverb.ReverbHall2.LFDamp)
+                    if (slStudioSetReverbLFDamp.Value != commonState.StudioSet.CommonReverb.ReverbHall2.LFDamp)
                     {
-                        slStudioSetReverbLFDamp.Value = commonState.studioSet.CommonReverb.ReverbHall2.LFDamp;
+                        slStudioSetReverbLFDamp.Value = commonState.StudioSet.CommonReverb.ReverbHall2.LFDamp;
                         SetStudioSetStudioSetReverbLFDamp((Int32)slStudioSetReverbLFDamp.Value);
                     }
-                    if (slStudioSetReverbHFDamp.Value != commonState.studioSet.CommonReverb.ReverbHall2.HFDamp)
+                    if (slStudioSetReverbHFDamp.Value != commonState.StudioSet.CommonReverb.ReverbHall2.HFDamp)
                     {
-                        slStudioSetReverbHFDamp.Value = commonState.studioSet.CommonReverb.ReverbHall2.HFDamp;
+                        slStudioSetReverbHFDamp.Value = commonState.StudioSet.CommonReverb.ReverbHall2.HFDamp;
                         SetStudioSetStudioSetReverbHFDamp((Int32)slStudioSetReverbHFDamp.Value);
                     }
-                    if (slStudioSetReverbSpread.Value != commonState.studioSet.CommonReverb.ReverbHall2.Spread)
+                    if (slStudioSetReverbSpread.Value != commonState.StudioSet.CommonReverb.ReverbHall2.Spread)
                     {
-                        slStudioSetReverbSpread.Value = commonState.studioSet.CommonReverb.ReverbHall2.Spread;
+                        slStudioSetReverbSpread.Value = commonState.StudioSet.CommonReverb.ReverbHall2.Spread;
                         SetStudioSetStudioSetReverbSpread((Int32)slStudioSetReverbSpread.Value);
                     }
-                    if (slStudioSetReverbTone.Value != commonState.studioSet.CommonReverb.ReverbHall2.Tone)
+                    if (slStudioSetReverbTone.Value != commonState.StudioSet.CommonReverb.ReverbHall2.Tone)
                     {
-                        slStudioSetReverbTone.Value = commonState.studioSet.CommonReverb.ReverbHall2.Tone;
+                        slStudioSetReverbTone.Value = commonState.StudioSet.CommonReverb.ReverbHall2.Tone;
                         SetStudioSetStudioSetReverbTone((Int32)slStudioSetReverbTone.Value);
                     }
                     break;
                 case 5:
-                    if (slStudioSetReverbPreDelay.Value != commonState.studioSet.CommonReverb.ReverbPlate.PreDelay)
+                    if (slStudioSetReverbPreDelay.Value != commonState.StudioSet.CommonReverb.ReverbPlate.PreDelay)
                     {
-                        slStudioSetReverbPreDelay.Value = commonState.studioSet.CommonReverb.ReverbPlate.PreDelay;
+                        slStudioSetReverbPreDelay.Value = commonState.StudioSet.CommonReverb.ReverbPlate.PreDelay;
                         SetStudioSetStudioSetReverbPreDelay((Int32)slStudioSetReverbPreDelay.Value);
                     }
-                    if (slStudioSetReverbTime.Value != commonState.studioSet.CommonReverb.ReverbPlate.Time)
+                    if (slStudioSetReverbTime.Value != commonState.StudioSet.CommonReverb.ReverbPlate.Time)
                     {
-                        slStudioSetReverbTime.Value = commonState.studioSet.CommonReverb.ReverbPlate.Time;
+                        slStudioSetReverbTime.Value = commonState.StudioSet.CommonReverb.ReverbPlate.Time;
                         SetStudioSetStudioSetReverbTime((Int32)slStudioSetReverbTime.Value);
                     }
-                    if (slStudioSetReverbDensity.Value != commonState.studioSet.CommonReverb.ReverbPlate.Density)
+                    if (slStudioSetReverbDensity.Value != commonState.StudioSet.CommonReverb.ReverbPlate.Density)
                     {
-                        slStudioSetReverbDensity.Value = commonState.studioSet.CommonReverb.ReverbPlate.Density;
+                        slStudioSetReverbDensity.Value = commonState.StudioSet.CommonReverb.ReverbPlate.Density;
                         SetStudioSetStudioSetReverbDensity((Int32)slStudioSetReverbDensity.Value);
                     }
-                    if (slStudioSetReverbDiffusion.Value != commonState.studioSet.CommonReverb.ReverbPlate.Diffusion)
+                    if (slStudioSetReverbDiffusion.Value != commonState.StudioSet.CommonReverb.ReverbPlate.Diffusion)
                     {
-                        slStudioSetReverbDiffusion.Value = commonState.studioSet.CommonReverb.ReverbPlate.Diffusion;
+                        slStudioSetReverbDiffusion.Value = commonState.StudioSet.CommonReverb.ReverbPlate.Diffusion;
                         SetStudioSetStudioSetReverbDiffusion((Int32)slStudioSetReverbDiffusion.Value);
                     }
-                    if (slStudioSetReverbLFDamp.Value != commonState.studioSet.CommonReverb.ReverbPlate.LFDamp)
+                    if (slStudioSetReverbLFDamp.Value != commonState.StudioSet.CommonReverb.ReverbPlate.LFDamp)
                     {
-                        slStudioSetReverbLFDamp.Value = commonState.studioSet.CommonReverb.ReverbPlate.LFDamp;
+                        slStudioSetReverbLFDamp.Value = commonState.StudioSet.CommonReverb.ReverbPlate.LFDamp;
                         SetStudioSetStudioSetReverbLFDamp((Int32)slStudioSetReverbLFDamp.Value);
                     }
-                    if (slStudioSetReverbHFDamp.Value != commonState.studioSet.CommonReverb.ReverbPlate.HFDamp)
+                    if (slStudioSetReverbHFDamp.Value != commonState.StudioSet.CommonReverb.ReverbPlate.HFDamp)
                     {
-                        slStudioSetReverbHFDamp.Value = commonState.studioSet.CommonReverb.ReverbPlate.HFDamp;
+                        slStudioSetReverbHFDamp.Value = commonState.StudioSet.CommonReverb.ReverbPlate.HFDamp;
                         SetStudioSetStudioSetReverbHFDamp((Int32)slStudioSetReverbHFDamp.Value);
                     }
-                    if (slStudioSetReverbSpread.Value != commonState.studioSet.CommonReverb.ReverbPlate.Spread)
+                    if (slStudioSetReverbSpread.Value != commonState.StudioSet.CommonReverb.ReverbPlate.Spread)
                     {
-                        slStudioSetReverbSpread.Value = commonState.studioSet.CommonReverb.ReverbPlate.Spread;
+                        slStudioSetReverbSpread.Value = commonState.StudioSet.CommonReverb.ReverbPlate.Spread;
                         SetStudioSetStudioSetReverbSpread((Int32)slStudioSetReverbSpread.Value);
                     }
-                    if (slStudioSetReverbTone.Value != commonState.studioSet.CommonReverb.ReverbPlate.Tone)
+                    if (slStudioSetReverbTone.Value != commonState.StudioSet.CommonReverb.ReverbPlate.Tone)
                     {
-                        slStudioSetReverbTone.Value = commonState.studioSet.CommonReverb.ReverbPlate.Tone;
+                        slStudioSetReverbTone.Value = commonState.StudioSet.CommonReverb.ReverbPlate.Tone;
                         SetStudioSetStudioSetReverbTone((Int32)slStudioSetReverbTone.Value);
                     }
                     break;
             }
-            if (slStudioSetReverbGM2Character.Value != commonState.studioSet.CommonReverb.GM2Reverb.Character)
+            if (slStudioSetReverbGM2Character.Value != commonState.StudioSet.CommonReverb.GM2Reverb.Character)
             {
-                slStudioSetReverbGM2Character.Value = commonState.studioSet.CommonReverb.GM2Reverb.Character;
+                slStudioSetReverbGM2Character.Value = commonState.StudioSet.CommonReverb.GM2Reverb.Character;
                 SetStudioSetStudioSetReverbGM2Character((Int32)slStudioSetReverbGM2Character.Value);
             }
-            if (slStudioSetReverbGM2Time.Value != commonState.studioSet.CommonReverb.GM2Reverb.Time)
+            if (slStudioSetReverbGM2Time.Value != commonState.StudioSet.CommonReverb.GM2Reverb.Time)
             {
-                slStudioSetReverbGM2Time.Value = commonState.studioSet.CommonReverb.GM2Reverb.Time;
+                slStudioSetReverbGM2Time.Value = commonState.StudioSet.CommonReverb.GM2Reverb.Time;
                 SetStudioSetStudioSetReverbGM2Time((Int32)slStudioSetReverbGM2Time.Value);
             }
-            if (cbStudioSetMotionalSurround.IsChecked != commonState.studioSet.MotionalSurround.MotionalSurroundSwitch)
+            if (cbStudioSetMotionalSurround.IsChecked != commonState.StudioSet.MotionalSurround.MotionalSurroundSwitch)
             {
-                cbStudioSetMotionalSurround.IsChecked = commonState.studioSet.MotionalSurround.MotionalSurroundSwitch;
+                cbStudioSetMotionalSurround.IsChecked = commonState.StudioSet.MotionalSurround.MotionalSurroundSwitch;
                 SetStudioSetStudioSetMotionalSurround((Boolean)cbStudioSetMotionalSurround.IsChecked);
             }
-            if (cbStudioSetMotionalSurroundRoomType.SelectedIndex != commonState.studioSet.MotionalSurround.RoomType)
+            if (cbStudioSetMotionalSurroundRoomType.SelectedIndex != commonState.StudioSet.MotionalSurround.RoomType)
             {
-                cbStudioSetMotionalSurroundRoomType.SelectedIndex = commonState.studioSet.MotionalSurround.RoomType;
+                cbStudioSetMotionalSurroundRoomType.SelectedIndex = commonState.StudioSet.MotionalSurround.RoomType;
                 SetStudioSetStudioSetMotionalSurroundRoomType((Int32)cbStudioSetMotionalSurroundRoomType.SelectedIndex);
             }
-            if (slStudioSetMotionalSurroundAmbienceLevel.Value != commonState.studioSet.MotionalSurround.AmbienceLevel)
+            if (slStudioSetMotionalSurroundAmbienceLevel.Value != commonState.StudioSet.MotionalSurround.AmbienceLevel)
             {
-                slStudioSetMotionalSurroundAmbienceLevel.Value = commonState.studioSet.MotionalSurround.AmbienceLevel;
+                slStudioSetMotionalSurroundAmbienceLevel.Value = commonState.StudioSet.MotionalSurround.AmbienceLevel;
                 SetStudioSetStudioSetMotionalSurroundAmbienceLevel((Int32)slStudioSetMotionalSurroundAmbienceLevel.Value);
             }
-            if (cbStudioSetMotionalSurroundRoomSize.SelectedIndex != commonState.studioSet.MotionalSurround.RoomSize)
+            if (cbStudioSetMotionalSurroundRoomSize.SelectedIndex != commonState.StudioSet.MotionalSurround.RoomSize)
             {
-                cbStudioSetMotionalSurroundRoomSize.SelectedIndex = commonState.studioSet.MotionalSurround.RoomSize;
+                cbStudioSetMotionalSurroundRoomSize.SelectedIndex = commonState.StudioSet.MotionalSurround.RoomSize;
                 SetStudioSetStudioSetMotionalSurroundRoomSize(cbStudioSetMotionalSurroundRoomSize.SelectedIndex);
             }
-            if (slStudioSetMotionalSurroundAmbienceTime.Value != commonState.studioSet.MotionalSurround.AmbienceTime)
+            if (slStudioSetMotionalSurroundAmbienceTime.Value != commonState.StudioSet.MotionalSurround.AmbienceTime)
             {
-                slStudioSetMotionalSurroundAmbienceTime.Value = commonState.studioSet.MotionalSurround.AmbienceTime;
+                slStudioSetMotionalSurroundAmbienceTime.Value = commonState.StudioSet.MotionalSurround.AmbienceTime;
                 SetStudioSetStudioSetMotionalSurroundAmbienceTime((Int32)slStudioSetMotionalSurroundAmbienceTime.Value);
             }
-            if (slStudioSetMotionalSurroundAmbienceDensity.Value != commonState.studioSet.MotionalSurround.AmbienceDensity)
+            if (slStudioSetMotionalSurroundAmbienceDensity.Value != commonState.StudioSet.MotionalSurround.AmbienceDensity)
             {
-                slStudioSetMotionalSurroundAmbienceDensity.Value = commonState.studioSet.MotionalSurround.AmbienceDensity;
+                slStudioSetMotionalSurroundAmbienceDensity.Value = commonState.StudioSet.MotionalSurround.AmbienceDensity;
                 SetStudioSetStudioSetMotionalSurroundAmbienceDensity((Int32)slStudioSetMotionalSurroundAmbienceDensity.Value);
             }
-            if (slStudioSetMotionalSurroundAmbienceHFDamp.Value != commonState.studioSet.MotionalSurround.AmbienceHFDamp)
+            if (slStudioSetMotionalSurroundAmbienceHFDamp.Value != commonState.StudioSet.MotionalSurround.AmbienceHFDamp)
             {
-                slStudioSetMotionalSurroundAmbienceHFDamp.Value = commonState.studioSet.MotionalSurround.AmbienceHFDamp;
+                slStudioSetMotionalSurroundAmbienceHFDamp.Value = commonState.StudioSet.MotionalSurround.AmbienceHFDamp;
                 SetStudioSetStudioSetMotionalSurroundAmbienceHFDamp((Int32)slStudioSetMotionalSurroundAmbienceHFDamp.Value);
             }
-            if (slStudioSetMotionalSurroundExternalPartLR.Value != commonState.studioSet.MotionalSurround.ExtPartLR)
+            if (slStudioSetMotionalSurroundExternalPartLR.Value != commonState.StudioSet.MotionalSurround.ExtPartLR)
             {
-                slStudioSetMotionalSurroundExternalPartLR.Value = commonState.studioSet.MotionalSurround.ExtPartLR;
+                slStudioSetMotionalSurroundExternalPartLR.Value = commonState.StudioSet.MotionalSurround.ExtPartLR;
                 SetStudioSetStudioSetMotionalSurroundExternalPartLR((Int32)slStudioSetMotionalSurroundExternalPartLR.Value);
             }
-            if (slStudioSetMotionalSurroundExternalPartFB.Value != commonState.studioSet.MotionalSurround.ExtPartFB)
+            if (slStudioSetMotionalSurroundExternalPartFB.Value != commonState.StudioSet.MotionalSurround.ExtPartFB)
             {
-                slStudioSetMotionalSurroundExternalPartFB.Value = commonState.studioSet.MotionalSurround.ExtPartFB;
+                slStudioSetMotionalSurroundExternalPartFB.Value = commonState.StudioSet.MotionalSurround.ExtPartFB;
                 SetStudioSetStudioSetMotionalSurroundExternalPartFB((Int32)slStudioSetMotionalSurroundExternalPartFB.Value);
             }
-            if (slStudioSetMotionalSurroundExtPartWidth.Value != commonState.studioSet.MotionalSurround.ExtPartWidth)
+            if (slStudioSetMotionalSurroundExtPartWidth.Value != commonState.StudioSet.MotionalSurround.ExtPartWidth)
             {
-                slStudioSetMotionalSurroundExtPartWidth.Value = commonState.studioSet.MotionalSurround.ExtPartWidth;
+                slStudioSetMotionalSurroundExtPartWidth.Value = commonState.StudioSet.MotionalSurround.ExtPartWidth;
                 SetStudioSetStudioSetMotionalSurroundExtPartWidth((Int32)slStudioSetMotionalSurroundExtPartWidth.Value);
             }
-            if (slStudioSetMotionalSurroundExtpartAmbienceSend.Value != commonState.studioSet.MotionalSurround.ExtPartAmbienceSendLevel)
+            if (slStudioSetMotionalSurroundExtpartAmbienceSend.Value != commonState.StudioSet.MotionalSurround.ExtPartAmbienceSendLevel)
             {
-                slStudioSetMotionalSurroundExtpartAmbienceSend.Value = commonState.studioSet.MotionalSurround.ExtPartAmbienceSendLevel;
+                slStudioSetMotionalSurroundExtpartAmbienceSend.Value = commonState.StudioSet.MotionalSurround.ExtPartAmbienceSendLevel;
                 SetStudioSetStudioSetMotionalSurroundExtpartAmbienceSend((Int32)slStudioSetMotionalSurroundExtpartAmbienceSend.Value);
             }
-            if (cbStudioSetMotionalSurroundExtPartControl.SelectedIndex != commonState.studioSet.MotionalSurround.ExtPartControlChannel)
+            if (cbStudioSetMotionalSurroundExtPartControl.SelectedIndex != commonState.StudioSet.MotionalSurround.ExtPartControlChannel)
             {
-                cbStudioSetMotionalSurroundExtPartControl.SelectedIndex = commonState.studioSet.MotionalSurround.ExtPartControlChannel;
+                cbStudioSetMotionalSurroundExtPartControl.SelectedIndex = commonState.StudioSet.MotionalSurround.ExtPartControlChannel;
                 SetStudioSetStudioSetMotionalSurroundExtPartControl(cbStudioSetMotionalSurroundExtPartControl.SelectedIndex);
             }
-            if (slStudioSetMotionalSurroundDepth.Value != commonState.studioSet.MotionalSurround.MotionalSurroundDepth)
+            if (slStudioSetMotionalSurroundDepth.Value != commonState.StudioSet.MotionalSurround.MotionalSurroundDepth)
             {
-                slStudioSetMotionalSurroundDepth.Value = commonState.studioSet.MotionalSurround.MotionalSurroundDepth;
+                slStudioSetMotionalSurroundDepth.Value = commonState.StudioSet.MotionalSurround.MotionalSurroundDepth;
                 SetStudioSetStudioSetMotionalSurroundDepth((Int32)slStudioSetMotionalSurroundDepth.Value);
             }
-            if (commonState.studioSet.MasterEQ.EQLowFreq != cbStudioSetMasterEqLowFreq.SelectedIndex)
+            if (commonState.StudioSet.MasterEQ.EQLowFreq != cbStudioSetMasterEqLowFreq.SelectedIndex)
             {
                 SetStudioSetStudioSetMasterEqLowFreq(cbStudioSetMasterEqLowFreq.SelectedIndex);
             }
-            if (slStudioSetMasterEqLowGain.Value != commonState.studioSet.MasterEQ.EQLowGain)
+            if (slStudioSetMasterEqLowGain.Value != commonState.StudioSet.MasterEQ.EQLowGain)
             {
-                slStudioSetMasterEqLowGain.Value = commonState.studioSet.MasterEQ.EQLowGain;
+                slStudioSetMasterEqLowGain.Value = commonState.StudioSet.MasterEQ.EQLowGain;
                 SetStudioSetStudioSetMasterEqLowGain((Int32)slStudioSetMasterEqLowGain.Value);
             }
-            if (cbStudioSetMasterEqMidFreq.SelectedIndex != commonState.studioSet.MasterEQ.EQMidFreq)
+            if (cbStudioSetMasterEqMidFreq.SelectedIndex != commonState.StudioSet.MasterEQ.EQMidFreq)
             {
-                cbStudioSetMasterEqMidFreq.SelectedIndex = commonState.studioSet.MasterEQ.EQMidFreq;
+                cbStudioSetMasterEqMidFreq.SelectedIndex = commonState.StudioSet.MasterEQ.EQMidFreq;
                 SetStudioSetStudioSetMasterEqMidFreq(cbStudioSetMasterEqMidFreq.SelectedIndex);
             }
-            if (slStudioSetMasterEqMidGain.Value != commonState.studioSet.MasterEQ.EQMidGain)
+            if (slStudioSetMasterEqMidGain.Value != commonState.StudioSet.MasterEQ.EQMidGain)
             {
-                slStudioSetMasterEqMidGain.Value = commonState.studioSet.MasterEQ.EQMidGain;
+                slStudioSetMasterEqMidGain.Value = commonState.StudioSet.MasterEQ.EQMidGain;
                 SetStudioSetStudioSetMasterEqMidGain((Int32)slStudioSetMasterEqMidGain.Value);
             }
-            if (cbStudioSetMasterEqMidQ.SelectedIndex != commonState.studioSet.MasterEQ.EQMidQ)
+            if (cbStudioSetMasterEqMidQ.SelectedIndex != commonState.StudioSet.MasterEQ.EQMidQ)
             {
-                cbStudioSetMasterEqMidQ.SelectedIndex = commonState.studioSet.MasterEQ.EQMidQ;
+                cbStudioSetMasterEqMidQ.SelectedIndex = commonState.StudioSet.MasterEQ.EQMidQ;
                 SetStudioSetStudioSetMasterEqMidQ(cbStudioSetMasterEqMidQ.SelectedIndex);
             }
-            if (cbStudioSetMasterEqHighFreq.SelectedIndex != commonState.studioSet.MasterEQ.EQHighFreq)
+            if (cbStudioSetMasterEqHighFreq.SelectedIndex != commonState.StudioSet.MasterEQ.EQHighFreq)
             {
-                cbStudioSetMasterEqHighFreq.SelectedIndex = commonState.studioSet.MasterEQ.EQHighFreq;
+                cbStudioSetMasterEqHighFreq.SelectedIndex = commonState.StudioSet.MasterEQ.EQHighFreq;
                 SetStudioSetStudioSetMasterEqHighFreq(cbStudioSetMasterEqHighFreq.SelectedIndex);
             }
-            if (slStudioSetMasterEqHighGain.Value != commonState.studioSet.MasterEQ.EQHighGain)
+            if (slStudioSetMasterEqHighGain.Value != commonState.StudioSet.MasterEQ.EQHighGain)
             {
-                slStudioSetMasterEqHighGain.Value = commonState.studioSet.MasterEQ.EQHighGain;
-                SetStudioSetStudioSetMasterEqHighGain(commonState.studioSet.MasterEQ.EQHighGain);
+                slStudioSetMasterEqHighGain.Value = commonState.StudioSet.MasterEQ.EQHighGain;
+                SetStudioSetStudioSetMasterEqHighGain(commonState.StudioSet.MasterEQ.EQHighGain);
             }
-            if (cbStudioSetPartSettings1ReceiveChannel.SelectedIndex != commonState.studioSet.PartMainSettings[part].ReceiveChannel)
+            if (cbStudioSetPartSettings1ReceiveChannel.SelectedIndex != commonState.StudioSet.PartMainSettings[part].ReceiveChannel)
             {
-                cbStudioSetPartSettings1ReceiveChannel.SelectedIndex = commonState.studioSet.PartMainSettings[part].ReceiveChannel;
-                SetStudioSetStudioSetPartSettings1ReceiveChannel(commonState.studioSet.PartMainSettings[part].ReceiveChannel, (byte)part);
+                cbStudioSetPartSettings1ReceiveChannel.SelectedIndex = commonState.StudioSet.PartMainSettings[part].ReceiveChannel;
+                SetStudioSetStudioSetPartSettings1ReceiveChannel(commonState.StudioSet.PartMainSettings[part].ReceiveChannel, (byte)part);
             }
-            if (cbStudioSetPartSettings1Receive.IsChecked != commonState.studioSet.PartMainSettings[part].ReceiveSwitch)
+            if (cbStudioSetPartSettings1Receive.IsChecked != commonState.StudioSet.PartMainSettings[part].ReceiveSwitch)
             {
-                cbStudioSetPartSettings1Receive.IsChecked = commonState.studioSet.PartMainSettings[part].ReceiveSwitch;
-                SetStudioSetStudioSetPartSettings1Receive(commonState.studioSet.PartMainSettings[part].ReceiveSwitch, (byte)part);
+                cbStudioSetPartSettings1Receive.IsChecked = commonState.StudioSet.PartMainSettings[part].ReceiveSwitch;
+                SetStudioSetStudioSetPartSettings1Receive(commonState.StudioSet.PartMainSettings[part].ReceiveSwitch, (byte)part);
             }
             //if (cbStudioSetPartSettings1Group.SelectedIndex != commonState.studioSet.PartMainSettings[part].Group)
             //{
@@ -10712,350 +10712,350 @@ namespace Integra_7_Xamarin
             //    cbStudioSetPartSettings1Program.SelectedIndex = commonState.studioSet.PartMainSettings[part].Program;
             //    SetStudioSetStudioSetPartSettings1Program(commonState.studioSet.PartMainSettings[part].Program, (byte)part);
             //}
-            if (slStudioSetPartSettings1Level.Value != commonState.studioSet.PartMainSettings[part].Level)
+            if (slStudioSetPartSettings1Level.Value != commonState.StudioSet.PartMainSettings[part].Level)
             {
-                slStudioSetPartSettings1Level.Value = commonState.studioSet.PartMainSettings[part].Level;
-                SetStudioSetStudioSetPartSettings1Level(commonState.studioSet.PartMainSettings[part].Level, (byte)part);
+                slStudioSetPartSettings1Level.Value = commonState.StudioSet.PartMainSettings[part].Level;
+                SetStudioSetStudioSetPartSettings1Level(commonState.StudioSet.PartMainSettings[part].Level, (byte)part);
             }
-            if (slStudioSetPartSettings1Pan.Value != commonState.studioSet.PartMainSettings[part].Pan)
+            if (slStudioSetPartSettings1Pan.Value != commonState.StudioSet.PartMainSettings[part].Pan)
             {
-                slStudioSetPartSettings1Pan.Value = commonState.studioSet.PartMainSettings[part].Pan;
-                SetStudioSetStudioSetPartSettings1Pan(commonState.studioSet.PartMainSettings[part].Pan, (byte)part);
+                slStudioSetPartSettings1Pan.Value = commonState.StudioSet.PartMainSettings[part].Pan;
+                SetStudioSetStudioSetPartSettings1Pan(commonState.StudioSet.PartMainSettings[part].Pan, (byte)part);
             }
-            if (slStudioSetPartSettings1CoarseTune.Value != commonState.studioSet.PartMainSettings[part].CoarseTune)
+            if (slStudioSetPartSettings1CoarseTune.Value != commonState.StudioSet.PartMainSettings[part].CoarseTune)
             {
-                slStudioSetPartSettings1CoarseTune.Value = commonState.studioSet.PartMainSettings[part].CoarseTune;
-                SetStudioSetStudioSetPartSettings1CoarseTune(commonState.studioSet.PartMainSettings[part].CoarseTune, (byte)part);
+                slStudioSetPartSettings1CoarseTune.Value = commonState.StudioSet.PartMainSettings[part].CoarseTune;
+                SetStudioSetStudioSetPartSettings1CoarseTune(commonState.StudioSet.PartMainSettings[part].CoarseTune, (byte)part);
             }
-            if (slStudioSetPartSettings1FineTune.Value != commonState.studioSet.PartMainSettings[part].FineTune)
+            if (slStudioSetPartSettings1FineTune.Value != commonState.StudioSet.PartMainSettings[part].FineTune)
             {
-                slStudioSetPartSettings1FineTune.Value = commonState.studioSet.PartMainSettings[part].FineTune;
-                SetStudioSetStudioSetPartSettings1FineTune(commonState.studioSet.PartMainSettings[part].FineTune, (byte)part);
+                slStudioSetPartSettings1FineTune.Value = commonState.StudioSet.PartMainSettings[part].FineTune;
+                SetStudioSetStudioSetPartSettings1FineTune(commonState.StudioSet.PartMainSettings[part].FineTune, (byte)part);
             }
-            if (cbStudioSetPartSettings1MonoPoly.SelectedIndex != commonState.studioSet.PartMainSettings[part].MonoPoly)
+            if (cbStudioSetPartSettings1MonoPoly.SelectedIndex != commonState.StudioSet.PartMainSettings[part].MonoPoly)
             {
-                cbStudioSetPartSettings1MonoPoly.SelectedIndex = commonState.studioSet.PartMainSettings[part].MonoPoly;
-                SetStudioSetStudioSetPartSettings1Poly(commonState.studioSet.PartMainSettings[part].MonoPoly, (byte)part);
+                cbStudioSetPartSettings1MonoPoly.SelectedIndex = commonState.StudioSet.PartMainSettings[part].MonoPoly;
+                SetStudioSetStudioSetPartSettings1Poly(commonState.StudioSet.PartMainSettings[part].MonoPoly, (byte)part);
             }
-            if (cbStudioSetPartSettings1Legato.SelectedIndex != commonState.studioSet.PartMainSettings[part].Legato)
+            if (cbStudioSetPartSettings1Legato.SelectedIndex != commonState.StudioSet.PartMainSettings[part].Legato)
             {
-                cbStudioSetPartSettings1Legato.SelectedIndex = commonState.studioSet.PartMainSettings[part].Legato;
-                SetStudioSetStudioSetPartSettings1Legato(commonState.studioSet.PartMainSettings[part].Legato, (byte)part);
+                cbStudioSetPartSettings1Legato.SelectedIndex = commonState.StudioSet.PartMainSettings[part].Legato;
+                SetStudioSetStudioSetPartSettings1Legato(commonState.StudioSet.PartMainSettings[part].Legato, (byte)part);
             }
-            if (slStudioSetPartSettings1PitchBendRange.Value != commonState.studioSet.PartMainSettings[part].PitchBendRange)
+            if (slStudioSetPartSettings1PitchBendRange.Value != commonState.StudioSet.PartMainSettings[part].PitchBendRange)
             {
-                slStudioSetPartSettings1PitchBendRange.Value = commonState.studioSet.PartMainSettings[part].PitchBendRange;
-                SetStudioSetStudioSetPartSettings1BendRange(commonState.studioSet.PartMainSettings[part].PitchBendRange, (byte)part);
+                slStudioSetPartSettings1PitchBendRange.Value = commonState.StudioSet.PartMainSettings[part].PitchBendRange;
+                SetStudioSetStudioSetPartSettings1BendRange(commonState.StudioSet.PartMainSettings[part].PitchBendRange, (byte)part);
             }
-            if (cbStudioSetPartSettings1Portamento.SelectedIndex != commonState.studioSet.PartMainSettings[part].PortamentoSwitch)
+            if (cbStudioSetPartSettings1Portamento.SelectedIndex != commonState.StudioSet.PartMainSettings[part].PortamentoSwitch)
             {
-                cbStudioSetPartSettings1Portamento.SelectedIndex = commonState.studioSet.PartMainSettings[part].PortamentoSwitch;
-                SetStudioSetStudioSetPartSettings1Portamento(commonState.studioSet.PartMainSettings[part].PortamentoSwitch, (byte)part);
+                cbStudioSetPartSettings1Portamento.SelectedIndex = commonState.StudioSet.PartMainSettings[part].PortamentoSwitch;
+                SetStudioSetStudioSetPartSettings1Portamento(commonState.StudioSet.PartMainSettings[part].PortamentoSwitch, (byte)part);
             }
-            if (slStudioSetPartSettings1PortamentoTime.Value != commonState.studioSet.PartMainSettings[part].PortamentoTime)
+            if (slStudioSetPartSettings1PortamentoTime.Value != commonState.StudioSet.PartMainSettings[part].PortamentoTime)
             {
-                slStudioSetPartSettings1PortamentoTime.Value = commonState.studioSet.PartMainSettings[part].PortamentoTime;
-                SetStudioSetStudioSetPartSettings1PortamentoTime(commonState.studioSet.PartMainSettings[part].PortamentoTime, (byte)part);
+                slStudioSetPartSettings1PortamentoTime.Value = commonState.StudioSet.PartMainSettings[part].PortamentoTime;
+                SetStudioSetStudioSetPartSettings1PortamentoTime(commonState.StudioSet.PartMainSettings[part].PortamentoTime, (byte)part);
             }
-            if (slStudioSetPartSettings2CutoffOffset.Value != commonState.studioSet.PartMainSettings[part].CutoffOffset)
+            if (slStudioSetPartSettings2CutoffOffset.Value != commonState.StudioSet.PartMainSettings[part].CutoffOffset)
             {
-                slStudioSetPartSettings2CutoffOffset.Value = commonState.studioSet.PartMainSettings[part].CutoffOffset;
-                SetStudioSetStudioSetPartSettings2CutoffOffset(commonState.studioSet.PartMainSettings[part].CutoffOffset, (byte)part);
+                slStudioSetPartSettings2CutoffOffset.Value = commonState.StudioSet.PartMainSettings[part].CutoffOffset;
+                SetStudioSetStudioSetPartSettings2CutoffOffset(commonState.StudioSet.PartMainSettings[part].CutoffOffset, (byte)part);
             }
-            if (slStudioSetPartSettings2ResonanceOffset.Value != commonState.studioSet.PartMainSettings[part].ResonanceOffset)
+            if (slStudioSetPartSettings2ResonanceOffset.Value != commonState.StudioSet.PartMainSettings[part].ResonanceOffset)
             {
-                slStudioSetPartSettings2ResonanceOffset.Value = commonState.studioSet.PartMainSettings[part].ResonanceOffset;
-                SetStudioSetStudioSetPartSettings2ResonanceOffset(commonState.studioSet.PartMainSettings[part].ResonanceOffset, (byte)part);
+                slStudioSetPartSettings2ResonanceOffset.Value = commonState.StudioSet.PartMainSettings[part].ResonanceOffset;
+                SetStudioSetStudioSetPartSettings2ResonanceOffset(commonState.StudioSet.PartMainSettings[part].ResonanceOffset, (byte)part);
             }
-            if (slStudioSetPartSettings2AttackTimeOffset.Value != commonState.studioSet.PartMainSettings[part].AttackTimeOffset)
+            if (slStudioSetPartSettings2AttackTimeOffset.Value != commonState.StudioSet.PartMainSettings[part].AttackTimeOffset)
             {
-                slStudioSetPartSettings2AttackTimeOffset.Value = commonState.studioSet.PartMainSettings[part].AttackTimeOffset;
-                SetStudioSetStudioSetPartSettings2AttackTimeOffset(commonState.studioSet.PartMainSettings[part].AttackTimeOffset, (byte)part);
+                slStudioSetPartSettings2AttackTimeOffset.Value = commonState.StudioSet.PartMainSettings[part].AttackTimeOffset;
+                SetStudioSetStudioSetPartSettings2AttackTimeOffset(commonState.StudioSet.PartMainSettings[part].AttackTimeOffset, (byte)part);
             }
-            if (slStudioSetPartSettings2DecayTimeOffset.Value != commonState.studioSet.PartMainSettings[part].DecayTimeOffset)
+            if (slStudioSetPartSettings2DecayTimeOffset.Value != commonState.StudioSet.PartMainSettings[part].DecayTimeOffset)
             {
-                slStudioSetPartSettings2DecayTimeOffset.Value = commonState.studioSet.PartMainSettings[part].DecayTimeOffset;
-                SetStudioSetStudioSetPartSettings2DecayTimeOffset(commonState.studioSet.PartMainSettings[part].DecayTimeOffset, (byte)part);
+                slStudioSetPartSettings2DecayTimeOffset.Value = commonState.StudioSet.PartMainSettings[part].DecayTimeOffset;
+                SetStudioSetStudioSetPartSettings2DecayTimeOffset(commonState.StudioSet.PartMainSettings[part].DecayTimeOffset, (byte)part);
             }
-            if (slStudioSetPartSettings2ReleaseTimeOffset.Value != commonState.studioSet.PartMainSettings[part].ReleaseTimeOffset)
+            if (slStudioSetPartSettings2ReleaseTimeOffset.Value != commonState.StudioSet.PartMainSettings[part].ReleaseTimeOffset)
             {
-                slStudioSetPartSettings2ReleaseTimeOffset.Value = commonState.studioSet.PartMainSettings[part].ReleaseTimeOffset;
-                SetStudioSetStudioSetPartSettings2ReleaseTimeOffset(commonState.studioSet.PartMainSettings[part].ReleaseTimeOffset, (byte)part);
+                slStudioSetPartSettings2ReleaseTimeOffset.Value = commonState.StudioSet.PartMainSettings[part].ReleaseTimeOffset;
+                SetStudioSetStudioSetPartSettings2ReleaseTimeOffset(commonState.StudioSet.PartMainSettings[part].ReleaseTimeOffset, (byte)part);
             }
-            if (slStudioSetPartSettings2VibratoRate.Value != commonState.studioSet.PartMainSettings[part].VibratoRate)
+            if (slStudioSetPartSettings2VibratoRate.Value != commonState.StudioSet.PartMainSettings[part].VibratoRate)
             {
-                slStudioSetPartSettings2VibratoRate.Value = commonState.studioSet.PartMainSettings[part].VibratoRate;
-                SetStudioSetStudioSetPartSettings2VibratoRate(commonState.studioSet.PartMainSettings[part].VibratoRate, (byte)part);
+                slStudioSetPartSettings2VibratoRate.Value = commonState.StudioSet.PartMainSettings[part].VibratoRate;
+                SetStudioSetStudioSetPartSettings2VibratoRate(commonState.StudioSet.PartMainSettings[part].VibratoRate, (byte)part);
             }
-            if (slStudioSetPartSettings2VibratoDepth.Value != commonState.studioSet.PartMainSettings[part].VibratoDepth)
+            if (slStudioSetPartSettings2VibratoDepth.Value != commonState.StudioSet.PartMainSettings[part].VibratoDepth)
             {
-                slStudioSetPartSettings2VibratoDepth.Value = commonState.studioSet.PartMainSettings[part].VibratoDepth;
-                SetStudioSetStudioSetPartSettings2VibratoDepth(commonState.studioSet.PartMainSettings[part].VibratoDepth, (byte)part);
+                slStudioSetPartSettings2VibratoDepth.Value = commonState.StudioSet.PartMainSettings[part].VibratoDepth;
+                SetStudioSetStudioSetPartSettings2VibratoDepth(commonState.StudioSet.PartMainSettings[part].VibratoDepth, (byte)part);
             }
-            if (slStudioSetPartSettings2VibratoDelay.Value != commonState.studioSet.PartMainSettings[part].VibratoDelay)
+            if (slStudioSetPartSettings2VibratoDelay.Value != commonState.StudioSet.PartMainSettings[part].VibratoDelay)
             {
-                slStudioSetPartSettings2VibratoDelay.Value = commonState.studioSet.PartMainSettings[part].VibratoDelay;
-                SetStudioSetStudioSetPartSettings2VibratoDelay(commonState.studioSet.PartMainSettings[part].VibratoDelay, (byte)part);
+                slStudioSetPartSettings2VibratoDelay.Value = commonState.StudioSet.PartMainSettings[part].VibratoDelay;
+                SetStudioSetStudioSetPartSettings2VibratoDelay(commonState.StudioSet.PartMainSettings[part].VibratoDelay, (byte)part);
             }
-            if (slStudioSetPartEffectsChorusSendLevel.Value != commonState.studioSet.PartMainSettings[part].ChorusSendLevel)
+            if (slStudioSetPartEffectsChorusSendLevel.Value != commonState.StudioSet.PartMainSettings[part].ChorusSendLevel)
             {
-                slStudioSetPartEffectsChorusSendLevel.Value = commonState.studioSet.PartMainSettings[part].ChorusSendLevel;
-                SetStudioSetStudioSetPartEffectsChorusSendLevel(commonState.studioSet.PartMainSettings[part].ChorusSendLevel, (byte)part);
+                slStudioSetPartEffectsChorusSendLevel.Value = commonState.StudioSet.PartMainSettings[part].ChorusSendLevel;
+                SetStudioSetStudioSetPartEffectsChorusSendLevel(commonState.StudioSet.PartMainSettings[part].ChorusSendLevel, (byte)part);
             }
-            if (slStudioSetPartEffectsReverbSendLevel.Value != commonState.studioSet.PartMainSettings[part].ReverbSendLevel)
+            if (slStudioSetPartEffectsReverbSendLevel.Value != commonState.StudioSet.PartMainSettings[part].ReverbSendLevel)
             {
-                slStudioSetPartEffectsReverbSendLevel.Value = commonState.studioSet.PartMainSettings[part].ReverbSendLevel;
-                SetStudioSetStudioSetPartEffectsReverbSendLevel(commonState.studioSet.PartMainSettings[part].ReverbSendLevel, (byte)part);
+                slStudioSetPartEffectsReverbSendLevel.Value = commonState.StudioSet.PartMainSettings[part].ReverbSendLevel;
+                SetStudioSetStudioSetPartEffectsReverbSendLevel(commonState.StudioSet.PartMainSettings[part].ReverbSendLevel, (byte)part);
             }
-            if (cbStudioSetPartEffectsOutputAssign.SelectedIndex != commonState.studioSet.PartMainSettings[part].OutputAssign)
+            if (cbStudioSetPartEffectsOutputAssign.SelectedIndex != commonState.StudioSet.PartMainSettings[part].OutputAssign)
             {
-                cbStudioSetPartEffectsOutputAssign.SelectedIndex = commonState.studioSet.PartMainSettings[part].OutputAssign;
-                SetStudioSetStudioSetPartEffectsOutputAssign(commonState.studioSet.PartMainSettings[part].OutputAssign, (byte)part);
+                cbStudioSetPartEffectsOutputAssign.SelectedIndex = commonState.StudioSet.PartMainSettings[part].OutputAssign;
+                SetStudioSetStudioSetPartEffectsOutputAssign(commonState.StudioSet.PartMainSettings[part].OutputAssign, (byte)part);
             }
-            if (slStudioSetPartKeyboardOctaveShift.Value != commonState.studioSet.PartKeyboard[part].OctaveShift)
+            if (slStudioSetPartKeyboardOctaveShift.Value != commonState.StudioSet.PartKeyboard[part].OctaveShift)
             {
-                slStudioSetPartKeyboardOctaveShift.Value = commonState.studioSet.PartKeyboard[part].OctaveShift;
-                SetStudioSetStudioSetPartKeyboardOctaveShift(commonState.studioSet.PartKeyboard[part].OctaveShift, (byte)part);
+                slStudioSetPartKeyboardOctaveShift.Value = commonState.StudioSet.PartKeyboard[part].OctaveShift;
+                SetStudioSetStudioSetPartKeyboardOctaveShift(commonState.StudioSet.PartKeyboard[part].OctaveShift, (byte)part);
             }
-            if (slStudioSetPartKeyboardVelocitySenseOffset.Value != commonState.studioSet.PartKeyboard[part].VelocitySenseOffset)
+            if (slStudioSetPartKeyboardVelocitySenseOffset.Value != commonState.StudioSet.PartKeyboard[part].VelocitySenseOffset)
             {
-                slStudioSetPartKeyboardVelocitySenseOffset.Value = commonState.studioSet.PartKeyboard[part].VelocitySenseOffset;
-                SetStudioSetStudioSetPartKeyboardVelocitySenseOffset(commonState.studioSet.PartKeyboard[part].VelocitySenseOffset, (byte)part);
+                slStudioSetPartKeyboardVelocitySenseOffset.Value = commonState.StudioSet.PartKeyboard[part].VelocitySenseOffset;
+                SetStudioSetStudioSetPartKeyboardVelocitySenseOffset(commonState.StudioSet.PartKeyboard[part].VelocitySenseOffset, (byte)part);
             }
-            if (slStudioSetPartKeyboardRangeLower.Value != commonState.studioSet.PartKeyboard[part].RangeLower)
+            if (slStudioSetPartKeyboardRangeLower.Value != commonState.StudioSet.PartKeyboard[part].RangeLower)
             {
-                slStudioSetPartKeyboardRangeLower.Value = commonState.studioSet.PartKeyboard[part].RangeLower;
-                SetStudioSetStudioSetPartKeyboardRangeLower(commonState.studioSet.PartKeyboard[part].RangeLower, (byte)part);
+                slStudioSetPartKeyboardRangeLower.Value = commonState.StudioSet.PartKeyboard[part].RangeLower;
+                SetStudioSetStudioSetPartKeyboardRangeLower(commonState.StudioSet.PartKeyboard[part].RangeLower, (byte)part);
             }
-            if (slStudioSetPartKeyboardRangeUpper.Value != commonState.studioSet.PartKeyboard[part].RangeUpper)
+            if (slStudioSetPartKeyboardRangeUpper.Value != commonState.StudioSet.PartKeyboard[part].RangeUpper)
             {
-                slStudioSetPartKeyboardRangeUpper.Value = commonState.studioSet.PartKeyboard[part].RangeUpper;
-                SetStudioSetStudioSetPartKeyboardRangeUpper(commonState.studioSet.PartKeyboard[part].RangeUpper, (byte)part);
+                slStudioSetPartKeyboardRangeUpper.Value = commonState.StudioSet.PartKeyboard[part].RangeUpper;
+                SetStudioSetStudioSetPartKeyboardRangeUpper(commonState.StudioSet.PartKeyboard[part].RangeUpper, (byte)part);
             }
-            if (slStudioSetPartKeyboardFadeWidthLower.Value != commonState.studioSet.PartKeyboard[part].FadeWidthLower)
+            if (slStudioSetPartKeyboardFadeWidthLower.Value != commonState.StudioSet.PartKeyboard[part].FadeWidthLower)
             {
-                slStudioSetPartKeyboardFadeWidthLower.Value = commonState.studioSet.PartKeyboard[part].FadeWidthLower;
-                SetStudioSetStudioSetPartKeyboardFadeWidthLower(commonState.studioSet.PartKeyboard[part].FadeWidthLower, (byte)part);
+                slStudioSetPartKeyboardFadeWidthLower.Value = commonState.StudioSet.PartKeyboard[part].FadeWidthLower;
+                SetStudioSetStudioSetPartKeyboardFadeWidthLower(commonState.StudioSet.PartKeyboard[part].FadeWidthLower, (byte)part);
             }
-            if (slStudioSetPartKeyboardFadeWidthUpper.Value != commonState.studioSet.PartKeyboard[part].FadeWidthUpper)
+            if (slStudioSetPartKeyboardFadeWidthUpper.Value != commonState.StudioSet.PartKeyboard[part].FadeWidthUpper)
             {
-                slStudioSetPartKeyboardFadeWidthUpper.Value = commonState.studioSet.PartKeyboard[part].FadeWidthUpper;
-                SetStudioSetStudioSetPartKeyboardFadeWidthUpper(commonState.studioSet.PartKeyboard[part].FadeWidthUpper, (byte)part);
+                slStudioSetPartKeyboardFadeWidthUpper.Value = commonState.StudioSet.PartKeyboard[part].FadeWidthUpper;
+                SetStudioSetStudioSetPartKeyboardFadeWidthUpper(commonState.StudioSet.PartKeyboard[part].FadeWidthUpper, (byte)part);
             }
-            if (slStudioSetPartKeyboardVelocityRangeLower.Value != commonState.studioSet.PartKeyboard[part].VelocityRangeLower)
+            if (slStudioSetPartKeyboardVelocityRangeLower.Value != commonState.StudioSet.PartKeyboard[part].VelocityRangeLower)
             {
-                slStudioSetPartKeyboardVelocityRangeLower.Value = commonState.studioSet.PartKeyboard[part].VelocityRangeLower;
-                SetStudioSetStudioSetPartKeyboardVelocityRangeLower(commonState.studioSet.PartKeyboard[part].VelocityRangeLower, (byte)part);
+                slStudioSetPartKeyboardVelocityRangeLower.Value = commonState.StudioSet.PartKeyboard[part].VelocityRangeLower;
+                SetStudioSetStudioSetPartKeyboardVelocityRangeLower(commonState.StudioSet.PartKeyboard[part].VelocityRangeLower, (byte)part);
             }
-            if (slStudioSetPartKeyboardVelocityRangeUpper.Value != commonState.studioSet.PartKeyboard[part].VelocityRangeUpper)
+            if (slStudioSetPartKeyboardVelocityRangeUpper.Value != commonState.StudioSet.PartKeyboard[part].VelocityRangeUpper)
             {
-                slStudioSetPartKeyboardVelocityRangeUpper.Value = commonState.studioSet.PartKeyboard[part].VelocityRangeUpper;
-                SetStudioSetStudioSetPartKeyboardVelocityRangeUpper(commonState.studioSet.PartKeyboard[part].VelocityRangeUpper, (byte)part);
+                slStudioSetPartKeyboardVelocityRangeUpper.Value = commonState.StudioSet.PartKeyboard[part].VelocityRangeUpper;
+                SetStudioSetStudioSetPartKeyboardVelocityRangeUpper(commonState.StudioSet.PartKeyboard[part].VelocityRangeUpper, (byte)part);
             }
-            if (slStudioSetPartKeyboardVelocityFadeWidthLower.Value != commonState.studioSet.PartKeyboard[part].VelocityFadeWidthLower)
+            if (slStudioSetPartKeyboardVelocityFadeWidthLower.Value != commonState.StudioSet.PartKeyboard[part].VelocityFadeWidthLower)
             {
-                slStudioSetPartKeyboardVelocityFadeWidthLower.Value = commonState.studioSet.PartKeyboard[part].VelocityFadeWidthLower;
-                SetStudioSetStudioSetPartKeyboardVelocityFadeWidthLower(commonState.studioSet.PartKeyboard[part].VelocityFadeWidthLower, (byte)part);
+                slStudioSetPartKeyboardVelocityFadeWidthLower.Value = commonState.StudioSet.PartKeyboard[part].VelocityFadeWidthLower;
+                SetStudioSetStudioSetPartKeyboardVelocityFadeWidthLower(commonState.StudioSet.PartKeyboard[part].VelocityFadeWidthLower, (byte)part);
             }
-            if (slStudioSetPartKeyboardVelocityFadeWidthUpper.Value != commonState.studioSet.PartKeyboard[part].VelocityFadeWidthUpper)
+            if (slStudioSetPartKeyboardVelocityFadeWidthUpper.Value != commonState.StudioSet.PartKeyboard[part].VelocityFadeWidthUpper)
             {
-                slStudioSetPartKeyboardVelocityFadeWidthUpper.Value = commonState.studioSet.PartKeyboard[part].VelocityFadeWidthUpper;
-                SetStudioSetStudioSetPartKeyboardVelocityFadeWidthUpper(commonState.studioSet.PartKeyboard[part].VelocityFadeWidthUpper, (byte)part);
+                slStudioSetPartKeyboardVelocityFadeWidthUpper.Value = commonState.StudioSet.PartKeyboard[part].VelocityFadeWidthUpper;
+                SetStudioSetStudioSetPartKeyboardVelocityFadeWidthUpper(commonState.StudioSet.PartKeyboard[part].VelocityFadeWidthUpper, (byte)part);
             }
-            if (cbStudioSetPartKeyboardVelocityCurveType.SelectedIndex != commonState.studioSet.PartKeyboard[part].VelocityCurveType)
+            if (cbStudioSetPartKeyboardVelocityCurveType.SelectedIndex != commonState.StudioSet.PartKeyboard[part].VelocityCurveType)
             {
-                cbStudioSetPartKeyboardVelocityCurveType.SelectedIndex = commonState.studioSet.PartKeyboard[part].VelocityCurveType;
-                SetStudioSetStudioSetPartKeyboardVelocityCurveType(commonState.studioSet.PartKeyboard[part].VelocityCurveType, (byte)part);
+                cbStudioSetPartKeyboardVelocityCurveType.SelectedIndex = commonState.StudioSet.PartKeyboard[part].VelocityCurveType;
+                SetStudioSetStudioSetPartKeyboardVelocityCurveType(commonState.StudioSet.PartKeyboard[part].VelocityCurveType, (byte)part);
             }
-            if (cbStudioSetPartKeyboardMute.IsChecked != commonState.studioSet.PartKeyboard[part].Mute)
+            if (cbStudioSetPartKeyboardMute.IsChecked != commonState.StudioSet.PartKeyboard[part].Mute)
             {
-                cbStudioSetPartKeyboardMute.IsChecked = commonState.studioSet.PartKeyboard[part].Mute;
-                SetStudioSetStudioSetPartKeyboard(commonState.studioSet.PartKeyboard[part].Mute, (byte)part);
+                cbStudioSetPartKeyboardMute.IsChecked = commonState.StudioSet.PartKeyboard[part].Mute;
+                SetStudioSetStudioSetPartKeyboard(commonState.StudioSet.PartKeyboard[part].Mute, (byte)part);
             }
-            if (cbStudioSetPartScaleTuneType.SelectedIndex != commonState.studioSet.PartScaleTune[part].Type)
+            if (cbStudioSetPartScaleTuneType.SelectedIndex != commonState.StudioSet.PartScaleTune[part].Type)
             {
-                cbStudioSetPartScaleTuneType.SelectedIndex = commonState.studioSet.PartScaleTune[part].Type;
-                SetStudioSetStudioSetPartScaleTuneType(commonState.studioSet.PartScaleTune[part].Type, (byte)part);
+                cbStudioSetPartScaleTuneType.SelectedIndex = commonState.StudioSet.PartScaleTune[part].Type;
+                SetStudioSetStudioSetPartScaleTuneType(commonState.StudioSet.PartScaleTune[part].Type, (byte)part);
             }
-            if (cbStudioSetPartScaleTuneKey.SelectedIndex != commonState.studioSet.PartScaleTune[part].Key)
+            if (cbStudioSetPartScaleTuneKey.SelectedIndex != commonState.StudioSet.PartScaleTune[part].Key)
             {
-                cbStudioSetPartScaleTuneKey.SelectedIndex = commonState.studioSet.PartScaleTune[part].Key;
-                SetStudioSetStudioSetPartScaleTune(commonState.studioSet.PartScaleTune[part].Key, (byte)part);
+                cbStudioSetPartScaleTuneKey.SelectedIndex = commonState.StudioSet.PartScaleTune[part].Key;
+                SetStudioSetStudioSetPartScaleTune(commonState.StudioSet.PartScaleTune[part].Key, (byte)part);
             }
-            if (slStudioSetPartScaleTuneC.Value != commonState.studioSet.PartScaleTune[part].C)
+            if (slStudioSetPartScaleTuneC.Value != commonState.StudioSet.PartScaleTune[part].C)
             {
-                slStudioSetPartScaleTuneC.Value = commonState.studioSet.PartScaleTune[part].C;
-                SetStudioSetStudioSetPartScaleTuneC(commonState.studioSet.PartScaleTune[part].C, (byte)part);
+                slStudioSetPartScaleTuneC.Value = commonState.StudioSet.PartScaleTune[part].C;
+                SetStudioSetStudioSetPartScaleTuneC(commonState.StudioSet.PartScaleTune[part].C, (byte)part);
             }
-            if (slStudioSetPartScaleTuneCi.Value != commonState.studioSet.PartScaleTune[part].Ci)
+            if (slStudioSetPartScaleTuneCi.Value != commonState.StudioSet.PartScaleTune[part].Ci)
             {
-                slStudioSetPartScaleTuneCi.Value = commonState.studioSet.PartScaleTune[part].Ci;
-                SetStudioSetStudioSetPartScaleTuneCi(commonState.studioSet.PartScaleTune[part].Ci, (byte)part);
+                slStudioSetPartScaleTuneCi.Value = commonState.StudioSet.PartScaleTune[part].Ci;
+                SetStudioSetStudioSetPartScaleTuneCi(commonState.StudioSet.PartScaleTune[part].Ci, (byte)part);
             }
-            if (slStudioSetPartScaleTuneD.Value != commonState.studioSet.PartScaleTune[part].D)
+            if (slStudioSetPartScaleTuneD.Value != commonState.StudioSet.PartScaleTune[part].D)
             {
-                slStudioSetPartScaleTuneD.Value = commonState.studioSet.PartScaleTune[part].D;
-                SetStudioSetStudioSetPartScaleTuneD(commonState.studioSet.PartScaleTune[part].D, (byte)part);
+                slStudioSetPartScaleTuneD.Value = commonState.StudioSet.PartScaleTune[part].D;
+                SetStudioSetStudioSetPartScaleTuneD(commonState.StudioSet.PartScaleTune[part].D, (byte)part);
             }
-            if (slStudioSetPartScaleTuneDi.Value != commonState.studioSet.PartScaleTune[part].Di)
+            if (slStudioSetPartScaleTuneDi.Value != commonState.StudioSet.PartScaleTune[part].Di)
             {
-                slStudioSetPartScaleTuneDi.Value = commonState.studioSet.PartScaleTune[part].Di;
-                SetStudioSetStudioSetPartScaleTuneDi(commonState.studioSet.PartScaleTune[part].Di, (byte)part);
+                slStudioSetPartScaleTuneDi.Value = commonState.StudioSet.PartScaleTune[part].Di;
+                SetStudioSetStudioSetPartScaleTuneDi(commonState.StudioSet.PartScaleTune[part].Di, (byte)part);
             }
-            if (slStudioSetPartScaleTuneE.Value != commonState.studioSet.PartScaleTune[part].E)
+            if (slStudioSetPartScaleTuneE.Value != commonState.StudioSet.PartScaleTune[part].E)
             {
-                slStudioSetPartScaleTuneE.Value = commonState.studioSet.PartScaleTune[part].E;
-                SetStudioSetStudioSetPartScaleTuneE(commonState.studioSet.PartScaleTune[part].E, (byte)part);
+                slStudioSetPartScaleTuneE.Value = commonState.StudioSet.PartScaleTune[part].E;
+                SetStudioSetStudioSetPartScaleTuneE(commonState.StudioSet.PartScaleTune[part].E, (byte)part);
             }
-            if (slStudioSetPartScaleTuneF.Value != commonState.studioSet.PartScaleTune[part].F)
+            if (slStudioSetPartScaleTuneF.Value != commonState.StudioSet.PartScaleTune[part].F)
             {
-                slStudioSetPartScaleTuneF.Value = commonState.studioSet.PartScaleTune[part].F;
-                SetStudioSetStudioSetPartScaleTuneF(commonState.studioSet.PartScaleTune[part].F, (byte)part);
+                slStudioSetPartScaleTuneF.Value = commonState.StudioSet.PartScaleTune[part].F;
+                SetStudioSetStudioSetPartScaleTuneF(commonState.StudioSet.PartScaleTune[part].F, (byte)part);
             }
-            if (slStudioSetPartScaleTuneFi.Value != commonState.studioSet.PartScaleTune[part].Fi)
+            if (slStudioSetPartScaleTuneFi.Value != commonState.StudioSet.PartScaleTune[part].Fi)
             {
-                slStudioSetPartScaleTuneFi.Value = commonState.studioSet.PartScaleTune[part].Fi;
-                SetStudioSetStudioSetPartScaleTuneFi(commonState.studioSet.PartScaleTune[part].Fi, (byte)part);
+                slStudioSetPartScaleTuneFi.Value = commonState.StudioSet.PartScaleTune[part].Fi;
+                SetStudioSetStudioSetPartScaleTuneFi(commonState.StudioSet.PartScaleTune[part].Fi, (byte)part);
             }
-            if (slStudioSetPartScaleTuneG.Value != commonState.studioSet.PartScaleTune[part].G)
+            if (slStudioSetPartScaleTuneG.Value != commonState.StudioSet.PartScaleTune[part].G)
             {
-                slStudioSetPartScaleTuneG.Value = commonState.studioSet.PartScaleTune[part].G;
-                SetStudioSetStudioSetPartScaleTuneG(commonState.studioSet.PartScaleTune[part].G, (byte)part);
+                slStudioSetPartScaleTuneG.Value = commonState.StudioSet.PartScaleTune[part].G;
+                SetStudioSetStudioSetPartScaleTuneG(commonState.StudioSet.PartScaleTune[part].G, (byte)part);
             }
-            if (slStudioSetPartScaleTuneGi.Value != commonState.studioSet.PartScaleTune[part].Gi)
+            if (slStudioSetPartScaleTuneGi.Value != commonState.StudioSet.PartScaleTune[part].Gi)
             {
-                slStudioSetPartScaleTuneGi.Value = commonState.studioSet.PartScaleTune[part].Gi;
-                SetStudioSetStudioSetPartScaleTuneGi(commonState.studioSet.PartScaleTune[part].Gi, (byte)part);
+                slStudioSetPartScaleTuneGi.Value = commonState.StudioSet.PartScaleTune[part].Gi;
+                SetStudioSetStudioSetPartScaleTuneGi(commonState.StudioSet.PartScaleTune[part].Gi, (byte)part);
             }
-            if (slStudioSetPartScaleTuneA.Value != commonState.studioSet.PartScaleTune[part].A)
+            if (slStudioSetPartScaleTuneA.Value != commonState.StudioSet.PartScaleTune[part].A)
             {
-                slStudioSetPartScaleTuneA.Value = commonState.studioSet.PartScaleTune[part].A;
-                SetStudioSetStudioSetPartScaleTuneA(commonState.studioSet.PartScaleTune[part].A, (byte)part);
+                slStudioSetPartScaleTuneA.Value = commonState.StudioSet.PartScaleTune[part].A;
+                SetStudioSetStudioSetPartScaleTuneA(commonState.StudioSet.PartScaleTune[part].A, (byte)part);
             }
-            if (slStudioSetPartScaleTuneAi.Value != commonState.studioSet.PartScaleTune[part].Ai)
+            if (slStudioSetPartScaleTuneAi.Value != commonState.StudioSet.PartScaleTune[part].Ai)
             {
-                slStudioSetPartScaleTuneAi.Value = commonState.studioSet.PartScaleTune[part].Ai;
-                SetStudioSetStudioSetPartScaleTuneAi(commonState.studioSet.PartScaleTune[part].Ai, (byte)part);
+                slStudioSetPartScaleTuneAi.Value = commonState.StudioSet.PartScaleTune[part].Ai;
+                SetStudioSetStudioSetPartScaleTuneAi(commonState.StudioSet.PartScaleTune[part].Ai, (byte)part);
             }
-            if (slStudioSetPartScaleTuneB.Value != commonState.studioSet.PartScaleTune[part].B)
+            if (slStudioSetPartScaleTuneB.Value != commonState.StudioSet.PartScaleTune[part].B)
             {
-                slStudioSetPartScaleTuneB.Value = commonState.studioSet.PartScaleTune[part].B;
-                SetStudioSetStudioSetPartScaleTuneB(commonState.studioSet.PartScaleTune[part].B, (byte)part);
+                slStudioSetPartScaleTuneB.Value = commonState.StudioSet.PartScaleTune[part].B;
+                SetStudioSetStudioSetPartScaleTuneB(commonState.StudioSet.PartScaleTune[part].B, (byte)part);
             }
-            if (cbStudioSetPartMidiReceiveProgramChange.IsChecked != commonState.studioSet.PartMidi[part].ReceiveProgramChange)
+            if (cbStudioSetPartMidiReceiveProgramChange.IsChecked != commonState.StudioSet.PartMidi[part].ReceiveProgramChange)
             {
-                cbStudioSetPartMidiReceiveProgramChange.IsChecked = commonState.studioSet.PartMidi[part].ReceiveProgramChange;
-                SetStudioSetStudioSetPartMidiReceiveProgramChange(commonState.studioSet.PartMidi[part].ReceiveProgramChange, (byte)part);
+                cbStudioSetPartMidiReceiveProgramChange.IsChecked = commonState.StudioSet.PartMidi[part].ReceiveProgramChange;
+                SetStudioSetStudioSetPartMidiReceiveProgramChange(commonState.StudioSet.PartMidi[part].ReceiveProgramChange, (byte)part);
             }
-            if (cbStudioSetPartMidiReceiveBankSelect.IsChecked != commonState.studioSet.PartMidi[part].ReceiveBankSelect)
+            if (cbStudioSetPartMidiReceiveBankSelect.IsChecked != commonState.StudioSet.PartMidi[part].ReceiveBankSelect)
             {
-                cbStudioSetPartMidiReceiveBankSelect.IsChecked = commonState.studioSet.PartMidi[part].ReceiveBankSelect;
-                SetStudioSetStudioSetPartMidiReceiveBankSelect(commonState.studioSet.PartMidi[part].ReceiveBankSelect, (byte)part);
+                cbStudioSetPartMidiReceiveBankSelect.IsChecked = commonState.StudioSet.PartMidi[part].ReceiveBankSelect;
+                SetStudioSetStudioSetPartMidiReceiveBankSelect(commonState.StudioSet.PartMidi[part].ReceiveBankSelect, (byte)part);
             }
-            if (cbStudioSetPartMidiReceivePitchBend.IsChecked != commonState.studioSet.PartMidi[part].ReceivePitchBend)
+            if (cbStudioSetPartMidiReceivePitchBend.IsChecked != commonState.StudioSet.PartMidi[part].ReceivePitchBend)
             {
-                cbStudioSetPartMidiReceivePitchBend.IsChecked = commonState.studioSet.PartMidi[part].ReceivePitchBend;
-                SetStudioSetStudioSetPartMidiReceivePitchBend(commonState.studioSet.PartMidi[part].ReceivePitchBend, (byte)part);
+                cbStudioSetPartMidiReceivePitchBend.IsChecked = commonState.StudioSet.PartMidi[part].ReceivePitchBend;
+                SetStudioSetStudioSetPartMidiReceivePitchBend(commonState.StudioSet.PartMidi[part].ReceivePitchBend, (byte)part);
             }
-            if (cbStudioSetPartMidiReceivePolyphonicKeyPressure.IsChecked != commonState.studioSet.PartMidi[part].ReceivePolyphonicKeyPressure)
+            if (cbStudioSetPartMidiReceivePolyphonicKeyPressure.IsChecked != commonState.StudioSet.PartMidi[part].ReceivePolyphonicKeyPressure)
             {
-                cbStudioSetPartMidiReceivePolyphonicKeyPressure.IsChecked = commonState.studioSet.PartMidi[part].ReceivePolyphonicKeyPressure;
-                SetStudioSetStudioSetPartMidiReceivePolyphonicKeyPressure(commonState.studioSet.PartMidi[part].ReceivePolyphonicKeyPressure, (byte)part);
+                cbStudioSetPartMidiReceivePolyphonicKeyPressure.IsChecked = commonState.StudioSet.PartMidi[part].ReceivePolyphonicKeyPressure;
+                SetStudioSetStudioSetPartMidiReceivePolyphonicKeyPressure(commonState.StudioSet.PartMidi[part].ReceivePolyphonicKeyPressure, (byte)part);
             }
-            if (cbStudioSetPartMidiReceiveChannelPressure.IsChecked != commonState.studioSet.PartMidi[part].ReceiveChannelPressure)
+            if (cbStudioSetPartMidiReceiveChannelPressure.IsChecked != commonState.StudioSet.PartMidi[part].ReceiveChannelPressure)
             {
-                cbStudioSetPartMidiReceiveChannelPressure.IsChecked = commonState.studioSet.PartMidi[part].ReceiveChannelPressure;
-                SetStudioSetPartMidiReceiveChannelPressure(commonState.studioSet.PartMidi[part].ReceiveChannelPressure, (byte)part);
+                cbStudioSetPartMidiReceiveChannelPressure.IsChecked = commonState.StudioSet.PartMidi[part].ReceiveChannelPressure;
+                SetStudioSetPartMidiReceiveChannelPressure(commonState.StudioSet.PartMidi[part].ReceiveChannelPressure, (byte)part);
             }
-            if (cbStudioSetPartMidiReceiveModulation.IsChecked != commonState.studioSet.PartMidi[part].ReceiveModulation)
+            if (cbStudioSetPartMidiReceiveModulation.IsChecked != commonState.StudioSet.PartMidi[part].ReceiveModulation)
             {
-                cbStudioSetPartMidiReceiveModulation.IsChecked = commonState.studioSet.PartMidi[part].ReceiveModulation;
-                SetStudioSetStudioSetPartMidiReceiveModulation(commonState.studioSet.PartMidi[part].ReceiveModulation, (byte)part);
+                cbStudioSetPartMidiReceiveModulation.IsChecked = commonState.StudioSet.PartMidi[part].ReceiveModulation;
+                SetStudioSetStudioSetPartMidiReceiveModulation(commonState.StudioSet.PartMidi[part].ReceiveModulation, (byte)part);
             }
-            if (cbStudioSetPartMidiReceiveVolume.IsChecked != commonState.studioSet.PartMidi[part].ReceiveVolume)
+            if (cbStudioSetPartMidiReceiveVolume.IsChecked != commonState.StudioSet.PartMidi[part].ReceiveVolume)
             {
-                cbStudioSetPartMidiReceiveVolume.IsChecked = commonState.studioSet.PartMidi[part].ReceiveVolume;
-                SetStudioSetStudioSetPartMidiReceiveVolume(commonState.studioSet.PartMidi[part].ReceiveVolume, (byte)part);
+                cbStudioSetPartMidiReceiveVolume.IsChecked = commonState.StudioSet.PartMidi[part].ReceiveVolume;
+                SetStudioSetStudioSetPartMidiReceiveVolume(commonState.StudioSet.PartMidi[part].ReceiveVolume, (byte)part);
             }
-            if (cbStudioSetPartMidiReceivePan.IsChecked != commonState.studioSet.PartMidi[part].ReceivePan)
+            if (cbStudioSetPartMidiReceivePan.IsChecked != commonState.StudioSet.PartMidi[part].ReceivePan)
             {
-                cbStudioSetPartMidiReceivePan.IsChecked = commonState.studioSet.PartMidi[part].ReceivePan;
-                SetStudioSetStudioSetPartMidiReceivePan(commonState.studioSet.PartMidi[part].ReceivePan, (byte)part);
+                cbStudioSetPartMidiReceivePan.IsChecked = commonState.StudioSet.PartMidi[part].ReceivePan;
+                SetStudioSetStudioSetPartMidiReceivePan(commonState.StudioSet.PartMidi[part].ReceivePan, (byte)part);
             }
-            if (cbStudioSetPartMidiReceiveExpression.IsChecked != commonState.studioSet.PartMidi[part].ReceiveExpression)
+            if (cbStudioSetPartMidiReceiveExpression.IsChecked != commonState.StudioSet.PartMidi[part].ReceiveExpression)
             {
-                cbStudioSetPartMidiReceiveExpression.IsChecked = commonState.studioSet.PartMidi[part].ReceiveExpression;
-                SetStudioSetStudioSetPartMidiReceiveExpression(commonState.studioSet.PartMidi[part].ReceiveExpression, (byte)part);
+                cbStudioSetPartMidiReceiveExpression.IsChecked = commonState.StudioSet.PartMidi[part].ReceiveExpression;
+                SetStudioSetStudioSetPartMidiReceiveExpression(commonState.StudioSet.PartMidi[part].ReceiveExpression, (byte)part);
             }
-            if (cbStudioSetPartMidiReceiveHold1.IsChecked != commonState.studioSet.PartMidi[part].ReceiveHold1)
+            if (cbStudioSetPartMidiReceiveHold1.IsChecked != commonState.StudioSet.PartMidi[part].ReceiveHold1)
             {
-                cbStudioSetPartMidiReceiveHold1.IsChecked = commonState.studioSet.PartMidi[part].ReceiveHold1;
-                SetStudioSetStudioSetPartMidiReceiveHold1(commonState.studioSet.PartMidi[part].ReceiveHold1, (byte)part);
+                cbStudioSetPartMidiReceiveHold1.IsChecked = commonState.StudioSet.PartMidi[part].ReceiveHold1;
+                SetStudioSetStudioSetPartMidiReceiveHold1(commonState.StudioSet.PartMidi[part].ReceiveHold1, (byte)part);
             }
-            if (cbStudioSetPartMidiPhaseLock.IsChecked != commonState.studioSet.PartMidi[part].PhaseLock)
+            if (cbStudioSetPartMidiPhaseLock.IsChecked != commonState.StudioSet.PartMidi[part].PhaseLock)
             {
-                cbStudioSetPartMidiPhaseLock.IsChecked = commonState.studioSet.PartMidi[part].PhaseLock;
-                SetStudioSetStudioSetPartMidiPhaseLock(commonState.studioSet.PartMidi[part].PhaseLock, (byte)part);
+                cbStudioSetPartMidiPhaseLock.IsChecked = commonState.StudioSet.PartMidi[part].PhaseLock;
+                SetStudioSetStudioSetPartMidiPhaseLock(commonState.StudioSet.PartMidi[part].PhaseLock, (byte)part);
             }
-            if (slStudioSetPartMotionalSurroundLR.Value != commonState.studioSet.PartMotionalSurround[part].LR)
+            if (slStudioSetPartMotionalSurroundLR.Value != commonState.StudioSet.PartMotionalSurround[part].LR)
             {
-                slStudioSetPartMotionalSurroundLR.Value = commonState.studioSet.PartMotionalSurround[part].LR;
-                SetStudioSetStudioSetPartMotionalSurroundLR(commonState.studioSet.PartMotionalSurround[part].LR, (byte)part);
+                slStudioSetPartMotionalSurroundLR.Value = commonState.StudioSet.PartMotionalSurround[part].LR;
+                SetStudioSetStudioSetPartMotionalSurroundLR(commonState.StudioSet.PartMotionalSurround[part].LR, (byte)part);
             }
-            if (slStudioSetPartMotionalSurroundFB.Value != commonState.studioSet.PartMotionalSurround[part].FB)
+            if (slStudioSetPartMotionalSurroundFB.Value != commonState.StudioSet.PartMotionalSurround[part].FB)
             {
-                slStudioSetPartMotionalSurroundFB.Value = commonState.studioSet.PartMotionalSurround[part].FB;
-                SetStudioSetStudioSetPartMotionalSurroundFB(commonState.studioSet.PartMotionalSurround[part].FB, (byte)part);
+                slStudioSetPartMotionalSurroundFB.Value = commonState.StudioSet.PartMotionalSurround[part].FB;
+                SetStudioSetStudioSetPartMotionalSurroundFB(commonState.StudioSet.PartMotionalSurround[part].FB, (byte)part);
             }
-            if (slStudioSetPartMotionalSurroundWidth.Value != commonState.studioSet.PartMotionalSurround[part].Width)
+            if (slStudioSetPartMotionalSurroundWidth.Value != commonState.StudioSet.PartMotionalSurround[part].Width)
             {
-                slStudioSetPartMotionalSurroundWidth.Value = commonState.studioSet.PartMotionalSurround[part].Width;
-                SetStudioSetStudioSetPartMotionalSurroundWidth(commonState.studioSet.PartMotionalSurround[part].Width, (byte)part);
+                slStudioSetPartMotionalSurroundWidth.Value = commonState.StudioSet.PartMotionalSurround[part].Width;
+                SetStudioSetStudioSetPartMotionalSurroundWidth(commonState.StudioSet.PartMotionalSurround[part].Width, (byte)part);
             }
-            if (slStudioSetPartMotionalSurroundAmbienceSendLevel.Value != commonState.studioSet.PartMotionalSurround[part].AmbienceSendLevel)
+            if (slStudioSetPartMotionalSurroundAmbienceSendLevel.Value != commonState.StudioSet.PartMotionalSurround[part].AmbienceSendLevel)
             {
-                slStudioSetPartMotionalSurroundAmbienceSendLevel.Value = commonState.studioSet.PartMotionalSurround[part].AmbienceSendLevel;
-                SetStudioSetStudioSetPartMotionalSurroundAmbienceSendLevel(commonState.studioSet.PartMotionalSurround[part].AmbienceSendLevel, (byte)part);
+                slStudioSetPartMotionalSurroundAmbienceSendLevel.Value = commonState.StudioSet.PartMotionalSurround[part].AmbienceSendLevel;
+                SetStudioSetStudioSetPartMotionalSurroundAmbienceSendLevel(commonState.StudioSet.PartMotionalSurround[part].AmbienceSendLevel, (byte)part);
             }
-            if (cbStudioSetPartEQSwitch.IsChecked != commonState.studioSet.PartEQ[part].EqSwitch)
+            if (cbStudioSetPartEQSwitch.IsChecked != commonState.StudioSet.PartEQ[part].EqSwitch)
             {
-                cbStudioSetPartEQSwitch.IsChecked = commonState.studioSet.PartEQ[part].EqSwitch;
-                SetStudioSetStudioSetPartEQ(commonState.studioSet.PartEQ[part].EqSwitch, (byte)part);
+                cbStudioSetPartEQSwitch.IsChecked = commonState.StudioSet.PartEQ[part].EqSwitch;
+                SetStudioSetStudioSetPartEQ(commonState.StudioSet.PartEQ[part].EqSwitch, (byte)part);
             }
-            if (cbStudioSetPartEQLowFreq.SelectedIndex != commonState.studioSet.PartEQ[part].EqLowFreq)
+            if (cbStudioSetPartEQLowFreq.SelectedIndex != commonState.StudioSet.PartEQ[part].EqLowFreq)
             {
-                cbStudioSetPartEQLowFreq.SelectedIndex = commonState.studioSet.PartEQ[part].EqLowFreq;
-                SetStudioSetStudioSetPartEQLoqFreq(commonState.studioSet.PartEQ[part].EqLowFreq, (byte)part);
+                cbStudioSetPartEQLowFreq.SelectedIndex = commonState.StudioSet.PartEQ[part].EqLowFreq;
+                SetStudioSetStudioSetPartEQLoqFreq(commonState.StudioSet.PartEQ[part].EqLowFreq, (byte)part);
             }
-            if (slStudioSetPartEQLowGain.Value != commonState.studioSet.PartEQ[part].EqLowGain)
+            if (slStudioSetPartEQLowGain.Value != commonState.StudioSet.PartEQ[part].EqLowGain)
             {
-                slStudioSetPartEQLowGain.Value = commonState.studioSet.PartEQ[part].EqLowGain;
-                SetStudioSetStudioSetPartEQLowGain(commonState.studioSet.PartEQ[part].EqLowGain, (byte)part);
+                slStudioSetPartEQLowGain.Value = commonState.StudioSet.PartEQ[part].EqLowGain;
+                SetStudioSetStudioSetPartEQLowGain(commonState.StudioSet.PartEQ[part].EqLowGain, (byte)part);
             }
-            if (cbStudioSetPartEQMidFreq.SelectedIndex != commonState.studioSet.PartEQ[part].EqMidFreq)
+            if (cbStudioSetPartEQMidFreq.SelectedIndex != commonState.StudioSet.PartEQ[part].EqMidFreq)
             {
-                cbStudioSetPartEQMidFreq.SelectedIndex = commonState.studioSet.PartEQ[part].EqMidFreq;
-                SetStudioSetStudioSetPartEQMidFreq(commonState.studioSet.PartEQ[part].EqMidFreq, (byte)part);
+                cbStudioSetPartEQMidFreq.SelectedIndex = commonState.StudioSet.PartEQ[part].EqMidFreq;
+                SetStudioSetStudioSetPartEQMidFreq(commonState.StudioSet.PartEQ[part].EqMidFreq, (byte)part);
             }
-            if (slStudioSetPartEQMidGain.Value != commonState.studioSet.PartEQ[part].EqMidGain)
+            if (slStudioSetPartEQMidGain.Value != commonState.StudioSet.PartEQ[part].EqMidGain)
             {
-                slStudioSetPartEQMidGain.Value = commonState.studioSet.PartEQ[part].EqMidGain;
-                SetStudioSetStudioSetPartEQMidGain(commonState.studioSet.PartEQ[part].EqMidGain, (byte)part);
+                slStudioSetPartEQMidGain.Value = commonState.StudioSet.PartEQ[part].EqMidGain;
+                SetStudioSetStudioSetPartEQMidGain(commonState.StudioSet.PartEQ[part].EqMidGain, (byte)part);
             }
-            if (cbStudioSetPartEQMidQ.SelectedIndex != commonState.studioSet.PartEQ[part].EqMidQ)
+            if (cbStudioSetPartEQMidQ.SelectedIndex != commonState.StudioSet.PartEQ[part].EqMidQ)
             {
-                cbStudioSetPartEQMidQ.SelectedIndex = commonState.studioSet.PartEQ[part].EqMidQ;
-                SetStudioSetStudioSetPartEQMidQ(commonState.studioSet.PartEQ[part].EqMidQ, (byte)part);
+                cbStudioSetPartEQMidQ.SelectedIndex = commonState.StudioSet.PartEQ[part].EqMidQ;
+                SetStudioSetStudioSetPartEQMidQ(commonState.StudioSet.PartEQ[part].EqMidQ, (byte)part);
             }
-            if (cbStudioSetPartEQHighFreq.SelectedIndex != commonState.studioSet.PartEQ[part].EqHighFreq)
+            if (cbStudioSetPartEQHighFreq.SelectedIndex != commonState.StudioSet.PartEQ[part].EqHighFreq)
             {
-                cbStudioSetPartEQHighFreq.SelectedIndex = commonState.studioSet.PartEQ[part].EqHighFreq;
-                SetStudioSetStudioSetPartEQHighFreq(commonState.studioSet.PartEQ[part].EqHighFreq, (byte)part);
+                cbStudioSetPartEQHighFreq.SelectedIndex = commonState.StudioSet.PartEQ[part].EqHighFreq;
+                SetStudioSetStudioSetPartEQHighFreq(commonState.StudioSet.PartEQ[part].EqHighFreq, (byte)part);
             }
-            if (slStudioSetPartEQHighGain.Value != commonState.studioSet.PartEQ[part].EqHighGain)
+            if (slStudioSetPartEQHighGain.Value != commonState.StudioSet.PartEQ[part].EqHighGain)
             {
-                slStudioSetPartEQHighGain.Value = commonState.studioSet.PartEQ[part].EqHighGain;
-                SetStudioSetStudioSetPartEQHighGain(commonState.studioSet.PartEQ[part].EqHighGain, (byte)part);
+                slStudioSetPartEQHighGain.Value = commonState.StudioSet.PartEQ[part].EqHighGain;
+                SetStudioSetStudioSetPartEQHighGain(commonState.StudioSet.PartEQ[part].EqHighGain, (byte)part);
             }
         }
     }

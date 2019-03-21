@@ -20,6 +20,7 @@ namespace Integra_7_Xamarin
 
         private WaitingFor waitingFor;
         private Object o;
+        private Int32 waitCount;
 
         /// <summary>
         /// Call to show a wait page with a progress bar
@@ -47,6 +48,7 @@ namespace Integra_7_Xamarin
             switch (waitingFor)
             {
                 case WaitingFor.MIDI:
+                    waitCount = 50;
                     tbPleaseWait.Text = "Please wait while looking for MIDI devices...";
                     pb_WaitingProgress.Progress = 0;
                     break;
@@ -105,20 +107,31 @@ namespace Integra_7_Xamarin
 
         private void PleaseWait_FindMidiInterfaces()
         {
-            if (commonState.midi == null)
+            if (commonState.Midi == null)
             {
                 // This should have been done in UIHandler.Init() but sometimes fails.
-                commonState.midi = DependencyService.Get<IMidi>();
+                commonState.Midi = DependencyService.Get<IMidi>();
                 MidiState = MIDIState.NOT_INITIALIZED;
             }
             else if (MidiState == MIDIState.NOT_INITIALIZED)
             {
-                commonState.midi.Init(mainPage, "INTEGRA-7", Librarian_midiOutputDevice, Librarian_midiInputDevice, 0, 0);
-                pb_WaitingProgress.Progress = pb_WaitingProgress.Progress + ((1 - pb_WaitingProgress.Progress) / 2);
-                if (commonState.midi.MidiIsReady())
+                waitCount--;
+                if (waitCount > 0)
                 {
-                    pb_WaitingProgress.Progress = 1;
-                    MidiState = MIDIState.INITIALIZED;
+                    commonState.Midi.Init(mainPage, "INTEGRA-7", Librarian_midiOutputDevice, Librarian_midiInputDevice, 0, 0);
+                    pb_WaitingProgress.Progress = pb_WaitingProgress.Progress + ((1 - pb_WaitingProgress.Progress) / 2);
+                    if (commonState.Midi.MidiIsReady())
+                    {
+                        pb_WaitingProgress.Progress = 1;
+                        MidiState = MIDIState.INITIALIZED;
+                    }
+                }
+                else
+                {
+                    if (commonState.Midi.GetMidiDeviceList().Count > 0)
+                    {
+                        mainPage.DisplayActionSheet("Please select MIDI interface:", "Close app", null, commonState.Midi.GetMidiDeviceList().ToArray());
+                    }
                 }
             }
             else if (MidiState == MIDIState.INITIALIZED)

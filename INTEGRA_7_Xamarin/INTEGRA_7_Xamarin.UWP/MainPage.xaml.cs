@@ -105,7 +105,7 @@ namespace Integra_7_Xamarin.UWP
 
         public void InitMidi()
         {
-            MainPage_Portable.uIHandler.commonState.midi.Init(MainPage_Portable, "INTEGRA-7", OutputSelector, InputSelector, (object)Dispatcher_UWP, 0, 0);
+            MainPage_Portable.uIHandler.commonState.Midi.Init(MainPage_Portable, "INTEGRA-7", OutputSelector, InputSelector, (object)Dispatcher_UWP, 0, 0);
         }
 
         public void Waiting(Boolean on)

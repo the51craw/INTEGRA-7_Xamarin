@@ -471,11 +471,11 @@ namespace Integra_7_Xamarin
                 MotionalSurround_StackLayout.IsVisible = false;
                 ShowLibrarianPage();
             }
-            else if (commonState.studioSet == null)
+            else if (commonState.StudioSet == null)
             {
                 // StudioSet set has not been read, thus we have no Motional Surround data. 
                 // Start by creating the studioSet object:
-                commonState.studioSet = new StudioSet();
+                commonState.StudioSet = new StudioSet();
 
                 // Then get the Motional Lurround data by borrowing code from Studio set editor:
                 QueryStudioSetMotionalSurround(); // This will be caught in MotionalSurrouns_MidiInPort_MessageReceived()
@@ -489,16 +489,16 @@ namespace Integra_7_Xamarin
                 // Place part labels:
                 for (currentMotionalSurroundPart = 0; currentMotionalSurroundPart < 16; currentMotionalSurroundPart++)
                 {
-                    mslPart[currentMotionalSurroundPart].Horizontal = commonState.studioSet.PartMotionalSurround[currentMotionalSurroundPart].LR;
-                    mslPart[currentMotionalSurroundPart].Vertical = (byte)(127 - commonState.studioSet.PartMotionalSurround[currentMotionalSurroundPart].FB);
+                    mslPart[currentMotionalSurroundPart].Horizontal = commonState.StudioSet.PartMotionalSurround[currentMotionalSurroundPart].LR;
+                    mslPart[currentMotionalSurroundPart].Vertical = (byte)(127 - commonState.StudioSet.PartMotionalSurround[currentMotionalSurroundPart].FB);
                     mslPart[currentMotionalSurroundPart].Plot(gMotionalSurroundLabelsArea.Width, gMotionalSurroundLabelsArea.Height);
                     mslPart[currentMotionalSurroundPart].IsVisible = msePart[currentMotionalSurroundPart].Switch.LSSwitch.IsToggled;
                     mslPart[currentMotionalSurroundPart].Text = msePart[currentMotionalSurroundPart].Editor.Text;
                     mslPart[currentMotionalSurroundPart].MinimumWidthRequest = 20 + mslPart[currentMotionalSurroundPart].Text.Length * 10;
                     mslPart[currentMotionalSurroundPart].WidthRequest = 20 + mslPart[currentMotionalSurroundPart].Text.Length * 10;
                 }
-                mslPart[currentMotionalSurroundPart].Horizontal = commonState.studioSet.MotionalSurround.ExtPartLR;
-                mslPart[currentMotionalSurroundPart].Vertical = (byte)(127 -commonState.studioSet.MotionalSurround.ExtPartFB);
+                mslPart[currentMotionalSurroundPart].Horizontal = commonState.StudioSet.MotionalSurround.ExtPartLR;
+                mslPart[currentMotionalSurroundPart].Vertical = (byte)(127 -commonState.StudioSet.MotionalSurround.ExtPartFB);
                 mslPart[currentMotionalSurroundPart].Plot(gMotionalSurroundLabelsArea.Width, gMotionalSurroundLabelsArea.Height);
                 mslPart[currentMotionalSurroundPart].IsVisible = msePart[currentMotionalSurroundPart].Switch.LSSwitch.IsToggled;
                 mslPart[currentMotionalSurroundPart].Text = msePart[currentMotionalSurroundPart].Editor.Text;
@@ -553,20 +553,20 @@ namespace Integra_7_Xamarin
                 address = new byte[] { 0x18, 0x00, 0x08, 0x07 };
                 value = new byte[] { mslPart[currentMotionalSurroundPart].Horizontal,
                     (byte)(0x7f - mslPart[currentMotionalSurroundPart].Vertical)};
-                bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
-                commonState.midi.SendSystemExclusive(bytes);
+                bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
+                commonState.Midi.SendSystemExclusive(bytes);
             }
             else
             {
                 byte part = (byte)(0x20 + (byte)currentMotionalSurroundPart);
                 address = new byte[] { 0x18, 0x00, part, 0x44 };
                 value = new byte[] { mslPart[currentMotionalSurroundPart].Horizontal };
-                bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
-                commonState.midi.SendSystemExclusive(bytes);
+                bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
+                commonState.Midi.SendSystemExclusive(bytes);
                 address = new byte[] { 0x18, 0x00, part, 0x46 };
                 value = new byte[] { (byte)(0x7f - mslPart[currentMotionalSurroundPart].Vertical) };
-                bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
-                commonState.midi.SendSystemExclusive(bytes);
+                bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
+                commonState.Midi.SendSystemExclusive(bytes);
             }
         }
 

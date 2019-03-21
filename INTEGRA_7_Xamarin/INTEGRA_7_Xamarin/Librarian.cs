@@ -97,8 +97,8 @@ namespace Integra_7_Xamarin
                 }
                 else
                 {
-                    commonState.player.btnPlayStop = Librarian_btnPlay;
-                    if (commonState.player.Playing)
+                    commonState.Player.btnPlayStop = Librarian_btnPlay;
+                    if (commonState.Player.Playing)
                     {
                         Librarian_btnPlay.Content = "Stop";
                     }
@@ -129,7 +129,7 @@ namespace Integra_7_Xamarin
                 ReadSettings();
 
                 // Populate lvGroups:
-                foreach (List<String> tone in commonState.toneList.Tones)
+                foreach (List<String> tone in commonState.ToneList.Tones)
                 {
                     if (!Librarian_Groups.Contains(tone[0]))
                     {
@@ -180,7 +180,7 @@ namespace Integra_7_Xamarin
 
         private async void CheckForVenderDriver()
         {
-            commonState.VenderDriverIsInstalled = commonState.midi.VenderDriverDetected();
+            commonState.VenderDriverIsInstalled = commonState.Midi.VenderDriverDetected();
             if (commonState.VenderDriverIsInstalled)
             {
                 Librarian_btnPlay.IsEnabled = false;
@@ -740,17 +740,17 @@ namespace Integra_7_Xamarin
                 PushHandleControlEvents();
                 try // In case I7 holds a user sound, which are not loaded into app, surround this with a try:
                 {
-                    Librarian_lvGroups.SelectedItem = commonState.currentTone.Group;
+                    Librarian_lvGroups.SelectedItem = commonState.CurrentTone.Group;
                     PopulateCategories();
-                    Librarian_lvCategories.SelectedItem = commonState.currentTone.Category;
+                    Librarian_lvCategories.SelectedItem = commonState.CurrentTone.Category;
                     PopulateToneNames();
-                    Librarian_lvToneNames.SelectedItem = commonState.currentTone.Name;
+                    Librarian_lvToneNames.SelectedItem = commonState.CurrentTone.Name;
                     PopulateToneData();
                     UpdateDrumNames();
                 }
                 catch
                 {
-                    commonState.currentTone = new Tone();
+                    commonState.CurrentTone = new Tone();
                 }
                 PopHandleControlEvents();
             }
@@ -773,12 +773,12 @@ namespace Integra_7_Xamarin
             //}
             if (showCurrentToneReadFromI7)
             {
-                if (commonState.currentTone.ToneIndex > -1)
+                if (commonState.CurrentTone.ToneIndex > -1)
                 {
                     updateIntegra7 = false;
-                    Librarian_lvGroups.SelectedItem = commonState.toneList.Tones[commonState.currentTone.ToneIndex][0];
-                    Librarian_lvCategories.SelectedItem = commonState.toneList.Tones[commonState.currentTone.ToneIndex][1];
-                    Librarian_lvToneNames.SelectedItem = commonState.toneList.Tones[commonState.currentTone.ToneIndex][3];
+                    Librarian_lvGroups.SelectedItem = commonState.ToneList.Tones[commonState.CurrentTone.ToneIndex][0];
+                    Librarian_lvCategories.SelectedItem = commonState.ToneList.Tones[commonState.CurrentTone.ToneIndex][1];
+                    Librarian_lvToneNames.SelectedItem = commonState.ToneList.Tones[commonState.CurrentTone.ToneIndex][3];
                     showCurrentToneReadFromI7 = false;
                     updateIntegra7 = true;
                 }
@@ -832,26 +832,26 @@ namespace Integra_7_Xamarin
                             case QueryType.PCM_SYNTH_TONE_COMMON:
                                 // This is the first user tone.
                                 // Its index should be set to continue after the preset tones:
-                                userToneIndex = commonState.toneList.PresetsCount;
+                                userToneIndex = commonState.ToneList.PresetsCount;
                                 if (!IsInitTone(data))
                                 {
-                                    commonState.currentTone.Name = "";
+                                    commonState.CurrentTone.Name = "";
                                     for (byte i = 0; i < 12; i++)
                                     {
-                                        commonState.currentTone.Name += (char)data[i + 11];
+                                        commonState.CurrentTone.Name += (char)data[i + 11];
                                     }
-                                    commonState.currentTone.Name = commonState.currentTone.Name.Trim();
-                                    commonState.toneNames[0].Add(commonState.currentTone.Name);
+                                    commonState.CurrentTone.Name = commonState.CurrentTone.Name.Trim();
+                                    commonState.ToneNames[0].Add(commonState.CurrentTone.Name);
                                     // Also read common2 to get tone category:
                                     byte[] address = new byte[] { 0x1c, 0x60, 0x30, 0x00 };
                                     byte[] length = new byte[] { 0x00, 0x00, 0x00, 0x3c };
-                                    byte[] message = commonState.midi.SystemExclusiveRQ1Message(address, length);
-                                    commonState.midi.SendSystemExclusive(message);
+                                    byte[] message = commonState.Midi.SystemExclusiveRQ1Message(address, length);
+                                    commonState.Midi.SendSystemExclusive(message);
                                     queryType = QueryType.PCM_SYNTH_TONE_COMMON2;
                                 }
                                 else
                                 {
-                                    commonState.toneNames[0].Add("INIT TONE");
+                                    commonState.ToneNames[0].Add("INIT TONE");
                                     emptySlots++;
                                     pc++;
                                     if (pc > 128 || (!scanAll && emptySlots > 10))
@@ -861,9 +861,9 @@ namespace Integra_7_Xamarin
                                         if (lsb > 1)
                                         {
                                             // No more patches to test!
-                                            while (commonState.toneNames[0].Count() < 256)
+                                            while (commonState.ToneNames[0].Count() < 256)
                                             {
-                                                commonState.toneNames[0].Add("INIT TONE");
+                                                commonState.ToneNames[0].Add("INIT TONE");
                                             }
                                             msb = 86;
                                             lsb = 0;
@@ -883,14 +883,14 @@ namespace Integra_7_Xamarin
                                 tone.Add("PCM Synth Tone");
                                 tone.Add(toneCategories.pcmToneCategoryNames[toneCategory]);
                                 tone.Add((userToneNumbers[toneCategory]++).ToString());
-                                tone.Add(commonState.currentTone.Name);
+                                tone.Add(commonState.CurrentTone.Name);
                                 tone.Add(msb.ToString());
                                 tone.Add(lsb.ToString());
                                 tone.Add((msb * 128 + lsb).ToString());
                                 tone.Add(pc.ToString());
                                 tone.Add("(User)");
                                 tone.Add((userToneIndex++).ToString());
-                                commonState.toneList.Tones.Add(tone);
+                                commonState.ToneList.Tones.Add(tone);
                                 pc++;
                                 if (pc > 128 || (!scanAll && emptySlots > 10))
                                 {
@@ -899,9 +899,9 @@ namespace Integra_7_Xamarin
                                     if (lsb > 1 || (!scanAll && emptySlots > 10))
                                     {
                                         // No more patches to test!
-                                        while (commonState.toneNames[0].Count() < 256)
+                                        while (commonState.ToneNames[0].Count() < 256)
                                         {
-                                            commonState.toneNames[0].Add("INIT TONE");
+                                            commonState.ToneNames[0].Add("INIT TONE");
                                         }
                                         msb = 86;
                                         lsb = 0;
@@ -921,29 +921,29 @@ namespace Integra_7_Xamarin
                             case QueryType.PCM_DRUM_KIT_COMMON:
                                 if (!IsInitKit(data))
                                 {
-                                    commonState.currentTone.Name = "";
+                                    commonState.CurrentTone.Name = "";
                                     for (byte i = 0; i < 12; i++)
                                     {
-                                        commonState.currentTone.Name += (char)data[i + 11];
+                                        commonState.CurrentTone.Name += (char)data[i + 11];
                                     }
-                                    commonState.currentTone.Name = commonState.currentTone.Name.Trim();
-                                    commonState.toneNames[1].Add(commonState.currentTone.Name);
+                                    commonState.CurrentTone.Name = commonState.CurrentTone.Name.Trim();
+                                    commonState.ToneNames[1].Add(commonState.CurrentTone.Name);
                                     tone = new List<String>();
                                     tone.Add("PCM Drum Kit");
                                     tone.Add("Drum");
                                     tone.Add((userToneNumbers[toneCategory]++).ToString());
-                                    tone.Add(commonState.currentTone.Name);
+                                    tone.Add(commonState.CurrentTone.Name);
                                     tone.Add(msb.ToString());
                                     tone.Add(lsb.ToString());
                                     tone.Add((msb * 128 + lsb).ToString());
                                     tone.Add(pc.ToString());
                                     tone.Add("(User)");
                                     tone.Add((userToneIndex++).ToString());
-                                    commonState.toneList.Tones.Add(tone);
+                                    commonState.ToneList.Tones.Add(tone);
                                     // Create a list for the key names:
-                                    commonState.drumKeyAssignLists.ToneNames.Add(new List<String>());
-                                    commonState.drumKeyAssignLists.ToneNames[commonState.drumKeyAssignLists.ToneNames.Count - 1].Add("PCM Drum Kit");
-                                    commonState.drumKeyAssignLists.ToneNames[commonState.drumKeyAssignLists.ToneNames.Count - 1].Add(commonState.currentTone.Name);
+                                    commonState.DrumKeyAssignLists.ToneNames.Add(new List<String>());
+                                    commonState.DrumKeyAssignLists.ToneNames[commonState.DrumKeyAssignLists.ToneNames.Count - 1].Add("PCM Drum Kit");
+                                    commonState.DrumKeyAssignLists.ToneNames[commonState.DrumKeyAssignLists.ToneNames.Count - 1].Add(commonState.CurrentTone.Name);
                                     // Read all key names:
                                     key = 0;
                                     QueryPcmDrumKitKeyName(key);
@@ -951,16 +951,16 @@ namespace Integra_7_Xamarin
                                 }
                                 else
                                 {
-                                    commonState.toneNames[1].Add("INIT KIT");
+                                    commonState.ToneNames[1].Add("INIT KIT");
                                     emptySlots++;
                                 }
                                 pc++;
                                 if (pc > 32 || (!scanAll && emptySlots > 10))
                                 {
                                     // No more patches to test!
-                                    while (commonState.toneNames[1].Count() < 32)
+                                    while (commonState.ToneNames[1].Count() < 32)
                                     {
-                                        commonState.toneNames[1].Add("INIT KIT");
+                                        commonState.ToneNames[1].Add("INIT KIT");
                                     }
                                     msb = 89;
                                     lsb = 0;
@@ -984,7 +984,7 @@ namespace Integra_7_Xamarin
                                 {
                                     name += (char)data[i + 11];
                                 }
-                                commonState.drumKeyAssignLists.ToneNames[commonState.drumKeyAssignLists.ToneNames.Count - 1].Add(name);
+                                commonState.DrumKeyAssignLists.ToneNames[commonState.DrumKeyAssignLists.ToneNames.Count - 1].Add(name);
                                 // Query next if more is expected:
                                 key++;
                                 if (key < 88)
@@ -999,9 +999,9 @@ namespace Integra_7_Xamarin
                                     if (pc > 32 || (!scanAll && emptySlots > 10))
                                     {
                                         // No more patches to test!
-                                        while (commonState.toneNames[1].Count() < 32)
+                                        while (commonState.ToneNames[1].Count() < 32)
                                         {
-                                            commonState.toneNames[1].Add("INIT KIT");
+                                            commonState.ToneNames[1].Add("INIT KIT");
                                         }
                                         msb = 89;
                                         lsb = 0;
@@ -1023,29 +1023,29 @@ namespace Integra_7_Xamarin
                                 if (!IsInitTone(data))
                                 {
                                     toneCategory = data[0x26];
-                                    commonState.currentTone.Name = "";
+                                    commonState.CurrentTone.Name = "";
                                     for (byte i = 0; i < 12; i++)
                                     {
-                                        commonState.currentTone.Name += (char)data[i + 11];
+                                        commonState.CurrentTone.Name += (char)data[i + 11];
                                     }
-                                    commonState.currentTone.Name = commonState.currentTone.Name.Trim();
-                                    commonState.toneNames[2].Add(commonState.currentTone.Name);
+                                    commonState.CurrentTone.Name = commonState.CurrentTone.Name.Trim();
+                                    commonState.ToneNames[2].Add(commonState.CurrentTone.Name);
                                     tone = new List<String>();
                                     tone.Add("SuperNATURAL Acoustic Tone");
                                     tone.Add(toneCategories.snaToneCategoryNames[toneCategory]);
                                     tone.Add((userToneNumbers[toneCategory]++).ToString());
-                                    tone.Add(commonState.currentTone.Name);
+                                    tone.Add(commonState.CurrentTone.Name);
                                     tone.Add(msb.ToString());
                                     tone.Add(lsb.ToString());
                                     tone.Add((msb * 128 + lsb).ToString());
                                     tone.Add(pc.ToString());
                                     tone.Add("(User)");
                                     tone.Add((userToneIndex++).ToString());
-                                    commonState.toneList.Tones.Add(tone);
+                                    commonState.ToneList.Tones.Add(tone);
                                 }
                                 else
                                 {
-                                    commonState.toneNames[2].Add("INIT TONE");
+                                    commonState.ToneNames[2].Add("INIT TONE");
                                     emptySlots++;
                                 }
                                 pc++;
@@ -1056,9 +1056,9 @@ namespace Integra_7_Xamarin
                                     if (lsb > 1 || (!scanAll && emptySlots > 10))
                                     {
                                         // No more patches to test!
-                                        while (commonState.toneNames[2].Count() < 256)
+                                        while (commonState.ToneNames[2].Count() < 256)
                                         {
-                                            commonState.toneNames[2].Add("INIT TONE");
+                                            commonState.ToneNames[2].Add("INIT TONE");
                                         }
                                         msb = 95;
                                         lsb = 0;
@@ -1080,29 +1080,29 @@ namespace Integra_7_Xamarin
                                 if (!IsInitTone(data))
                                 {
                                     toneCategory = data[0x41];
-                                    commonState.currentTone.Name = "";
+                                    commonState.CurrentTone.Name = "";
                                     for (byte i = 0; i < 12; i++)
                                     {
-                                        commonState.currentTone.Name += (char)data[i + 11];
+                                        commonState.CurrentTone.Name += (char)data[i + 11];
                                     }
-                                    commonState.currentTone.Name = commonState.currentTone.Name.Trim();
-                                    commonState.toneNames[3].Add(commonState.currentTone.Name);
+                                    commonState.CurrentTone.Name = commonState.CurrentTone.Name.Trim();
+                                    commonState.ToneNames[3].Add(commonState.CurrentTone.Name);
                                     tone = new List<String>();
                                     tone.Add("SuperNATURAL Synth Tone");
                                     tone.Add(toneCategories.snsToneCategoryNames[toneCategory]);
                                     tone.Add((userToneNumbers[toneCategory]++).ToString());
-                                    tone.Add(commonState.currentTone.Name);
+                                    tone.Add(commonState.CurrentTone.Name);
                                     tone.Add(msb.ToString());
                                     tone.Add(lsb.ToString());
                                     tone.Add((msb * 128 + lsb).ToString());
                                     tone.Add(pc.ToString());
                                     tone.Add("(User)");
                                     tone.Add((userToneIndex++).ToString());
-                                    commonState.toneList.Tones.Add(tone);
+                                    commonState.ToneList.Tones.Add(tone);
                                 }
                                 else
                                 {
-                                    commonState.toneNames[3].Add("INIT TONE");
+                                    commonState.ToneNames[3].Add("INIT TONE");
                                     emptySlots++;
                                 }
                                 pc++;
@@ -1113,9 +1113,9 @@ namespace Integra_7_Xamarin
                                     if (lsb > 3 || (!scanAll && emptySlots > 10))
                                     {
                                         // No more patches to test!
-                                        while (commonState.toneNames[3].Count() < 512)
+                                        while (commonState.ToneNames[3].Count() < 512)
                                         {
-                                            commonState.toneNames[3].Add("INIT TONE");
+                                            commonState.ToneNames[3].Add("INIT TONE");
                                         }
                                         msb = 88;
                                         lsb = 0;
@@ -1136,35 +1136,35 @@ namespace Integra_7_Xamarin
                             case QueryType.SUPERNATURAL_DRUM_KIT_COMMON:
                                 if (!IsInitKit(data))
                                 {
-                                    commonState.currentTone.Name = "";
+                                    commonState.CurrentTone.Name = "";
                                     for (byte i = 0; i < 12; i++)
                                     {
-                                        commonState.currentTone.Name += (char)data[i + 11];
+                                        commonState.CurrentTone.Name += (char)data[i + 11];
                                     }
-                                    commonState.currentTone.Name = commonState.currentTone.Name.Trim();
-                                    commonState.toneNames[4].Add(commonState.currentTone.Name);
+                                    commonState.CurrentTone.Name = commonState.CurrentTone.Name.Trim();
+                                    commonState.ToneNames[4].Add(commonState.CurrentTone.Name);
                                     tone = new List<String>();
                                     tone.Add("SuperNATURAL Drum Kit");
                                     tone.Add("Drum");
                                     tone.Add((userToneNumbers[toneCategory]++).ToString());
-                                    tone.Add(commonState.currentTone.Name);
+                                    tone.Add(commonState.CurrentTone.Name);
                                     tone.Add(msb.ToString());
                                     tone.Add(lsb.ToString());
                                     tone.Add((msb * 128 + lsb).ToString());
                                     tone.Add(pc.ToString());
                                     tone.Add("(User)");
                                     tone.Add((userToneIndex++).ToString());
-                                    commonState.toneList.Tones.Add(tone);
+                                    commonState.ToneList.Tones.Add(tone);
                                     // Create a list for the key names:
-                                    commonState.drumKeyAssignLists.ToneNames.Add(new List<String>());
-                                    commonState.drumKeyAssignLists.ToneNames[commonState.drumKeyAssignLists.ToneNames.Count - 1].Add("SuperNATURAL Drum Kit");
-                                    commonState.drumKeyAssignLists.ToneNames[commonState.drumKeyAssignLists.ToneNames.Count - 1].Add(commonState.currentTone.Name);
+                                    commonState.DrumKeyAssignLists.ToneNames.Add(new List<String>());
+                                    commonState.DrumKeyAssignLists.ToneNames[commonState.DrumKeyAssignLists.ToneNames.Count - 1].Add("SuperNATURAL Drum Kit");
+                                    commonState.DrumKeyAssignLists.ToneNames[commonState.DrumKeyAssignLists.ToneNames.Count - 1].Add(commonState.CurrentTone.Name);
                                     // SN-D keys does not have keys 22 - 26, fill with empth slots:
-                                    commonState.drumKeyAssignLists.ToneNames[commonState.drumKeyAssignLists.ToneNames.Count - 1].Add("-----");
-                                    commonState.drumKeyAssignLists.ToneNames[commonState.drumKeyAssignLists.ToneNames.Count - 1].Add("-----");
-                                    commonState.drumKeyAssignLists.ToneNames[commonState.drumKeyAssignLists.ToneNames.Count - 1].Add("-----");
-                                    commonState.drumKeyAssignLists.ToneNames[commonState.drumKeyAssignLists.ToneNames.Count - 1].Add("-----");
-                                    commonState.drumKeyAssignLists.ToneNames[commonState.drumKeyAssignLists.ToneNames.Count - 1].Add("-----");
+                                    commonState.DrumKeyAssignLists.ToneNames[commonState.DrumKeyAssignLists.ToneNames.Count - 1].Add("-----");
+                                    commonState.DrumKeyAssignLists.ToneNames[commonState.DrumKeyAssignLists.ToneNames.Count - 1].Add("-----");
+                                    commonState.DrumKeyAssignLists.ToneNames[commonState.DrumKeyAssignLists.ToneNames.Count - 1].Add("-----");
+                                    commonState.DrumKeyAssignLists.ToneNames[commonState.DrumKeyAssignLists.ToneNames.Count - 1].Add("-----");
+                                    commonState.DrumKeyAssignLists.ToneNames[commonState.DrumKeyAssignLists.ToneNames.Count - 1].Add("-----");
                                     // Read all key names:
                                     key = 0;
                                     QuerySnDrumKitKeyName(key);
@@ -1172,16 +1172,16 @@ namespace Integra_7_Xamarin
                                 }
                                 else
                                 {
-                                    commonState.toneNames[4].Add("INIT KIT");
+                                    commonState.ToneNames[4].Add("INIT KIT");
                                     emptySlots++;
                                 }
                                 pc++;
                                 if (pc > 64 || (!scanAll && emptySlots > 10))
                                 {
                                     // No more patches to test!
-                                    while (commonState.toneNames[4].Count() < 64)
+                                    while (commonState.ToneNames[4].Count() < 64)
                                     {
-                                        commonState.toneNames[4].Add("INIT KIT");
+                                        commonState.ToneNames[4].Add("INIT KIT");
                                     }
                                     QuerySelectedStudioSet();
                                     break;
@@ -1193,7 +1193,7 @@ namespace Integra_7_Xamarin
                                 // Put the name into the list:
                                 try
                                 {
-                                    commonState.drumKeyAssignLists.ToneNames[commonState.drumKeyAssignLists.ToneNames.Count - 1]
+                                    commonState.DrumKeyAssignLists.ToneNames[commonState.DrumKeyAssignLists.ToneNames.Count - 1]
                                         .Add(superNATURALDrumKitInstrumentList.DrumInstruments[data[12] * 256 + data[13] * 16 + data[14]].Name);
                                 }
                                 catch { }
@@ -1211,9 +1211,9 @@ namespace Integra_7_Xamarin
                                     if (pc > 64 || (!scanAll && emptySlots > 10))
                                     {
                                         // No more patches to test!
-                                        while (commonState.toneNames[1].Count() < 32)
+                                        while (commonState.ToneNames[1].Count() < 32)
                                         {
-                                            commonState.toneNames[1].Add("INIT KIT");
+                                            commonState.ToneNames[1].Add("INIT KIT");
                                         }
                                         msb = 85;
                                         lsb = 0;
@@ -1236,13 +1236,13 @@ namespace Integra_7_Xamarin
                                 QuerySelectedTone();
                                 break;
                             case QueryType.CURRENT_SELECTED_TONE:
-                                Int32 index = commonState.toneList.Get(
+                                Int32 index = commonState.ToneList.Get(
                                     rawData[0x11],
                                     rawData[0x12],
                                     (byte)(rawData[0x13]));
                                 try
                                 {
-                                    commonState.currentTone = new Tone(commonState.toneList.Tones[index]);
+                                    commonState.CurrentTone = new Tone(commonState.ToneList.Tones[index]);
                                 }
                                 catch { }
                                 queryType = QueryType.NONE;
@@ -1252,9 +1252,9 @@ namespace Integra_7_Xamarin
                             case QueryType.READ_TONE_FROM_I7:
                                 try
                                 {
-                                    Int32 toneIndex = commonState.toneList.Get(data[17], data[18], data[19]);
-                                    commonState.currentTone = new Tone(commonState.toneList.Tones[toneIndex]);
-                                    commonState.currentTone.ToneIndex = toneIndex;
+                                    Int32 toneIndex = commonState.ToneList.Get(data[17], data[18], data[19]);
+                                    commonState.CurrentTone = new Tone(commonState.ToneList.Tones[toneIndex]);
+                                    commonState.CurrentTone.ToneIndex = toneIndex;
                                     showCurrentToneReadFromI7 = true;
                                 }
                                 catch { }
@@ -1295,11 +1295,11 @@ namespace Integra_7_Xamarin
                 }
                 else
                 {
-                    commonState.currentTone.Group = (String)Librarian_lvGroups.SelectedItem;
+                    commonState.CurrentTone.Group = (String)Librarian_lvGroups.SelectedItem;
                     PushHandleControlEvents();
                     PopulateCategories();
                     Librarian_lvCategories.SelectedItem = Librarian_Categories[0];
-                    commonState.currentTone.Category = Librarian_Categories[0];
+                    commonState.CurrentTone.Category = Librarian_Categories[0];
                     PopulateToneNames();
                     PopHandleControlEvents();
                 }
@@ -1312,7 +1312,7 @@ namespace Integra_7_Xamarin
             {
                 if ((String)Librarian_lvGroups.SelectedItem != "Studio set")
                 {
-                    commonState.currentTone.Category = (String)Librarian_lvCategories.SelectedItem;
+                    commonState.CurrentTone.Category = (String)Librarian_lvCategories.SelectedItem;
                     // Synthesizer type or extension pack selected.
                     //currentCategoryIndex = Librarian_Categories.IndexOf(commonState.currentTone.Category);
 
@@ -1396,34 +1396,34 @@ namespace Integra_7_Xamarin
                     Boolean drumMap = false;
                     if (!String.IsNullOrEmpty(soundName))
                     {
-                        commonState.currentTone.Name = soundName;
+                        commonState.CurrentTone.Name = soundName;
                     }
-                    if (commonState.currentTone.Name.EndsWith("\t"))
+                    if (commonState.CurrentTone.Name.EndsWith("\t"))
                     {
                         drumMap = true;
-                        commonState.currentTone.Name = commonState.currentTone.Name.TrimEnd('\t');
+                        commonState.CurrentTone.Name = commonState.CurrentTone.Name.TrimEnd('\t');
                     }
-                    String[] parts = commonState.currentTone.Name.Split(',');
+                    String[] parts = commonState.CurrentTone.Name.Split(',');
                     if (parts.Length == 3)
                     {
                         if (drumMap)
                         {
-                            commonState.currentTone.Group = parts[1].TrimStart();
-                            commonState.currentTone.Category = "Drum";
-                            commonState.currentTone.Name = parts[2].TrimStart();
+                            commonState.CurrentTone.Group = parts[1].TrimStart();
+                            commonState.CurrentTone.Category = "Drum";
+                            commonState.CurrentTone.Name = parts[2].TrimStart();
                         }
                         else
                         {
-                            commonState.currentTone.Group = parts[1].TrimStart();
-                            commonState.currentTone.Category = parts[2].TrimStart();
-                            commonState.currentTone.Name = parts[0].TrimStart();
+                            commonState.CurrentTone.Group = parts[1].TrimStart();
+                            commonState.CurrentTone.Category = parts[2].TrimStart();
+                            commonState.CurrentTone.Name = parts[0].TrimStart();
                         }
                         //Librarian_lvGroups.SelectedItem = commonState.currentTone.Group;
                         //Librarian_lvCategories.SelectedItem = commonState.currentTone.Category;
                         //Librarian_lvToneNames.SelectedItem = commonState.currentTone.Name;
-                        commonState.currentTone.Index = commonState.toneList.Get(commonState.currentTone.Group, commonState.currentTone.Category, commonState.currentTone.Name);
+                        commonState.CurrentTone.Index = commonState.ToneList.Get(commonState.CurrentTone.Group, commonState.CurrentTone.Category, commonState.CurrentTone.Name);
                     }
-                    if (commonState.currentTone.Index > -1)
+                    if (commonState.CurrentTone.Index > -1)
                     {
                         PushHandleControlEvents();
                         PushHandleControlEvents();
@@ -1434,18 +1434,18 @@ namespace Integra_7_Xamarin
                             Librarian_tbSearch.Editor.Text = "";
                             PopulateToneData();
                             PopulateToneNames();
-                            Librarian_lvGroups.SelectedItem = commonState.currentTone.Group;
-                            Librarian_lvCategories.SelectedItem = commonState.currentTone.Category;
-                            Librarian_lvToneNames.SelectedItem = commonState.currentTone.Name;
+                            Librarian_lvGroups.SelectedItem = commonState.CurrentTone.Group;
+                            Librarian_lvCategories.SelectedItem = commonState.CurrentTone.Category;
+                            Librarian_lvToneNames.SelectedItem = commonState.CurrentTone.Name;
                         }
                         catch { }
-                        commonState.midi.SetVolume(commonState.CurrentPart, 127);
+                        commonState.Midi.SetVolume(commonState.CurrentPart, 127);
                         UpdateDrumNames();
-                        if (commonState.player.Playing)
+                        if (commonState.Player.Playing)
                         {
-                            commonState.player.StopPlaying();
-                            commonState.player.StartPlaying();
-                            commonState.player.WasPlaying = true;
+                            commonState.Player.StopPlaying();
+                            commonState.Player.StartPlaying();
+                            commonState.Player.WasPlaying = true;
                         }
                         PopHandleControlEvents();
                     }
@@ -1459,24 +1459,24 @@ namespace Integra_7_Xamarin
                         {
                             //localSettings.Values["Tone"] = lvToneNames.SelectedIndex;
                             //currentToneNameIndex = Librarian_ToneNames.IndexOf(Librarian_lvToneNames.SelectedItem.ToString());
-                            commonState.currentTone.Name = (String)Librarian_lvToneNames.SelectedItem;
-                            commonState.currentTone = new Tone(
+                            commonState.CurrentTone.Name = (String)Librarian_lvToneNames.SelectedItem;
+                            commonState.CurrentTone = new Tone(
                                 Librarian_Groups.IndexOf(Librarian_lvGroups.SelectedItem.ToString()),
                                 Librarian_Categories.IndexOf(Librarian_lvCategories.SelectedItem.ToString()),
                                 Librarian_ToneNames.IndexOf(Librarian_lvToneNames.SelectedItem.ToString()),
                                 Librarian_lvGroups.SelectedItem.ToString(),
-                                Librarian_lvCategories.SelectedItem.ToString(), commonState.currentTone.Name);
-                            if (!String.IsNullOrEmpty(commonState.currentTone.Name))
+                                Librarian_lvCategories.SelectedItem.ToString(), commonState.CurrentTone.Name);
+                            if (!String.IsNullOrEmpty(commonState.CurrentTone.Name))
                             {
-                                commonState.currentTone.Name = commonState.currentTone.Name;
+                                commonState.CurrentTone.Name = commonState.CurrentTone.Name;
                             }
-                            if (!String.IsNullOrEmpty(commonState.currentTone.Name))
+                            if (!String.IsNullOrEmpty(commonState.CurrentTone.Name))
                             {
                                 try
                                 {
-                                    if (commonState.currentTone.Index < 0)
+                                    if (commonState.CurrentTone.Index < 0)
                                     {
-                                        commonState.currentTone.Index = commonState.toneList.Get(commonState.currentTone);
+                                        commonState.CurrentTone.Index = commonState.ToneList.Get(commonState.CurrentTone);
                                     }
                                     PopulateToneData();
                                     //PushHandleControlEvents();
@@ -1496,16 +1496,16 @@ namespace Integra_7_Xamarin
                                     //PopHandleControlEvents();
                                 }
                                 catch { }
-                                commonState.midi.SetVolume(commonState.CurrentPart, 127);
+                                commonState.Midi.SetVolume(commonState.CurrentPart, 127);
                                 UpdateDrumNames();
-                                if (commonState.player.Playing)
+                                if (commonState.Player.Playing)
                                 {
-                                    commonState.player.StopPlaying();
-                                    commonState.player.StartPlaying();
-                                    commonState.player.WasPlaying = true;
+                                    commonState.Player.StopPlaying();
+                                    commonState.Player.StartPlaying();
+                                    commonState.Player.WasPlaying = true;
                                 }
                             }
-                            Librarian_lvGroups.SelectedItem = commonState.currentTone.Group;
+                            Librarian_lvGroups.SelectedItem = commonState.CurrentTone.Group;
                         }
                     }
                 }
@@ -1591,7 +1591,7 @@ namespace Integra_7_Xamarin
                     Librarian_filterPresetAndUser.Text = "Preset and user tones";
                     break;
             }
-            commonState.currentTone.Category = (String)Librarian_lvCategories.SelectedItem;
+            commonState.CurrentTone.Category = (String)Librarian_lvCategories.SelectedItem;
             PopulateToneNames();
         }
 
@@ -1609,7 +1609,7 @@ namespace Integra_7_Xamarin
         {
             if (initDone)
             {
-                commonState.midi.OutputDeviceChanged((Picker)sender);
+                commonState.Midi.OutputDeviceChanged((Picker)sender);
             }
         }
 
@@ -1702,7 +1702,7 @@ namespace Integra_7_Xamarin
         {
             for (byte i = 0; i < 16; i++)
             {
-                commonState.midi.SetVolume(i, 100);
+                commonState.Midi.SetVolume(i, 100);
             }
         }
 
@@ -1735,7 +1735,7 @@ namespace Integra_7_Xamarin
         {
             for (byte i = 0; i < 16; i++)
             {
-                commonState.midi.AllNotesOff(i);
+                commonState.Midi.AllNotesOff(i);
             }
         }
 
@@ -1761,8 +1761,8 @@ namespace Integra_7_Xamarin
             {
                 byte[] address = new byte[] { 0x0f, 0x00, 0x20, 0x00 };
                 byte[] data = new byte[] { 0x00 };
-                byte[] package = commonState.midi.SystemExclusiveDT1Message(address, data);
-                commonState.midi.SendSystemExclusive(package);
+                byte[] package = commonState.Midi.SystemExclusiveDT1Message(address, data);
+                commonState.Midi.SendSystemExclusive(package);
                 for (byte i = 0; i < 16; i++)
                 {
                     Librarian_btnPlay.Text = "Play";
@@ -1780,8 +1780,8 @@ namespace Integra_7_Xamarin
             {
                 byte[] address = new byte[] { 0x0f, 0x00, 0x20, 0x00 };
                 byte[] data = new byte[] { (byte)(commonState.CurrentPart + 1) };
-                byte[] package = commonState.midi.SystemExclusiveDT1Message(address, data);
-                commonState.midi.SendSystemExclusive(package);
+                byte[] package = commonState.Midi.SystemExclusiveDT1Message(address, data);
+                commonState.Midi.SendSystemExclusive(package);
                 Librarian_btnPlay.Text = "Stop";
                 if (btnEditTone_Play != null)
                 {
@@ -1800,17 +1800,17 @@ namespace Integra_7_Xamarin
             byte noteNumber = (byte)(keyNumbers[Int32.Parse(((Button)sender).StyleId)] + lowKey);
             if (noteNumber == currentNote)
             {
-                commonState.midi.NoteOff(commonState.CurrentPart, currentNote);
+                commonState.Midi.NoteOff(commonState.CurrentPart, currentNote);
                 currentNote = 255;
             }
             else if (noteNumber < 128)
             {
                 if (currentNote < 128)
                 {
-                    commonState.midi.NoteOff(commonState.CurrentPart, currentNote);
+                    commonState.Midi.NoteOff(commonState.CurrentPart, currentNote);
                 }
                 currentNote = noteNumber;
-                commonState.midi.NoteOn(commonState.CurrentPart, noteNumber, 64);
+                commonState.Midi.NoteOn(commonState.CurrentPart, noteNumber, 64);
             }
         }
 
@@ -1820,17 +1820,17 @@ namespace Integra_7_Xamarin
             byte noteNumber = (byte)(keyNumbers[Int32.Parse(((Button)sender).StyleId)] + lowKey);
             if (noteNumber == currentNote)
             {
-                commonState.midi.NoteOff(commonState.CurrentPart, currentNote);
+                commonState.Midi.NoteOff(commonState.CurrentPart, currentNote);
                 currentNote = 255;
             }
             else if (noteNumber < 128)
             {
                 if (currentNote < 128)
                 {
-                    commonState.midi.NoteOff(commonState.CurrentPart, currentNote);
+                    commonState.Midi.NoteOff(commonState.CurrentPart, currentNote);
                 }
                 currentNote = noteNumber;
-                commonState.midi.NoteOn(commonState.CurrentPart, noteNumber, 64);
+                commonState.Midi.NoteOn(commonState.CurrentPart, noteNumber, 64);
             }
         }
 
@@ -1840,17 +1840,17 @@ namespace Integra_7_Xamarin
             byte noteNumber = (byte)(keyNumbers[Int32.Parse(((Button)sender).StyleId)] + lowKey);
             if (noteNumber == currentNote)
             {
-                commonState.midi.NoteOff(commonState.CurrentPart, currentNote);
+                commonState.Midi.NoteOff(commonState.CurrentPart, currentNote);
                 currentNote = 255;
             }
             else if (noteNumber < 128)
             {
                 if (currentNote < 128)
                 {
-                    commonState.midi.NoteOff(commonState.CurrentPart, currentNote);
+                    commonState.Midi.NoteOff(commonState.CurrentPart, currentNote);
                 }
                 currentNote = noteNumber;
-                commonState.midi.NoteOn(commonState.CurrentPart, noteNumber, 64);
+                commonState.Midi.NoteOn(commonState.CurrentPart, noteNumber, 64);
             }
         }
 
@@ -1860,17 +1860,17 @@ namespace Integra_7_Xamarin
             byte noteNumber = (byte)(keyNumbers[Int32.Parse(((Button)sender).StyleId)] + lowKey);
             if (noteNumber == currentNote)
             {
-                commonState.midi.NoteOff(commonState.CurrentPart, currentNote);
+                commonState.Midi.NoteOff(commonState.CurrentPart, currentNote);
                 currentNote = 255;
             }
             else if (noteNumber < 128)
             {
                 if (currentNote < 128)
                 {
-                    commonState.midi.NoteOff(commonState.CurrentPart, currentNote);
+                    commonState.Midi.NoteOff(commonState.CurrentPart, currentNote);
                 }
                 currentNote = noteNumber;
-                commonState.midi.NoteOn(commonState.CurrentPart, noteNumber, 64);
+                commonState.Midi.NoteOn(commonState.CurrentPart, noteNumber, 64);
             }
         }
 
@@ -1950,9 +1950,9 @@ namespace Integra_7_Xamarin
                 // Read MSB, LSB and PC from Studio set at current part:
                 byte[] address = new byte[] { 0x18, 0x00, (byte)(0x20 + commonState.CurrentPart), 0x00 };
                 byte[] length = new byte[] { 0x00, 0x00, 0x00, 0x09 };
-                byte[] message = commonState.midi.SystemExclusiveRQ1Message(address, length);
+                byte[] message = commonState.Midi.SystemExclusiveRQ1Message(address, length);
                 queryType = QueryType.READ_TONE_FROM_I7;
-                commonState.midi.SendSystemExclusive(message);
+                commonState.Midi.SendSystemExclusive(message);
             }
         }
 
@@ -1960,22 +1960,22 @@ namespace Integra_7_Xamarin
         private void QueryUserPCMSyntTones()
         {
             //t.Trace("private void QueryUserPCMSyntTones()");
-            commonState.midi.ProgramChange(0x0f, msb, lsb, pc);
+            commonState.Midi.ProgramChange(0x0f, msb, lsb, pc);
             byte[] address = new byte[] { 0x1c, 0x60, 0x00, 0x00 };
             byte[] length = new byte[] { 0x00, 0x00, 0x00, 0x0c };
-            byte[] message = commonState.midi.SystemExclusiveRQ1Message(address, length);
+            byte[] message = commonState.Midi.SystemExclusiveRQ1Message(address, length);
             queryType = QueryType.PCM_SYNTH_TONE_COMMON;
-            commonState.midi.SendSystemExclusive(message);
+            commonState.Midi.SendSystemExclusive(message);
         }
         private void QueryUserPCMDrumKitTones()
         {
             //t.Trace("private void QueryUserPCMDrumKitTones()");
-            commonState.midi.ProgramChange(0x0f, msb, lsb, pc);
+            commonState.Midi.ProgramChange(0x0f, msb, lsb, pc);
             byte[] address = new byte[] { 0x1c, 0x70, 0x00, 0x00 };
             byte[] length = new byte[] { 0x00, 0x00, 0x00, 0x0c };
-            byte[] message = commonState.midi.SystemExclusiveRQ1Message(address, length);
+            byte[] message = commonState.Midi.SystemExclusiveRQ1Message(address, length);
             queryType = QueryType.PCM_DRUM_KIT_COMMON;
-            commonState.midi.SendSystemExclusive(message);
+            commonState.Midi.SendSystemExclusive(message);
         }
         private void QueryPcmDrumKitKeyName(byte Key)
         {
@@ -1984,39 +1984,39 @@ namespace Integra_7_Xamarin
             address = hex2Midi.AddBytes128(address, new byte[] { 0x00, 0x00, Key, 0x00 });
             address = hex2Midi.AddBytes128(address, new byte[] { 0x00, 0x00, Key, 0x00 });
             byte[] length = new byte[] { 0x00, 0x00, 0x00, 0x0c };
-            byte[] message = commonState.midi.SystemExclusiveRQ1Message(address, length);
+            byte[] message = commonState.Midi.SystemExclusiveRQ1Message(address, length);
             queryType = QueryType.PCM_KEY_NAME;
-            commonState.midi.SendSystemExclusive(message);
+            commonState.Midi.SendSystemExclusive(message);
         }
         private void QueryUserSuperNaturalAcousticTones()
         {
             //t.Trace("private void QueryUserSuperNaturalAcousticTones()");
-            commonState.midi.ProgramChange(0x0f, msb, lsb, pc);
+            commonState.Midi.ProgramChange(0x0f, msb, lsb, pc);
             byte[] address = new byte[] { 0x1c, 0x62, 0x00, 0x00 };
             byte[] length = new byte[] { 0x00, 0x00, 0x00, 0x46 };
-            byte[] message = commonState.midi.SystemExclusiveRQ1Message(address, length);
+            byte[] message = commonState.Midi.SystemExclusiveRQ1Message(address, length);
             queryType = QueryType.SUPERNATURAL_ACOUSTIC_TONE_COMMON;
-            commonState.midi.SendSystemExclusive(message);
+            commonState.Midi.SendSystemExclusive(message);
         }
         private void QueryUserSuperNaturalSynthTones()
         {
             //t.Trace("private void QueryUserSuperNaturalSynthTones()");
-            commonState.midi.ProgramChange(0x0f, msb, lsb, pc);
+            commonState.Midi.ProgramChange(0x0f, msb, lsb, pc);
             byte[] address = new byte[] { 0x1c, 0x61, 0x00, 0x00 };
             byte[] length = new byte[] { 0x00, 0x00, 0x00, 0x40 };
-            byte[] message = commonState.midi.SystemExclusiveRQ1Message(address, length);
+            byte[] message = commonState.Midi.SystemExclusiveRQ1Message(address, length);
             queryType = QueryType.SUPERNATURAL_SYNTH_TONE_COMMON;
-            commonState.midi.SendSystemExclusive(message);
+            commonState.Midi.SendSystemExclusive(message);
         }
         private void QueryUserSuperNaturalDrumKitTones()
         {
             //t.Trace("private void QueryUserSuperNaturalDrumKitTones()");
-            commonState.midi.ProgramChange(0x0f, msb, lsb, pc);
+            commonState.Midi.ProgramChange(0x0f, msb, lsb, pc);
             byte[] address = new byte[] { 0x1c, 0x63, 0x00, 0x00 };
             byte[] length = new byte[] { 0x00, 0x00, 0x00, 0x0e };
-            byte[] message = commonState.midi.SystemExclusiveRQ1Message(address, length);
+            byte[] message = commonState.Midi.SystemExclusiveRQ1Message(address, length);
             queryType = QueryType.SUPERNATURAL_DRUM_KIT_COMMON;
-            commonState.midi.SendSystemExclusive(message);
+            commonState.Midi.SendSystemExclusive(message);
         }
         private void QuerySnDrumKitKeyName(byte Key)
         {
@@ -2024,9 +2024,9 @@ namespace Integra_7_Xamarin
             byte[] address = new byte[] { 0x1c, 0x63, 0x10, 0x00 };
             address = hex2Midi.AddBytes128(address, new byte[] { 0x00, 0x00, Key, 0x00 });
             byte[] length = new byte[] { 0x00, 0x00, 0x00, 0x04 };
-            byte[] message = commonState.midi.SystemExclusiveRQ1Message(address, length);
+            byte[] message = commonState.Midi.SystemExclusiveRQ1Message(address, length);
             queryType = QueryType.SND_KEY_NAME;
-            commonState.midi.SendSystemExclusive(message);
+            commonState.Midi.SendSystemExclusive(message);
         }
         public void QuerySelectedStudioSet()
         {
@@ -2034,9 +2034,9 @@ namespace Integra_7_Xamarin
             //commonState.midi.ProgramChange(0x0f, msb, lsb, pc);
             byte[] address = new byte[] { 0x01, 0x00, 0x00, 0x00 };
             byte[] length = new byte[] { 0x00, 0x00, 0x00, 0x07 };
-            byte[] message = commonState.midi.SystemExclusiveRQ1Message(address, length);
+            byte[] message = commonState.Midi.SystemExclusiveRQ1Message(address, length);
             queryType = QueryType.CURRENT_SELECTED_STUDIO_SET;
-            commonState.midi.SendSystemExclusive(message);
+            commonState.Midi.SendSystemExclusive(message);
         }
 
         private void QuerySelectedTone()
@@ -2045,13 +2045,14 @@ namespace Integra_7_Xamarin
             //commonState.midi.ProgramChange(0x0f, msb, lsb, pc);
             byte[] address = new byte[] { 0x18, 0x00, (byte)(0x20 + commonState.CurrentPart), 0x00 };
             byte[] length = new byte[] { 0x00, 0x00, 0x00, 0x09 };
-            byte[] message = commonState.midi.SystemExclusiveRQ1Message(address, length);
+            byte[] message = commonState.Midi.SystemExclusiveRQ1Message(address, length);
             queryType = QueryType.CURRENT_SELECTED_TONE;
-            commonState.midi.SendSystemExclusive(message);
+            commonState.Midi.SendSystemExclusive(message);
         }
 
         public void ShowLibrarianPage()
         {
+            Page = _page.LIBRARIAN;
             if (!Librarian_IsCreated)
             {
                 //DrawLibrarianPage(); // Librarian page is created in advace because the MIDI pickers must be present
@@ -2060,9 +2061,18 @@ namespace Integra_7_Xamarin
                 DrawPleaseWaitPage(); // Librarian is always first to start, but this page is used by other pages.
                 //mainStackLayout.Children.Add(PleaseWait_StackLayout);
                 Librarian_IsCreated = true;
+
+                // We need favorites already now, so let's create it:
+                commonState.FavoritesList = new FavoritesList();
+                Favorites_ReadFavoritesFromLocalSettings();
+                DrawFavoritesPage();
+                mainStackLayout.Children.Add(Favorites_StackLayout);
+                Favorites_StackLayout.IsVisible = false;
+                Favorites_IsCreated = true;
                 Init2();
             }
-            Page = _page.LIBRARIAN;
+            PopHandleControlEvents();
+            Favorites_UpdateFoldersList();
             //mainStackLayout.Children.Add(LibrarianStackLayout);
             Librarian_StackLayout.IsVisible = true;
             if (Librarian_Groups.Count == 0)
@@ -2070,11 +2080,11 @@ namespace Integra_7_Xamarin
                 PopulateGroups();
             }
 
-            if (commonState != null && commonState.currentTone != null)
+            if (commonState != null && commonState.CurrentTone != null)
             {
-                Librarian_lvGroups.SelectedItem = commonState.currentTone.Group;
-                Librarian_lvCategories.SelectedItem = commonState.currentTone.Category;
-                Librarian_lvToneNames.SelectedItem = commonState.currentTone.Name;
+                Librarian_lvGroups.SelectedItem = commonState.CurrentTone.Group;
+                Librarian_lvCategories.SelectedItem = commonState.CurrentTone.Category;
+                Librarian_lvToneNames.SelectedItem = commonState.CurrentTone.Name;
             }
 
             //// Set font size:
@@ -2084,7 +2094,7 @@ namespace Integra_7_Xamarin
         private void PopulateGroups()
         {
             PushHandleControlEvents();
-            foreach (List<String> tone in commonState.toneList.Tones)
+            foreach (List<String> tone in commonState.ToneList.Tones)
             {
                 if (!Librarian_Groups.Contains(tone[0]))
                 {
@@ -2100,11 +2110,10 @@ namespace Integra_7_Xamarin
             //t.Trace("private void PopulateCategories (" + "String" + group + ", " + ")");
             String lastCategory = "";
             PushHandleControlEvents();
-            PushHandleControlEvents();
             Librarian_Categories.Clear();
-            foreach (List<String> line in commonState.toneList.Tones.OrderBy(o => o[1]))
+            foreach (List<String> line in commonState.ToneList.Tones.OrderBy(o => o[1]))
             {
-                if (line[0] == commonState.currentTone.Group && line[1] != lastCategory && !Librarian_Categories.Contains(line[1]))
+                if (line[0] == commonState.CurrentTone.Group && line[1] != lastCategory && !Librarian_Categories.Contains(line[1]))
                 {
                     Librarian_Categories.Add(line[1]);
                     lastCategory = line[1];
@@ -2145,9 +2154,9 @@ namespace Integra_7_Xamarin
                         }
                     }
                     String group = Librarian_lvGroups.SelectedItem.ToString();
-                    foreach (List<String> tone in commonState.toneList.Tones.OrderBy(o => o[3]))
+                    foreach (List<String> tone in commonState.ToneList.Tones.OrderBy(o => o[3]))
                     {
-                        if (tone[0] == group && tone[1] == commonState.currentTone.Category
+                        if (tone[0] == group && tone[1] == commonState.CurrentTone.Category
                             && (toneNamesFilter == ToneNamesFilter.USER && tone[8] == "(User)"
                             || toneNamesFilter == ToneNamesFilter.PRESET && tone[8] != "(User)"
                             || toneNamesFilter == ToneNamesFilter.INIT
@@ -2157,7 +2166,7 @@ namespace Integra_7_Xamarin
                         }
                     }
                     //Librarian_lvToneNames.SelectedItem = Librarian_ToneNames[0];
-                    if (commonState.currentTone == null)
+                    if (commonState.CurrentTone == null)
                     {
                         List<String> toneData = new List<String>();
                         toneData.Add(Librarian_lvGroups.SelectedItem.ToString());
@@ -2170,20 +2179,22 @@ namespace Integra_7_Xamarin
                         toneData.Add("");
                         toneData.Add("");
                         toneData.Add("-1");
-                        commonState.currentTone = new Tone(toneData);
+                        commonState.CurrentTone = new Tone(toneData);
                     }
-                    if (!String.IsNullOrEmpty(commonState.currentTone.Name))
+                    if (!String.IsNullOrEmpty(commonState.CurrentTone.Name))
                     {
                         try
                         {
-                            Librarian_lvToneNames.SelectedItem = commonState.currentTone.Name;
+                            Librarian_lvToneNames.SelectedItem = commonState.CurrentTone.Name;
                             if (IsFavorite())
                             {
-                                Librarian_btnShowFavorites.BackgroundColor = Color.Green;
+                                Librarian_btnShowFavorites.BackgroundColor = colorSettings.IsFavorite;
+                                Librarian_btnRemoveFavorite.IsEnabled = true;
                             }
                             else
                             {
-                                Librarian_btnShowFavorites.BackgroundColor = Color.White;
+                                Librarian_btnShowFavorites.BackgroundColor = colorSettings.ControlBackground;
+                                Librarian_btnRemoveFavorite.IsEnabled = false;
                             }
                         }
                         catch
@@ -2216,7 +2227,7 @@ namespace Integra_7_Xamarin
             Librarian_ToneNames.Add("=== Tones =============");
             String searchString = Librarian_tbSearch.Editor.Text.ToLower();
             // Search voices:
-            foreach (List<String> tone in commonState.toneList.Tones)
+            foreach (List<String> tone in commonState.ToneList.Tones)
             {
                 if (tone[3].ToLower().Contains(searchString)
                     && (toneNamesFilter == ToneNamesFilter.USER && tone[8] == "(User)"
@@ -2230,7 +2241,7 @@ namespace Integra_7_Xamarin
             // Search drum sounds:
             Librarian_ToneNames.Add("=== Drums ==============");
             Boolean first = true; // To skip the key number column
-            foreach (List<String> toneNames in commonState.drumKeyAssignLists.ToneNames)
+            foreach (List<String> toneNames in commonState.DrumKeyAssignLists.ToneNames)
             {
                 if (first)
                 {
@@ -2261,9 +2272,9 @@ namespace Integra_7_Xamarin
         private void PopulateToneData()
         {
             //t.Trace("private void PopulateToneData (" + "Int32" + Index + ", " + ")");
-            if (commonState.currentTone.Index > -1)
+            if (commonState.CurrentTone.Index > -1)
             {
-                List<String> tone = commonState.toneList.Tones[commonState.currentTone.Index];
+                List<String> tone = commonState.ToneList.Tones[commonState.CurrentTone.Index];
                 Librarian_ltToneName.Text = tone[3];
                 Librarian_ltType.Text = tone[8];
                 Librarian_ltToneNumber.Text = tone[2];
@@ -2271,7 +2282,7 @@ namespace Integra_7_Xamarin
                 Librarian_ltPatchMSB.Text = tone[4];
                 Librarian_ltPatchLSB.Text = tone[5];
                 Librarian_ltProgramNumber.Text = tone[7];
-                commonState.midi.ProgramChange(commonState.midi.GetMidiOutPortChannel(), tone[4], tone[5], tone[7]);
+                commonState.Midi.ProgramChange(commonState.Midi.GetMidiOutPortChannel(), tone[4], tone[5], tone[7]);
                 if (IsFavorite())
                 {
                     Librarian_btnShowFavorites.BackgroundColor = colorSettings.IsFavorite;
@@ -2292,39 +2303,40 @@ namespace Integra_7_Xamarin
         {
             //t.Trace("private void UpdateDrumNames()");
             ClearKeyNames();
-            if (commonState.currentTone != null && commonState.currentTone.Category == "Drum" 
-                && commonState.drumKeyAssignLists.KeyboardNameList(commonState.currentTone.Group, commonState.currentTone.Name) != null)
+            if (commonState.CurrentTone != null && commonState.CurrentTone.Category == "Drum" 
+                && commonState.DrumKeyAssignLists.KeyboardNameList(commonState.CurrentTone.Group, commonState.CurrentTone.Name) != null)
             {
-                commonState.keyNames = new List<String>();
-                foreach (String keyName in commonState.drumKeyAssignLists.KeyboardNameList(commonState.currentTone.Group, commonState.currentTone.Name))
+                commonState.KeyNames = new List<String>();
+                foreach (String keyName in commonState.DrumKeyAssignLists.KeyboardNameList(commonState.CurrentTone.Group, commonState.CurrentTone.Name))
                 {
-                    commonState.keyNames.Add(keyName);
+                    commonState.KeyNames.Add(keyName);
                 }
 
-                if (commonState.keyNames != null && commonState.keyNames.Count() > 0)
+                if (commonState.KeyNames != null && commonState.KeyNames.Count() > 0)
                 {
                     for (Int32 i = 0; i < 37; i++)
                     {
-                        if (i + lowKey - 21 > -1 && i + lowKey - 21 < commonState.keyNames.Count())
+                        if (i + lowKey - 21 > -1 && i + lowKey - 21 < commonState.KeyNames.Count())
                         {
-                            SetKeyText(i, commonState.keyNames[i + lowKey - 21]);
+                            SetKeyText(i, commonState.KeyNames[i + lowKey - 21]);
                         }
                     }
                 }
             }
         }
+
         private Boolean IsFavorite()
         {
             //t.Trace("private Boolean IsFavorite()");
-            if (commonState.favoritesList != null)
+            if (commonState.FavoritesList != null)
             {
-                foreach (FavoritesFolder folder in commonState.favoritesList.folders)
+                foreach (FavoritesFolder folder in commonState.FavoritesList.folders)
                 {
-                    foreach (Tone favorite in folder.FavoritesTones)
+                    foreach (FavoriteTone favorite in folder.FavoriteTones)
                     {
-                        if (favorite.Group == commonState.currentTone.Group
-                            && favorite.Category == commonState.currentTone.Category
-                            && favorite.Name == commonState.currentTone.Name)
+                        if (favorite.Group == commonState.CurrentTone.Group
+                            && favorite.Category == commonState.CurrentTone.Category
+                            && favorite.Name == commonState.CurrentTone.Name)
                         {
                             return true;
                         }
@@ -2332,6 +2344,13 @@ namespace Integra_7_Xamarin
                 }
             }
             return false;
+        }
+
+        private void Librarian_SynchronizeListviews()
+        {
+            Librarian_lvGroups.SelectedItem = commonState.CurrentTone.Group;
+            Librarian_lvCategories.SelectedItem = commonState.CurrentTone.Category;
+            Librarian_lvToneNames.SelectedItem = commonState.CurrentTone.Name;
         }
 
         //private void ReadFavorites()

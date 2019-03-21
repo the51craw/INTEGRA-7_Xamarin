@@ -104,6 +104,7 @@
     </Compile>
     <Compile Include="MIDI.cs" />
     <Compile Include="MidiDeviceWatcher.cs" />
+    <Compile Include="MyFileIO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -128,6 +129,8 @@
     <Content Include="DownRightArrow.png" />
     <Content Include="LeftArrow.png" />
     <Content Include="MotionalSurround.png" />
+    <Content Include="Nok.png" />
+    <Content Include="Ok.png" />
     <Content Include="RightArrow.png" />
     <Content Include="Todo.txt" />
     <Content Include="UpArrow.png" />
@@ -318,6 +321,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Xam.Plugin.FilePicker">
+      <Version>1.1.0</Version>
+    </PackageReference>
     <PackageReference Include="Xam.Plugins.Settings">
       <Version>3.1.1</Version>
     </PackageReference>

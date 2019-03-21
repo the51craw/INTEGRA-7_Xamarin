@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
+using Plugin.FilePicker;
+using Plugin.FilePicker.Abstractions;
 
 namespace Integra_7_Xamarin
 {
@@ -20,7 +22,7 @@ namespace Integra_7_Xamarin
 
         public FavoritesAction favoritesAction = FavoritesAction.SHOW;
         public Player player;
-        Int32 currentFolder = -1;
+        Int32 Favorites_CurrentFolder = -1;
 
         Grid Favorites_grLeftColumn = null;
         Button Favorites_lblFolders = null;
@@ -29,21 +31,25 @@ namespace Integra_7_Xamarin
         Grid Favorites_grMiddleColumn = null;
         Button Favorites_lblFavorites = null;
         ListView Favorites_lvFavoriteList = null;
-        public ObservableCollection<Tone> Favorites_ocFavoriteList = null;
+        public ObservableCollection<String> Favorites_ocFavoriteList = null;
+        List<FavoriteTone> Favorites_CurrentlyInFavoriteList = null;
+        Grid gNewFolder = null;
         Editor Favorites_edNewFolderName = null;
+        Image imgOk = null;
+        Image imgNok = null;
+        Button btnOk = null;
+        Button btnNok = null;
         Button Favorites_btnAddFolder = null;
         Button Favorites_btnDeleteFolder = null;
-        TextBlock Favorites_lvHelp1 = null;
-        ListView Favorites_lvHelp2 = null;
-        Button Favorites_btnContext = null;
+        TextBlock Favorites_tbHelp = null;
+        Button Favorites_btnCopyFavorite = null;
+        Button Favorites_btnAddOrDeleteFavorite = null;
+        Button Favorites_btnSelectFavorite = null;
         Button Favorites_btnPlay = null;
         Button Favorites_btnBackup = null;
         Button Favorites_btnRestore = null;
         Button Favorites_btnReturn = null;
         Grid Favorites_grRightColumn = null;
-
-        LabeledSwitch kalle = null;
-
 
         public void DrawFavoritesPage()
         {
@@ -94,25 +100,40 @@ namespace Integra_7_Xamarin
             Favorites_lblFavorites.IsEnabled = false;
 
             Favorites_lvFavoriteList = new ListView();
-            Favorites_ocFavoriteList = new ObservableCollection<Tone>();
+            Favorites_ocFavoriteList = new ObservableCollection<String>();
             Favorites_lvFavoriteList.ItemsSource = Favorites_ocFavoriteList;
+            Favorites_CurrentlyInFavoriteList = new List<FavoriteTone>();
 
             Favorites_edNewFolderName = new Editor();
             Favorites_edNewFolderName.BackgroundColor = colorSettings.ControlBackground;
+            Favorites_edNewFolderName.VerticalOptions = LayoutOptions.FillAndExpand;
 
+            gNewFolder = new Grid();
             Favorites_btnAddFolder = new Button();
             Favorites_btnAddFolder.Text = "Add folder";
+            btnOk = new Button();
+            btnNok = new Button();
+            btnOk.BackgroundColor = colorSettings.Transparent;
+            btnNok.BackgroundColor = colorSettings.Transparent;
+            imgOk = new Image();
+            imgNok = new Image();
+            imgOk.Source = ImageSource.FromFile("Ok.png");
+            imgNok.Source = ImageSource.FromFile("Nok.png");
 
             Favorites_btnDeleteFolder = new Button();
             Favorites_btnDeleteFolder.Text = "Delete selected folder";
 
-            Favorites_lvHelp1 = new TextBlock();
-            Favorites_lvHelp1.BackgroundColor = colorSettings.ControlBackground;
+            Favorites_tbHelp = new TextBlock();
+            Favorites_tbHelp.BackgroundColor = colorSettings.ControlBackground;
 
-            Favorites_lvHelp2 = new ListView();
+            Favorites_btnCopyFavorite = new Button();
+            Favorites_btnCopyFavorite.Text = "Copy";
 
-            Favorites_btnContext = new Button();
-            Favorites_btnContext.Text = "";
+            Favorites_btnAddOrDeleteFavorite = new Button();
+            Favorites_btnAddOrDeleteFavorite.Text = "Delete favorite";
+
+            Favorites_btnSelectFavorite = new Button();
+            Favorites_btnSelectFavorite.Text = "Select favorite";
 
             Favorites_btnPlay = new Button();
             Favorites_btnPlay.Text = "Play";
@@ -125,11 +146,6 @@ namespace Integra_7_Xamarin
 
             Favorites_btnReturn = new Button();
             Favorites_btnReturn.Text = "Return";
-
-
-            kalle = new LabeledSwitch("Svanslös");
-            //kalle.Label.Text = "Svanslös";
-            kalle.LSSwitch.Toggled += Switch_Toggled;
 
             // Add handlers -------------------------------------------------------------------------------
 
@@ -167,9 +183,13 @@ namespace Integra_7_Xamarin
 
             // Other handlers:
             Favorites_edNewFolderName.TextChanged += Favorites_edNewFolderName_TextChanged;
+            btnOk.Clicked += BtnOk_Clicked;
+            btnNok.Clicked += BtnNok_Clicked;
             Favorites_btnAddFolder.Clicked += Favorites_btnAddFolder_Clicked;
+            Favorites_btnCopyFavorite.Clicked += Favorites_btnCopyFavorite_Clicked;
             Favorites_btnDeleteFolder.Clicked += Favorites_btnDeleteFolder_Clicked;
-            Favorites_btnContext.Clicked += Favorites_btnContext_Clicked;
+            Favorites_btnAddOrDeleteFavorite.Clicked += Favorites_btnAddOrDeleteFavorite_Clicked;
+            Favorites_btnSelectFavorite.Clicked += Favorites_btnSelectFavorite_Clicked;
             Favorites_btnPlay.Clicked += Librarian_btnPlay_Clicked; //  Favorites_btnPlay_Clicked; All in same class now, UIHandler.
             Favorites_btnBackup.Clicked += Favorites_btnBackup_Clicked;
             Favorites_btnRestore.Clicked += Favorites_btnRestore_Clicked;
@@ -205,25 +225,38 @@ namespace Integra_7_Xamarin
             Favorites_grMiddleColumn.RowDefinitions.Add(Favorites_rdcMiddle[0]);
             Favorites_grMiddleColumn.RowDefinitions.Add(Favorites_rdcMiddle[1]);
 
+            // Create the new folder grid:
+            gNewFolder.Children.Add(new GridRow(0, new View[] { Favorites_edNewFolderName }).Row);
+            gNewFolder.Children.Add(new GridRow(1, new View[] { btnOk, btnNok }).Row);
+            gNewFolder.Children.Add(new GridRow(1, new View[] { imgOk, imgNok }).Row);
+            gNewFolder.Children.Add(new GridRow(0, new View[] { Favorites_btnAddFolder }, null, false, false, 2).Row);
+            Favorites_edNewFolderName.IsVisible = false;
+            imgOk.IsVisible = false;
+            imgNok.IsVisible = false;
+            imgOk.InputTransparent = true;
+            imgNok.InputTransparent = true;
+            btnOk.IsVisible = false;
+            btnNok.IsVisible = false;
+
             // A grid for the right column:
             Favorites_grRightColumn = new Grid();
-            Favorites_grRightColumn.Children.Add(new GridRow(0, new View[] { Favorites_edNewFolderName }).Row);
-            Favorites_grRightColumn.Children.Add(new GridRow(1, new View[] { Favorites_btnAddFolder }).Row);
-            Favorites_grRightColumn.Children.Add(new GridRow(2, new View[] { Favorites_btnDeleteFolder }).Row);
-            Favorites_grRightColumn.Children.Add(new GridRow(3, new View[] { Favorites_lvHelp1 }, null, false, false).Row);
-            Favorites_grRightColumn.Children.Add(new GridRow(4, new View[] { Favorites_lvHelp2 }, null, false, false).Row);
-            Favorites_grRightColumn.Children.Add(new GridRow(5, new View[] { Favorites_btnContext }).Row);
+            Favorites_grRightColumn.Children.Add(new GridRow(0, new View[] { gNewFolder }).Row);
+            Favorites_grRightColumn.Children.Add(new GridRow(1, new View[] { Favorites_btnDeleteFolder }).Row);
+            Favorites_grRightColumn.Children.Add(new GridRow(2, new View[] { Favorites_tbHelp }, null, false, false).Row);
+            Favorites_grRightColumn.Children.Add(new GridRow(3, new View[] { Favorites_btnCopyFavorite }, null, false, false).Row);
+            Favorites_grRightColumn.Children.Add(new GridRow(4, new View[] { Favorites_btnAddOrDeleteFavorite }).Row);
+            Favorites_grRightColumn.Children.Add(new GridRow(5, new View[] { Favorites_btnSelectFavorite }).Row);
             Favorites_grRightColumn.Children.Add(new GridRow(6, new View[] { Favorites_btnPlay }).Row);
             Favorites_grRightColumn.Children.Add(new GridRow(7, new View[] { Favorites_btnBackup }).Row);
             Favorites_grRightColumn.Children.Add(new GridRow(8, new View[] { Favorites_btnRestore }).Row);
-            Favorites_grRightColumn.Children.Add(new GridRow(9, new View[] { Favorites_btnReturn, kalle }).Row);
+            Favorites_grRightColumn.Children.Add(new GridRow(9, new View[] { Favorites_btnReturn }).Row);
 
             RowDefinitionCollection Favorites_rdcRight = new RowDefinitionCollection();
 
             for (Int32 i = 0; i < 10; i++)
             {
                 Favorites_rdcRight.Add(new RowDefinition());
-                if (i == 3 || i == 4)
+                if (i == 2)
                 {
                     Favorites_rdcRight[i].Height = new GridLength(5, GridUnitType.Star);
                 }
@@ -239,31 +272,364 @@ namespace Integra_7_Xamarin
             Favorites_StackLayout = new StackLayout();
             Favorites_StackLayout.Children.Add((new GridRow(0, new View[] { Favorites_grLeftColumn, Favorites_grMiddleColumn, Favorites_grRightColumn })).Row);
             Favorites_StackLayout.BackgroundColor = Color.Black;
-
-            //***player = new Player(commonState, ref commonState.player.btnPlayStop);
-            UpdateFoldersList();
-        }
-
-        private void Switch_Toggled(object sender, ToggledEventArgs e)
-        {
+            Favorites_UpdateFoldersList();
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Handlers
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        private void Favorites_btnReturn_Clicked(object sender, EventArgs e)
+        // Folder listview handlers -------------------------------------------------------------------------------------
+        private void Favorites_lvFolderList_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            //mainStackLayout.Children.RemoveAt(0);
+            //t.Trace("private void lvFolders_SelectionChanged(" + ((ListView)sender).SelectedIndex.ToString() + ")");
+            PushHandleControlEvents();
+            Favorites_btnDeleteFolder.IsEnabled = true;
+            Favorites_btnCopyFavorite.IsEnabled = false;
+            Favorites_btnAddOrDeleteFavorite.IsEnabled = false;
+            Favorites_btnSelectFavorite.IsEnabled = false;
+            //UpdateFavoritesList((String)(((ListView)sender).SelectedItem));
+            UpdateFavoritesList((String)sender);
+            PopHandleControlEvents();
+            Favorites_btnDeleteFolder.IsEnabled = true;
+            Favorites_CurrentFolder = Favorites_ocFolderList.IndexOf(Favorites_lvFolderList.SelectedItem);
+            if (favoritesAction == FavoritesAction.ADD || favoritesAction == FavoritesAction.REMOVE)
+            {
+                if (Favorites_lvFolderList.SelectedItem.ToString().StartsWith("*"))
+                {
+                    Favorites_btnAddOrDeleteFavorite.IsEnabled = true;
+                }
+                else
+                {
+                    Favorites_btnAddOrDeleteFavorite.IsEnabled = false;
+                }
+            }
+            if (Favorites_lvFolderList.SelectedItem != null)
+            {
+                Favorites_btnDeleteFolder.IsEnabled = true;
+            }
+        }
+
+        private void lvFolders_DoubleTapped(object sender/*, DoubleTappedRoutedEventArgs e*/)
+        {
+            if (commonState.CurrentTone != null && Favorites_lvFolderList.SelectedItem != null)
+            {
+                //t.Trace("private void lvFolders_DoubleTapped(" + ((ListView)sender).SelectedIndex.ToString() + ")");
+                //ListViewItem item = (ListViewItem)Favorites_lvFolderList.ContainerFromItem(Favorites_lvFolderList.SelectedItem);
+                if (favoritesAction == FavoritesAction.ADD 
+                    && ((String)Favorites_lvFolderList.SelectedItem).StartsWith("*"))
+                {
+                    commonState.FavoritesList.folders[Favorites_ocFolderList
+                        .IndexOf(Favorites_lvFolderList.SelectedItem)]
+                        .FavoriteTones.Add(new FavoriteTone(
+                            commonState.CurrentTone.Name,
+                            commonState.CurrentTone.Group,
+                            commonState.CurrentTone.Category));
+                    Favorites_lvFolderList.SelectedItem = 
+                        ((String)Favorites_lvFolderList.SelectedItem).TrimStart('*');
+                    UpdateFavoritesList((String)Favorites_lvFolderList.SelectedItem);
+                    SaveToLocalSettings();
+                }
+                if (favoritesAction == FavoritesAction.REMOVE && ((String)Favorites_lvFolderList.SelectedItem).StartsWith("*"))
+                {
+                    FavoriteTone tone = commonState.FavoritesList.folders[Favorites_ocFolderList.IndexOf(Favorites_lvFolderList.SelectedItem)].ByToneName(commonState.CurrentTone.Name);
+                    commonState.FavoritesList.folders[Favorites_ocFolderList.IndexOf(Favorites_lvFolderList.SelectedItem)].FavoriteTones.Remove(tone);
+                    Favorites_lvFolderList.SelectedItem = ((String)Favorites_lvFolderList.SelectedItem).TrimStart('*');
+                    UpdateFavoritesList((String)Favorites_lvFolderList.SelectedItem);
+                    SaveToLocalSettings();
+                }
+            }
+        }
+
+        // Favorites listview handlers ----------------------------------------------------------------------------------
+        private void Favorites_lvFavoriteList_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            if (handleControlEvents)
+            {
+                Favorites_btnDeleteFolder.IsEnabled = false;
+                Favorites_btnCopyFavorite.IsEnabled = true;
+                Favorites_btnAddOrDeleteFavorite.IsEnabled = true;
+                Favorites_btnSelectFavorite.IsEnabled = true;
+                Favorites_btnPlay.IsEnabled = true;
+                FavoriteTone favoriteTone;
+                try
+                {
+                    // List only contains the name, lookup the currentTone by name and folder:
+                    favoriteTone = Favorites_CurrentlyInFavoriteList
+                        .Find(f => f.Name == (String)Favorites_lvFavoriteList.SelectedItem);
+                    commonState.CurrentTone = new Tone(-1, -1, -1, favoriteTone.Group, favoriteTone.Category, favoriteTone.Name);
+                    // The user came here to browse favorites, and has now selected one.
+                    // The favorite should be selectable via the 'Select <name>' button.
+                    if (commonState.CurrentTone != null && favoritesAction == FavoritesAction.SHOW)
+                    {
+                        if (commonState.CurrentTone.Index > -1)
+                        {
+                            List<String> tone = commonState.ToneList.Tones[commonState.CurrentTone.Index];
+                            commonState.Midi.ProgramChange(commonState.Midi.GetMidiInPortChannel(), tone[4], tone[5], tone[7]);
+                        }
+                        else
+                        {
+                            Int32 index = commonState.ToneList.Get(commonState.CurrentTone);
+                            if (index > -1)
+                            {
+                                List<String> tone = commonState.ToneList.Tones[commonState.ToneList.Get(commonState.CurrentTone)];
+                                commonState.Midi.ProgramChange(commonState.Midi.GetMidiOutPortChannel(), tone[4], tone[5], tone[7]);
+                            }
+                        }
+                    }
+                    // The user came here to add a favorite, and now selects another favorite.
+                    // The favorite should be allowed to be stored in another folder.
+                    else if (favoritesAction == FavoritesAction.ADD)
+                    {
+                        Favorites_btnAddOrDeleteFavorite.Text = "Copy " + favoriteTone.Name;
+                        Favorites_btnAddOrDeleteFavorite.IsVisible = true;
+                        Favorites_btnAddOrDeleteFavorite.IsEnabled = true;
+                        Favorites_tbHelp.Text = "You have selected a favorite and it is now possible to copy it to another " +
+                            "folder. Select the destination folder and clic the \'Copy " + commonState.CurrentTone.Name + " button.";
+                        //UpdateFoldersList();
+                    }
+                    // The user came here to delete a favorite, and now selects another favorite.
+                    // The favorite should be allowed to be deleted.
+                    else if (favoritesAction == FavoritesAction.REMOVE)
+                    {
+                        Favorites_btnAddOrDeleteFavorite.Text = "Delete " + favoriteTone.Name;
+                        Favorites_btnAddOrDeleteFavorite.IsVisible = true;
+                        Favorites_btnAddOrDeleteFavorite.IsEnabled = true;
+                        Favorites_UpdateFoldersList();
+                    }
+                }
+                catch { }
+            }
+        }
+
+        /// <summary>
+        /// Right tapping or double-clicking a favorite should take immediate action
+        /// without the need to click the context button.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void lvFavorites_DoubleTapped(object sender/*, DoubleTappedRoutedEventArgs e*/)
+        {
+            if (handleControlEvents)
+            {
+                try
+                {
+                    // List only contains the name, lookup the currentTone by name and folder.
+                    // Important note! Assigning the selected tone (fromFavorites_CurrentlyInFavoriteList)
+                    // to commonState.currentTone will only create a reference, which will change the
+                    // content of the favorite when changing tone in the Librarian. Creating a new
+                    // object with value arguments (NOT the object, which is a reference object)
+                    // will keep the objects separate.
+                    // Find the Tone object from Favorites_CurrentlyInFavoriteList:
+                    FavoriteTone tone = Favorites_CurrentlyInFavoriteList
+                        .Find(f => f.Name == (String)Favorites_lvFavoriteList.SelectedItem);
+                    // Use the variables in the found Tone object to create a new object and
+                    // assign it to commonState.currentTone:
+                    commonState.CurrentTone = 
+                        new Tone(-1, -1, -1, tone.Group, 
+                        tone.Category, tone.Name);
+                    Librarian_SynchronizeListviews();
+                    Favorites_StackLayout.IsVisible = false;
+                    ShowLibrarianPage();
+                }
+                catch { }
+                //        t.Trace("private void lvFavorites_DoubleTapped(" + ((ListView)sender).SelectedIndex.ToString() + ")");
+                //        try
+                //        {
+                //            // List only contains the name, lookup the currentTone by name and folder:
+                //            commonState.currentTone = (Tone)lvFavorites.Items[lvFavorites.SelectedIndex];
+                //            commonState.currentTone.Index = commonState.toneList.Get(commonState.currentTone);
+                //        }
+                //        catch
+                //        {
+                //            commonState.currentTone.Index = -1;
+                //        }
+                //        // If the user came here to pick a favorite, it is now selected.
+                //        // Just return to the main page:
+                //        if (favoritesAction == FavoritesAction.SHOW)
+                //        {
+                //            this.Frame.Navigate(typeof(MainPage), commonState);
+                //        }
+                //        // If the user came here to add a favorite, selecting one would be to get it.
+                //        // Just get it and return to the main page:
+                //        else if (favoritesAction == FavoritesAction.ADD)
+                //        {
+                //            if (commonState.currentTone.Index < 0)
+                //            {
+                //                // List only contains the name, lookup the currentTone by name and folder:
+                //                commonState.currentTone = FindFavoriteByNameAndFolder((String)lvFavorites.SelectedItem, ((String)lvFolders.SelectedItem).TrimStart('*'));
+                //            }
+                //            this.Frame.Navigate(typeof(MainPage), commonState);
+                //        }
+                //        // If the user came here to delete a favorite, selecting another would be for
+                //        // deleting that one too (because of right tap or double click:
+                //        else if (favoritesAction == FavoritesAction.REMOVE)
+                //        {
+                //            // List only contains the name, lookup the currentTone by name and folder:
+                //            Tone tone = FindFavoriteByNameAndFolder((String)lvFavorites.SelectedItem, ((String)lvFolders.SelectedItem).TrimStart('*'));
+                //            DeleteFavorite(tone);
+                //            UpdateFoldersList();
+                //        }
+            }
+        }
+
+        // Add/delete folder controls handlers --------------------------------------------------------------------------
+        private void Favorites_edNewFolderName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            //t.Trace("private void tbNewFolder_KeyUp (" + "object" + sender + ", " + "KeyRoutedEventArgs" + e + ", " + ")");
+            if (!String.IsNullOrEmpty(Favorites_edNewFolderName.Text))
+            {
+                Boolean found = false;
+                if (commonState.FavoritesList != null && commonState.FavoritesList.folders != null && commonState.FavoritesList.folders.Count() > 0)
+                {
+                    foreach (FavoritesFolder folder in commonState.FavoritesList.folders)
+                    {
+                        if (folder.Name == Favorites_edNewFolderName.Text.Trim())
+                        {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found)
+                    {
+                        Favorites_btnAddFolder.IsEnabled = true;
+                        if (((String)e.NewTextValue).Contains("\r"))
+                        {
+                            commonState.FavoritesList.folders.Add(new FavoritesFolder(Favorites_edNewFolderName.Text.Trim().Replace("\r", "")));
+                            Favorites_edNewFolderName.Text = "";
+                            Favorites_UpdateFoldersList();
+                        }
+                    }
+                    else
+                    {
+                        Favorites_btnAddFolder.IsEnabled = false;
+                    }
+                }
+            }
+            else
+            {
+                Favorites_btnAddFolder.IsEnabled = false;
+            }
+        }
+
+        private void BtnNok_Clicked(object sender, EventArgs e)
+        {
+            imgOk.IsVisible = false;
+            imgNok.IsVisible = false;
+            btnOk.IsVisible = false;
+            btnNok.IsVisible = false;
+            Favorites_edNewFolderName.IsVisible = false;
+            Favorites_btnAddFolder.IsVisible = true;
+        }
+
+        private void BtnOk_Clicked(object sender, EventArgs e)
+        {
+            imgOk.IsVisible = false;
+            imgNok.IsVisible = false;
+            btnOk.IsVisible = false;
+            btnNok.IsVisible = false;
+            Favorites_edNewFolderName.IsVisible = false;
+            Favorites_btnAddFolder.IsVisible = true;
+            if (String.IsNullOrEmpty(Favorites_edNewFolderName.Text)
+                || Favorites_ocFolderList.Contains(Favorites_edNewFolderName.Text))
+            {
+                ShowMessage("Please type a unique name for the new folder.");
+            }
+            else
+            {
+                commonState.FavoritesList.folders.Add(new FavoritesFolder(Favorites_edNewFolderName.Text.Trim()));
+                Favorites_edNewFolderName.Text = "";
+                Favorites_UpdateFoldersList();
+            }
+        }
+
+        private void Favorites_btnAddFolder_Clicked(object sender, EventArgs e)
+        {
+            imgOk.IsVisible = true;
+            imgNok.IsVisible = true;
+            btnOk.IsVisible = true;
+            btnNok.IsVisible = true;
+            Favorites_edNewFolderName.IsVisible = true;
+            Favorites_btnAddFolder.IsVisible = false;
+        }
+
+        private void Favorites_btnDeleteFolder_Clicked(object sender, EventArgs e)
+        {
+            DeleteFolder((String)Favorites_lvFolderList.SelectedItem);
+        }
+
+        // Favorite buttons handlers ------------------------------------------------------------------------------------
+        private void Favorites_btnCopyFavorite_Clicked(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void Favorites_btnAddOrDeleteFavorite_Clicked(object sender, EventArgs e)
+        {
+            if (commonState.CurrentTone != null && Favorites_lvFolderList.SelectedItem != null)
+            {
+                //t.Trace("private void btnContext_Click (" + "object" + sender + ", " + "RoutedEventArgs" + e + ", " + ")");
+                //ListViewItem item = (ListViewItem)lvFolders.ContainerFromItem(lvFolders.Items[lvFolders.SelectedIndex]);
+                if (favoritesAction == FavoritesAction.ADD && ((String)Favorites_lvFolderList.SelectedItem).StartsWith("*"))
+                {
+                    Int32 index = Favorites_ocFolderList.IndexOf(Favorites_lvFolderList.SelectedItem);
+                    if (index > -1)
+                    {
+                        commonState.FavoritesList.folders[index].FavoriteTones
+                            .Add(new FavoriteTone(
+                                commonState.CurrentTone.Group,
+                                commonState.CurrentTone.Category,
+                                commonState.CurrentTone.Name));
+                        Favorites_ocFolderList[Favorites_CurrentFolder] = ((String)Favorites_lvFolderList.SelectedItem).TrimStart('*');
+                        Favorites_lvFolderList.SelectedItem = Favorites_ocFolderList[Favorites_CurrentFolder];
+                        Favorites_UpdateFoldersList();
+                        UpdateFavoritesList((String)Favorites_lvFolderList.SelectedItem);
+                        SaveToLocalSettings();
+                    }
+                }
+                else if (favoritesAction == FavoritesAction.REMOVE)
+                {
+                    DeleteFavorite(commonState.CurrentTone);
+                }
+                else if (favoritesAction == FavoritesAction.SHOW)
+                {
+                    //FindFavoriteByNameAndFolder()
+                    FavoriteTone favoriteTone = Favorites_CurrentlyInFavoriteList[Favorites_ocFavoriteList
+                        .IndexOf(Favorites_lvFavoriteList.SelectedItem)];
+                    commonState.CurrentTone = new Tone(-1, -1, -1, favoriteTone.Group, favoriteTone.Category, favoriteTone.Name);
+                        
+                    //commonState.currentTone = (Tone)Favorites_lvFavoriteList.SelectedItem;
+                    //mainStackLayout.Children.RemoveAt(0);
+                    Favorites_StackLayout.IsVisible = false;
+                    ShowLibrarianPage();
+                }
+            }
+        }
+
+        private void Favorites_btnSelectFavorite_Clicked(object sender, EventArgs e)
+        {
+            Librarian_SynchronizeListviews();
             Favorites_StackLayout.IsVisible = false;
             ShowLibrarianPage();
         }
 
-        private void Favorites_btnRestore_Clicked(object sender, EventArgs e)
+        private async void Favorites_btnRestore_Clicked(object sender, EventArgs e)
         {
-            //myFileIO.LoadFavorites();
+            try
+            {
+                FileData fileData = await CrossFilePicker.Current.PickFile();
+                byte[] data = fileData.DataArray;
+                String favorites = "";
+                for (Int32 i = 0; i < data.Length; i++)
+                {
+                    favorites += (char)data[i];
+                }
+                Favorites_Restore(favorites);
+            }
+            catch { }
         }
 
+        // Backup/restore button handlers -------------------------------------------------------------------------------
         private void Favorites_btnBackup_Clicked(object sender, EventArgs e)
         {
             t.Trace("private void btnSave_Click (" + "object" + sender + ", " + "RoutedEventArgs" + e + ", " + ")");
@@ -283,256 +649,14 @@ namespace Integra_7_Xamarin
         //    }
         //}
 
-        private void Favorites_btnContext_Clicked(object sender, EventArgs e)
+        // Return to Librarian button handler ---------------------------------------------------------------------------
+        private void Favorites_btnReturn_Clicked(object sender, EventArgs e)
         {
-            if (commonState.currentTone != null && Favorites_lvFolderList.SelectedItem != null)
-            {
-                //t.Trace("private void btnContext_Click (" + "object" + sender + ", " + "RoutedEventArgs" + e + ", " + ")");
-                //ListViewItem item = (ListViewItem)lvFolders.ContainerFromItem(lvFolders.Items[lvFolders.SelectedIndex]);
-                if (favoritesAction == FavoritesAction.ADD && ((String)Favorites_lvFolderList.SelectedItem).StartsWith("*"))
-                {
-                    Int32 index = Favorites_ocFolderList.IndexOf(Favorites_lvFolderList.SelectedItem);
-                    if (index > -1)
-                    {
-                        commonState.favoritesList.folders[index].FavoritesTones.Add(commonState.currentTone);
-                        Favorites_lvFolderList.SelectedItem = ((String)Favorites_lvFolderList.SelectedItem).TrimStart('*');
-                        UpdateFavoritesList((String)Favorites_lvFolderList.SelectedItem);
-                        SaveToLocalSettings();
-
-                    }
-                }
-                else if (favoritesAction == FavoritesAction.REMOVE)
-                {
-                    DeleteFavorite(commonState.currentTone);
-                }
-                else if (favoritesAction == FavoritesAction.SHOW)
-                {
-                    //FindFavoriteByNameAndFolder()
-                    commonState.currentTone = (Tone)Favorites_lvFavoriteList.SelectedItem;
-                    //mainStackLayout.Children.RemoveAt(0);
-                    Favorites_StackLayout.IsVisible = false;
-                    //ShowLibrarianPage();
-                }
-            }
+            //mainStackLayout.Children.RemoveAt(0);
+            Favorites_StackLayout.IsVisible = false;
+            ShowLibrarianPage();
         }
 
-        private void Favorites_btnDeleteFolder_Clicked(object sender, EventArgs e)
-        {
-            DeleteFolder((String)Favorites_lvFolderList.SelectedItem);
-        }
-
-        private void Favorites_btnAddFolder_Clicked(object sender, EventArgs e)
-        {
-            //t.Trace("private void btnNewFolder_Click (" + "object" + sender + ", " + "RoutedEventArgs" + e + ", " + ")");
-            if (String.IsNullOrEmpty(Favorites_edNewFolderName.Text)
-                || Favorites_ocFolderList.Contains(Favorites_edNewFolderName.Text))
-            {
-                ShowMessage("Please type a unique name for the new folder in the input box above.");
-            }
-            else
-            {
-                commonState.favoritesList.folders.Add(new FavoritesFolder(Favorites_edNewFolderName.Text.Trim()));
-                Favorites_edNewFolderName.Text = "";
-                UpdateFoldersList();
-            }
-        }
-
-        private void Favorites_edNewFolderName_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            //t.Trace("private void tbNewFolder_KeyUp (" + "object" + sender + ", " + "KeyRoutedEventArgs" + e + ", " + ")");
-            if (!String.IsNullOrEmpty(Favorites_edNewFolderName.Text))
-            {
-                Boolean found = false;
-                if (commonState.favoritesList != null && commonState.favoritesList.folders != null && commonState.favoritesList.folders.Count() > 0)
-                {
-                    foreach (FavoritesFolder folder in commonState.favoritesList.folders)
-                    {
-                        if (folder.Name == Favorites_edNewFolderName.Text.Trim())
-                        {
-                            found = true;
-                            break;
-                        }
-                    }
-                    if (!found)
-                    {
-                        Favorites_btnAddFolder.IsEnabled = true;
-                        if (((String)e.NewTextValue).Contains("\r"))
-                        {
-                            commonState.favoritesList.folders.Add(new FavoritesFolder(Favorites_edNewFolderName.Text.Trim().Replace("\r", "")));
-                            Favorites_edNewFolderName.Text = "";
-                            UpdateFoldersList();
-                        }
-                    }
-                    else
-                    {
-                        Favorites_btnAddFolder.IsEnabled = false;
-                    }
-                }
-            }
-            else
-            {
-                Favorites_btnAddFolder.IsEnabled = false;
-            }
-        }
-
-        private void Favorites_lvFavoriteList_ItemSelected(object sender, SelectedItemChangedEventArgs e)
-        {
-            if (handleControlEvents)
-            {
-                //t.Trace("private void lvFavorites_SelectionChanged(" + ((ListView)sender).SelectedIndex.ToString() + ")");
-                try
-                {
-                    // List only contains the name, lookup the currentTone by name and folder:
-                    //commonState.currentTone = new Tone(Favorites_lvFavoriteList.SelectedItem.ToString());
-                    commonState.currentTone = (Tone)Favorites_lvFavoriteList.SelectedItem;
-                    //commonState.currentTone = (Tone)lvFavorites.Items[lvFavorites.SelectedIndex];
-                    //commonState.currentTone.Index = commonState.toneList.Get(commonState.currentTone);
-                }
-                catch { }
-                // The user came here to browse favorites, and has now selected one.
-                // The favorite should be selectable via the context button.
-                if (favoritesAction == FavoritesAction.SHOW)
-                {
-                    Favorites_btnContext.Text = "Select " + commonState.currentTone.Name;
-                    Favorites_btnContext.IsVisible = true;
-                    Favorites_btnContext.IsEnabled = true;
-                    if (commonState.currentTone.Index > -1)
-                    {
-                        List<String> tone = commonState.toneList.Tones[commonState.currentTone.Index];
-                        commonState.midi.ProgramChange(commonState.midi.GetMidiInPortChannel(), tone[4], tone[5], tone[7]);
-                    }
-                    else
-                    {
-                        Int32 index = commonState.toneList.Get(commonState.currentTone);
-                        if (index > -1)
-                        {
-                            List<String> tone = commonState.toneList.Tones[commonState.toneList.Get(commonState.currentTone)];
-                            commonState.midi.ProgramChange(commonState.midi.GetMidiOutPortChannel(), tone[4], tone[5], tone[7]);
-                        }
-                    }
-                }
-                // The user came here to add a favorite, and now selects another favorite.
-                // The favorite should be allowed to be stored in another folder.
-                else if (favoritesAction == FavoritesAction.ADD)
-                {
-                    Favorites_btnContext.Text = "Copy " + commonState.currentTone.Name;
-                    Favorites_btnContext.IsVisible = true;
-                    Favorites_btnContext.IsEnabled = true;
-                    Favorites_lvHelp1.Text = "You have selected a favorite and it is now possible to copy it to another " +
-                        "folder. Select the destination folder and clic the \'Copy " + commonState.currentTone.Name + " button.";
-                    //UpdateFoldersList();
-                }
-                // The user came here to delete a favorite, and now selects another favorite.
-                // The favorite should be allowed to be deleted.
-                else if (favoritesAction == FavoritesAction.REMOVE)
-                {
-                    Favorites_btnContext.Text = "Delete " + commonState.currentTone.Name;
-                    Favorites_btnContext.IsVisible = true;
-                    Favorites_btnContext.IsEnabled = true;
-                    UpdateFoldersList();
-                }
-            }
-        }
-
-        private void Favorites_lvFolderList_ItemSelected(object sender, SelectedItemChangedEventArgs e)
-        {
-            //t.Trace("private void lvFolders_SelectionChanged(" + ((ListView)sender).SelectedIndex.ToString() + ")");
-            PushHandleControlEvents();
-            //UpdateFavoritesList((String)(((ListView)sender).SelectedItem));
-            UpdateFavoritesList((String)sender);
-            PopHandleControlEvents();
-            Favorites_btnDeleteFolder.IsEnabled = true;
-            currentFolder = Favorites_ocFolderList.IndexOf(Favorites_lvFolderList.SelectedItem);
-            if (favoritesAction == FavoritesAction.ADD || favoritesAction == FavoritesAction.REMOVE)
-            {
-                if (Favorites_lvFolderList.SelectedItem.ToString().StartsWith("*"))
-                {
-                    Favorites_btnContext.IsEnabled = true;
-                }
-                else
-                {
-                    Favorites_btnContext.IsEnabled = false;
-                }
-            }
-            if (Favorites_lvFolderList.SelectedItem != null)
-            {
-                Favorites_btnDeleteFolder.IsEnabled = true;
-            }
-        }
-
-        /// <summary>
-        /// Right tapping or double-clicking a favorite should take immediate action
-        /// without the need to click the context button.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void lvFavorites_DoubleTapped(object sender/*, DoubleTappedRoutedEventArgs e*/)
-        {
-        //    if (handleControlEvents)
-        //    {
-        //        t.Trace("private void lvFavorites_DoubleTapped(" + ((ListView)sender).SelectedIndex.ToString() + ")");
-        //        try
-        //        {
-        //            // List only contains the name, lookup the currentTone by name and folder:
-        //            commonState.currentTone = (Tone)lvFavorites.Items[lvFavorites.SelectedIndex];
-        //            commonState.currentTone.Index = commonState.toneList.Get(commonState.currentTone);
-        //        }
-        //        catch
-        //        {
-        //            commonState.currentTone.Index = -1;
-        //        }
-        //        // If the user came here to pick a favorite, it is now selected.
-        //        // Just return to the main page:
-        //        if (favoritesAction == FavoritesAction.SHOW)
-        //        {
-        //            this.Frame.Navigate(typeof(MainPage), commonState);
-        //        }
-        //        // If the user came here to add a favorite, selecting one would be to get it.
-        //        // Just get it and return to the main page:
-        //        else if (favoritesAction == FavoritesAction.ADD)
-        //        {
-        //            if (commonState.currentTone.Index < 0)
-        //            {
-        //                // List only contains the name, lookup the currentTone by name and folder:
-        //                commonState.currentTone = FindFavoriteByNameAndFolder((String)lvFavorites.SelectedItem, ((String)lvFolders.SelectedItem).TrimStart('*'));
-        //            }
-        //            this.Frame.Navigate(typeof(MainPage), commonState);
-        //        }
-        //        // If the user came here to delete a favorite, selecting another would be for
-        //        // deleting that one too (because of right tap or double click:
-        //        else if (favoritesAction == FavoritesAction.REMOVE)
-        //        {
-        //            // List only contains the name, lookup the currentTone by name and folder:
-        //            Tone tone = FindFavoriteByNameAndFolder((String)lvFavorites.SelectedItem, ((String)lvFolders.SelectedItem).TrimStart('*'));
-        //            DeleteFavorite(tone);
-        //            UpdateFoldersList();
-        //        }
-        //    }
-        }
-
-        private void lvFolders_DoubleTapped(object sender/*, DoubleTappedRoutedEventArgs e*/)
-        {
-            if (commonState.currentTone != null && Favorites_lvFolderList.SelectedItem != null)
-            {
-                //t.Trace("private void lvFolders_DoubleTapped(" + ((ListView)sender).SelectedIndex.ToString() + ")");
-                //ListViewItem item = (ListViewItem)Favorites_lvFolderList.ContainerFromItem(Favorites_lvFolderList.SelectedItem);
-                if (favoritesAction == FavoritesAction.ADD && ((String)Favorites_lvFolderList.SelectedItem).StartsWith("*"))
-                {
-                    commonState.favoritesList.folders[Favorites_ocFolderList.IndexOf(Favorites_lvFolderList.SelectedItem)].FavoritesTones.Add(commonState.currentTone);
-                    Favorites_lvFolderList.SelectedItem = ((String)Favorites_lvFolderList.SelectedItem).TrimStart('*');
-                    UpdateFavoritesList((String)Favorites_lvFolderList.SelectedItem);
-                    SaveToLocalSettings();
-                }
-                if (favoritesAction == FavoritesAction.REMOVE && ((String)Favorites_lvFolderList.SelectedItem).StartsWith("*"))
-                {
-                    Tone tone = commonState.favoritesList.folders[Favorites_ocFolderList.IndexOf(Favorites_lvFolderList.SelectedItem)].ByToneName(commonState.currentTone.Name);
-                    commonState.favoritesList.folders[Favorites_ocFolderList.IndexOf(Favorites_lvFolderList.SelectedItem)].FavoritesTones.Remove(tone);
-                    Favorites_lvFolderList.SelectedItem = ((String)Favorites_lvFolderList.SelectedItem).TrimStart('*');
-                    UpdateFavoritesList((String)Favorites_lvFolderList.SelectedItem);
-                    SaveToLocalSettings();
-                }
-            }
-        }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Public functions to be called from code in other files
@@ -541,18 +665,65 @@ namespace Integra_7_Xamarin
         public void ShowFavoritesPage(FavoritesAction favoriteAction)
         {
             this.favoritesAction = favoriteAction;
-            if (!Favorites_IsCreated)
-            {
-                DrawFavoritesPage();
-                mainStackLayout.Children.Add(Favorites_StackLayout);
-                Favorites_IsCreated = true;
-            }
+            //if (!Favorites_IsCreated)
+            //{
+            //    DrawFavoritesPage();
+            //    mainStackLayout.Children.Add(Favorites_StackLayout);
+            //    Favorites_IsCreated = true;
+            //}
             Favorites_StackLayout.IsVisible = true;
-        }
 
-        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        // Public functions to be called from device dependent code
-        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            commonState.Player.btnPlayStop = Favorites_btnPlay;
+            if (commonState.Player.Playing)
+            {
+                Favorites_btnPlay.Content = "Stop";
+            }
+            else
+            {
+                Favorites_btnPlay.IsEnabled = false;
+            }
+
+            Favorites_btnSelectFavorite.IsEnabled = false;
+            Favorites_btnDeleteFolder.IsEnabled = false;
+            Favorites_btnCopyFavorite.IsEnabled = false;
+            Favorites_btnAddOrDeleteFavorite.IsEnabled = true;
+            Favorites_btnSelectFavorite.IsEnabled = false;
+
+            switch (favoritesAction)
+            {
+                case FavoritesAction.SHOW:
+                Favorites_UpdateFoldersList();
+                    //if (Favorites_ocFolderList.Count() > 0)
+                    //{
+                    //    Favorites_lvFolderList.SelectedItem = commonState.currentTone.
+                    //    UpdateFavoritesList(lvFolders.SelectedIndex);
+                    //}
+                    break;
+                case FavoritesAction.ADD:
+                    Favorites_tbHelp.Text = "The folder(s) that does not already contain the Tone " + commonState.CurrentTone.Name +
+                        " has been marked with a \'*\'. Doubletap the folders you wish to add the Tone \'" +
+                        commonState.CurrentTone.Name + "\' to (or select the folder name and click 'Add " +
+                        commonState.CurrentTone.Name + "').";
+                    Favorites_btnAddOrDeleteFavorite.Content = "Add " + commonState.CurrentTone.Name;
+                    Favorites_UpdateFoldersList();
+                    break;
+                case FavoritesAction.REMOVE:
+                Favorites_tbHelp.Text = "The folder(s) that contains the Tone " + commonState.CurrentTone.Name +
+                    " has been marked with a \'*\'. Doubletap the folders you wish to remove the Tone \'" +
+                    commonState.CurrentTone.Name + "\' from (or select the folder name and click 'Delete " +
+                    commonState.CurrentTone.Name + "').";
+                Favorites_btnAddOrDeleteFavorite.Content = "Delete " + commonState.CurrentTone.Name;
+                Favorites_UpdateFoldersList();
+                    break;
+            }
+            //else if (favoritesAction == FavoritesAction.SHOW)
+            //{
+            //    tbContextInstructions.Text = "Please select a folder and double-click a favorite to select it.\r\n\r\n" +
+            //        "You can also click it and then click the \'Select\'button.\r\n\\r\n." +
+            //        "Press play if you want to hear a sample of the selected tone before you go back to the librarian.";
+            //}
+            //commonState.player = new Player(commonState, ref Favorites_btnPlay);
+        }
 
         public void Favorites_Restore(String linesToUnpack)
         {
@@ -560,11 +731,27 @@ namespace Integra_7_Xamarin
             {
                 UnpackFoldersWithFavoritesString(linesToUnpack);
                 SaveToLocalSettings();
-                UpdateFoldersList();
+                Favorites_UpdateFoldersList();
             }
         }
+
+        private void Favorites_ReadFavoritesFromLocalSettings()
+        {
+            String favorites = "";
+            try
+            {
+                favorites = (String)mainPage.LoadLocalValue("Favorites");
+                if (!String.IsNullOrEmpty(favorites))
+                {
+                    UnpackFoldersWithFavoritesString(favorites);
+                    Favorites_UpdateFoldersList();
+                }
+            }
+            catch { }
+        }
+
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        // Loca helpers
+        // Local helpers
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         private async void DeleteFolder(String folder)
@@ -576,9 +763,9 @@ namespace Integra_7_Xamarin
                 "Are you sure you want to do this?", "Yes", "No");
             if (response)
             {
-                commonState.favoritesList.folders.RemoveAt(Favorites_ocFolderList.IndexOf(folder));
+                commonState.FavoritesList.folders.RemoveAt(Favorites_ocFolderList.IndexOf(folder));
                 SaveToLocalSettings();
-                UpdateFoldersList();
+                Favorites_UpdateFoldersList();
             }
         }
 
@@ -588,19 +775,23 @@ namespace Integra_7_Xamarin
             UInt16 i = 0;
             UInt16 index = 0;
             Int32 folderIndex = Favorites_ocFolderList.IndexOf(Favorites_lvFolderList.SelectedItem);
-            foreach (Tone tone in commonState.favoritesList.folders[folderIndex].FavoritesTones)
+            Boolean found = false;
+            foreach (FavoriteTone tone in commonState.FavoritesList.folders[folderIndex].FavoriteTones)
             {
                 if (tone.Name == Tone.Name)
                 {
                     index = i;
+                    found = true;
                 }
                 i++;
             }
-            commonState.favoritesList.folders[folderIndex].FavoritesTones.RemoveAt(index);
-            UpdateFavoritesList((String)Favorites_lvFolderList.SelectedItem);
-            UpdateFoldersList(folderIndex);
+            if (found)
+            {
+                commonState.FavoritesList.folders[folderIndex].FavoriteTones.RemoveAt(index);
+                UpdateFavoritesList((String)Favorites_lvFolderList.SelectedItem);
+                Favorites_UpdateFoldersList(folderIndex);
+            }
         }
-
 
         //protected override void OnNavigatedTo(NavigationEventArgs e)
         //{
@@ -697,13 +888,13 @@ namespace Integra_7_Xamarin
             if (foldersWithFavorites != null)
             {
                 FavoritesFolder folder = null;
-                commonState.favoritesList.folders.Clear();
+                commonState.FavoritesList.folders.Clear();
                 foreach (String foldersWithFavoritePart in foldersWithFavorites.Split('\f'))
                 {
                     String[] folderWithFavorites = foldersWithFavoritePart.Split('\v');
                     // Folder name:
                     folder = new FavoritesFolder(folderWithFavorites[0]);
-                    commonState.favoritesList.folders.Add(folder);
+                    commonState.FavoritesList.folders.Add(folder);
                     if (folderWithFavorites.Length > 1)
                     {
                         String[] favorites = folderWithFavorites[1].Split('\b');
@@ -714,8 +905,7 @@ namespace Integra_7_Xamarin
                             {
                                 if (favoriteParts.Length == 6)
                                 {
-                                    folder.FavoritesTones.Add(new Tone(Int32.Parse(favoriteParts[0]), Int32.Parse(favoriteParts[1]),
-                                        Int32.Parse(favoriteParts[2]), favoriteParts[3], favoriteParts[4], favoriteParts[5]));
+                                    folder.FavoriteTones.Add(new FavoriteTone(favoriteParts[3], favoriteParts[4], favoriteParts[5]));
                                 }
                             }
                             catch { }
@@ -735,13 +925,12 @@ namespace Integra_7_Xamarin
             // Concatenate the folder name and tthe parts separated by a \v.
             // Concatenate all folders separated by a \b.
             String toSave = "";
-            foreach (FavoritesFolder folder in commonState.favoritesList.folders)
+            foreach (FavoritesFolder folder in commonState.FavoritesList.folders)
             {
                 toSave += folder.Name + '\v';
-                foreach (Tone favorite in folder.FavoritesTones)
+                foreach (FavoriteTone favorite in folder.FavoriteTones)
                 {
-                    toSave += favorite.GroupIndex.ToString() + "\t" + favorite.CategoryIndex.ToString() + "\t" +
-                        favorite.ToneIndex.ToString() + "\t" + favorite.Group + "\t" +
+                    toSave += "-1\t-1\t-1\t" + favorite.Group + "\t" +
                         favorite.Category + "\t" + favorite.Name + "\b";
                 }
                 toSave = toSave.TrimEnd('\b') + "\f";
@@ -751,7 +940,7 @@ namespace Integra_7_Xamarin
             //localSettings.Values["Favorites"] = toSave;
         }
 
-        private void UpdateFoldersList(Int32 SelectedFolderIndex = -1)
+        private void Favorites_UpdateFoldersList(Int32 SelectedFolderIndex = -1)
         {
             if (handleControlEvents)
             {
@@ -761,6 +950,7 @@ namespace Integra_7_Xamarin
                 {
                     Int32 count = 0;
                     Favorites_ocFavoriteList.Clear(); // Since we will not have a selected folder, do not show favorites!
+                    Favorites_CurrentlyInFavoriteList.Clear();
                     //Int32 selectedItemIndex = -1;
                     Favorites_btnDeleteFolder.IsEnabled = false;
                     Favorites_ocFolderList.Clear();
@@ -776,16 +966,16 @@ namespace Integra_7_Xamarin
                     //Favorites_lvGroupList.DoubleTapped += Favorites_lvGroupList_DoubleTapped;
                     //Favorites_ocGroupList gcFolders.Children.Add(Favorites_lvGroupList);
                     UInt16 i = 0;
-                    foreach (FavoritesFolder folder in commonState.favoritesList.folders)
+                    foreach (FavoritesFolder folder in commonState.FavoritesList.folders)
                     {
                         Boolean mark = false;
                         if (favoritesAction == FavoritesAction.ADD || favoritesAction == FavoritesAction.REMOVE)
                         {
-                            foreach (Tone fav in folder.FavoritesTones)
+                            foreach (FavoriteTone fav in folder.FavoriteTones)
                             {
-                                if (fav.Group == commonState.currentTone.Group
-                                    && fav.Category == commonState.currentTone.Category
-                                    && fav.Name == commonState.currentTone.Name)
+                                if (fav.Group == commonState.CurrentTone.Group
+                                    && fav.Category == commonState.CurrentTone.Category
+                                    && fav.Name == commonState.CurrentTone.Name)
                                 {
                                     mark = true;
                                     SelectedFolderIndex = i;
@@ -821,6 +1011,7 @@ namespace Integra_7_Xamarin
                             else
                             {
                                 Favorites_lvFolderList.SelectedItem = Favorites_ocFolderList[0];
+                                Favorites_CurrentFolder = 0;
                             }
                         }
                     }
@@ -828,27 +1019,34 @@ namespace Integra_7_Xamarin
                     {
                         // There are no more items to delete, or no folders that 
                         // does not have the item to add, go to normal mode:
-                        if (currentFolder > -1 && currentFolder < Favorites_ocFolderList.Count())
+                        if (Favorites_CurrentFolder > -1 && Favorites_CurrentFolder < Favorites_ocFolderList.Count())
                         {
-                            Favorites_lvFolderList.SelectedItem = Favorites_ocFolderList[currentFolder];
+                            Favorites_lvFolderList.SelectedItem = Favorites_ocFolderList[Favorites_CurrentFolder];
                         }
                         else if (Favorites_ocFolderList.Count() > 0)
                         {
                             Favorites_lvFolderList.SelectedItem = Favorites_ocFolderList[0];
+                            Favorites_CurrentFolder = 0;
                         }
                     }
-                    PopHandleControlEvents();
+                    //PopHandleControlEvents();
                     if (Favorites_lvFolderList.SelectedItem == null)
                     {
                         if (Favorites_ocFolderList.Count > 0)
                         {
                             Favorites_lvFolderList.SelectedItem = Favorites_ocFolderList[0];
+                            Favorites_CurrentFolder = 0;
                         }
                     }
                     UpdateFavoritesList(Favorites_lvFolderList.SelectedItem.ToString());
-                    Favorites_lvFolderList.ItemsSource = Favorites_ocFolderList;
+                    //Favorites_lvFolderList.ItemsSource = Favorites_ocFolderList;
                 }
                 catch { }
+                if (Favorites_ocFolderList.Count() > 0)
+                {
+                    Favorites_lvFolderList.SelectedItem = Favorites_ocFolderList[0];
+                    Favorites_CurrentFolder = 0;
+                }
                 PopHandleControlEvents();
             }
         }
@@ -862,19 +1060,21 @@ namespace Integra_7_Xamarin
                 //    {
                 // Find the folder by name:
                 FavoritesFolder favoritesFolder = null;
-                for (Int32 i = 0; i < commonState.favoritesList.folders.Count() && favoritesFolder == null; i++)
+                for (Int32 i = 0; i < commonState.FavoritesList.folders.Count() && favoritesFolder == null; i++)
                 {
-                    if (commonState.favoritesList.folders[i].Name == folderName.TrimStart('*'))
+                    if (commonState.FavoritesList.folders[i].Name == folderName.TrimStart('*'))
                     {
-                        favoritesFolder = commonState.favoritesList.folders[i];
+                        favoritesFolder = commonState.FavoritesList.folders[i];
                     }
                 }
                 if (favoritesFolder != null)
                 {
                     Favorites_ocFavoriteList.Clear();
-                    foreach (Tone fav in commonState.favoritesList.folders[commonState.favoritesList.folders.IndexOf(favoritesFolder)].FavoritesTones)
+                    Favorites_CurrentlyInFavoriteList.Clear();
+                    foreach (FavoriteTone fav in commonState.FavoritesList.folders[commonState.FavoritesList.folders.IndexOf(favoritesFolder)].FavoriteTones)
                     {
-                        Favorites_ocFavoriteList.Add(fav);
+                        Favorites_ocFavoriteList.Add(fav.Name);
+                        Favorites_CurrentlyInFavoriteList.Add(fav);
                     }
                 }
             }
@@ -882,15 +1082,15 @@ namespace Integra_7_Xamarin
 
         private Tone FindFavoriteByNameAndFolder(String Name, String FolderName)
         {
-            foreach (FavoritesFolder folder in commonState.favoritesList.folders)
+            foreach (FavoritesFolder folder in commonState.FavoritesList.folders)
             {
                 if (folder.Name == FolderName || ("* " + folder.Name) == FolderName)
                 {
-                    foreach (Tone favorite in folder.FavoritesTones)
+                    foreach (FavoriteTone favorite in folder.FavoriteTones)
                     {
                         if (favorite.Name == Name)
                         {
-                            return favorite;
+                            return new Tone(-1, -1, -1, favorite.Group, favorite.Category, favorite.Name);
                         }
                     }
                 }

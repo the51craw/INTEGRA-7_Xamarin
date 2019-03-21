@@ -14,6 +14,7 @@ using Android.Content;
 using System.Timers;
 
 [assembly: Dependency(typeof(MIDI))]
+[assembly: Dependency(typeof(MyFileIO))]
 
 namespace Integra_7_Xamarin.Droid
 {
@@ -117,7 +118,7 @@ namespace Integra_7_Xamarin.Droid
             // Initiate MIDI:
             OutputSelector = MainPage_Portable.uIHandler.Librarian_midiOutputDevice;
             InputSelector = MainPage_Portable.uIHandler.Librarian_midiInputDevice;
-            MainPage_Portable.uIHandler.commonState.midi.Init(MainPage_Portable, "INTEGRA-7", OutputSelector, InputSelector, this, 0, 0);
+            MainPage_Portable.uIHandler.commonState.Midi.Init(MainPage_Portable, "INTEGRA-7", OutputSelector, InputSelector, this, 0, 0);
 
             // Wait for MIDI to get ready:
             //timer = new Timer();

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Xamarin.Forms;
 using Integra_7_Xamarin.UWP;
+using System.Collections.Generic;
 
 [assembly: Xamarin.Forms.Dependency(typeof(GenericHandlerInterface))]
 
@@ -34,6 +35,9 @@ namespace Integra_7_Xamarin.UWP
         public DispatcherTimer timer;
         public Boolean MessageReceived = false;
         public Boolean VenderDriverPresent = false;
+        Picker OutputDeviceSelector { get; set; }
+        Picker InputDeviceSelector { get; set; }
+        public List<String> MidiDevices { get; set; }
 
         public void GenericHandler(object sender, object e)
         {
@@ -45,6 +49,7 @@ namespace Integra_7_Xamarin.UWP
 
         public MIDI()
         {
+            MidiDevices = new List<String>();
         }
 
         private void Timer_Tick(object sender, object e)
@@ -71,19 +76,26 @@ namespace Integra_7_Xamarin.UWP
             MessageReceived = true;
         }
 
-        public void Init(Integra_7_Xamarin.MainPage mainPage, string deviceName, Picker OutputDeviceSelector, Picker InputDeviceSelector, object DeviceSpecificObject, byte MidiOutPortChannel, byte MidiInPortChannel)
+        public void Init(Integra_7_Xamarin.MainPage mainPage, string deviceName, 
+            Picker OutputDeviceSelector, Picker InputDeviceSelector, 
+            object DeviceSpecificObject, byte MidiOutPortChannel, byte MidiInPortChannel)
         {
             throw new NotImplementedException();
         }
 
-        public MIDI(Integra_7_Xamarin.MainPage mainPage, Picker OutputDeviceSelector, Picker InputDeviceSelector, byte MidiOutPortChannel, byte MidiInPortChannel)
+        public MIDI(Integra_7_Xamarin.MainPage mainPage, 
+            Picker OutputDeviceSelector, Picker InputDeviceSelector, 
+            byte MidiOutPortChannel, byte MidiInPortChannel)
         {
+            MidiDevices = new List<String>();
             Init(mainPage, "INTEGRA-7", OutputDeviceSelector, InputDeviceSelector, MidiOutPortChannel, MidiInPortChannel);
         }
 
         // Constructor using a combobox for full device watch:
         public MIDI(Integra_7_Xamarin.MainPage mainPage, MainPage mainPage_UWP, Picker OutputDeviceSelector, Picker InputDeviceSelector, byte MidiOutPortChannel, byte MidiInPortChannel)
         {
+            throw new NotImplementedException();
+            MidiDevices = new List<String>();
             this.mainPage = mainPage;
             this.MainPage_UWP = mainPage_UWP;
             midiOutputDeviceWatcher = new MidiDeviceWatcher(MidiOutPort.GetDeviceSelector(), OutputDeviceSelector, mainPage_UWP.Dispatcher_UWP);
@@ -98,8 +110,8 @@ namespace Integra_7_Xamarin.UWP
         {
             try
             {
-                midiOutputDeviceWatcher.StopWatcher();
-                midiInputDeviceWatcher.StopWatcher();
+                //midiOutputDeviceWatcher.StopWatcher();
+                //midiInputDeviceWatcher.StopWatcher();
                 midiOutPort.Dispose();
                 midiInPort.MessageReceived -= MidiInPort_MessageReceived;
                 midiInPort.Dispose();
@@ -137,6 +149,8 @@ namespace Integra_7_Xamarin.UWP
             //midiInputDeviceWatcher = new MidiDeviceWatcher(MidiInPort.GetDeviceSelector(), InputDeviceSelector, Dispatcher);
             //midiOutputDeviceWatcher.StartWatcher();
             //midiInputDeviceWatcher.StartWatcher();
+            this.OutputDeviceSelector = OutputDeviceSelector;
+            this.InputDeviceSelector = InputDeviceSelector;
             this.MidiOutPortChannel = MidiOutPortChannel;
             this.MidiInPortChannel = MidiInPortChannel;
             Init(deviceName);
@@ -161,6 +175,11 @@ namespace Integra_7_Xamarin.UWP
             DeviceInformation midiOutDevInfo = null;
             DeviceInformation midiInDevInfo = null;
 
+            // If the user has connected the I-7 via 5-pin connections, we cannot identify it. Therefore, we fill out
+            // the selectors and let the user selects the correct one. We set the selector to first line.
+            // If the user has connected the I-7 via USB, we will still populate the selectors, and we will
+            // have the name in there, so we can select it.
+
             foreach (DeviceInformation device in midiOutputDevices)
             {
                 if (device.Name.Contains(deviceName))
@@ -175,8 +194,10 @@ namespace Integra_7_Xamarin.UWP
                 midiOutPort = (MidiOutPort)await MidiOutPort.FromIdAsync(midiOutDevInfo.Id);
             }
 
+            MidiDevices.Clear();
             foreach (DeviceInformation device in midiInputDevices)
             {
+                MidiDevices.Add(device.Name);
                 if (device.Name.Contains(deviceName))
                 {
                     midiInDevInfo = device;
@@ -324,6 +345,10 @@ namespace Integra_7_Xamarin.UWP
             MidiInPortChannel = InPortChannel;
         }
 
+        public List<String> GetMidiDeviceList()
+        {
+            return MidiDevices;
+        }
 
         public void NoteOn(byte currentChannel, byte noteNumber, byte velocity)
         {

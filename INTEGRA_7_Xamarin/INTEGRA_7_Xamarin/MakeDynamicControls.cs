@@ -277,10 +277,10 @@ namespace Integra_7_Xamarin
                 case 0:
                     //cbEditTone_PartialSelector.IsVisible = false;
                     //tbEditTone_KeyName.IsVisible = true;
-                    if (commonState.keyNames != null && cbEditTone_KeySelector.SelectedIndex > -1)
+                    if (commonState.KeyNames != null && cbEditTone_KeySelector.SelectedIndex > -1)
                     {
-                        commonState.currentTone.Group = "PCM Drum Kit";
-                        commonState.currentTone.Name = "Pop DrumSet 1";
+                        commonState.CurrentTone.Group = "PCM Drum Kit";
+                        commonState.CurrentTone.Name = "Pop DrumSet 1";
                         UpdateDrumNames();
                         //tbEditTone_KeyName.Text = commonState.keyNames[cbEditTone_KeySelector.SelectedIndex];
                     }
@@ -437,8 +437,8 @@ namespace Integra_7_Xamarin
                     //cbEditTone_PartialSelector.IsVisible = false;
                     //tbEditTone_KeyName.IsVisible = true;
                     //tbEditTone_KeyName.Text = superNATURALDrumKit.superNATURALDrumKitKey[currentKey].na
-                    commonState.currentTone.Group = "SuperNATURAL Drum Kit";
-                    commonState.currentTone.Name = "Session Kit";
+                    commonState.CurrentTone.Group = "SuperNATURAL Drum Kit";
+                    commonState.CurrentTone.Name = "Session Kit";
                     UpdateDrumNames();
                     AddSupernaturalDrumKitCommonControls(SelectedIndex);
                     break;
@@ -3564,13 +3564,13 @@ namespace Integra_7_Xamarin
 
             String numString;
             cbEditTone_SaveTone_SlotNumber.Items.Clear();
-            if (commonState.toneNames[0] != null && commonState.toneNames[0].Count() == 256)
+            if (commonState.ToneNames[0] != null && commonState.ToneNames[0].Count() == 256)
             {
                 for (UInt16 i = 0; i < 256; i++)
                 {
                     numString = (i + 1).ToString();
                     while (numString.Length < 3) numString = "0" + numString;
-                    cbEditTone_SaveTone_SlotNumber.Items.Add(numString + ": " + commonState.toneNames[0][i].Trim());
+                    cbEditTone_SaveTone_SlotNumber.Items.Add(numString + ": " + commonState.ToneNames[0][i].Trim());
                 }
             }
             else
@@ -3592,7 +3592,7 @@ namespace Integra_7_Xamarin
             tbEditTone_SaveTone_Title.Text = "Name (max 12 chars):";
             try
             {
-                tbEditTone_SaveTone_TitleText.Text = commonState.currentTone.Name.TrimEnd();
+                tbEditTone_SaveTone_TitleText.Text = commonState.CurrentTone.Name.TrimEnd();
             }
             catch
             {
@@ -5525,13 +5525,13 @@ namespace Integra_7_Xamarin
 
             String numString;
             cbEditTone_SaveTone_SlotNumber.Items.Clear();
-            if (commonState.toneNames[1] != null && commonState.toneNames[1].Count() == 32)
+            if (commonState.ToneNames[1] != null && commonState.ToneNames[1].Count() == 32)
             {
                 for (UInt16 i = 0; i < 32; i++)
                 {
                     numString = (i + 1).ToString();
                     while (numString.Length < 3) numString = "0" + numString;
-                    cbEditTone_SaveTone_SlotNumber.Items.Add(numString + ": " + commonState.toneNames[1][i].Trim());
+                    cbEditTone_SaveTone_SlotNumber.Items.Add(numString + ": " + commonState.ToneNames[1][i].Trim());
                 }
             }
             else
@@ -5936,9 +5936,9 @@ namespace Integra_7_Xamarin
             }
             //index = mask[cbEditTone_SuperNATURALAcousticTone_Instrument_InstNumber.SelectedIndex];
             //index = mask[superNATURALAcousticTone.superNATURALAcousticToneCommon.InstNumber];
-            if (Int32.Parse(commonState.toneList.Tones[commonState.currentTone.Index][10]) > 0)
+            if (Int32.Parse(commonState.ToneList.Tones[commonState.CurrentTone.Index][10]) > 0)
             {
-                index = mask[Int32.Parse(commonState.toneList.Tones[commonState.currentTone.Index][10]) - 1];
+                index = mask[Int32.Parse(commonState.ToneList.Tones[commonState.CurrentTone.Index][10]) - 1];
             }
 
             //switch (currentInstrument.InstrumentGroup)
@@ -7303,9 +7303,9 @@ namespace Integra_7_Xamarin
 
             // Variation Refer to p. 28.
             //if (superNaturalAcousticInstrumentList.ParameterMask[index][((controlsIndex++) -2)] > 0)
-            if (commonState.currentTone.VariationIndex > -1)
+            if (commonState.CurrentTone.VariationIndex > -1)
             {
-                superNATURALAcousticToneVariation = superNATURALAcousticToneVariations.Get(selectedSound.ProgramBank, commonState.currentTone.VariationIndex);
+                superNATURALAcousticToneVariation = superNATURALAcousticToneVariations.Get(selectedSound.ProgramBank, commonState.CurrentTone.VariationIndex);
                 if (superNATURALAcousticToneVariation != null)
                 {
                     // ComboBox for Inst Variation
@@ -7538,13 +7538,13 @@ namespace Integra_7_Xamarin
 
             String numString;
             cbEditTone_SaveTone_SlotNumber.Items.Clear();
-            if (commonState.toneNames[2] != null && commonState.toneNames[2].Count() == 256)
+            if (commonState.ToneNames[2] != null && commonState.ToneNames[2].Count() == 256)
             {
                 for (UInt16 i = 0; i < 256; i++)
                 {
                     numString = (i + 1).ToString();
                     while (numString.Length < 3) numString = "0" + numString;
-                    cbEditTone_SaveTone_SlotNumber.Items.Add(numString + ": " + commonState.toneNames[2][i].Trim());
+                    cbEditTone_SaveTone_SlotNumber.Items.Add(numString + ": " + commonState.ToneNames[2][i].Trim());
                 }
             }
             else
@@ -9164,13 +9164,13 @@ namespace Integra_7_Xamarin
 
             String numString;
             cbEditTone_SaveTone_SlotNumber.Items.Clear();
-            if (commonState.toneNames[3] != null && commonState.toneNames[3].Count() == 512)
+            if (commonState.ToneNames[3] != null && commonState.ToneNames[3].Count() == 512)
             {
                 for (UInt16 i = 0; i < 512; i++)
                 {
                     numString = (i + 1).ToString();
                     while (numString.Length < 3) numString = "0" + numString;
-                    cbEditTone_SaveTone_SlotNumber.Items.Add(numString + ": " + commonState.toneNames[3][i].Trim());
+                    cbEditTone_SaveTone_SlotNumber.Items.Add(numString + ": " + commonState.ToneNames[3][i].Trim());
                 }
             }
             else
@@ -10171,13 +10171,13 @@ namespace Integra_7_Xamarin
 
             String numString;
             cbEditTone_SaveTone_SlotNumber.Items.Clear();
-            if (commonState.toneNames[4] != null && commonState.toneNames[4].Count() == 64)
+            if (commonState.ToneNames[4] != null && commonState.ToneNames[4].Count() == 64)
             {
                 for (UInt16 i = 0; i < 64; i++)
                 {
                     numString = (i + 1).ToString();
                     while (numString.Length < 3) numString = "0" + numString;
-                    cbEditTone_SaveTone_SlotNumber.Items.Add(numString + ": " + commonState.toneNames[4][i].Trim());
+                    cbEditTone_SaveTone_SlotNumber.Items.Add(numString + ": " + commonState.ToneNames[4][i].Trim());
                 }
             }
             else

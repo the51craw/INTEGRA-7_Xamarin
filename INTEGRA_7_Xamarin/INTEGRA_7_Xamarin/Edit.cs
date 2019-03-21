@@ -1211,8 +1211,8 @@ namespace Integra_7_Xamarin
                 //    //commonState.midi.midiInPort.MessageReceived += Edit_MidiInPort_MessageReceived;
                 //    firstTime = false;
                 //}
-                commonState.player.btnPlayStop = btnEditTone_Play;
-                if (commonState.player.Playing)
+                commonState.Player.btnPlayStop = btnEditTone_Play;
+                if (commonState.Player.Playing)
                 {
                     btnEditTone_Play.Content = "Stop";
                 }
@@ -1450,7 +1450,7 @@ namespace Integra_7_Xamarin
                 String response = await mainPage.DisplayActionSheet("There is no response from your INTEGRA-7. Is the selected module loaded?",
                     null, null, new String[] { "Back to Librarian" });
 
-                commonState.currentTone = null; // To force re-read of data.
+                commonState.CurrentTone = null; // To force re-read of data.
                 //commonState.midi.midiInPort.MessageReceived -= Edit_MidiInPort_MessageReceived;
                 //this.Frame.Navigate(typeof(MainPage), commonState);
                 Edit_StackLayout.IsVisible = false;
@@ -1499,7 +1499,7 @@ namespace Integra_7_Xamarin
                 Update_PartialSelector();
                 UpdateInstrumentSelector();
             }
-            cbEditTone_InstrumentCategorySelector.SelectedItem = commonState.currentTone.Category;
+            cbEditTone_InstrumentCategorySelector.SelectedItem = commonState.CurrentTone.Category;
             switch (currentProgramType)
             {
                 case ProgramType.PCM_SYNTH_TONE:
@@ -1989,8 +1989,8 @@ namespace Integra_7_Xamarin
             currentEditMidiRequest = Edit_CurrentMidiRequest.QUERYING_TONE_TYPE; 
             byte[] address = { 0x18, 0x00, (byte)(0x20 + commonState.CurrentPart), 0x00 };
             byte[] length = { 0x00, 0x00, 0x00, 0x09 };
-            byte[] bytes = commonState.midi.SystemExclusiveRQ1Message(address, length);
-            commonState.midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
+            byte[] bytes = commonState.Midi.SystemExclusiveRQ1Message(address, length);
+            commonState.Midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
         }
 
         // Common query MFX entry:
@@ -2024,8 +2024,8 @@ namespace Integra_7_Xamarin
             byte[] partOffset = new byte[] { (byte)((0x20 * commonState.CurrentPart) / 128), (byte)((0x20 * commonState.CurrentPart) % 128), 0x00, 0x00 };
             address = AddBytes128(address, partOffset);
             byte[] length = { 0x00, 0x00, 0x01, 0x11 };
-            byte[] bytes = commonState.midi.SystemExclusiveRQ1Message(address, length);
-            commonState.midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
+            byte[] bytes = commonState.Midi.SystemExclusiveRQ1Message(address, length);
+            commonState.Midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
         }
 
         private void QueryPCMSynthToneCommonMFX()          // length 01 11 start 19 00 02 00 (for part 1)
@@ -2036,8 +2036,8 @@ namespace Integra_7_Xamarin
             byte[] partOffset = new byte[] { (byte)((0x20 * commonState.CurrentPart) / 128), (byte)((0x20 * commonState.CurrentPart) % 128), 0x00, 0x00 };
             address = AddBytes128(address, partOffset);
             byte[] length = { 0x00, 0x00, 0x01, 0x11 };
-            byte[] bytes = commonState.midi.SystemExclusiveRQ1Message(address, length);
-            commonState.midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
+            byte[] bytes = commonState.Midi.SystemExclusiveRQ1Message(address, length);
+            commonState.Midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
         }
 
         private void QueryPCMSynthTonePMT()
@@ -2049,8 +2049,8 @@ namespace Integra_7_Xamarin
             byte[] partOffset = new byte[] { (byte)((0x20 * commonState.CurrentPart) / 128), (byte)((0x20 * commonState.CurrentPart) % 128), 0x00, 0x00 };
             address = AddBytes128(address, partOffset);
             byte[] length = { 0x00, 0x00, 0x00, 0x29 };
-            byte[] bytes = commonState.midi.SystemExclusiveRQ1Message(address, length);
-            commonState.midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
+            byte[] bytes = commonState.Midi.SystemExclusiveRQ1Message(address, length);
+            commonState.Midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
         }
 
         private void QueryPCMSynthTonePartial()
@@ -2064,8 +2064,8 @@ namespace Integra_7_Xamarin
             byte[] partialOffset = new byte[] { 0x00, 0x00, (byte)(0x20 + 0x02 * currentPartial), 0x00 };
             address = AddBytes128(address, partialOffset);
             byte[] length = { 0x00, 0x00, 0x01, 0x1a };
-            byte[] bytes = commonState.midi.SystemExclusiveRQ1Message(address, length);
-            commonState.midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
+            byte[] bytes = commonState.Midi.SystemExclusiveRQ1Message(address, length);
+            commonState.Midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
         }
 
         private void QueryPCMSynthToneCommon2()
@@ -2077,8 +2077,8 @@ namespace Integra_7_Xamarin
             byte[] partOffset = new byte[] { (byte)((0x20 * commonState.CurrentPart) / 128), (byte)((0x20 * commonState.CurrentPart) % 128), 0x00, 0x00 };
             address = AddBytes128(address, partOffset);
             byte[] length = { 0x00, 0x00, 0x00, 0x3c };
-            byte[] bytes = commonState.midi.SystemExclusiveRQ1Message(address, length);
-            commonState.midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
+            byte[] bytes = commonState.Midi.SystemExclusiveRQ1Message(address, length);
+            commonState.Midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
         }
 
         private void QueryPCMDrumKitCommon()
@@ -2090,8 +2090,8 @@ namespace Integra_7_Xamarin
             byte[] partOffset = new byte[] { (byte)((0x20 * commonState.CurrentPart) / 128), (byte)((0x20 * commonState.CurrentPart) % 128), 0x00, 0x00 };
             address = AddBytes128(address, partOffset);
             byte[] length = { 0x00, 0x00, 0x00, 0x12 };
-            byte[] bytes = commonState.midi.SystemExclusiveRQ1Message(address, length);
-            commonState.midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
+            byte[] bytes = commonState.Midi.SystemExclusiveRQ1Message(address, length);
+            commonState.Midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
         }
 
         private void QueryPCMDrumKitCommonMFX()
@@ -2103,8 +2103,8 @@ namespace Integra_7_Xamarin
             byte[] partOffset = new byte[] { (byte)((0x20 * commonState.CurrentPart) / 128), (byte)((0x20 * commonState.CurrentPart) % 128), 0x00, 0x00 };
             address = AddBytes128(address, partOffset);
             byte[] length = { 0x00, 0x00, 0x01, 0x11 };
-            byte[] bytes = commonState.midi.SystemExclusiveRQ1Message(address, length);
-            commonState.midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
+            byte[] bytes = commonState.Midi.SystemExclusiveRQ1Message(address, length);
+            commonState.Midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
         }
 
         private void QueryPCMDrumKitCommonCompEq()
@@ -2116,8 +2116,8 @@ namespace Integra_7_Xamarin
             byte[] partOffset = new byte[] { (byte)((0x20 * commonState.CurrentPart) / 128), (byte)((0x20 * commonState.CurrentPart) % 128), 0x00, 0x00 };
             address = AddBytes128(address, partOffset);
             byte[] length = { 0x00, 0x00, 0x00, 0x54 };
-            byte[] bytes = commonState.midi.SystemExclusiveRQ1Message(address, length);
-            commonState.midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
+            byte[] bytes = commonState.Midi.SystemExclusiveRQ1Message(address, length);
+            commonState.Midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
         }
 
         private void QueryPCMDrumKitPartial() // Read for a current key, 21 - 108!
@@ -2125,8 +2125,8 @@ namespace Integra_7_Xamarin
             t.Trace("private void QueryPCMDrumKitPartial (" + ")");
             byte[] address = MakeAddress(ProgramType.PCM_DRUM_KIT, ParameterPage.PARTIAL, 0x00);
             byte[] length = { 0x00, 0x00, 0x01, 0x43 };
-            byte[] bytes = commonState.midi.SystemExclusiveRQ1Message(address, length);
-            commonState.midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
+            byte[] bytes = commonState.Midi.SystemExclusiveRQ1Message(address, length);
+            commonState.Midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
             edit_State = Edit_State.WAITING;
             currentEditMidiRequest = Edit_CurrentMidiRequest.QUERYING_PCM_DRUM_KIT_PARTIAL;
         }
@@ -2140,8 +2140,8 @@ namespace Integra_7_Xamarin
             byte[] partOffset = new byte[] { (byte)((0x20 * commonState.CurrentPart) / 128), (byte)((0x20 * commonState.CurrentPart) % 128), 0x00, 0x00 };
             address = AddBytes128(address, partOffset);
             byte[] length = { 0x00, 0x00, 0x00, 0x32 };
-            byte[] bytes = commonState.midi.SystemExclusiveRQ1Message(address, length);
-            commonState.midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
+            byte[] bytes = commonState.Midi.SystemExclusiveRQ1Message(address, length);
+            commonState.Midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
         }
 
         private void QuerySuperNATURALAcousticTone()
@@ -2153,8 +2153,8 @@ namespace Integra_7_Xamarin
             byte[] partOffset = new byte[] { (byte)((0x20 * commonState.CurrentPart) / 128), (byte)((0x20 * commonState.CurrentPart) % 128), 0x00, 0x00 };
             address = AddBytes128(address, partOffset);
             byte[] length = { 0x00, 0x00, 0x00, 0x46 };
-            byte[] bytes = commonState.midi.SystemExclusiveRQ1Message(address, length);
-            commonState.midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
+            byte[] bytes = commonState.Midi.SystemExclusiveRQ1Message(address, length);
+            commonState.Midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
         }
 
         private void QuerySuperNATURALAcousticToneCommonMFX()
@@ -2166,8 +2166,8 @@ namespace Integra_7_Xamarin
             byte[] partOffset = new byte[] { (byte)((0x20 * commonState.CurrentPart) / 128), (byte)((0x20 * commonState.CurrentPart) % 128), 0x00, 0x00 };
             address = AddBytes128(address, partOffset);
             byte[] length = { 0x00, 0x00, 0x01, 0x11 };
-            byte[] bytes = commonState.midi.SystemExclusiveRQ1Message(address, length);
-            commonState.midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
+            byte[] bytes = commonState.Midi.SystemExclusiveRQ1Message(address, length);
+            commonState.Midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
         }
 
         private void QuerySuperNATURALSynthToneUndocumentedParameters()
@@ -2177,8 +2177,8 @@ namespace Integra_7_Xamarin
             currentEditMidiRequest = Edit_CurrentMidiRequest.QUERYING_SUPERNATURAL_SYNTH_TONE_UNDOCUMENTED_PARAMETERS;
             byte[] address = { 0x19, 0x01, 0x50, 0x00 };
             byte[] length = { 0x00, 0x00, 0x00, 0x25 };
-            byte[] bytes = commonState.midi.SystemExclusiveRQ1Message(address, length);
-            commonState.midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
+            byte[] bytes = commonState.Midi.SystemExclusiveRQ1Message(address, length);
+            commonState.Midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
         }
 
         private void QuerySuperNATURALSynthToneCommon()
@@ -2190,8 +2190,8 @@ namespace Integra_7_Xamarin
             byte[] partOffset = new byte[] { (byte)((0x20 * commonState.CurrentPart) / 128), (byte)((0x20 * commonState.CurrentPart) % 128), 0x00, 0x00 };
             address = AddBytes128(address, partOffset);
             byte[] length = { 0x00, 0x00, 0x00, 0x40 };
-            byte[] bytes = commonState.midi.SystemExclusiveRQ1Message(address, length);
-            commonState.midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
+            byte[] bytes = commonState.Midi.SystemExclusiveRQ1Message(address, length);
+            commonState.Midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
         }
 
         private void QuerySuperNATURALSynthToneCommonMFX()
@@ -2203,8 +2203,8 @@ namespace Integra_7_Xamarin
             byte[] partOffset = new byte[] { (byte)((0x20 * commonState.CurrentPart) / 128), (byte)((0x20 * commonState.CurrentPart) % 128), 0x00, 0x00 };
             address = AddBytes128(address, partOffset);
             byte[] length = { 0x00, 0x00, 0x01, 0x11 };
-            byte[] bytes = commonState.midi.SystemExclusiveRQ1Message(address, length);
-            commonState.midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
+            byte[] bytes = commonState.Midi.SystemExclusiveRQ1Message(address, length);
+            commonState.Midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
         }
 
         private void QuerySuperNATURALSynthTonePartial()
@@ -2218,8 +2218,8 @@ namespace Integra_7_Xamarin
             byte[] partialOffset = new byte[] { 0x00, 0x00, (byte)currentPartial, 0x00 };
             address = AddBytes128(address, partialOffset);
             byte[] length = { 0x00, 0x00, 0x00, 0x3d };
-            byte[] bytes = commonState.midi.SystemExclusiveRQ1Message(address, length);
-            commonState.midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
+            byte[] bytes = commonState.Midi.SystemExclusiveRQ1Message(address, length);
+            commonState.Midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
         }
 
         private void QuerySuperNATURALSynthToneMisc()
@@ -2229,8 +2229,8 @@ namespace Integra_7_Xamarin
             currentEditMidiRequest = Edit_CurrentMidiRequest.QUERYING_SUPERNATURAL_SYNTH_TONE_MISC;
             byte[] address = { 0x19, 0x01, 0x50, 0x00 };
             byte[] length = { 0x00, 0x00, 0x00, 0x06 };
-            byte[] bytes = commonState.midi.SystemExclusiveRQ1Message(address, length);
-            commonState.midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
+            byte[] bytes = commonState.Midi.SystemExclusiveRQ1Message(address, length);
+            commonState.Midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
         }
 
         private void QuerySuperNATURALDrumKit()
@@ -2242,8 +2242,8 @@ namespace Integra_7_Xamarin
             byte[] partOffset = new byte[] { (byte)((0x20 * commonState.CurrentPart) / 128), (byte)((0x20 * commonState.CurrentPart) % 128), 0x00, 0x00 };
             address = AddBytes128(address, partOffset);
             byte[] length = { 0x00, 0x00, 0x00, 0x14 };
-            byte[] bytes = commonState.midi.SystemExclusiveRQ1Message(address, length);
-            commonState.midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
+            byte[] bytes = commonState.Midi.SystemExclusiveRQ1Message(address, length);
+            commonState.Midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
         }
 
         private void QuerySuperNATURALDrumKitCommonMFX()
@@ -2255,8 +2255,8 @@ namespace Integra_7_Xamarin
             byte[] partOffset = new byte[] { (byte)((0x20 * commonState.CurrentPart) / 128), (byte)((0x20 * commonState.CurrentPart) % 128), 0x00, 0x00 };
             address = AddBytes128(address, partOffset);
             byte[] length = { 0x00, 0x00, 0x01, 0x11 };
-            byte[] bytes = commonState.midi.SystemExclusiveRQ1Message(address, length);
-            commonState.midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
+            byte[] bytes = commonState.Midi.SystemExclusiveRQ1Message(address, length);
+            commonState.Midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
         }
 
         private void QuerySuperNATURALDrumKitCommonCompEQ()
@@ -2268,8 +2268,8 @@ namespace Integra_7_Xamarin
             byte[] partOffset = new byte[] { (byte)((0x20 * commonState.CurrentPart) / 128), (byte)((0x20 * commonState.CurrentPart) % 128), 0x00, 0x00 };
             address = AddBytes128(address, partOffset);
             byte[] length = { 0x00, 0x00, 0x00, 0x54 };
-            byte[] bytes = commonState.midi.SystemExclusiveRQ1Message(address, length);
-            commonState.midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
+            byte[] bytes = commonState.Midi.SystemExclusiveRQ1Message(address, length);
+            commonState.Midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
         }
 
         private void QuerySuperNATURALDrumKitPartial()
@@ -2279,8 +2279,8 @@ namespace Integra_7_Xamarin
             currentEditMidiRequest = Edit_CurrentMidiRequest.QUERYING_SUPERNATURAL_DRUM_KIT_PARTIAL;
             byte[] address = MakeAddress(ProgramType.SUPERNATURAL_DRUM_KIT, ParameterPage.PARTIAL, new byte[] { 0x00 });
             byte[] length = { 0x00, 0x00, 0x00, 0x13 };
-            byte[] bytes = commonState.midi.SystemExclusiveRQ1Message(address, length);
-            commonState.midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
+            byte[] bytes = commonState.Midi.SystemExclusiveRQ1Message(address, length);
+            commonState.Midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
         }
 
         private void QueryStudioSetSendParameters()
@@ -2290,8 +2290,8 @@ namespace Integra_7_Xamarin
             currentEditMidiRequest = Edit_CurrentMidiRequest.QUERYING_STUDIO_SET_SEND_PARAMETERS;
             byte[] address = new byte[] { 0x18, 0x00, (byte)(0x20 + commonState.CurrentPart), 0x27 };
             byte[] length = { 0x00, 0x00, 0x00, 0x02 };
-            byte[] bytes = commonState.midi.SystemExclusiveRQ1Message(address, length);
-            commonState.midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
+            byte[] bytes = commonState.Midi.SystemExclusiveRQ1Message(address, length);
+            commonState.Midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
         }
 
         #endregion
@@ -2651,8 +2651,8 @@ namespace Integra_7_Xamarin
             {
                 Address = AddBytes128(Address, Index);
             }
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(Address, Data);
-            commonState.midi.SendSystemExclusive(bytes);
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(Address, Data);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private byte[] MakeAddress(ProgramType Type, ParameterPage Page, UInt16 ParameterAddressByte, Boolean PartialOrKeyDependent = false)
@@ -2914,7 +2914,7 @@ namespace Integra_7_Xamarin
                     msb = 88;
                     break;
             }
-            commonState.midi.ProgramChange(commonState.CurrentPart, msb, lsb, pc);
+            commonState.Midi.ProgramChange(commonState.CurrentPart, msb, lsb, pc);
         }
 
         /// <summary>

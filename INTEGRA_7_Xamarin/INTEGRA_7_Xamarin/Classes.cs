@@ -97,8 +97,8 @@ namespace Integra_7_Xamarin
         {
             byte[] address = new byte[] { 0x0f, 0x00, 0x20, 0x00 };
             byte[] data = new byte[] { 0x00 };
-            byte[] package = commonState.midi.SystemExclusiveDT1Message(address, data);
-            commonState.midi.SendSystemExclusive(package);
+            byte[] package = commonState.Midi.SystemExclusiveDT1Message(address, data);
+            commonState.Midi.SendSystemExclusive(package);
             btnPlayStop.Content = "Play";
             Playing = false;
         }
@@ -266,19 +266,19 @@ namespace Integra_7_Xamarin
             EXPXM_GM2_DRUM_KIT,
         }
 
-        public String command { get; set; }
-        public IMidi midi { get; set; }
-        public Tone currentTone { get; set; }
+        public String Command { get; set; }
+        public IMidi Midi { get; set; }
+        public Tone CurrentTone { get; set; }
         //public Int32 currentToneIndex { get; set; }
-        public ToneList toneList { get; set; }
-        public List<List<String>> toneNames { get; set; } // Will hold names of user tones.
-        public List<String> keyNames { get; set; }  // Will hold names of keys for drum sets for edit.
-        public DrumKeyAssignLists drumKeyAssignLists { get; set; }
+        public ToneList ToneList { get; set; }
+        public List<List<String>> ToneNames { get; set; } // Will hold names of user tones.
+        public List<String> KeyNames { get; set; }  // Will hold names of keys for drum sets for edit.
+        public DrumKeyAssignLists DrumKeyAssignLists { get; set; }
         public Int32 PresetDrumKeyAssignListsCount { get; set; }
-        public FavoritesList favoritesList { get; set; }
-        public Player player { get; set; }
-        public List<String> studioSetNames { get; set; }
-        public StudioSet studioSet { get; set; }
+        public FavoritesList FavoritesList { get; set; }
+        public Player Player { get; set; }
+        public List<String> StudioSetNames { get; set; }
+        public StudioSet StudioSet { get; set; }
         public ToneTypes ToneType { get; set; }
         public SimpleToneTypes SimpleToneType { get; set; }
         public String ToneSource {get;set;}
@@ -291,25 +291,25 @@ namespace Integra_7_Xamarin
 
         public CommonState(ref Button btnPlayStop)
         {
-            command = "";
-            midi = null;
-            currentTone = null;
-            toneList = new ToneList();
-            toneNames = new List<List<string>>();
-            player = new Player(this, ref btnPlayStop);
+            Command = "";
+            Midi = null;
+            CurrentTone = null;
+            ToneList = new ToneList();
+            ToneNames = new List<List<string>>();
+            Player = new Player(this, ref btnPlayStop);
             for (byte i = 0; i < 5; i++)
             {
-                toneNames.Add(new List<String>());
+                ToneNames.Add(new List<String>());
             }
-            favoritesList = null;
-            studioSetNames = null;
+            FavoritesList = null;
+            StudioSetNames = null;
             //*** studioSet = null;
             CurrentPart = 0;
             PartChannels = new byte[] { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x10, 0x11,
                 0x12, 0x13, 0x14, 0x15, 0xff }; // Last one is for EXT, which has no channel, but may be selected.
-            keyNames = new List<String>();
-            drumKeyAssignLists = new DrumKeyAssignLists();
-            PresetDrumKeyAssignListsCount = drumKeyAssignLists.ToneNames.Count();
+            KeyNames = new List<String>();
+            DrumKeyAssignLists = new DrumKeyAssignLists();
+            PresetDrumKeyAssignListsCount = DrumKeyAssignLists.ToneNames.Count();
             //reactToMidiInAndTimerTick = ReactToMidiInAndTimerTick.MAIN;
         }
 
@@ -320,13 +320,13 @@ namespace Integra_7_Xamarin
             ToneSource = "";
             if (msb > 127 || lsb > 127 || pc > 127)
             {
-                if (currentTone.Index > -1 && currentTone.Index < toneNames.Count())
+                if (CurrentTone.Index > -1 && CurrentTone.Index < ToneNames.Count())
                 {
                     try
                     {
-                        msb = (byte)UInt16.Parse(toneNames[currentTone.Index][4]);
-                        lsb = (byte)UInt16.Parse(toneNames[currentTone.Index][5]);
-                        pc = (byte)UInt16.Parse(toneNames[currentTone.Index][7]);
+                        msb = (byte)UInt16.Parse(ToneNames[CurrentTone.Index][4]);
+                        lsb = (byte)UInt16.Parse(ToneNames[CurrentTone.Index][5]);
+                        pc = (byte)UInt16.Parse(ToneNames[CurrentTone.Index][7]);
                     }
                     catch { }
                 }
@@ -1664,17 +1664,17 @@ namespace Integra_7_Xamarin
         [DataMember]
         public String Name { get; set; }
         [DataMember]
-        public List<Tone> FavoritesTones { get; set; }
+        public List<FavoriteTone> FavoriteTones { get; set; }
 
         public FavoritesFolder(String Name = "")
         {
             this.Name = Name;
-            FavoritesTones = new List<Tone>();
+            FavoriteTones = new List<FavoriteTone>();
         }
 
-        public Tone ByToneName(String Name)
+        public FavoriteTone ByToneName(String Name)
         {
-            foreach (Tone tone in FavoritesTones)
+            foreach (FavoriteTone tone in FavoriteTones)
             {
                 if (tone.Name == Name)
                 {
@@ -1689,7 +1689,30 @@ namespace Integra_7_Xamarin
     public class FavoritesList
     {
         [DataMember]
-        public List<FavoritesFolder> folders = null;
+        public List<FavoritesFolder> folders = new List<FavoritesFolder>();
+    }
+
+    /// <summary>
+    /// This class holds texts to identify Tone objects.
+    /// Use this class in Favorites to avoid storing
+    /// Tone objects (by reference!) in favorites lists.
+    /// </summary>
+    [DataContract]
+    public class FavoriteTone
+    {
+        [DataMember]
+        public String Group { get; set; }
+        [DataMember]
+        public String Category { get; set; }
+        [DataMember]
+        public String Name { get; set; }
+
+        public FavoriteTone(String Group, String  Category, String Name)
+        {
+            this.Group = Group;
+            this.Category = Category;
+            this.Name = Name;
+        }
     }
 
     class Buddy
@@ -8322,6 +8345,7 @@ private ParameterSets sets;
         public Color Text { get; set; }
         public Color LabelBackground { get; set; }
         public Color IsFavorite { get; set; }
+        public Color Transparent { get; set; }
 
         public ColorSettings(_colorSettings colorSettings)
         {
@@ -8336,6 +8360,7 @@ private ParameterSets sets;
                     Text = Color.Black;
                     LabelBackground = Color.White;
                     IsFavorite = Color.LightGreen;
+                    Transparent = new Color(0, 0, 0, 0);
                     break;
                 case _colorSettings.TEST:
                     ControlBackground = Color.Yellow;

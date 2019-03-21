@@ -393,21 +393,21 @@ namespace Integra_7_Xamarin
                 {
                     case ProgramType.PCM_SYNTH_TONE:
                         pCMSynthTone.pCMSynthToneCommon2.ToneCategory = toneCategories.pcmToneCategoryIndex[(byte)cbEditTone_InstrumentCategorySelector.SelectedIndex];
-                        commonState.currentTone.Category = toneCategories.pcmToneCategoryNames[toneCategories.pcmToneCategoryIndex[(byte)cbEditTone_InstrumentCategorySelector.SelectedIndex]];
+                        commonState.CurrentTone.Category = toneCategories.pcmToneCategoryNames[toneCategories.pcmToneCategoryIndex[(byte)cbEditTone_InstrumentCategorySelector.SelectedIndex]];
                         byte[] address = MakeAddress(ProgramType.PCM_SYNTH_TONE, ParameterPage.COMMON2, new byte[] { 0x10 });
                         byte[] value = new byte[] { (byte)(pCMSynthTone.pCMSynthToneCommon2.ToneCategory) };
                         SendParameter(address, value);
                         break;
                     case ProgramType.SUPERNATURAL_ACOUSTIC_TONE:
                         superNATURALAcousticTone.superNATURALAcousticToneCommon.Category = toneCategories.snaToneCategoryIndex[(byte)cbEditTone_InstrumentCategorySelector.SelectedIndex];
-                        commonState.currentTone.Category = toneCategories.snaToneCategoryNames[toneCategories.snaToneCategoryIndex[(byte)cbEditTone_InstrumentCategorySelector.SelectedIndex]];
+                        commonState.CurrentTone.Category = toneCategories.snaToneCategoryNames[toneCategories.snaToneCategoryIndex[(byte)cbEditTone_InstrumentCategorySelector.SelectedIndex]];
                         address = MakeAddress(ProgramType.SUPERNATURAL_ACOUSTIC_TONE, ParameterPage.COMMON, new byte[] { 0x1b });
                         value = new byte[] { (byte)(superNATURALAcousticTone.superNATURALAcousticToneCommon.Category) };
                         SendParameter(address, value);
                         break;
                     case ProgramType.SUPERNATURAL_SYNTH_TONE:
                         superNATURALSynthTone.superNATURALSynthToneCommon.Category = toneCategories.snsToneCategoryIndex[(byte)cbEditTone_InstrumentCategorySelector.SelectedIndex];
-                        commonState.currentTone.Category = toneCategories.snsToneCategoryNames[toneCategories.snsToneCategoryIndex[(byte)cbEditTone_InstrumentCategorySelector.SelectedIndex]];
+                        commonState.CurrentTone.Category = toneCategories.snsToneCategoryNames[toneCategories.snsToneCategoryIndex[(byte)cbEditTone_InstrumentCategorySelector.SelectedIndex]];
                         address = MakeAddress(ProgramType.SUPERNATURAL_SYNTH_TONE, ParameterPage.COMMON, new byte[] { 0x36 });
                         value = new byte[] { (byte)(superNATURALSynthTone.superNATURALSynthToneCommon.Category) };
                         SendParameter(address, value);
@@ -494,9 +494,9 @@ namespace Integra_7_Xamarin
             else
             {
                 // If we add a new name, ensure we do not create a duplicate:
-                for (Int32 i = 0; i < commonState.toneList.Tones.Count(); i++)
+                for (Int32 i = 0; i < commonState.ToneList.Tones.Count(); i++)
                 {
-                    if (commonState.toneList.Tones[i][3] == tbEditTone_SaveTone_TitleText.Text)
+                    if (commonState.ToneList.Tones[i][3] == tbEditTone_SaveTone_TitleText.Text)
                     {
                         //MessageDialog warning = new MessageDialog("Sorry, that name already exists. Try another name.");
                         //warning.Title = "Warning!";
@@ -535,16 +535,16 @@ namespace Integra_7_Xamarin
                         address = new byte[] { (byte)(0x19 + ((0x20 * commonState.CurrentPart) / 0x80)),
                             (byte)((0x20 * commonState.CurrentPart) % 0x80), 0x00, 0x00 };
                         value = Encoding.UTF8.GetBytes(name);
-                        data = commonState.midi.SystemExclusiveDT1Message(address, value);
-                        commonState.midi.SendSystemExclusive(data);
+                        data = commonState.Midi.SystemExclusiveDT1Message(address, value);
+                        commonState.Midi.SendSystemExclusive(data);
   
                         // Store tone in slot:
                         address = new byte[] { 0x0f, 0x00, 0x10, 0x00 };
                         value = new byte[] { 0x57, 0x00,
                             (byte)cbEditTone_SaveTone_SlotNumber.SelectedIndex,
                             commonState.CurrentPart};
-                        data = commonState.midi.SystemExclusiveRQ1Message(address, value);
-                        commonState.midi.SendSystemExclusive(data);
+                        data = commonState.Midi.SystemExclusiveRQ1Message(address, value);
+                        commonState.Midi.SendSystemExclusive(data);
 
                         // Also update toneList and toneNames.
                         List<String> tone = new List<String>();
@@ -557,22 +557,22 @@ namespace Integra_7_Xamarin
                         tone.Add((87 * 128 + (cbEditTone_SaveTone_SlotNumber.SelectedIndex / 128)).ToString());
                         tone.Add(((cbEditTone_SaveTone_SlotNumber.SelectedIndex + 1) % 128).ToString());
                         tone.Add("(User)");
-                        if (commonState.toneNames[0][cbEditTone_SaveTone_SlotNumber.SelectedIndex] == "INIT TONE")
+                        if (commonState.ToneNames[0][cbEditTone_SaveTone_SlotNumber.SelectedIndex] == "INIT TONE")
                         {
                             // This will be a new one in toneList:
-                            tone.Add(commonState.toneList.Tones.Count().ToString());
+                            tone.Add(commonState.ToneList.Tones.Count().ToString());
                             tone.Add("-1");
-                            commonState.toneList.Tones.Add(tone);
+                            commonState.ToneList.Tones.Add(tone);
                         }
                         else
                         {
-                            Int32 i = commonState.toneList.PresetsCount; // Start looking for it after the last tone from soundlist pdf
+                            Int32 i = commonState.ToneList.PresetsCount; // Start looking for it after the last tone from soundlist pdf
                             Boolean found = false;
-                            while (!found && i < commonState.toneList.Tones.Count())
+                            while (!found && i < commonState.ToneList.Tones.Count())
                             {
-                                if (commonState.toneList.Tones[i][0] == "PCM Synth Tone"
+                                if (commonState.ToneList.Tones[i][0] == "PCM Synth Tone"
                                     //&& commonState.toneList.Tones[i][1] == cbEditTone_InstrumentCategorySelector.SelectedItem.ToString()
-                                    && commonState.toneList.Tones[i][3].Trim() == name.Trim())
+                                    && commonState.ToneList.Tones[i][3].Trim() == name.Trim())
                                 {
                                     found = true;
                                 }
@@ -585,23 +585,23 @@ namespace Integra_7_Xamarin
                             {
                                 tone.Add(i.ToString());
                                 tone.Add("-1");
-                                commonState.toneList.Tones[i] = tone;
+                                commonState.ToneList.Tones[i] = tone;
                             }
                             else
                             {
                                 // This should never happen!
-                                tone.Add(commonState.toneList.Tones.Count().ToString());
+                                tone.Add(commonState.ToneList.Tones.Count().ToString());
                                 tone.Add("-1");
-                                commonState.toneList.Tones.Add(tone);
+                                commonState.ToneList.Tones.Add(tone);
                                 //t.Trace("Save PCM Synth Tone did not find expected tone! Tone was added instead.");
                             }
                         }
                         
                         // Also update in toneNames:
-                        commonState.toneNames[0][cbEditTone_SaveTone_SlotNumber.SelectedIndex] = name.Trim();
+                        commonState.ToneNames[0][cbEditTone_SaveTone_SlotNumber.SelectedIndex] = name.Trim();
                         
                         // Update 
-                        commonState.currentTone = new Tone(tone);
+                        commonState.CurrentTone = new Tone(tone);
  
                         // Finally, re-draw the tab to update controls:
                         UpdatePCMSynthToneControls();
@@ -613,72 +613,72 @@ namespace Integra_7_Xamarin
                         byte keyIndex = 0;
                         // Look for a record in DrumKeyAssignList, starting after the last preset:
                         Int32 listIndex = commonState.PresetDrumKeyAssignListsCount;
-                        while (listIndex < commonState.drumKeyAssignLists.ToneNames.Count())
+                        while (listIndex < commonState.DrumKeyAssignLists.ToneNames.Count())
                         {
-                            if (commonState.drumKeyAssignLists.ToneNames[listIndex][1] == tbEditTone_SaveTone_TitleText.Text.Trim())
+                            if (commonState.DrumKeyAssignLists.ToneNames[listIndex][1] == tbEditTone_SaveTone_TitleText.Text.Trim())
                             {
                                 break;
                             }
                             listIndex++;
                         }
-                        if (listIndex >= commonState.drumKeyAssignLists.ToneNames.Count())
+                        if (listIndex >= commonState.DrumKeyAssignLists.ToneNames.Count())
                         {
                             // This is a new list. Add it:
-                            commonState.drumKeyAssignLists.ToneNames.Add(new List<String>());
-                            listIndex = commonState.drumKeyAssignLists.ToneNames.Count() - 1;
+                            commonState.DrumKeyAssignLists.ToneNames.Add(new List<String>());
+                            listIndex = commonState.DrumKeyAssignLists.ToneNames.Count() - 1;
                             // Fill out the header strings
-                            commonState.drumKeyAssignLists.ToneNames[listIndex].Add("PCM Drum Kit");
-                            commonState.drumKeyAssignLists.ToneNames[listIndex].Add(tbEditTone_SaveTone_TitleText.Text.Trim());
+                            commonState.DrumKeyAssignLists.ToneNames[listIndex].Add("PCM Drum Kit");
+                            commonState.DrumKeyAssignLists.ToneNames[listIndex].Add(tbEditTone_SaveTone_TitleText.Text.Trim());
                             // Fill out the names:
-                            for (keyIndex = 0; keyIndex < commonState.keyNames.Count(); keyIndex++)
+                            for (keyIndex = 0; keyIndex < commonState.KeyNames.Count(); keyIndex++)
                             {
-                                if (String.IsNullOrEmpty(commonState.keyNames[keyIndex]))
+                                if (String.IsNullOrEmpty(commonState.KeyNames[keyIndex]))
                                 {
-                                    commonState.drumKeyAssignLists.ToneNames[listIndex].Add("");
+                                    commonState.DrumKeyAssignLists.ToneNames[listIndex].Add("");
                                 }
                                 else
                                 {
-                                    commonState.drumKeyAssignLists.ToneNames[listIndex].Add(commonState.keyNames[keyIndex]);
+                                    commonState.DrumKeyAssignLists.ToneNames[listIndex].Add(commonState.KeyNames[keyIndex]);
                                 }
                             }
                         }
                         else
                         {
                             // Fill out the names (first two lines are already filled out):
-                            for (keyIndex = 0; keyIndex < commonState.keyNames.Count(); keyIndex++)
+                            for (keyIndex = 0; keyIndex < commonState.KeyNames.Count(); keyIndex++)
                             {
-                                commonState.drumKeyAssignLists.ToneNames[listIndex][keyIndex + 2] = commonState.keyNames[keyIndex];
+                                commonState.DrumKeyAssignLists.ToneNames[listIndex][keyIndex + 2] = commonState.KeyNames[keyIndex];
                             }
                         }
-                        for (keyIndex = 2; keyIndex < commonState.drumKeyAssignLists.ToneNames[listIndex].Count(); keyIndex++)
+                        for (keyIndex = 2; keyIndex < commonState.DrumKeyAssignLists.ToneNames[listIndex].Count(); keyIndex++)
                         {
                             // Update partial in INTEGRA-7:
                             byte partOffset = (byte)((keyIndex - 2) * 2);
-                            name = commonState.drumKeyAssignLists.ToneNames[listIndex][keyIndex];
+                            name = commonState.DrumKeyAssignLists.ToneNames[listIndex][keyIndex];
                             while (name.Length < 12)
                             {
                                 name += " ";
                             }
                             address = new byte[] { 0x19, (byte)(0x10 + (0x10 + partOffset) / 128), (byte)((0x10 + partOffset) % 128), 0x00 };
                             value = Encoding.UTF8.GetBytes(name);
-                            data = commonState.midi.SystemExclusiveDT1Message(address, value);
-                            commonState.midi.SendSystemExclusive(data);
+                            data = commonState.Midi.SystemExclusiveDT1Message(address, value);
+                            commonState.Midi.SendSystemExclusive(data);
                         }
                         // The rest is handled like for e.g. PCM Synth Tone:
                         name = tbEditTone_SaveTone_TitleText.Text;
                         address = new byte[] { (byte)(0x19 + ((0x20 * commonState.CurrentPart) / 0x80)),
                             (byte)(0x10 + ((0x20 * commonState.CurrentPart) % 0x80)), 0x00, 0x00 };
                         value = Encoding.UTF8.GetBytes(name);
-                        data = commonState.midi.SystemExclusiveDT1Message(address, value);
-                        commonState.midi.SendSystemExclusive(data);
+                        data = commonState.Midi.SystemExclusiveDT1Message(address, value);
+                        commonState.Midi.SendSystemExclusive(data);
 
                         // Store tone in slot:
                         address = new byte[] { 0x0f, 0x00, 0x10, 0x00 };
                         value = new byte[] { 0x56, 0x00,
                             (byte)cbEditTone_SaveTone_SlotNumber.SelectedIndex,
                             commonState.CurrentPart};
-                        data = commonState.midi.SystemExclusiveRQ1Message(address, value);
-                        commonState.midi.SendSystemExclusive(data);
+                        data = commonState.Midi.SystemExclusiveRQ1Message(address, value);
+                        commonState.Midi.SendSystemExclusive(data);
 
                         // Also update toneList and toneNames:
                         tone = new List<String>();
@@ -691,22 +691,22 @@ namespace Integra_7_Xamarin
                         tone.Add((86 * 128 + (cbEditTone_SaveTone_SlotNumber.SelectedIndex / 128)).ToString());
                         tone.Add(((cbEditTone_SaveTone_SlotNumber.SelectedIndex + 1) % 128).ToString());
                         tone.Add("(User)");
-                        if (commonState.toneNames[1] != null && commonState.toneNames[1][cbEditTone_SaveTone_SlotNumber.SelectedIndex] == "INIT KIT")
+                        if (commonState.ToneNames[1] != null && commonState.ToneNames[1][cbEditTone_SaveTone_SlotNumber.SelectedIndex] == "INIT KIT")
                         {
                             // This will be a new one in toneList:
-                            tone.Add(commonState.toneList.Tones.Count().ToString());
+                            tone.Add(commonState.ToneList.Tones.Count().ToString());
                             tone.Add("-1");
-                            commonState.toneList.Tones.Add(tone);
+                            commonState.ToneList.Tones.Add(tone);
                         }
                         else
                         {
-                            Int32 i = commonState.toneList.PresetsCount; // Start looking for it after the last tone from soundlist pdf
+                            Int32 i = commonState.ToneList.PresetsCount; // Start looking for it after the last tone from soundlist pdf
                             Boolean found = false;
-                            while (!found && i < commonState.toneList.Tones.Count())
+                            while (!found && i < commonState.ToneList.Tones.Count())
                             {
-                                if (commonState.toneList.Tones[i][0] == "PCM Drum Kit"
-                                    && commonState.toneList.Tones[i][1] == "Drum"
-                                    && commonState.toneList.Tones[i][3].Trim() == name.Trim())
+                                if (commonState.ToneList.Tones[i][0] == "PCM Drum Kit"
+                                    && commonState.ToneList.Tones[i][1] == "Drum"
+                                    && commonState.ToneList.Tones[i][3].Trim() == name.Trim())
                                 {
                                     found = true;
                                 }
@@ -719,20 +719,20 @@ namespace Integra_7_Xamarin
                             {
                                 tone.Add(i.ToString());
                                 tone.Add("-1");
-                                commonState.toneList.Tones[i] = tone;
+                                commonState.ToneList.Tones[i] = tone;
                             }
                             else
                             {
                                 // This should never happen!
-                                tone.Add(commonState.toneList.Tones.Count().ToString());
+                                tone.Add(commonState.ToneList.Tones.Count().ToString());
                                 tone.Add("-1");
-                                commonState.toneList.Tones.Add(tone);
+                                commonState.ToneList.Tones.Add(tone);
                                 //t.Trace("Save PCM Drum Kit did not find expected tone! Tone was added instead.");
                             }
                         }
                         
                         // Also update in toneNames:
-                        commonState.toneNames[1][cbEditTone_SaveTone_SlotNumber.SelectedIndex] = name.Trim();
+                        commonState.ToneNames[1][cbEditTone_SaveTone_SlotNumber.SelectedIndex] = name.Trim();
 
                         // Finally, re-draw the tab to update controls:
                         UpdatePCMDrumKitControls();
@@ -743,16 +743,16 @@ namespace Integra_7_Xamarin
                         address = new byte[] { (byte)(0x19 + ((0x20 * commonState.CurrentPart) / 0x80)),
                             (byte)(0x02 + ((0x20 * commonState.CurrentPart) % 0x80)), 0x00, 0x00 };
                         value = Encoding.UTF8.GetBytes(name);
-                        data = commonState.midi.SystemExclusiveDT1Message(address, value);
-                        commonState.midi.SendSystemExclusive(data);
+                        data = commonState.Midi.SystemExclusiveDT1Message(address, value);
+                        commonState.Midi.SendSystemExclusive(data);
 
                         // Store tone in slot:
                         address = new byte[] { 0x0f, 0x00, 0x10, 0x00 };
                         value = new byte[] { 0x59, 0x00,
                             (byte)cbEditTone_SaveTone_SlotNumber.SelectedIndex,
                             commonState.CurrentPart};
-                        data = commonState.midi.SystemExclusiveRQ1Message(address, value);
-                        commonState.midi.SendSystemExclusive(data);
+                        data = commonState.Midi.SystemExclusiveRQ1Message(address, value);
+                        commonState.Midi.SendSystemExclusive(data);
                         // Also update toneList and toneNames:
                         tone = new List<String>();
                         tone.Add("SuperNATURAL Acoustic Tone");
@@ -764,23 +764,23 @@ namespace Integra_7_Xamarin
                         tone.Add((89 * 128 + (cbEditTone_SaveTone_SlotNumber.SelectedIndex / 128)).ToString());
                         tone.Add(((cbEditTone_SaveTone_SlotNumber.SelectedIndex + 1) % 128).ToString());
                         tone.Add("(User)");
-                        if (commonState.toneNames[2][cbEditTone_SaveTone_SlotNumber.SelectedIndex] == "INIT TONE")
+                        if (commonState.ToneNames[2][cbEditTone_SaveTone_SlotNumber.SelectedIndex] == "INIT TONE")
                         {
                             // This will be a new one in toneList:
-                            tone.Add(commonState.toneList.Tones.Count().ToString());
+                            tone.Add(commonState.ToneList.Tones.Count().ToString());
                             tone.Add(cbEditTone_superNATURALDrumKit_Druminstrument_Variation.SelectedIndex.ToString());
                             tone.Add("-1");
-                            commonState.toneList.Tones.Add(tone);
+                            commonState.ToneList.Tones.Add(tone);
                         }
                         else
                         {
-                            Int32 i = commonState.toneList.PresetsCount; // Start looking for it after the last tone from soundlist pdf
+                            Int32 i = commonState.ToneList.PresetsCount; // Start looking for it after the last tone from soundlist pdf
                             Boolean found = false;
-                            while (!found && i < commonState.toneList.Tones.Count())
+                            while (!found && i < commonState.ToneList.Tones.Count())
                             {
-                                if (commonState.toneList.Tones[i][0] == "SuperNATURAL Acoustic Tone"
-                                    && commonState.toneList.Tones[i][1] == cbEditTone_InstrumentCategorySelector.SelectedItem.ToString()
-                                    && commonState.toneList.Tones[i][3].Trim() == name.Trim())
+                                if (commonState.ToneList.Tones[i][0] == "SuperNATURAL Acoustic Tone"
+                                    && commonState.ToneList.Tones[i][1] == cbEditTone_InstrumentCategorySelector.SelectedItem.ToString()
+                                    && commonState.ToneList.Tones[i][3].Trim() == name.Trim())
                                 {
                                     found = true;
                                 }
@@ -794,21 +794,21 @@ namespace Integra_7_Xamarin
                                 tone.Add(i.ToString());
                                 tone.Add(cbEditTone_superNATURALDrumKit_Druminstrument_Variation.SelectedIndex.ToString());
                                 tone.Add("-1");
-                                commonState.toneList.Tones[i] = tone;
+                                commonState.ToneList.Tones[i] = tone;
                             }
                             else
                             {
                                 // This should never happen!
-                                tone.Add(commonState.toneList.Tones.Count().ToString());
+                                tone.Add(commonState.ToneList.Tones.Count().ToString());
                                 tone.Add(cbEditTone_superNATURALDrumKit_Druminstrument_Variation.SelectedIndex.ToString());
                                 tone.Add("-1");
-                                commonState.toneList.Tones.Add(tone);
+                                commonState.ToneList.Tones.Add(tone);
                                 //t.Trace("Save SuperNATURAL Acoustic Tone did not find expected tone! Tone was added instead.");
                             }
                         }
                         
                         // Also update in toneNames:
-                        commonState.toneNames[2][cbEditTone_SaveTone_SlotNumber.SelectedIndex] = name.Trim();
+                        commonState.ToneNames[2][cbEditTone_SaveTone_SlotNumber.SelectedIndex] = name.Trim();
 
                         // Finally, re-draw the tab to update controls:
                         UpdateSuperNATURALAcousticToneControls();
@@ -819,16 +819,16 @@ namespace Integra_7_Xamarin
                         address = new byte[] { (byte)(0x19 + ((0x20 * commonState.CurrentPart) / 0x80)),
                             (byte)(0x01 + ((0x20 * commonState.CurrentPart) % 0x80)), 0x00, 0x00 };
                         value = Encoding.UTF8.GetBytes(name);
-                        data = commonState.midi.SystemExclusiveDT1Message(address, value);
-                        commonState.midi.SendSystemExclusive(data);
+                        data = commonState.Midi.SystemExclusiveDT1Message(address, value);
+                        commonState.Midi.SendSystemExclusive(data);
 
                         // Store tone in slot:
                         address = new byte[] { 0x0f, 0x00, 0x10, 0x00 };
                         value = new byte[] { 0x5f, 0x00,
                             (byte)cbEditTone_SaveTone_SlotNumber.SelectedIndex,
                             commonState.CurrentPart};
-                        data = commonState.midi.SystemExclusiveRQ1Message(address, value);
-                        commonState.midi.SendSystemExclusive(data);
+                        data = commonState.Midi.SystemExclusiveRQ1Message(address, value);
+                        commonState.Midi.SendSystemExclusive(data);
 
                         // Also update toneList and toneNames:
                         tone = new List<String>();
@@ -841,22 +841,22 @@ namespace Integra_7_Xamarin
                         tone.Add((95 * 128 + (cbEditTone_SaveTone_SlotNumber.SelectedIndex / 128)).ToString());
                         tone.Add(((cbEditTone_SaveTone_SlotNumber.SelectedIndex + 1) % 128).ToString());
                         tone.Add("(User)");
-                        if (commonState.toneNames[3][cbEditTone_SaveTone_SlotNumber.SelectedIndex] == "INIT TONE")
+                        if (commonState.ToneNames[3][cbEditTone_SaveTone_SlotNumber.SelectedIndex] == "INIT TONE")
                         {
                             // This will be a new one in toneList:
-                            tone.Add(commonState.toneList.Tones.Count().ToString());
+                            tone.Add(commonState.ToneList.Tones.Count().ToString());
                             tone.Add("-1");
-                            commonState.toneList.Tones.Add(tone);
+                            commonState.ToneList.Tones.Add(tone);
                         }
                         else
                         {
-                            Int32 i = commonState.toneList.PresetsCount; // Start looking for it after the last tone from soundlist pdf
+                            Int32 i = commonState.ToneList.PresetsCount; // Start looking for it after the last tone from soundlist pdf
                             Boolean found = false;
-                            while (!found && i < commonState.toneList.Tones.Count())
+                            while (!found && i < commonState.ToneList.Tones.Count())
                             {
-                                if (commonState.toneList.Tones[i][0] == "SuperNATURAL Synth Tone"
-                                    && commonState.toneList.Tones[i][1] == cbEditTone_InstrumentCategorySelector.SelectedItem.ToString()
-                                    && commonState.toneList.Tones[i][3].Trim() == name.Trim())
+                                if (commonState.ToneList.Tones[i][0] == "SuperNATURAL Synth Tone"
+                                    && commonState.ToneList.Tones[i][1] == cbEditTone_InstrumentCategorySelector.SelectedItem.ToString()
+                                    && commonState.ToneList.Tones[i][3].Trim() == name.Trim())
                                 {
                                     found = true;
                                 }
@@ -869,19 +869,19 @@ namespace Integra_7_Xamarin
                             {
                                 tone.Add(i.ToString());
                                 tone.Add("-1");
-                                commonState.toneList.Tones[i] = tone;
+                                commonState.ToneList.Tones[i] = tone;
                             }
                             else
                             {
                                 // This should never happen!
-                                tone.Add(commonState.toneList.Tones.Count().ToString());
+                                tone.Add(commonState.ToneList.Tones.Count().ToString());
                                 tone.Add("-1");
-                                commonState.toneList.Tones.Add(tone);
+                                commonState.ToneList.Tones.Add(tone);
                                 //t.Trace("Save SuperNATURAL Synth Tone did not find expected tone! Tone was added instead.");
                             }
                         }
                         // Also update in toneNames:
-                        commonState.toneNames[3][cbEditTone_SaveTone_SlotNumber.SelectedIndex] = name.Trim();
+                        commonState.ToneNames[3][cbEditTone_SaveTone_SlotNumber.SelectedIndex] = name.Trim();
                         // Finally, re-draw the tab to update controls:
                         UpdateSuperNATURALSynthToneControls();
                         break;
@@ -893,44 +893,44 @@ namespace Integra_7_Xamarin
 
                         // Look for a record in DrumKeyAssignList, starting after the last preset:
                         listIndex = commonState.PresetDrumKeyAssignListsCount;
-                        while (listIndex < commonState.drumKeyAssignLists.ToneNames.Count())
+                        while (listIndex < commonState.DrumKeyAssignLists.ToneNames.Count())
                         {
-                            if (commonState.drumKeyAssignLists.ToneNames[listIndex][1] == // Name is in second string in list.
+                            if (commonState.DrumKeyAssignLists.ToneNames[listIndex][1] == // Name is in second string in list.
                                 tbEditTone_SaveTone_TitleText.Text.Trim())
                             {
                                 break;
                             }
                             listIndex++;
                         }
-                        if (listIndex >= commonState.drumKeyAssignLists.ToneNames.Count())
+                        if (listIndex >= commonState.DrumKeyAssignLists.ToneNames.Count())
                         {
                             // This is a new list. Add it:
-                            commonState.drumKeyAssignLists.ToneNames.Add(new List<String>());
-                            listIndex = commonState.drumKeyAssignLists.ToneNames.Count() - 1;
+                            commonState.DrumKeyAssignLists.ToneNames.Add(new List<String>());
+                            listIndex = commonState.DrumKeyAssignLists.ToneNames.Count() - 1;
 
                             // Fill out the header strings
-                            commonState.drumKeyAssignLists.ToneNames[listIndex].Add("SuperNATURAL Drum Kit");
-                            commonState.drumKeyAssignLists.ToneNames[listIndex].Add(tbEditTone_SaveTone_TitleText.Text.Trim());
+                            commonState.DrumKeyAssignLists.ToneNames[listIndex].Add("SuperNATURAL Drum Kit");
+                            commonState.DrumKeyAssignLists.ToneNames[listIndex].Add(tbEditTone_SaveTone_TitleText.Text.Trim());
 
                             // Fill out the names:
-                            for (keyIndex = 0; keyIndex < commonState.keyNames.Count(); keyIndex++)
+                            for (keyIndex = 0; keyIndex < commonState.KeyNames.Count(); keyIndex++)
                             {
-                                if (String.IsNullOrEmpty(commonState.keyNames[keyIndex]))
+                                if (String.IsNullOrEmpty(commonState.KeyNames[keyIndex]))
                                 {
-                                    commonState.drumKeyAssignLists.ToneNames[listIndex].Add("");
+                                    commonState.DrumKeyAssignLists.ToneNames[listIndex].Add("");
                                 }
                                 else
                                 {
-                                    commonState.drumKeyAssignLists.ToneNames[listIndex].Add(commonState.keyNames[keyIndex]);
+                                    commonState.DrumKeyAssignLists.ToneNames[listIndex].Add(commonState.KeyNames[keyIndex]);
                                 }
                             }
                         }
                         else
                         {
                             // Fill out the names (first two lines are already filled out):
-                            for (keyIndex = 0; keyIndex < commonState.keyNames.Count(); keyIndex++)
+                            for (keyIndex = 0; keyIndex < commonState.KeyNames.Count(); keyIndex++)
                             {
-                                commonState.drumKeyAssignLists.ToneNames[listIndex][keyIndex + 2] = commonState.keyNames[keyIndex];
+                                commonState.DrumKeyAssignLists.ToneNames[listIndex][keyIndex + 2] = commonState.KeyNames[keyIndex];
                             }
                         }
 
@@ -938,14 +938,14 @@ namespace Integra_7_Xamarin
                         address = new byte[] { (byte)(0x19 + ((0x20 * commonState.CurrentPart) / 0x80)),
                             (byte)(0x03 + ((0x20 * commonState.CurrentPart) % 0x80)), 0x00, 0x00 };
                         value = Encoding.UTF8.GetBytes(name);
-                        data = commonState.midi.SystemExclusiveDT1Message(address, value);
-                        commonState.midi.SendSystemExclusive(data);
+                        data = commonState.Midi.SystemExclusiveDT1Message(address, value);
+                        commonState.Midi.SendSystemExclusive(data);
                         address = new byte[] { 0x0f, 0x00, 0x10, 0x00 };
                         value = new byte[] { 0x58, 0x00,
                             (byte)cbEditTone_SaveTone_SlotNumber.SelectedIndex,
                             commonState.CurrentPart};
-                        data = commonState.midi.SystemExclusiveRQ1Message(address, value);
-                        commonState.midi.SendSystemExclusive(data);
+                        data = commonState.Midi.SystemExclusiveRQ1Message(address, value);
+                        commonState.Midi.SendSystemExclusive(data);
                         // Also update toneList and toneNames:
                         tone = new List<String>();
                         tone.Add("SuperNATURAL Drum Kit");
@@ -957,22 +957,22 @@ namespace Integra_7_Xamarin
                         tone.Add((88 * 128 + (cbEditTone_SaveTone_SlotNumber.SelectedIndex / 128)).ToString());
                         tone.Add(((cbEditTone_SaveTone_SlotNumber.SelectedIndex + 1) % 128).ToString());
                         tone.Add("(User)");
-                        if (commonState.toneNames[4][cbEditTone_SaveTone_SlotNumber.SelectedIndex] == "INIT KIT")
+                        if (commonState.ToneNames[4][cbEditTone_SaveTone_SlotNumber.SelectedIndex] == "INIT KIT")
                         {
                             // This will be a new one in toneList:
-                            tone.Add(commonState.toneList.Tones.Count().ToString());
+                            tone.Add(commonState.ToneList.Tones.Count().ToString());
                             tone.Add("-1");
-                            commonState.toneList.Tones.Add(tone);
+                            commonState.ToneList.Tones.Add(tone);
                         }
                         else
                         {
-                            Int32 i = commonState.toneList.PresetsCount; // Start looking for it after the last tone from soundlist pdf
+                            Int32 i = commonState.ToneList.PresetsCount; // Start looking for it after the last tone from soundlist pdf
                             Boolean found = false;
-                            while (!found && i < commonState.toneList.Tones.Count())
+                            while (!found && i < commonState.ToneList.Tones.Count())
                             {
-                                if (commonState.toneList.Tones[i][0] == "SuperNATURAL Drum Kit"
-                                    && commonState.toneList.Tones[i][1] == "Drum"
-                                    && commonState.toneList.Tones[i][3].Trim() == name.Trim())
+                                if (commonState.ToneList.Tones[i][0] == "SuperNATURAL Drum Kit"
+                                    && commonState.ToneList.Tones[i][1] == "Drum"
+                                    && commonState.ToneList.Tones[i][3].Trim() == name.Trim())
                                 {
                                     found = true;
                                 }
@@ -985,19 +985,19 @@ namespace Integra_7_Xamarin
                             {
                                 tone.Add(i.ToString());
                                 tone.Add("-1");
-                                commonState.toneList.Tones[i] = tone;
+                                commonState.ToneList.Tones[i] = tone;
                             }
                             else
                             {
                                 // This should never happen!
-                                tone.Add(commonState.toneList.Tones.Count().ToString());
+                                tone.Add(commonState.ToneList.Tones.Count().ToString());
                                 tone.Add("-1");
-                                commonState.toneList.Tones.Add(tone);
+                                commonState.ToneList.Tones.Add(tone);
                                 //t.Trace("Save SuperNATURAL Drum Kit did not find expected tone! Tone was added instead.");
                             }
                         }
                         // Also update in toneNames:
-                        commonState.toneNames[4][cbEditTone_SaveTone_SlotNumber.SelectedIndex] = name.Trim();
+                        commonState.ToneNames[4][cbEditTone_SaveTone_SlotNumber.SelectedIndex] = name.Trim();
                         // Finally, re-draw the tab to update controls:
                         UpdateSuperNATURALDrumKitControls();
                         break;
@@ -1026,8 +1026,8 @@ namespace Integra_7_Xamarin
                         String name = tbEditTone_SaveTone_TitleText.Text;
                         byte[] address = new byte[] { 0x19, 0x00, 0x00, 0x00 };
                         byte[] value = Encoding.UTF8.GetBytes("INIT TONE   ");
-                        byte[] data = commonState.midi.SystemExclusiveDT1Message(address, value);
-                        commonState.midi.SendSystemExclusive(data);
+                        byte[] data = commonState.Midi.SystemExclusiveDT1Message(address, value);
+                        commonState.Midi.SendSystemExclusive(data);
                         //for (byte c = 1; c < 0x80; c++)
                         {
                             //MessageDialog test = new MessageDialog("Trying c = " + c.ToString());
@@ -1037,17 +1037,17 @@ namespace Integra_7_Xamarin
                             address = new byte[] { 0x0f, 0x00, 0x10, 0x00 };
                             value = new byte[] { 0x57, (byte)(cbEditTone_SaveTone_SlotNumber.SelectedIndex / 128),
                             (byte)(cbEditTone_SaveTone_SlotNumber.SelectedIndex % 128), 0x00 }; // 0 initiated name, 3 copied the first name
-                            data = commonState.midi.SystemExclusiveRQ1Message(address, value);
-                            commonState.midi.SendSystemExclusive(data);
+                            data = commonState.Midi.SystemExclusiveRQ1Message(address, value);
+                            commonState.Midi.SendSystemExclusive(data);
                         }
                         // Remove from ToneList:
-                        Int32 i = commonState.toneList.PresetsCount; // Start looking for it after the last tone from soundlist pdf
+                        Int32 i = commonState.ToneList.PresetsCount; // Start looking for it after the last tone from soundlist pdf
                         Boolean found = false;
-                        while (!found && i < commonState.toneList.Tones.Count())
+                        while (!found && i < commonState.ToneList.Tones.Count())
                         {
-                            if (commonState.toneList.Tones[i][0] == "PCM Synth Tone"
-                                && commonState.toneList.Tones[i][1] == cbEditTone_InstrumentCategorySelector.SelectedItem.ToString()
-                                && commonState.toneList.Tones[i][3].Trim() == name.Trim())
+                            if (commonState.ToneList.Tones[i][0] == "PCM Synth Tone"
+                                && commonState.ToneList.Tones[i][1] == cbEditTone_InstrumentCategorySelector.SelectedItem.ToString()
+                                && commonState.ToneList.Tones[i][3].Trim() == name.Trim())
                             {
                                 found = true;
                             }
@@ -1058,10 +1058,10 @@ namespace Integra_7_Xamarin
                         }
                         if (found)
                         {
-                            commonState.toneList.Tones.RemoveAt(i);
-                            while (i < commonState.toneList.Tones.Count - 1)
+                            commonState.ToneList.Tones.RemoveAt(i);
+                            while (i < commonState.ToneList.Tones.Count - 1)
                             {
-                                commonState.toneList.Tones[i][9] = i.ToString();
+                                commonState.ToneList.Tones[i][9] = i.ToString();
                                 i++;
                             }
                         }
@@ -1071,8 +1071,8 @@ namespace Integra_7_Xamarin
                             //t.Trace("Save PCM Synth Tone did not find expected tone! Tone was not deleted.");
                         }
                         // Also clear in toneNames and back-up current tone:
-                        commonState.toneNames[0][cbEditTone_SaveTone_SlotNumber.SelectedIndex] = "INIT TONE";
-                        commonState.currentTone = null;
+                        commonState.ToneNames[0][cbEditTone_SaveTone_SlotNumber.SelectedIndex] = "INIT TONE";
+                        commonState.CurrentTone = null;
                         // Finally, re-draw the tab to update controls:
                         UpdatePCMSynthToneControls();
                         break;
@@ -1081,21 +1081,21 @@ namespace Integra_7_Xamarin
                         name = tbEditTone_SaveTone_TitleText.Text;
                         address = new byte[] { 0x19, 0x10, 0x00, 0x00 };
                         value = Encoding.UTF8.GetBytes("INIT KIT    ");
-                        data = commonState.midi.SystemExclusiveDT1Message(address, value);
-                        commonState.midi.SendSystemExclusive(data);
+                        data = commonState.Midi.SystemExclusiveDT1Message(address, value);
+                        commonState.Midi.SendSystemExclusive(data);
                         address = new byte[] { 0x0f, 0x00, 0x10, 0x00 };
                         value = new byte[] { 0x56, (byte)(cbEditTone_SaveTone_SlotNumber.SelectedIndex / 128),
                         (byte)(cbEditTone_SaveTone_SlotNumber.SelectedIndex % 128), 0x00 };
-                        data = commonState.midi.SystemExclusiveRQ1Message(address, value);
-                        commonState.midi.SendSystemExclusive(data);
+                        data = commonState.Midi.SystemExclusiveRQ1Message(address, value);
+                        commonState.Midi.SendSystemExclusive(data);
                         // Remove from ToneList:
-                        i = commonState.toneList.PresetsCount; // Start looking for it after the last tone from soundlist pdf
+                        i = commonState.ToneList.PresetsCount; // Start looking for it after the last tone from soundlist pdf
                         found = false;
-                        while (!found && i < commonState.toneList.Tones.Count())
+                        while (!found && i < commonState.ToneList.Tones.Count())
                         {
-                            if (commonState.toneList.Tones[i][0] == "PCM Drum Kit"
-                                && commonState.toneList.Tones[i][1] == "Drum"
-                                && commonState.toneList.Tones[i][3].Trim() == name.Trim())
+                            if (commonState.ToneList.Tones[i][0] == "PCM Drum Kit"
+                                && commonState.ToneList.Tones[i][1] == "Drum"
+                                && commonState.ToneList.Tones[i][3].Trim() == name.Trim())
                             {
                                 found = true;
                             }
@@ -1106,10 +1106,10 @@ namespace Integra_7_Xamarin
                         }
                         if (found)
                         {
-                            commonState.toneList.Tones.RemoveAt(i);
-                            while (i < commonState.toneList.Tones.Count - 1)
+                            commonState.ToneList.Tones.RemoveAt(i);
+                            while (i < commonState.ToneList.Tones.Count - 1)
                             {
-                                commonState.toneList.Tones[i][9] = i.ToString();
+                                commonState.ToneList.Tones[i][9] = i.ToString();
                                 i++;
                             }
                         }
@@ -1119,16 +1119,16 @@ namespace Integra_7_Xamarin
                             //t.Trace("Save PCM Synth Tone did not find expected tone! Tone was not deleted.");
                         }
                         // Also clear in toneNames and back-up current tone:
-                        commonState.toneNames[1][cbEditTone_SaveTone_SlotNumber.SelectedIndex] = "INIT KIT";
-                        commonState.currentTone = null;
+                        commonState.ToneNames[1][cbEditTone_SaveTone_SlotNumber.SelectedIndex] = "INIT KIT";
+                        commonState.CurrentTone = null;
                         // Remove from keynames:
-                        commonState.keyNames.Remove(name.Trim());
+                        commonState.KeyNames.Remove(name.Trim());
                         // Remove from drumKeyAssignLists:
                         found = false;
                         i = 0;
-                        while (!found && i < commonState.drumKeyAssignLists.ToneNames.Count())
+                        while (!found && i < commonState.DrumKeyAssignLists.ToneNames.Count())
                         {
-                            if (commonState.drumKeyAssignLists.ToneNames[i][1] == name.Trim())
+                            if (commonState.DrumKeyAssignLists.ToneNames[i][1] == name.Trim())
                             {
                                 found = true;
                             }
@@ -1139,7 +1139,7 @@ namespace Integra_7_Xamarin
                         }
                         if (found)
                         {
-                            commonState.drumKeyAssignLists.ToneNames.RemoveAt(i);
+                            commonState.DrumKeyAssignLists.ToneNames.RemoveAt(i);
                         }
                         // Finally, re-draw the tab to update controls:
                         UpdatePCMDrumKitControls();
@@ -1149,21 +1149,21 @@ namespace Integra_7_Xamarin
                         name = tbEditTone_SaveTone_TitleText.Text;
                         address = new byte[] { 0x19, 0x02, 0x00, 0x00 };
                         value = Encoding.UTF8.GetBytes("INIT TONE   ");
-                        data = commonState.midi.SystemExclusiveDT1Message(address, value);
-                        commonState.midi.SendSystemExclusive(data);
+                        data = commonState.Midi.SystemExclusiveDT1Message(address, value);
+                        commonState.Midi.SendSystemExclusive(data);
                         address = new byte[] { 0x0f, 0x00, 0x10, 0x00 };
                         value = new byte[] { 0x59, (byte)(cbEditTone_SaveTone_SlotNumber.SelectedIndex / 128),
                         (byte)(cbEditTone_SaveTone_SlotNumber.SelectedIndex % 128), 0x00 };
-                        data = commonState.midi.SystemExclusiveRQ1Message(address, value);
-                        commonState.midi.SendSystemExclusive(data);
+                        data = commonState.Midi.SystemExclusiveRQ1Message(address, value);
+                        commonState.Midi.SendSystemExclusive(data);
                         // Remove from ToneList:
-                        i = commonState.toneList.PresetsCount; // Start looking for it after the last tone from soundlist pdf
+                        i = commonState.ToneList.PresetsCount; // Start looking for it after the last tone from soundlist pdf
                         found = false;
-                        while (!found && i < commonState.toneList.Tones.Count())
+                        while (!found && i < commonState.ToneList.Tones.Count())
                         {
-                            if (commonState.toneList.Tones[i][0] == "SuperNATURAL Acoustic Tone"
-                                && commonState.toneList.Tones[i][1] == cbEditTone_InstrumentCategorySelector.SelectedItem.ToString()
-                                && commonState.toneList.Tones[i][3].Trim() == name.Trim())
+                            if (commonState.ToneList.Tones[i][0] == "SuperNATURAL Acoustic Tone"
+                                && commonState.ToneList.Tones[i][1] == cbEditTone_InstrumentCategorySelector.SelectedItem.ToString()
+                                && commonState.ToneList.Tones[i][3].Trim() == name.Trim())
                             {
                                 found = true;
                             }
@@ -1174,10 +1174,10 @@ namespace Integra_7_Xamarin
                         }
                         if (found)
                         {
-                            commonState.toneList.Tones.RemoveAt(i);
-                            while (i < commonState.toneList.Tones.Count - 1)
+                            commonState.ToneList.Tones.RemoveAt(i);
+                            while (i < commonState.ToneList.Tones.Count - 1)
                             {
-                                commonState.toneList.Tones[i][9] = i.ToString();
+                                commonState.ToneList.Tones[i][9] = i.ToString();
                                 i++;
                             }
                         }
@@ -1187,8 +1187,8 @@ namespace Integra_7_Xamarin
                             //t.Trace("Save SuperNATURAL Acoustic Tone did not find expected tone! Tone was not deleted.");
                         }
                         // Also clear in toneNames and back-up current tone:
-                        commonState.toneNames[2][cbEditTone_SaveTone_SlotNumber.SelectedIndex] = "INIT TONE";
-                        commonState.currentTone = null;
+                        commonState.ToneNames[2][cbEditTone_SaveTone_SlotNumber.SelectedIndex] = "INIT TONE";
+                        commonState.CurrentTone = null;
                         // Finally, re-draw the tab to update controls:
                         UpdateSuperNATURALAcousticToneControls();
                         break;
@@ -1197,21 +1197,21 @@ namespace Integra_7_Xamarin
                         name = tbEditTone_SaveTone_TitleText.Text;
                         address = new byte[] { 0x19, 0x01, 0x00, 0x00 };
                         value = Encoding.UTF8.GetBytes("INIT TONE   ");
-                        data = commonState.midi.SystemExclusiveDT1Message(address, value);
-                        commonState.midi.SendSystemExclusive(data);
+                        data = commonState.Midi.SystemExclusiveDT1Message(address, value);
+                        commonState.Midi.SendSystemExclusive(data);
                         address = new byte[] { 0x0f, 0x00, 0x10, 0x00 };
                         value = new byte[] { 0x5f, (byte)(cbEditTone_SaveTone_SlotNumber.SelectedIndex / 128),
                         (byte)(cbEditTone_SaveTone_SlotNumber.SelectedIndex % 128), 0x00 };
-                        data = commonState.midi.SystemExclusiveRQ1Message(address, value);
-                        commonState.midi.SendSystemExclusive(data);
+                        data = commonState.Midi.SystemExclusiveRQ1Message(address, value);
+                        commonState.Midi.SendSystemExclusive(data);
                         // Remove from ToneList:
-                        i = commonState.toneList.PresetsCount; // Start looking for it after the last tone from soundlist pdf
+                        i = commonState.ToneList.PresetsCount; // Start looking for it after the last tone from soundlist pdf
                         found = false;
-                        while (!found && i < commonState.toneList.Tones.Count())
+                        while (!found && i < commonState.ToneList.Tones.Count())
                         {
-                            if (commonState.toneList.Tones[i][0] == "SuperNATURAL Synth Tone"
-                                && commonState.toneList.Tones[i][1] == cbEditTone_InstrumentCategorySelector.SelectedItem.ToString()
-                                && commonState.toneList.Tones[i][3].Trim() == name.Trim())
+                            if (commonState.ToneList.Tones[i][0] == "SuperNATURAL Synth Tone"
+                                && commonState.ToneList.Tones[i][1] == cbEditTone_InstrumentCategorySelector.SelectedItem.ToString()
+                                && commonState.ToneList.Tones[i][3].Trim() == name.Trim())
                             {
                                 found = true;
                             }
@@ -1222,10 +1222,10 @@ namespace Integra_7_Xamarin
                         }
                         if (found)
                         {
-                            commonState.toneList.Tones.RemoveAt(i);
-                            while (i < commonState.toneList.Tones.Count - 1)
+                            commonState.ToneList.Tones.RemoveAt(i);
+                            while (i < commonState.ToneList.Tones.Count - 1)
                             {
-                                commonState.toneList.Tones[i][9] = i.ToString();
+                                commonState.ToneList.Tones[i][9] = i.ToString();
                                 i++;
                             }
                         }
@@ -1235,8 +1235,8 @@ namespace Integra_7_Xamarin
                             //t.Trace("Save SuperNATURAL Synth Tone did not find expected tone! Tone was not deleted.");
                         }
                         // Also clear in toneNames and back-up current tone:
-                        commonState.toneNames[3][cbEditTone_SaveTone_SlotNumber.SelectedIndex] = "INIT TONE";
-                        commonState.currentTone = null;
+                        commonState.ToneNames[3][cbEditTone_SaveTone_SlotNumber.SelectedIndex] = "INIT TONE";
+                        commonState.CurrentTone = null;
                         // Finally, re-draw the tab to update controls:
                         UpdateSuperNATURALSynthToneControls();
                         break;
@@ -1245,21 +1245,21 @@ namespace Integra_7_Xamarin
                         name = tbEditTone_SaveTone_TitleText.Text;
                         address = new byte[] { 0x19, 0x03, 0x00, 0x00 };
                         value = Encoding.UTF8.GetBytes("INIT KIT    ");
-                        data = commonState.midi.SystemExclusiveDT1Message(address, value);
-                        commonState.midi.SendSystemExclusive(data);
+                        data = commonState.Midi.SystemExclusiveDT1Message(address, value);
+                        commonState.Midi.SendSystemExclusive(data);
                         address = new byte[] { 0x0f, 0x00, 0x10, 0x00 };
                         value = new byte[] { 0x58, (byte)(cbEditTone_SaveTone_SlotNumber.SelectedIndex / 128),
                         (byte)(cbEditTone_SaveTone_SlotNumber.SelectedIndex % 128), 0x00 };
-                        data = commonState.midi.SystemExclusiveRQ1Message(address, value);
-                        commonState.midi.SendSystemExclusive(data);
+                        data = commonState.Midi.SystemExclusiveRQ1Message(address, value);
+                        commonState.Midi.SendSystemExclusive(data);
                         // Remove from ToneList:
-                        i = commonState.toneList.PresetsCount; // Start looking for it after the last tone from soundlist pdf
+                        i = commonState.ToneList.PresetsCount; // Start looking for it after the last tone from soundlist pdf
                         found = false;
-                        while (!found && i < commonState.toneList.Tones.Count())
+                        while (!found && i < commonState.ToneList.Tones.Count())
                         {
-                            if (commonState.toneList.Tones[i][0] == "SuperNATURAL Drum Kit"
-                                && commonState.toneList.Tones[i][1] == "Drum"
-                                && commonState.toneList.Tones[i][3].Trim() == name.Trim())
+                            if (commonState.ToneList.Tones[i][0] == "SuperNATURAL Drum Kit"
+                                && commonState.ToneList.Tones[i][1] == "Drum"
+                                && commonState.ToneList.Tones[i][3].Trim() == name.Trim())
                             {
                                 found = true;
                             }
@@ -1270,10 +1270,10 @@ namespace Integra_7_Xamarin
                         }
                         if (found)
                         {
-                            commonState.toneList.Tones.RemoveAt(i);
-                            while (i < commonState.toneList.Tones.Count - 1)
+                            commonState.ToneList.Tones.RemoveAt(i);
+                            while (i < commonState.ToneList.Tones.Count - 1)
                             {
-                                commonState.toneList.Tones[i][9] = i.ToString();
+                                commonState.ToneList.Tones[i][9] = i.ToString();
                                 i++;
                             }
                         }
@@ -1283,8 +1283,8 @@ namespace Integra_7_Xamarin
                             //t.Trace("Save SuperNATURAL Drum Kit did not find expected tone! Tone was not deleted.");
                         }
                         // Also clear in toneNames and back-up current tone:
-                        commonState.toneNames[4][cbEditTone_SaveTone_SlotNumber.SelectedIndex] = "INIT KIT";
-                        commonState.currentTone = null;
+                        commonState.ToneNames[4][cbEditTone_SaveTone_SlotNumber.SelectedIndex] = "INIT KIT";
+                        commonState.CurrentTone = null;
                         // Finally, re-draw the tab to update controls:
                         UpdateSuperNATURALDrumKitControls();
                         break;
@@ -1367,7 +1367,7 @@ namespace Integra_7_Xamarin
                     msb = 88;
                     break;
             }
-            commonState.midi.ProgramChange(commonState.CurrentPart, msb, lsb, pc);
+            commonState.Midi.ProgramChange(commonState.CurrentPart, msb, lsb, pc);
             initDone = false;
             Waiting(true, "Working...", Edit_StackLayout);
             await Task.Delay(TimeSpan.FromMilliseconds(1000));
@@ -1410,8 +1410,8 @@ namespace Integra_7_Xamarin
                     byte[] pageOffset = new byte[] { 0x00, 0x00, 0x00, currentMFXTypePageAddressOffset };
                     address = AddBytes128(address, pageOffset);
                     byte[] value = new byte[] { 0x08, 0x00, (byte)((cb.SelectedIndex) / 16), (byte)((cb.SelectedIndex) % 16) };
-                    byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
-                    commonState.midi.SendSystemExclusive(bytes);
+                    byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
+                    commonState.Midi.SendSystemExclusive(bytes);
                     if (cb.Name.EndsWith("Hz/Note") || cb.Name.EndsWith("Ms/Note")) // Content is "# Ms/Note" where # is line number, which is needed and parsed out as lineNumber 3 lines down below.
                     {
                         // This type of control must also toggle visibility of the two sets of controls occupying next line!
@@ -1497,8 +1497,8 @@ namespace Integra_7_Xamarin
                     address = AddBytes128(address, pageOffset);
                     UInt16 dValue = (UInt16)(((sl.Value + ((Buddy)sl.Tag).ValueOffset)) * ((Buddy)sl.Tag).ValueMultiplier);
                     byte[] value = new byte[] { 0x08, (byte)((dValue & 0xf00) >> 8), (byte)((dValue & 0x0f0) >> 4), (byte)(dValue & 0x00f) };
-                    byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
-                    commonState.midi.SendSystemExclusive(bytes);
+                    byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
+                    commonState.Midi.SendSystemExclusive(bytes);
                 }
                 else
                 {
@@ -1533,8 +1533,8 @@ namespace Integra_7_Xamarin
                         address = AddBytes128(address, pageOffset);
                         UInt16 dValue = (UInt16)((Boolean)(cb.IsChecked) ? 1 : 0);
                         byte[] value = new byte[] { 0x08, 0x00, 0x00, (byte)(dValue) };
-                        byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, value);
-                        commonState.midi.SendSystemExclusive(bytes);
+                        byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
+                        commonState.Midi.SendSystemExclusive(bytes);
                     }
                     else
                     {
@@ -1574,8 +1574,8 @@ namespace Integra_7_Xamarin
                     byte[] value = new byte[] { 0x08, 0x00, 0x00, (byte)(commonMFX.MFXNumberedParameters.Parameters.Parameters[i].Value.Value) };
                 }
             }
-            byte[] bytes = commonState.midi.SystemExclusiveDT1Message(address, data);
-            commonState.midi.SendSystemExclusive(bytes);
+            byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, data);
+            commonState.Midi.SendSystemExclusive(bytes);
         }
 
         private byte[] concatenateByteArrays(byte[] a1, byte[] a2)
@@ -3121,9 +3121,9 @@ namespace Integra_7_Xamarin
                                 SendParameter(address, (UInt16)(pCMDrumKit.pCMDrumKitPartial[currentPartial].WMT[currentPartial].WMTWaveNumberL));
                                 DrumKit_WaveOn(0);
                                 // Save the key name:
-                                commonState.keyNames[currentPartial] = ((String)comboBox.SelectedItem);
-                                commonState.keyNames[currentPartial] = commonState.keyNames[currentPartial].Remove(0,
-                                    commonState.keyNames[currentPartial].IndexOf(':') + 1).Trim();
+                                commonState.KeyNames[currentPartial] = ((String)comboBox.SelectedItem);
+                                commonState.KeyNames[currentPartial] = commonState.KeyNames[currentPartial].Remove(0,
+                                    commonState.KeyNames[currentPartial].IndexOf(':') + 1).Trim();
                                 break;
                             case "cbEditTone_PCMDrumKit_Wave_WMTWaveNumberR":
                                 pCMDrumKit.pCMDrumKitPartial[currentPartial].WMT[currentPartial].WMTWaveNumberR = (UInt16)comboBox.SelectedIndex;
@@ -5348,9 +5348,9 @@ namespace Integra_7_Xamarin
                                             try
                                             {
                                                 // When changing wave for a SN-D key, also update in commonState.keyNames so it can later be saved in 
-                                                commonState.keyNames[currentPartial + 6] = ((String)comboBox.SelectedItem);
-                                                commonState.keyNames[currentPartial + 6] = commonState.keyNames[currentPartial + 6]
-                                                    .Remove(0, commonState.keyNames[currentPartial + 6].IndexOf(':') + 1).Trim();
+                                                commonState.KeyNames[currentPartial + 6] = ((String)comboBox.SelectedItem);
+                                                commonState.KeyNames[currentPartial + 6] = commonState.KeyNames[currentPartial + 6]
+                                                    .Remove(0, commonState.KeyNames[currentPartial + 6].IndexOf(':') + 1).Trim();
                                             }
                                             catch { }
                                             superNATURALDrumKit.superNATURALDrumKitKey[currentPartial].InstNumber = (byte)(comboBox.SelectedIndex);
@@ -5369,9 +5369,9 @@ namespace Integra_7_Xamarin
                                             try
                                             {
                                                 // When changing wave for a SN-D key, also update in commonState.keyNames so it can later be saved in 
-                                                commonState.keyNames[currentPartial + 6] = ((String)comboBox.SelectedItem);
-                                                commonState.keyNames[currentPartial + 6] = commonState.keyNames[currentPartial + 6]
-                                                        .Remove(0, commonState.keyNames[currentPartial + 6].IndexOf(':') + 1).Trim();
+                                                commonState.KeyNames[currentPartial + 6] = ((String)comboBox.SelectedItem);
+                                                commonState.KeyNames[currentPartial + 6] = commonState.KeyNames[currentPartial + 6]
+                                                        .Remove(0, commonState.KeyNames[currentPartial + 6].IndexOf(':') + 1).Trim();
                                             }
                                             catch { }
                                             superNATURALDrumKit.superNATURALDrumKitKey[currentPartial].InstNumber =
@@ -6203,11 +6203,11 @@ namespace Integra_7_Xamarin
             switch (side)
             {
                 case 0:
-                    commonState.midi.NoteOn(commonState.CurrentPart, key, 0x70);
+                    commonState.Midi.NoteOn(commonState.CurrentPart, key, 0x70);
                     KeySamplePlayingL = key;
                     break;
                 case 1:
-                    commonState.midi.NoteOn(commonState.CurrentPart, key, 0x70);
+                    commonState.Midi.NoteOn(commonState.CurrentPart, key, 0x70);
                     KeySamplePlayingR = key;
                     break;
             }
@@ -6217,12 +6217,12 @@ namespace Integra_7_Xamarin
         {
             if (KeySamplePlayingL > -1)
             {
-                commonState.midi.NoteOff(commonState.CurrentPart, (byte)KeySamplePlayingL);
+                commonState.Midi.NoteOff(commonState.CurrentPart, (byte)KeySamplePlayingL);
                 KeySamplePlayingL = -1;
             }
             else if (KeySamplePlayingR > -1)
             {
-                commonState.midi.NoteOff(commonState.CurrentPart, (byte)KeySamplePlayingR);
+                commonState.Midi.NoteOff(commonState.CurrentPart, (byte)KeySamplePlayingR);
                 KeySamplePlayingR = -1;
             }
         }
