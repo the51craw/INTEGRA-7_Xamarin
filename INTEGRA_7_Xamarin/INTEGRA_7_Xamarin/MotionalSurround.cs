@@ -88,7 +88,7 @@ namespace Integra_7_Xamarin
 
         public void ShowMotionalSurroundPage()
         {
-            Page = _page.MOTIONAL_SURROUND;
+            currentPage = CurrentPage.MOTIONAL_SURROUND;
 
             if (!MotionalSurround_IsCreated)
             {

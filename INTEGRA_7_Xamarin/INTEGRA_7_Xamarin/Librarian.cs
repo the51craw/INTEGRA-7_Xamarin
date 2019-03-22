@@ -91,18 +91,18 @@ namespace Integra_7_Xamarin
             try
             {
                 // ToDo: Is this really needed? It is taken care of in OnNavigatedTo, or...
-                if (commonState == null)
-                {
-                    commonState = new CommonState(ref Librarian_btnPlay);
-                }
-                else
-                {
-                    commonState.Player.btnPlayStop = Librarian_btnPlay;
-                    if (commonState.Player.Playing)
-                    {
-                        Librarian_btnPlay.Content = "Stop";
-                    }
-                }
+                //if (commonState == null)
+                //{
+                //    commonState = new CommonState(ref Librarian_btnPlay);
+                //}
+                //else
+                //{
+                //    commonState.Player.btnPlayStop = Librarian_btnPlay;
+                //    if (commonState.Player.Playing)
+                //    {
+                //        Librarian_btnPlay.Content = "Stop";
+                //    }
+                //}
 
                 CheckForVenderDriver();
 
@@ -163,6 +163,7 @@ namespace Integra_7_Xamarin
             // Therefore, the studio set has been changed (tone at part 16 changed but restored).
             // In order to turn the change state off, just select the studio set:
             //SetStudioSet(new byte[] { 0x55, 0x00, commonState.CurrentStudioSet });
+            waitingForMidiResponse = true;
             QuerySelectedStudioSet();
         }
 
@@ -816,11 +817,12 @@ namespace Integra_7_Xamarin
             }
 
             //t.Trace("private void MainPage_MidiInPort_MessageReceived");
-            if (queryType == QueryType.CHECKING_I_7_READINESS)
-            {
-                integra_7Ready = true;
-            }
-            else if (initDone || scanning)
+            //if (queryType == QueryType.CHECKING_I_7_READINESS)
+            //{
+            //    integra_7Ready = true;
+            //}
+            //else if (initDone || scanning)
+            if (initDone || scanning)
             {
                 try
                 {
@@ -1426,7 +1428,6 @@ namespace Integra_7_Xamarin
                     if (commonState.CurrentTone.Index > -1)
                     {
                         PushHandleControlEvents();
-                        PushHandleControlEvents();
                         try
                         {
                             Librarian_lvGroups.IsEnabled = true;
@@ -1479,7 +1480,6 @@ namespace Integra_7_Xamarin
                                         commonState.CurrentTone.Index = commonState.ToneList.Get(commonState.CurrentTone);
                                     }
                                     PopulateToneData();
-                                    //PushHandleControlEvents();
                                     //PushHandleControlEvents();
                                     //try
                                     //{
@@ -1618,7 +1618,6 @@ namespace Integra_7_Xamarin
             if (initDone && handleControlEvents)
             {
                 //t.Trace("private void tbSearch_TextChanged (" + "object" + sender + ", " + "TextChangedEventArgs" + e + ", " + ")");
-                PushHandleControlEvents();
                 PushHandleControlEvents();
                 if (!String.IsNullOrEmpty(Librarian_tbSearch.Editor.Text) && Librarian_tbSearch.Editor.Text.Length > 2)
                 {
@@ -2052,7 +2051,7 @@ namespace Integra_7_Xamarin
 
         public void ShowLibrarianPage()
         {
-            Page = _page.LIBRARIAN;
+            currentPage = CurrentPage.LIBRARIAN;
             if (!Librarian_IsCreated)
             {
                 //DrawLibrarianPage(); // Librarian page is created in advace because the MIDI pickers must be present
@@ -2071,6 +2070,12 @@ namespace Integra_7_Xamarin
                 Favorites_IsCreated = true;
                 Init2();
             }
+            //else if(MidiState == MIDIState.INITIALIZING)
+            //{
+            //    // I-7 was not found via USB, and the user has indicated a MIDI interface
+            //    // to use to contact I-7 via 5-pin connectors. Try to connect to open it:
+            //    ShowPleaseWaitPage(WaitingFor.INTEGRA_7, null);
+            //}
             PopHandleControlEvents();
             Favorites_UpdateFoldersList();
             //mainStackLayout.Children.Add(LibrarianStackLayout);

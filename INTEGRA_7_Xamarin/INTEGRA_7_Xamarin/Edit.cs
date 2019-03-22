@@ -1068,7 +1068,7 @@ namespace Integra_7_Xamarin
 
         public void ShowToneEditorPage()
         {
-            Page = _page.EDIT_TONE;
+            currentPage = CurrentPage.EDIT_TONE;
             if (!Edit_IsCreated)
             {
                 PushHandleControlEvents();

@@ -30,7 +30,7 @@ namespace Integra_7_Xamarin
             ANDROID,
         }
 
-        enum _page
+        enum CurrentPage
         {
             PLEASE_WAIT,
             LIBRARIAN,
@@ -114,10 +114,11 @@ namespace Integra_7_Xamarin
         byte toneCategory;
         Int32 userToneIndex;
         Boolean integra_7Ready = false;
-        byte integra_7ReadyCounter = 100;
+        Boolean waitingForMidiResponse = false;
+        //byte integra_7ReadyCounter = 100;
         //SolidColorBrush green = null;
         //SolidColorBrush gray = null;
-        Boolean initMidi = false;
+        //Boolean initMidi = false;
         UInt16[] userToneNumbers;
         public QueryType queryType { get; set; }
         Boolean updateToneName = false;
@@ -152,7 +153,8 @@ namespace Integra_7_Xamarin
         public static ColorSettings colorSettings = new ColorSettings(_colorSettings.LIGHT);
         //public static BorderThicknesSettings borderThicknesSettings { get; set; }
         public static BorderThicknesSettings borderThicknesSettings = new BorderThicknesSettings(2);
-        _page Page;
+        CurrentPage currentPage;
+        Int32 divider = 1; // Used to make timer slower by skipping ticks
 
         // Edit tone controls:
         //...
@@ -168,7 +170,7 @@ namespace Integra_7_Xamarin
 
         public void Init()
         {
-            Page = _page.LIBRARIAN;
+            currentPage = CurrentPage.LIBRARIAN;
             MidiState = MIDIState.NOT_INITIALIZED;
             colorSettings = new ColorSettings(_colorSettings.LIGHT);
             borderThicknesSettings = new BorderThicknesSettings(2);
@@ -176,7 +178,7 @@ namespace Integra_7_Xamarin
             commonState.Midi = DependencyService.Get<IMidi>();
             myFileIO = DependencyService.Get<IMyFileIO>();
             rawData = new byte[0];
-            IDeviceDependent deviceDependent;
+            //IDeviceDependent deviceDependent;
             userToneNumbers = new UInt16[128];
             for (byte i = 0; i < 128; i++)
             {
@@ -196,27 +198,27 @@ namespace Integra_7_Xamarin
         /// </summary>
         public void StartTimer()
         {
-            Device.StartTimer(TimeSpan.FromMilliseconds(10), () =>
+            Device.StartTimer(TimeSpan.FromMilliseconds(1), () =>
             {
                 if (stopTimer)
                 {
                     return false;
                 }
-                switch (Page)
+                switch (currentPage)
                 {
-                    case _page.PLEASE_WAIT:
+                    case CurrentPage.PLEASE_WAIT:
                         PleaseWait_Timer_Tick();
                         break;
-                    case _page.LIBRARIAN:
+                    case CurrentPage.LIBRARIAN:
                         Librarian_Timer_Tick();
                         break;
-                    case _page.EDIT_TONE:
+                    case CurrentPage.EDIT_TONE:
                         Edit_Timer_Tick();
                         break;
-                    case _page.EDIT_STUDIO_SET:
+                    case CurrentPage.EDIT_STUDIO_SET:
                         EditStudioSet_Timer_Tick();
                         break;
-                    case _page.MOTIONAL_SURROUND:
+                    case CurrentPage.MOTIONAL_SURROUND:
                         MotionalSurround_Timer_Tick();
                         break;
                 }
@@ -231,21 +233,22 @@ namespace Integra_7_Xamarin
         {
             if (rawData.Length > 0)
             {
-                switch (Page)
+                waitingForMidiResponse = false;
+                switch (currentPage)
                 {
-                    case _page.PLEASE_WAIT:
+                    case CurrentPage.PLEASE_WAIT:
                         PleaseWait_MidiInPort_MessageReceived();
                         break;
-                    case _page.LIBRARIAN:
+                    case CurrentPage.LIBRARIAN:
                         Librarian_MidiInPort_MessageReceived();
                         break;
-                    case _page.EDIT_TONE:
+                    case CurrentPage.EDIT_TONE:
                         Edit_MidiInPort_MessageReceived();
                         break;
-                    case _page.EDIT_STUDIO_SET:
+                    case CurrentPage.EDIT_STUDIO_SET:
                         EditStudioSet_MidiInPort_MessageReceived();
                         break;
-                    case _page.MOTIONAL_SURROUND:
+                    case CurrentPage.MOTIONAL_SURROUND:
 						MotionalSurrouns_MidiInPort_MessageReceived();
                         break;
                 }

@@ -593,7 +593,7 @@ namespace Integra_7_Xamarin
         Boolean setVisibility = false;
         public void ShowStudioSetEditorPage()
         {
-            Page = _page.EDIT_STUDIO_SET;
+            currentPage = CurrentPage.EDIT_STUDIO_SET;
             if (!EditStudioSet_IsCreated)
             {
                 initDone = false;
@@ -2926,7 +2926,8 @@ namespace Integra_7_Xamarin
                 StudioSetEditor_StackLayout.IsVisible = true;
             }
 
-            if (studioSetEditor_State != StudioSetEditor_State.DONE && studioSetEditor_State != StudioSetEditor_State.NONE)// && waitingForResponseFromIntegra7 > 0)
+            if (studioSetEditor_State != StudioSetEditor_State.DONE && studioSetEditor_State != StudioSetEditor_State.NONE)
+                // && waitingForResponseFromIntegra7 > 0)
             {
                 t.Trace("private void Timer_Tick waiting for response");
                 waitingForResponseFromIntegra7--;
@@ -2945,7 +2946,7 @@ namespace Integra_7_Xamarin
 
             if (!initDone)
             {
-                if (studioSetEditor_State == StudioSetEditor_State.DONE && currentStudioSetEditorMidiRequest == 
+                if (studioSetEditor_State == StudioSetEditor_State.DONE && currentStudioSetEditorMidiRequest ==
                     StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_TITLES)
                 {
                     t.Trace("private void Timer_Tick studioSetEditor_State == StudioSetEditor_State.DONE && currentStudioSetEditorMidiRequest == StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_TITLES");
@@ -2962,14 +2963,13 @@ namespace Integra_7_Xamarin
 
                     // Set selector accordingly:
                     PushHandleControlEvents();
-                    PushHandleControlEvents();
                     cbStudioSetSelector.SelectedIndex = commonState.CurrentStudioSet;// currentStudioSetNumberAsBytes[2] + currentStudioSetNumberAsBytes[1] * 128;
                     PopHandleControlEvents();
 
                     // Ask for system common settings:
                     QuerySystemCommon(); // This will be caught in MidiInPort_MessageReceived
                 }
-                else if (studioSetEditor_State == StudioSetEditor_State.DONE && currentStudioSetEditorMidiRequest == 
+                else if (studioSetEditor_State == StudioSetEditor_State.DONE && currentStudioSetEditorMidiRequest ==
                     StudioSetEditor_currentStudioSetEditorMidiRequest.SYSTEM_COMMON)
                 {
                     t.Trace("private void Timer_Tick studioSetEditor_State == " +
@@ -2985,7 +2985,7 @@ namespace Integra_7_Xamarin
                     QueryStudioSetCommon(); // This will be caught in MidiInPort_MessageReceived
 
                 }
-                else if (studioSetEditor_State == StudioSetEditor_State.DONE && currentStudioSetEditorMidiRequest == 
+                else if (studioSetEditor_State == StudioSetEditor_State.DONE && currentStudioSetEditorMidiRequest ==
                     StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_COMMON)
                 {
                     t.Trace("private void Timer_Tick studioSetEditor_State == " +
@@ -3000,7 +3000,7 @@ namespace Integra_7_Xamarin
                     // Ask for studio set chorus:
                     QueryStudioSetChorus();
                 }
-                else if (studioSetEditor_State == StudioSetEditor_State.DONE && currentStudioSetEditorMidiRequest == 
+                else if (studioSetEditor_State == StudioSetEditor_State.DONE && currentStudioSetEditorMidiRequest ==
                     StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_CHORUS)
                 {
                     t.Trace("private void Timer_Tick studioSetEditor_State == " +
@@ -3015,7 +3015,7 @@ namespace Integra_7_Xamarin
                     // Ask for studio set reverb:
                     QueryStudioSetReverb();
                 }
-                else if (studioSetEditor_State == StudioSetEditor_State.DONE && currentStudioSetEditorMidiRequest == 
+                else if (studioSetEditor_State == StudioSetEditor_State.DONE && currentStudioSetEditorMidiRequest ==
                     StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_REVERB)
                 {
                     t.Trace("private void Timer_Tick studioSetEditor_State == StudioSetEditor_State.DONE && currentStudioSetEditorMidiRequest == StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_REVERB");
@@ -3040,7 +3040,7 @@ namespace Integra_7_Xamarin
                     // Ask for studio set reverb:
                     QueryStudioSetMasterEQ();
                 }
-                else if (studioSetEditor_State == StudioSetEditor_State.DONE && currentStudioSetEditorMidiRequest == 
+                else if (studioSetEditor_State == StudioSetEditor_State.DONE && currentStudioSetEditorMidiRequest ==
                     StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_MASTER_EQ)
                 {
                     t.Trace("private void Timer_Tick studioSetEditor_State == StudioSetEditor_State.DONE && currentStudioSetEditorMidiRequest == StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_MASTER_EQ");
@@ -3055,7 +3055,7 @@ namespace Integra_7_Xamarin
                     studioSetEditor_PartToRead = 0;
                     QueryStudioSetPart(studioSetEditor_PartToRead);
                 }
-                else if (studioSetEditor_State == StudioSetEditor_State.DONE && currentStudioSetEditorMidiRequest == 
+                else if (studioSetEditor_State == StudioSetEditor_State.DONE && currentStudioSetEditorMidiRequest ==
                     StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_PART)
                 {
                     t.Trace("private void Timer_Tick studioSetEditor_State == StudioSetEditor_State.DONE && currentStudioSetEditorMidiRequest == StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_PART");
@@ -3075,7 +3075,7 @@ namespace Integra_7_Xamarin
                         QueryStudioSetPartToneName();
                     }
                 }
-                else if (studioSetEditor_State == StudioSetEditor_State.DONE && currentStudioSetEditorMidiRequest == 
+                else if (studioSetEditor_State == StudioSetEditor_State.DONE && currentStudioSetEditorMidiRequest ==
                     StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_PART_TONE_NAME)
                 {
                     t.Trace("private void Timer_Tick studioSetEditor_State == " +
@@ -3101,7 +3101,6 @@ namespace Integra_7_Xamarin
                     currentToneNumberAsBytes[2] = (byte)(UInt16.Parse(commonState.ToneList.Tones[commonState.CurrentTone.Index][7]));
 
                     // Now we have MSB, LSB and CB, set comboboxes:
-                    PushHandleControlEvents();
                     PushHandleControlEvents();
                     PopulateCbStudioSetPartSettings1Group();
                     cbStudioSetPartSettings1Group.SelectedItem = commonState.CurrentTone.Group;
@@ -3132,7 +3131,7 @@ namespace Integra_7_Xamarin
                     studioSetEditor_PartToRead = 0;
                     QueryStudioSetPartEQ(studioSetEditor_PartToRead);
                 }
-                else if (studioSetEditor_State == StudioSetEditor_State.DONE && currentStudioSetEditorMidiRequest == 
+                else if (studioSetEditor_State == StudioSetEditor_State.DONE && currentStudioSetEditorMidiRequest ==
                     StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_PART_EQ)
                 {
                     t.Trace("private void Timer_Tick studioSetEditor_State == " +
@@ -3162,7 +3161,7 @@ namespace Integra_7_Xamarin
                     //SetStudioSet(commonState.CurrentStudioSet);
                 }
                 // After initialization:
-                else if (studioSetEditor_State == StudioSetEditor_State.INIT_DONE && currentStudioSetEditorMidiRequest == 
+                else if (studioSetEditor_State == StudioSetEditor_State.INIT_DONE && currentStudioSetEditorMidiRequest ==
                     StudioSetEditor_currentStudioSetEditorMidiRequest.NONE)
                 {
                     t.Trace("private void Timer_Tick studioSetEditor_State == " +
@@ -3202,7 +3201,6 @@ namespace Integra_7_Xamarin
                         PopulateStudioSetSelector();
 
                         // Set Studio Set selector accordingly:
-                        PushHandleControlEvents();
                         PushHandleControlEvents();
                         if (commonState != null && commonState.CurrentStudioSet < 64)
                         {
@@ -3344,7 +3342,6 @@ namespace Integra_7_Xamarin
                     Int32 toneNumber = commonState.ToneList.Get(commonState.CurrentTone.BankMSB, commonState.CurrentTone.BankLSB, commonState.CurrentTone.Program);
 
                     // Now we have MSB, LSB and CB, fix comboboxes:
-                    PushHandleControlEvents();
                     PushHandleControlEvents();
                     PopulateCbStudioSetPartSettings1Group();
                     cbStudioSetPartSettings1Group.SelectedItem = commonState.ToneList.Tones[toneNumber][0];// commonState.currentTone.Group;
@@ -4914,7 +4911,6 @@ namespace Integra_7_Xamarin
         private void SetStudioSetChorusChorusRate(Int32 p)
         {
             PushHandleControlEvents();
-            PushHandleControlEvents();
             switch (p)
             {
                 case 0:
@@ -5059,7 +5055,6 @@ namespace Integra_7_Xamarin
         private void SetStudioSetChorusDelayLeft(Int32 p)
         {
             PushHandleControlEvents();
-            PushHandleControlEvents();
             switch (p)
             {
                 case 0:
@@ -5141,7 +5136,6 @@ namespace Integra_7_Xamarin
         private void SetStudioSetChorusDelayRight(Int32 p)
         {
             PushHandleControlEvents();
-            PushHandleControlEvents();
             switch (p)
             {
                 case 0:
@@ -5221,7 +5215,6 @@ namespace Integra_7_Xamarin
 
         private void SetStudioSetChorusDelayCenter(Int32 p)
         {
-            PushHandleControlEvents();
             PushHandleControlEvents();
             switch (cbChorusDelayCenterMsNote.SelectedIndex)
             {
@@ -6801,7 +6794,6 @@ namespace Integra_7_Xamarin
                 // Unpack system common parameters and update controls:
                 commonState.StudioSet.SystemCommon = new StudioSet_SystemCommon(new ReceivedData(rawData));
                 PushHandleControlEvents();
-                PushHandleControlEvents();
                 slSystemCommonMasterTune.Value = commonState.StudioSet.SystemCommon.MasterTune;
                 tbSystemCommonMasterTune.Text = "Master tune " + (slSystemCommonMasterTune.Value / 10).ToString() + " cent";
                 slSystemCommonMasterKeyShift.Value = commonState.StudioSet.SystemCommon.MasterKeyShift;
@@ -6834,7 +6826,6 @@ namespace Integra_7_Xamarin
         private void ReadSelectedStudioSet()
         {
             t.Trace("private void ReadSelectedStudioSet()");
-            PushHandleControlEvents();
             PushHandleControlEvents();
             try
             {
@@ -6931,7 +6922,6 @@ namespace Integra_7_Xamarin
 
         private void UpdateStudioSetChorusControls(byte Selection)
         {
-            PushHandleControlEvents();
             PushHandleControlEvents();
             cbStudioSetChorusType.SelectedIndex = Selection;
             slChorusLevel.Value = commonState.StudioSet.CommonChorus.Level;
@@ -7083,7 +7073,6 @@ namespace Integra_7_Xamarin
             t.Trace("private void ReadStudioSetReverb (" + "byte" + Selection + ", " + ")");
             commonState.StudioSet.CommonReverb = new StudioSet_CommonReverb(new ReceivedData(rawData));
             PushHandleControlEvents();
-            PushHandleControlEvents();
             cbStudioSetReverbType.SelectedIndex = Selection;
             slStudioSetReverbLevel.Value = commonState.StudioSet.CommonReverb.Level;
             cbStudioSetReverbOutputAssign.SelectedIndex = commonState.StudioSet.CommonReverb.OutputAssign;
@@ -7195,29 +7184,35 @@ namespace Integra_7_Xamarin
             t.Trace("private void ReadMotionalSurround()");
             commonState.StudioSet.MotionalSurround = new StudioSet_MotionalSurround(new ReceivedData(rawData));
             PushHandleControlEvents();
-            PushHandleControlEvents();
-            cbStudioSetMotionalSurround.IsChecked = commonState.StudioSet.MotionalSurround.MotionalSurroundSwitch;
-            cbStudioSetMotionalSurroundRoomType.SelectedIndex = commonState.StudioSet.MotionalSurround.RoomType;
-            slStudioSetMotionalSurroundAmbienceLevel.Value = commonState.StudioSet.MotionalSurround.AmbienceLevel;
-            cbStudioSetMotionalSurroundRoomSize.SelectedIndex = commonState.StudioSet.MotionalSurround.RoomSize;
-            slStudioSetMotionalSurroundAmbienceTime.Value = commonState.StudioSet.MotionalSurround.AmbienceTime;
-            slStudioSetMotionalSurroundAmbienceDensity.Value = commonState.StudioSet.MotionalSurround.AmbienceDensity;
-            slStudioSetMotionalSurroundAmbienceHFDamp.Value = commonState.StudioSet.MotionalSurround.AmbienceHFDamp;
-            slStudioSetMotionalSurroundExternalPartLR.Value = commonState.StudioSet.MotionalSurround.ExtPartLR - 64;
-            slStudioSetMotionalSurroundExternalPartFB.Value = commonState.StudioSet.MotionalSurround.ExtPartFB - 64;
-            slStudioSetMotionalSurroundExtPartWidth.Value = commonState.StudioSet.MotionalSurround.ExtPartWidth;
-            slStudioSetMotionalSurroundExtpartAmbienceSend.Value = commonState.StudioSet.MotionalSurround.ExtPartAmbienceSendLevel;
-            cbStudioSetMotionalSurroundExtPartControl.SelectedIndex = commonState.StudioSet.MotionalSurround.ExtPartControlChannel;
-            slStudioSetMotionalSurroundDepth.Value = commonState.StudioSet.MotionalSurround.MotionalSurroundDepth;
-            tbStudioSetMotionalSurroundAmbienceLevel.Text = "Ambience level " + slStudioSetMotionalSurroundAmbienceLevel.Value.ToString();
-            tbStudioSetMotionalSurroundAmbienceTime.Text = "Ambience time " + slStudioSetMotionalSurroundAmbienceTime.Value.ToString();
-            tbStudioSetMotionalSurroundAmbienceDensity.Text = "Ambience density " + slStudioSetMotionalSurroundAmbienceDensity.Value.ToString();
-            tbStudioSetMotionalSurroundAmbienceHFDamp.Text = "Ambience HF damp " + slStudioSetMotionalSurroundAmbienceHFDamp.Value.ToString();
-            tbStudioSetMotionalSurroundExternalPartLR.Text = "External part L-R " + slStudioSetMotionalSurroundExternalPartLR.Value.ToString();
-            tbStudioSetMotionalSurroundExternalPartFB.Text = "External part F-B " + slStudioSetMotionalSurroundExternalPartFB.Value.ToString();
-            tbStudioSetMotionalSurroundExtPartWidth.Text = "External part width " + slStudioSetMotionalSurroundExtPartWidth.Value.ToString();
-            tbStudioSetMotionalSurroundExtpartAmbienceSend.Text = "External part ambience send" + slStudioSetMotionalSurroundExtpartAmbienceSend.Value.ToString();
-            tbStudioSetMotionalSurroundDepth.Text = "Motional surround depth " + slStudioSetMotionalSurroundDepth.Value.ToString();
+            // Since this code is also called from the Motional surround editor, the controls below might not be
+            // created. It's ok, since in that case we do not need them, so use try-catch:
+            try
+            {
+                cbStudioSetMotionalSurround.IsChecked = commonState.StudioSet.MotionalSurround.MotionalSurroundSwitch;
+                cbStudioSetMotionalSurroundRoomType.SelectedIndex = commonState.StudioSet.MotionalSurround.RoomType;
+                slStudioSetMotionalSurroundAmbienceLevel.Value = commonState.StudioSet.MotionalSurround.AmbienceLevel;
+                cbStudioSetMotionalSurroundRoomSize.SelectedIndex = commonState.StudioSet.MotionalSurround.RoomSize;
+                slStudioSetMotionalSurroundAmbienceTime.Value = commonState.StudioSet.MotionalSurround.AmbienceTime;
+                slStudioSetMotionalSurroundAmbienceDensity.Value = commonState.StudioSet.MotionalSurround.AmbienceDensity;
+                slStudioSetMotionalSurroundAmbienceHFDamp.Value = commonState.StudioSet.MotionalSurround.AmbienceHFDamp;
+                slStudioSetMotionalSurroundExternalPartLR.Value = commonState.StudioSet.MotionalSurround.ExtPartLR - 64;
+                slStudioSetMotionalSurroundExternalPartFB.Value = commonState.StudioSet.MotionalSurround.ExtPartFB - 64;
+                slStudioSetMotionalSurroundExtPartWidth.Value = commonState.StudioSet.MotionalSurround.ExtPartWidth;
+                slStudioSetMotionalSurroundExtpartAmbienceSend.Value = commonState.StudioSet.MotionalSurround.ExtPartAmbienceSendLevel;
+                cbStudioSetMotionalSurroundExtPartControl.SelectedIndex = commonState.StudioSet.MotionalSurround.ExtPartControlChannel;
+                slStudioSetMotionalSurroundDepth.Value = commonState.StudioSet.MotionalSurround.MotionalSurroundDepth;
+                tbStudioSetMotionalSurroundAmbienceLevel.Text = "Ambience level " + slStudioSetMotionalSurroundAmbienceLevel.Value.ToString();
+                tbStudioSetMotionalSurroundAmbienceTime.Text = "Ambience time " + slStudioSetMotionalSurroundAmbienceTime.Value.ToString();
+                tbStudioSetMotionalSurroundAmbienceDensity.Text = "Ambience density " + slStudioSetMotionalSurroundAmbienceDensity.Value.ToString();
+                tbStudioSetMotionalSurroundAmbienceHFDamp.Text = "Ambience HF damp " + slStudioSetMotionalSurroundAmbienceHFDamp.Value.ToString();
+                tbStudioSetMotionalSurroundExternalPartLR.Text = "External part L-R " + slStudioSetMotionalSurroundExternalPartLR.Value.ToString();
+                tbStudioSetMotionalSurroundExternalPartFB.Text = "External part F-B " + slStudioSetMotionalSurroundExternalPartFB.Value.ToString();
+                tbStudioSetMotionalSurroundExtPartWidth.Text = "External part width " + slStudioSetMotionalSurroundExtPartWidth.Value.ToString();
+                tbStudioSetMotionalSurroundExtpartAmbienceSend.Text = "External part ambience send" + 
+                    slStudioSetMotionalSurroundExtpartAmbienceSend.Value.ToString();
+                tbStudioSetMotionalSurroundDepth.Text = "Motional surround depth " + slStudioSetMotionalSurroundDepth.Value.ToString();
+            }
+            catch { }
             PopHandleControlEvents();
         }
 
@@ -7225,7 +7220,6 @@ namespace Integra_7_Xamarin
         {
             t.Trace("private void ReadStudioSetMasterEQ()");
             commonState.StudioSet.MasterEQ = new StudioSet_MasterEQ(new ReceivedData(rawData));
-            PushHandleControlEvents();
             PushHandleControlEvents();
             cbStudioSetMasterEqLowFreq.SelectedIndex = commonState.StudioSet.MasterEQ.EQHighFreq;
             slStudioSetMasterEqLowGain.Value = commonState.StudioSet.MasterEQ.EQHighGain - 15;
@@ -7255,145 +7249,149 @@ namespace Integra_7_Xamarin
             commonState.StudioSet.PartMidi[(byte)partToRead] = new StudioSet_PartMidi(Data);
             commonState.StudioSet.PartMotionalSurround[(byte)partToRead] = new StudioSet_PartMotionalSurround(Data);
             PushHandleControlEvents();
-            PushHandleControlEvents();
-            // Part settings 1 page
-            if (cbStudioSetPartSelector.SelectedIndex > -1 && cbStudioSetPartSelector.SelectedIndex == partToRead)
+            // Since this code is also called from the Motional surround editor, the controls below might not be
+            // created. It's ok, since in that case we do not need them, so use try-catch:
+            try
             {
-                cbStudioSetPartSettings1ReceiveChannel.SelectedIndex = commonState.StudioSet.PartMainSettings[(byte)partToRead].ReceiveChannel;
-                cbStudioSetPartSettings1Receive.IsChecked = commonState.StudioSet.PartMainSettings[(byte)partToRead].ReceiveSwitch;
-                // These will be set after part is read (and the slider is now a ComboBox)
-                //cbStudioSetPartSettings1Group.SelectedIndex = MsbToCbIndex(commonState.studioSet.PartMainSettings[(byte)partToRead].ToneBankSelectMSB);
-                commonState.CurrentTone.BankMSB = commonState.StudioSet.PartMainSettings[(byte)partToRead].ToneBankSelectMSB;
-                //cbStudioSetPartSettings1Category.SelectedIndex = LsbToCbIndex(commonState.studioSet.PartMainSettings[(byte)partToRead].ToneBankSelectLSB);
-                commonState.CurrentTone.BankLSB = commonState.StudioSet.PartMainSettings[(byte)partToRead].ToneBankSelectLSB;
-                //cbStudioSetPartSettings1Program.SelectedIndex = commonState.studioSet.PartMainSettings[(byte)partToRead].ToneProgramNumber + 1;
-                commonState.CurrentTone.Program = commonState.StudioSet.PartMainSettings[(byte)partToRead].ToneProgramNumber;
-                slStudioSetPartSettings1Level.Value = commonState.StudioSet.PartMainSettings[(byte)partToRead].Level;
-                slStudioSetPartSettings1Pan.Value = commonState.StudioSet.PartMainSettings[(byte)partToRead].Pan - 64;
-                slStudioSetPartSettings1CoarseTune.Value = commonState.StudioSet.PartMainSettings[(byte)partToRead].CoarseTune - 64;
-                slStudioSetPartSettings1FineTune.Value = commonState.StudioSet.PartMainSettings[(byte)partToRead].FineTune - 64;
-                cbStudioSetPartSettings1MonoPoly.SelectedIndex = commonState.StudioSet.PartMainSettings[(byte)partToRead].MonoPoly;
-                cbStudioSetPartSettings1Legato.SelectedIndex = commonState.StudioSet.PartMainSettings[(byte)partToRead].Legato;
-                slStudioSetPartSettings1PitchBendRange.Value = commonState.StudioSet.PartMainSettings[(byte)partToRead].PitchBendRange;
-                cbStudioSetPartSettings1Portamento.SelectedIndex = commonState.StudioSet.PartMainSettings[(byte)partToRead].PortamentoSwitch;
-                slStudioSetPartSettings1PortamentoTime.Value = commonState.StudioSet.PartMainSettings[(byte)partToRead].PortamentoTime;
-                // Part settings 2 page
-                slStudioSetPartSettings2CutoffOffset.Value = commonState.StudioSet.PartMainSettings[(byte)partToRead].CutoffOffset - 64;
-                slStudioSetPartSettings2ResonanceOffset.Value = commonState.StudioSet.PartMainSettings[(byte)partToRead].ResonanceOffset - 64;
-                slStudioSetPartSettings2AttackTimeOffset.Value = commonState.StudioSet.PartMainSettings[(byte)partToRead].AttackTimeOffset - 64;
-                slStudioSetPartSettings2DecayTimeOffset.Value = commonState.StudioSet.PartMainSettings[(byte)partToRead].DecayTimeOffset - 64;
-                slStudioSetPartSettings2ResonanceOffset.Value = commonState.StudioSet.PartMainSettings[(byte)partToRead].ReleaseTimeOffset - 64;
-                slStudioSetPartSettings2VibratoRate.Value = commonState.StudioSet.PartMainSettings[(byte)partToRead].VibratoRate - 64;
-                slStudioSetPartSettings2VibratoDepth.Value = commonState.StudioSet.PartMainSettings[(byte)partToRead].VibratoDepth - 64;
-                slStudioSetPartSettings2VibratoDelay.Value = commonState.StudioSet.PartMainSettings[(byte)partToRead].VibratoDelay - 64;
-                // Part effects (continues previous page):
-                slStudioSetPartEffectsChorusSendLevel.Value = commonState.StudioSet.PartMainSettings[(byte)partToRead].ChorusSendLevel;
-                slStudioSetPartEffectsReverbSendLevel.Value = commonState.StudioSet.PartMainSettings[(byte)partToRead].ReverbSendLevel;
-                cbStudioSetPartEffectsOutputAssign.SelectedIndex = commonState.StudioSet.PartMainSettings[(byte)partToRead].OutputAssign;
-                // Part keyboard page
-                slStudioSetPartKeyboardOctaveShift.Value = commonState.StudioSet.PartKeyboard[(byte)partToRead].OctaveShift - 64;
-                slStudioSetPartKeyboardVelocitySenseOffset.Value = commonState.StudioSet.PartKeyboard[(byte)partToRead].VelocitySenseOffset - 64;
-                slStudioSetPartKeyboardRangeLower.Value = commonState.StudioSet.PartKeyboard[(byte)partToRead].RangeLower;
-                slStudioSetPartKeyboardRangeUpper.Value = commonState.StudioSet.PartKeyboard[(byte)partToRead].RangeUpper;
-                slStudioSetPartKeyboardFadeWidthLower.Value = commonState.StudioSet.PartKeyboard[(byte)partToRead].FadeWidthLower;
-                slStudioSetPartKeyboardFadeWidthUpper.Value = commonState.StudioSet.PartKeyboard[(byte)partToRead].FadeWidthUpper;
-                slStudioSetPartKeyboardVelocityRangeLower.Value = commonState.StudioSet.PartKeyboard[(byte)partToRead].VelocityRangeLower;
-                slStudioSetPartKeyboardVelocityRangeUpper.Value = commonState.StudioSet.PartKeyboard[(byte)partToRead].VelocityRangeUpper;
-                slStudioSetPartKeyboardVelocityFadeWidthLower.Value = commonState.StudioSet.PartKeyboard[(byte)partToRead].VelocityFadeWidthLower;
-                slStudioSetPartKeyboardVelocityFadeWidthUpper.Value = commonState.StudioSet.PartKeyboard[(byte)partToRead].VelocityFadeWidthUpper;
-                cbStudioSetPartKeyboardVelocityCurveType.SelectedIndex = commonState.StudioSet.PartKeyboard[(byte)partToRead].VelocityCurveType;
-                cbStudioSetPartKeyboardMute.IsChecked = commonState.StudioSet.PartKeyboard[(byte)partToRead].Mute;
-                // Scale tune page
-                cbStudioSetPartScaleTuneType.SelectedIndex = commonState.StudioSet.PartScaleTune[(byte)partToRead].Type;
-                cbStudioSetPartScaleTuneKey.SelectedIndex = commonState.StudioSet.PartScaleTune[(byte)partToRead].Key;
-                slStudioSetPartScaleTuneC.Value = commonState.StudioSet.PartScaleTune[(byte)partToRead].C - 64;
-                slStudioSetPartScaleTuneCi.Value = commonState.StudioSet.PartScaleTune[(byte)partToRead].Ci - 64;
-                slStudioSetPartScaleTuneD.Value = commonState.StudioSet.PartScaleTune[(byte)partToRead].D - 64;
-                slStudioSetPartScaleTuneDi.Value = commonState.StudioSet.PartScaleTune[(byte)partToRead].Di - 64;
-                slStudioSetPartScaleTuneE.Value = commonState.StudioSet.PartScaleTune[(byte)partToRead].E - 64;
-                slStudioSetPartScaleTuneF.Value = commonState.StudioSet.PartScaleTune[(byte)partToRead].F - 64;
-                slStudioSetPartScaleTuneFi.Value = commonState.StudioSet.PartScaleTune[(byte)partToRead].Fi - 64;
-                slStudioSetPartScaleTuneG.Value = commonState.StudioSet.PartScaleTune[(byte)partToRead].G - 64;
-                slStudioSetPartScaleTuneGi.Value = commonState.StudioSet.PartScaleTune[(byte)partToRead].Gi - 64;
-                slStudioSetPartScaleTuneA.Value = commonState.StudioSet.PartScaleTune[(byte)partToRead].A - 64;
-                slStudioSetPartScaleTuneAi.Value = commonState.StudioSet.PartScaleTune[(byte)partToRead].Ai - 64;
-                slStudioSetPartScaleTuneB.Value = commonState.StudioSet.PartScaleTune[(byte)partToRead].B - 64;
-                // Midi page (all but Phase lock)
-                cbStudioSetPartMidiReceiveProgramChange.IsChecked = commonState.StudioSet.PartMidi[(byte)partToRead].ReceiveProgramChange;
-                cbStudioSetPartMidiReceiveBankSelect.IsChecked = commonState.StudioSet.PartMidi[(byte)partToRead].ReceiveBankSelect;
-                cbStudioSetPartMidiReceivePitchBend.IsChecked = commonState.StudioSet.PartMidi[(byte)partToRead].ReceivePitchBend;
-                cbStudioSetPartMidiReceivePolyphonicKeyPressure.IsChecked = commonState.StudioSet.PartMidi[(byte)partToRead].ReceivePolyphonicKeyPressure;
-                cbStudioSetPartMidiReceiveChannelPressure.IsChecked = commonState.StudioSet.PartMidi[(byte)partToRead].ReceiveChannelPressure;
-                cbStudioSetPartMidiReceiveModulation.IsChecked = commonState.StudioSet.PartMidi[(byte)partToRead].ReceiveModulation;
-                cbStudioSetPartMidiReceiveVolume.IsChecked = commonState.StudioSet.PartMidi[(byte)partToRead].ReceiveVolume;
-                cbStudioSetPartMidiReceivePan.IsChecked = commonState.StudioSet.PartMidi[(byte)partToRead].ReceivePan;
-                cbStudioSetPartMidiReceiveExpression.IsChecked = commonState.StudioSet.PartMidi[(byte)partToRead].ReceiveExpression;
-                cbStudioSetPartMidiReceiveHold1.IsChecked = commonState.StudioSet.PartMidi[(byte)partToRead].ReceiveHold1;
-                // Motional surround page
-                slStudioSetPartMotionalSurroundLR.Value = commonState.StudioSet.PartMotionalSurround[(byte)partToRead].LR;
-                slStudioSetPartMotionalSurroundFB.Value = commonState.StudioSet.PartMotionalSurround[(byte)partToRead].FB;
-                slStudioSetPartMotionalSurroundWidth.Value = commonState.StudioSet.PartMotionalSurround[(byte)partToRead].Width;
-                slStudioSetPartMotionalSurroundAmbienceSendLevel.Value = commonState.StudioSet.PartMotionalSurround[(byte)partToRead].AmbienceSendLevel;
-                // Texts for sliders, Part settings 1
-                tbStudioSetPartSettings1Group.Text = "Bank select MSB " + (commonState.StudioSet.PartMainSettings[(byte)partToRead].ToneBankSelectMSB).ToString();
-                tbStudioSetPartSettings1Category.Text = "Bank select LSB " + (commonState.StudioSet.PartMainSettings[(byte)partToRead].ToneBankSelectLSB).ToString();
-                tbStudioSetPartSettings1Program.Text = "Program number " + (commonState.StudioSet.PartMainSettings[(byte)partToRead].ToneProgramNumber + 1).ToString();
-                tbStudioSetPartSettings1Level.Text = "Level " + (commonState.StudioSet.PartMainSettings[(byte)partToRead].Level).ToString();
-                tbStudioSetPartSettings1Pan.Text = "Pan " + (commonState.StudioSet.PartMainSettings[(byte)partToRead].Pan - 64).ToString();
-                tbStudioSetPartSettings1CoarseTune.Text = "Coarse tune " + (commonState.StudioSet.PartMainSettings[(byte)partToRead].CoarseTune - 64).ToString();
-                tbStudioSetPartSettings1FineTune.Text = "Fine tune " + (commonState.StudioSet.PartMainSettings[(byte)partToRead].FineTune - 64).ToString();
-                tbStudioSetPartSettings1PitchBendRange.Text = "Pitch bend range " + (commonState.StudioSet.PartMainSettings[(byte)partToRead].PitchBendRange).ToString();
-                tbStudioSetPartSettings1PortamentoTime.Text = "Portamento time " + (commonState.StudioSet.PartMainSettings[(byte)partToRead].PortamentoTime).ToString();
-                // Part settings 2
-                tbStudioSetPartSettings2CutoffOffset.Text = "Cutoff offset " + (commonState.StudioSet.PartMainSettings[(byte)partToRead].CutoffOffset - 64).ToString();
-                tbStudioSetPartSettings2ResonanceOffset.Text = "Resonance offset " + (commonState.StudioSet.PartMainSettings[(byte)partToRead].ResonanceOffset - 64).ToString();
-                tbStudioSetPartSettings2AttackTimeOffset.Text = "Attack time offset " + (commonState.StudioSet.PartMainSettings[(byte)partToRead].AttackTimeOffset - 64).ToString();
-                tbStudioSetPartSettings2DecayTimeOffset.Text = "Decay time offset " + (commonState.StudioSet.PartMainSettings[(byte)partToRead].DecayTimeOffset - 64).ToString();
-                tbStudioSetPartSettings2ReleaseTimeOffset.Text = "Release time offset " + (commonState.StudioSet.PartMainSettings[(byte)partToRead].ReleaseTimeOffset - 64).ToString();
-                tbStudioSetPartSettings2VibratoRate.Text = "Vibrato rate " + (commonState.StudioSet.PartMainSettings[(byte)partToRead].VibratoRate - 64).ToString();
-                tbStudioSetPartSettings2VibratoDepth.Text = "Vibrato depth " + (commonState.StudioSet.PartMainSettings[(byte)partToRead].VibratoDepth - 64).ToString();
-                tbStudioSetPartSettings2VibratoDelay.Text = "Vibrato delay " + (commonState.StudioSet.PartMainSettings[(byte)partToRead].VibratoDelay - 64).ToString();
-                // Part effects:
-                tbStudioSetPartEffectsChorusSendLevel.Text = "Chorus send level " + commonState.StudioSet.PartMainSettings[(byte)partToRead].ChorusSendLevel.ToString();
-                tbStudioSetPartEffectsReverbSendLevel.Text = "Reverb send level " + commonState.StudioSet.PartMainSettings[(byte)partToRead].ReverbSendLevel.ToString();
-                // Part keyboard:
-                tbStudioSetPartKeyboardOctaveShift.Text = "Octave shift " + (commonState.StudioSet.PartKeyboard[(byte)partToRead].OctaveShift - 64).ToString();
-                tbStudioSetPartKeyboardVelocitySenseOffset.Text = "Velocity sense offset " + (commonState.StudioSet.PartKeyboard[(byte)partToRead].VelocitySenseOffset - 63).ToString();
-                tbStudioSetPartKeyboardRangeLower.Text = "Range lower " + (commonState.StudioSet.PartKeyboard[(byte)partToRead].RangeLower).ToString();
-                tbStudioSetPartKeyboardRangeUpper.Text = "Range upper " + (commonState.StudioSet.PartKeyboard[(byte)partToRead].RangeUpper).ToString();
-                tbStudioSetPartKeyboardFadeWidthLower.Text = "Fade width lower " + (commonState.StudioSet.PartKeyboard[(byte)partToRead].FadeWidthLower).ToString();
-                tbStudioSetPartKeyboardFadeWidthUpper.Text = "Fade width uppper " + (commonState.StudioSet.PartKeyboard[(byte)partToRead].FadeWidthUpper).ToString();
-                tbStudioSetPartKeyboardVelocityRangeLower.Text = "Velocity range lower " + (commonState.StudioSet.PartKeyboard[(byte)partToRead].VelocityRangeLower).ToString();
-                tbStudioSetPartKeyboardVelocityRangeUpper.Text = "Velocity range upper " + (commonState.StudioSet.PartKeyboard[(byte)partToRead].VelocityRangeUpper).ToString();
-                tbStudioSetPartKeyboardVelocityFadeWidthLower.Text = "Vel. fade width lower " + (commonState.StudioSet.PartKeyboard[(byte)partToRead].VelocityFadeWidthLower).ToString();
-                tbStudioSetPartKeyboardVelocityFadeWidthUpper.Text = "Vel. fade width upper " + (commonState.StudioSet.PartKeyboard[(byte)partToRead].VelocityFadeWidthUpper).ToString();
-                // Scale tune:
-                tbStudioSetPartScaleTuneC.Text = "C " + (commonState.StudioSet.PartScaleTune[(byte)partToRead].C).ToString();
-                tbStudioSetPartScaleTuneCi.Text = "C# " + (commonState.StudioSet.PartScaleTune[(byte)partToRead].Ci).ToString();
-                tbStudioSetPartScaleTuneD.Text = "D " + (commonState.StudioSet.PartScaleTune[(byte)partToRead].D).ToString();
-                tbStudioSetPartScaleTuneDi.Text = "D# " + (commonState.StudioSet.PartScaleTune[(byte)partToRead].Di).ToString();
-                tbStudioSetPartScaleTuneE.Text = "E " + (commonState.StudioSet.PartScaleTune[(byte)partToRead].E).ToString();
-                tbStudioSetPartScaleTuneF.Text = "F " + (commonState.StudioSet.PartScaleTune[(byte)partToRead].F).ToString();
-                tbStudioSetPartScaleTuneFi.Text = "F# " + (commonState.StudioSet.PartScaleTune[(byte)partToRead].Fi).ToString();
-                tbStudioSetPartScaleTuneG.Text = "G " + (commonState.StudioSet.PartScaleTune[(byte)partToRead].G).ToString();
-                tbStudioSetPartScaleTuneGi.Text = "G# " + (commonState.StudioSet.PartScaleTune[(byte)partToRead].Gi).ToString();
-                tbStudioSetPartScaleTuneA.Text = "A " + (commonState.StudioSet.PartScaleTune[(byte)partToRead].A).ToString();
-                tbStudioSetPartScaleTuneAi.Text = "A# " + (commonState.StudioSet.PartScaleTune[(byte)partToRead].Ai).ToString();
-                tbStudioSetPartScaleTuneB.Text = "B " + (commonState.StudioSet.PartScaleTune[(byte)partToRead].B).ToString();
-                // Motional surround:
-                tbStudioSetPartMotionalSurroundLR.Text = "L-R " + (commonState.StudioSet.PartMotionalSurround[(byte)partToRead].LR).ToString();
-                tbStudioSetPartMotionalSurroundFB.Text = "F-B " + (commonState.StudioSet.PartMotionalSurround[(byte)partToRead].FB).ToString();
-                tbStudioSetPartMotionalSurroundWidth.Text = "Width " + (commonState.StudioSet.PartMotionalSurround[(byte)partToRead].Width).ToString();
-                tbStudioSetPartMotionalSurroundAmbienceSendLevel.Text = "Ambience send level " + (commonState.StudioSet.PartMotionalSurround[(byte)partToRead].AmbienceSendLevel).ToString();
-                PopHandleControlEvents();
+                // Part settings 1 page
+                if (cbStudioSetPartSelector.SelectedIndex > -1 && cbStudioSetPartSelector.SelectedIndex == partToRead)
+                {
+                    cbStudioSetPartSettings1ReceiveChannel.SelectedIndex = commonState.StudioSet.PartMainSettings[(byte)partToRead].ReceiveChannel;
+                    cbStudioSetPartSettings1Receive.IsChecked = commonState.StudioSet.PartMainSettings[(byte)partToRead].ReceiveSwitch;
+                    // These will be set after part is read (and the slider is now a ComboBox)
+                    //cbStudioSetPartSettings1Group.SelectedIndex = MsbToCbIndex(commonState.studioSet.PartMainSettings[(byte)partToRead].ToneBankSelectMSB);
+                    commonState.CurrentTone.BankMSB = commonState.StudioSet.PartMainSettings[(byte)partToRead].ToneBankSelectMSB;
+                    //cbStudioSetPartSettings1Category.SelectedIndex = LsbToCbIndex(commonState.studioSet.PartMainSettings[(byte)partToRead].ToneBankSelectLSB);
+                    commonState.CurrentTone.BankLSB = commonState.StudioSet.PartMainSettings[(byte)partToRead].ToneBankSelectLSB;
+                    //cbStudioSetPartSettings1Program.SelectedIndex = commonState.studioSet.PartMainSettings[(byte)partToRead].ToneProgramNumber + 1;
+                    commonState.CurrentTone.Program = commonState.StudioSet.PartMainSettings[(byte)partToRead].ToneProgramNumber;
+                    slStudioSetPartSettings1Level.Value = commonState.StudioSet.PartMainSettings[(byte)partToRead].Level;
+                    slStudioSetPartSettings1Pan.Value = commonState.StudioSet.PartMainSettings[(byte)partToRead].Pan - 64;
+                    slStudioSetPartSettings1CoarseTune.Value = commonState.StudioSet.PartMainSettings[(byte)partToRead].CoarseTune - 64;
+                    slStudioSetPartSettings1FineTune.Value = commonState.StudioSet.PartMainSettings[(byte)partToRead].FineTune - 64;
+                    cbStudioSetPartSettings1MonoPoly.SelectedIndex = commonState.StudioSet.PartMainSettings[(byte)partToRead].MonoPoly;
+                    cbStudioSetPartSettings1Legato.SelectedIndex = commonState.StudioSet.PartMainSettings[(byte)partToRead].Legato;
+                    slStudioSetPartSettings1PitchBendRange.Value = commonState.StudioSet.PartMainSettings[(byte)partToRead].PitchBendRange;
+                    cbStudioSetPartSettings1Portamento.SelectedIndex = commonState.StudioSet.PartMainSettings[(byte)partToRead].PortamentoSwitch;
+                    slStudioSetPartSettings1PortamentoTime.Value = commonState.StudioSet.PartMainSettings[(byte)partToRead].PortamentoTime;
+                    // Part settings 2 page
+                    slStudioSetPartSettings2CutoffOffset.Value = commonState.StudioSet.PartMainSettings[(byte)partToRead].CutoffOffset - 64;
+                    slStudioSetPartSettings2ResonanceOffset.Value = commonState.StudioSet.PartMainSettings[(byte)partToRead].ResonanceOffset - 64;
+                    slStudioSetPartSettings2AttackTimeOffset.Value = commonState.StudioSet.PartMainSettings[(byte)partToRead].AttackTimeOffset - 64;
+                    slStudioSetPartSettings2DecayTimeOffset.Value = commonState.StudioSet.PartMainSettings[(byte)partToRead].DecayTimeOffset - 64;
+                    slStudioSetPartSettings2ResonanceOffset.Value = commonState.StudioSet.PartMainSettings[(byte)partToRead].ReleaseTimeOffset - 64;
+                    slStudioSetPartSettings2VibratoRate.Value = commonState.StudioSet.PartMainSettings[(byte)partToRead].VibratoRate - 64;
+                    slStudioSetPartSettings2VibratoDepth.Value = commonState.StudioSet.PartMainSettings[(byte)partToRead].VibratoDepth - 64;
+                    slStudioSetPartSettings2VibratoDelay.Value = commonState.StudioSet.PartMainSettings[(byte)partToRead].VibratoDelay - 64;
+                    // Part effects (continues previous page):
+                    slStudioSetPartEffectsChorusSendLevel.Value = commonState.StudioSet.PartMainSettings[(byte)partToRead].ChorusSendLevel;
+                    slStudioSetPartEffectsReverbSendLevel.Value = commonState.StudioSet.PartMainSettings[(byte)partToRead].ReverbSendLevel;
+                    cbStudioSetPartEffectsOutputAssign.SelectedIndex = commonState.StudioSet.PartMainSettings[(byte)partToRead].OutputAssign;
+                    // Part keyboard page
+                    slStudioSetPartKeyboardOctaveShift.Value = commonState.StudioSet.PartKeyboard[(byte)partToRead].OctaveShift - 64;
+                    slStudioSetPartKeyboardVelocitySenseOffset.Value = commonState.StudioSet.PartKeyboard[(byte)partToRead].VelocitySenseOffset - 64;
+                    slStudioSetPartKeyboardRangeLower.Value = commonState.StudioSet.PartKeyboard[(byte)partToRead].RangeLower;
+                    slStudioSetPartKeyboardRangeUpper.Value = commonState.StudioSet.PartKeyboard[(byte)partToRead].RangeUpper;
+                    slStudioSetPartKeyboardFadeWidthLower.Value = commonState.StudioSet.PartKeyboard[(byte)partToRead].FadeWidthLower;
+                    slStudioSetPartKeyboardFadeWidthUpper.Value = commonState.StudioSet.PartKeyboard[(byte)partToRead].FadeWidthUpper;
+                    slStudioSetPartKeyboardVelocityRangeLower.Value = commonState.StudioSet.PartKeyboard[(byte)partToRead].VelocityRangeLower;
+                    slStudioSetPartKeyboardVelocityRangeUpper.Value = commonState.StudioSet.PartKeyboard[(byte)partToRead].VelocityRangeUpper;
+                    slStudioSetPartKeyboardVelocityFadeWidthLower.Value = commonState.StudioSet.PartKeyboard[(byte)partToRead].VelocityFadeWidthLower;
+                    slStudioSetPartKeyboardVelocityFadeWidthUpper.Value = commonState.StudioSet.PartKeyboard[(byte)partToRead].VelocityFadeWidthUpper;
+                    cbStudioSetPartKeyboardVelocityCurveType.SelectedIndex = commonState.StudioSet.PartKeyboard[(byte)partToRead].VelocityCurveType;
+                    cbStudioSetPartKeyboardMute.IsChecked = commonState.StudioSet.PartKeyboard[(byte)partToRead].Mute;
+                    // Scale tune page
+                    cbStudioSetPartScaleTuneType.SelectedIndex = commonState.StudioSet.PartScaleTune[(byte)partToRead].Type;
+                    cbStudioSetPartScaleTuneKey.SelectedIndex = commonState.StudioSet.PartScaleTune[(byte)partToRead].Key;
+                    slStudioSetPartScaleTuneC.Value = commonState.StudioSet.PartScaleTune[(byte)partToRead].C - 64;
+                    slStudioSetPartScaleTuneCi.Value = commonState.StudioSet.PartScaleTune[(byte)partToRead].Ci - 64;
+                    slStudioSetPartScaleTuneD.Value = commonState.StudioSet.PartScaleTune[(byte)partToRead].D - 64;
+                    slStudioSetPartScaleTuneDi.Value = commonState.StudioSet.PartScaleTune[(byte)partToRead].Di - 64;
+                    slStudioSetPartScaleTuneE.Value = commonState.StudioSet.PartScaleTune[(byte)partToRead].E - 64;
+                    slStudioSetPartScaleTuneF.Value = commonState.StudioSet.PartScaleTune[(byte)partToRead].F - 64;
+                    slStudioSetPartScaleTuneFi.Value = commonState.StudioSet.PartScaleTune[(byte)partToRead].Fi - 64;
+                    slStudioSetPartScaleTuneG.Value = commonState.StudioSet.PartScaleTune[(byte)partToRead].G - 64;
+                    slStudioSetPartScaleTuneGi.Value = commonState.StudioSet.PartScaleTune[(byte)partToRead].Gi - 64;
+                    slStudioSetPartScaleTuneA.Value = commonState.StudioSet.PartScaleTune[(byte)partToRead].A - 64;
+                    slStudioSetPartScaleTuneAi.Value = commonState.StudioSet.PartScaleTune[(byte)partToRead].Ai - 64;
+                    slStudioSetPartScaleTuneB.Value = commonState.StudioSet.PartScaleTune[(byte)partToRead].B - 64;
+                    // Midi page (all but Phase lock)
+                    cbStudioSetPartMidiReceiveProgramChange.IsChecked = commonState.StudioSet.PartMidi[(byte)partToRead].ReceiveProgramChange;
+                    cbStudioSetPartMidiReceiveBankSelect.IsChecked = commonState.StudioSet.PartMidi[(byte)partToRead].ReceiveBankSelect;
+                    cbStudioSetPartMidiReceivePitchBend.IsChecked = commonState.StudioSet.PartMidi[(byte)partToRead].ReceivePitchBend;
+                    cbStudioSetPartMidiReceivePolyphonicKeyPressure.IsChecked = commonState.StudioSet.PartMidi[(byte)partToRead].ReceivePolyphonicKeyPressure;
+                    cbStudioSetPartMidiReceiveChannelPressure.IsChecked = commonState.StudioSet.PartMidi[(byte)partToRead].ReceiveChannelPressure;
+                    cbStudioSetPartMidiReceiveModulation.IsChecked = commonState.StudioSet.PartMidi[(byte)partToRead].ReceiveModulation;
+                    cbStudioSetPartMidiReceiveVolume.IsChecked = commonState.StudioSet.PartMidi[(byte)partToRead].ReceiveVolume;
+                    cbStudioSetPartMidiReceivePan.IsChecked = commonState.StudioSet.PartMidi[(byte)partToRead].ReceivePan;
+                    cbStudioSetPartMidiReceiveExpression.IsChecked = commonState.StudioSet.PartMidi[(byte)partToRead].ReceiveExpression;
+                    cbStudioSetPartMidiReceiveHold1.IsChecked = commonState.StudioSet.PartMidi[(byte)partToRead].ReceiveHold1;
+                    // Motional surround page
+                    slStudioSetPartMotionalSurroundLR.Value = commonState.StudioSet.PartMotionalSurround[(byte)partToRead].LR;
+                    slStudioSetPartMotionalSurroundFB.Value = commonState.StudioSet.PartMotionalSurround[(byte)partToRead].FB;
+                    slStudioSetPartMotionalSurroundWidth.Value = commonState.StudioSet.PartMotionalSurround[(byte)partToRead].Width;
+                    slStudioSetPartMotionalSurroundAmbienceSendLevel.Value = commonState.StudioSet.PartMotionalSurround[(byte)partToRead].AmbienceSendLevel;
+                    // Texts for sliders, Part settings 1
+                    tbStudioSetPartSettings1Group.Text = "Bank select MSB " + (commonState.StudioSet.PartMainSettings[(byte)partToRead].ToneBankSelectMSB).ToString();
+                    tbStudioSetPartSettings1Category.Text = "Bank select LSB " + (commonState.StudioSet.PartMainSettings[(byte)partToRead].ToneBankSelectLSB).ToString();
+                    tbStudioSetPartSettings1Program.Text = "Program number " + (commonState.StudioSet.PartMainSettings[(byte)partToRead].ToneProgramNumber + 1).ToString();
+                    tbStudioSetPartSettings1Level.Text = "Level " + (commonState.StudioSet.PartMainSettings[(byte)partToRead].Level).ToString();
+                    tbStudioSetPartSettings1Pan.Text = "Pan " + (commonState.StudioSet.PartMainSettings[(byte)partToRead].Pan - 64).ToString();
+                    tbStudioSetPartSettings1CoarseTune.Text = "Coarse tune " + (commonState.StudioSet.PartMainSettings[(byte)partToRead].CoarseTune - 64).ToString();
+                    tbStudioSetPartSettings1FineTune.Text = "Fine tune " + (commonState.StudioSet.PartMainSettings[(byte)partToRead].FineTune - 64).ToString();
+                    tbStudioSetPartSettings1PitchBendRange.Text = "Pitch bend range " + (commonState.StudioSet.PartMainSettings[(byte)partToRead].PitchBendRange).ToString();
+                    tbStudioSetPartSettings1PortamentoTime.Text = "Portamento time " + (commonState.StudioSet.PartMainSettings[(byte)partToRead].PortamentoTime).ToString();
+                    // Part settings 2
+                    tbStudioSetPartSettings2CutoffOffset.Text = "Cutoff offset " + (commonState.StudioSet.PartMainSettings[(byte)partToRead].CutoffOffset - 64).ToString();
+                    tbStudioSetPartSettings2ResonanceOffset.Text = "Resonance offset " + (commonState.StudioSet.PartMainSettings[(byte)partToRead].ResonanceOffset - 64).ToString();
+                    tbStudioSetPartSettings2AttackTimeOffset.Text = "Attack time offset " + (commonState.StudioSet.PartMainSettings[(byte)partToRead].AttackTimeOffset - 64).ToString();
+                    tbStudioSetPartSettings2DecayTimeOffset.Text = "Decay time offset " + (commonState.StudioSet.PartMainSettings[(byte)partToRead].DecayTimeOffset - 64).ToString();
+                    tbStudioSetPartSettings2ReleaseTimeOffset.Text = "Release time offset " + (commonState.StudioSet.PartMainSettings[(byte)partToRead].ReleaseTimeOffset - 64).ToString();
+                    tbStudioSetPartSettings2VibratoRate.Text = "Vibrato rate " + (commonState.StudioSet.PartMainSettings[(byte)partToRead].VibratoRate - 64).ToString();
+                    tbStudioSetPartSettings2VibratoDepth.Text = "Vibrato depth " + (commonState.StudioSet.PartMainSettings[(byte)partToRead].VibratoDepth - 64).ToString();
+                    tbStudioSetPartSettings2VibratoDelay.Text = "Vibrato delay " + (commonState.StudioSet.PartMainSettings[(byte)partToRead].VibratoDelay - 64).ToString();
+                    // Part effects:
+                    tbStudioSetPartEffectsChorusSendLevel.Text = "Chorus send level " + commonState.StudioSet.PartMainSettings[(byte)partToRead].ChorusSendLevel.ToString();
+                    tbStudioSetPartEffectsReverbSendLevel.Text = "Reverb send level " + commonState.StudioSet.PartMainSettings[(byte)partToRead].ReverbSendLevel.ToString();
+                    // Part keyboard:
+                    tbStudioSetPartKeyboardOctaveShift.Text = "Octave shift " + (commonState.StudioSet.PartKeyboard[(byte)partToRead].OctaveShift - 64).ToString();
+                    tbStudioSetPartKeyboardVelocitySenseOffset.Text = "Velocity sense offset " + (commonState.StudioSet.PartKeyboard[(byte)partToRead].VelocitySenseOffset - 63).ToString();
+                    tbStudioSetPartKeyboardRangeLower.Text = "Range lower " + (commonState.StudioSet.PartKeyboard[(byte)partToRead].RangeLower).ToString();
+                    tbStudioSetPartKeyboardRangeUpper.Text = "Range upper " + (commonState.StudioSet.PartKeyboard[(byte)partToRead].RangeUpper).ToString();
+                    tbStudioSetPartKeyboardFadeWidthLower.Text = "Fade width lower " + (commonState.StudioSet.PartKeyboard[(byte)partToRead].FadeWidthLower).ToString();
+                    tbStudioSetPartKeyboardFadeWidthUpper.Text = "Fade width uppper " + (commonState.StudioSet.PartKeyboard[(byte)partToRead].FadeWidthUpper).ToString();
+                    tbStudioSetPartKeyboardVelocityRangeLower.Text = "Velocity range lower " + (commonState.StudioSet.PartKeyboard[(byte)partToRead].VelocityRangeLower).ToString();
+                    tbStudioSetPartKeyboardVelocityRangeUpper.Text = "Velocity range upper " + (commonState.StudioSet.PartKeyboard[(byte)partToRead].VelocityRangeUpper).ToString();
+                    tbStudioSetPartKeyboardVelocityFadeWidthLower.Text = "Vel. fade width lower " + (commonState.StudioSet.PartKeyboard[(byte)partToRead].VelocityFadeWidthLower).ToString();
+                    tbStudioSetPartKeyboardVelocityFadeWidthUpper.Text = "Vel. fade width upper " + (commonState.StudioSet.PartKeyboard[(byte)partToRead].VelocityFadeWidthUpper).ToString();
+                    // Scale tune:
+                    tbStudioSetPartScaleTuneC.Text = "C " + (commonState.StudioSet.PartScaleTune[(byte)partToRead].C).ToString();
+                    tbStudioSetPartScaleTuneCi.Text = "C# " + (commonState.StudioSet.PartScaleTune[(byte)partToRead].Ci).ToString();
+                    tbStudioSetPartScaleTuneD.Text = "D " + (commonState.StudioSet.PartScaleTune[(byte)partToRead].D).ToString();
+                    tbStudioSetPartScaleTuneDi.Text = "D# " + (commonState.StudioSet.PartScaleTune[(byte)partToRead].Di).ToString();
+                    tbStudioSetPartScaleTuneE.Text = "E " + (commonState.StudioSet.PartScaleTune[(byte)partToRead].E).ToString();
+                    tbStudioSetPartScaleTuneF.Text = "F " + (commonState.StudioSet.PartScaleTune[(byte)partToRead].F).ToString();
+                    tbStudioSetPartScaleTuneFi.Text = "F# " + (commonState.StudioSet.PartScaleTune[(byte)partToRead].Fi).ToString();
+                    tbStudioSetPartScaleTuneG.Text = "G " + (commonState.StudioSet.PartScaleTune[(byte)partToRead].G).ToString();
+                    tbStudioSetPartScaleTuneGi.Text = "G# " + (commonState.StudioSet.PartScaleTune[(byte)partToRead].Gi).ToString();
+                    tbStudioSetPartScaleTuneA.Text = "A " + (commonState.StudioSet.PartScaleTune[(byte)partToRead].A).ToString();
+                    tbStudioSetPartScaleTuneAi.Text = "A# " + (commonState.StudioSet.PartScaleTune[(byte)partToRead].Ai).ToString();
+                    tbStudioSetPartScaleTuneB.Text = "B " + (commonState.StudioSet.PartScaleTune[(byte)partToRead].B).ToString();
+                    // Motional surround:
+                    tbStudioSetPartMotionalSurroundLR.Text = "L-R " + (commonState.StudioSet.PartMotionalSurround[(byte)partToRead].LR).ToString();
+                    tbStudioSetPartMotionalSurroundFB.Text = "F-B " + (commonState.StudioSet.PartMotionalSurround[(byte)partToRead].FB).ToString();
+                    tbStudioSetPartMotionalSurroundWidth.Text = "Width " + (commonState.StudioSet.PartMotionalSurround[(byte)partToRead].Width).ToString();
+                    tbStudioSetPartMotionalSurroundAmbienceSendLevel.Text = "Ambience send level " + (commonState.StudioSet.PartMotionalSurround[(byte)partToRead].AmbienceSendLevel).ToString();
+                }
             }
+            catch { }
+            PopHandleControlEvents();
         }
 
         private void ReadStudioSetPartToneName()
         {
             t.Trace("private void ReadStudioSetPartToneName()");
             ReceivedData Data = new ReceivedData(rawData);
-            PushHandleControlEvents();
             PushHandleControlEvents();
             switch (commonState.SimpleToneType)
             {
@@ -7432,7 +7430,6 @@ namespace Integra_7_Xamarin
             // This is a bit special since we have put part MIDI together with MIDI switches (which must first have been read above!).
             ReceivedData Data = new ReceivedData(rawData);
             PushHandleControlEvents();
-            PushHandleControlEvents();
             cbStudioSetPartMidiPhaseLock.IsChecked = commonState.StudioSet.PartMidi[cbStudioSetPartSelector.SelectedIndex].PhaseLock;
             PopHandleControlEvents();
         }
@@ -7445,7 +7442,6 @@ namespace Integra_7_Xamarin
                 partToRead = cbStudioSetPartSelector.SelectedIndex;
             }
             commonState.StudioSet.PartEQ[partToRead] = new StudioSet_PartEQ(new ReceivedData(rawData));
-            PushHandleControlEvents();
             PushHandleControlEvents();
             cbStudioSetPartEQSwitch.IsChecked = commonState.StudioSet.PartEQ[(byte)partToRead].EqSwitch;
             cbStudioSetPartEQLowFreq.SelectedIndex = commonState.StudioSet.PartEQ[(byte)partToRead].EqLowFreq;
@@ -9128,7 +9124,6 @@ namespace Integra_7_Xamarin
 
                         // Select the new studio set:
                         PushHandleControlEvents();
-                        PushHandleControlEvents();
                         cbStudioSetSelector.SelectedIndex = cbStudioSetSlot.SelectedIndex;
                         PopHandleControlEvents();
                     }
@@ -9282,7 +9277,6 @@ namespace Integra_7_Xamarin
         private async void btnFileLoad_Click(object sender, EventArgs e)
         {
             PushHandleControlEvents();
-            PushHandleControlEvents();
             commonState.StudioSet = await StudioSet.Deserialize<StudioSet>(commonState.StudioSet);
             UpdateControlsAndIntegra7FromClasses(cbStudioSetPartSelector.SelectedIndex);
             PopHandleControlEvents();
@@ -9340,7 +9334,6 @@ namespace Integra_7_Xamarin
             //    cbStudioSetPartSettings1Group.Items.Add(item);
             //}
             // Populate lvGroups:
-            PushHandleControlEvents();
             PushHandleControlEvents();
             cbStudioSetPartSettings1Group.Items.Clear();
             foreach (List<String> tone in commonState.ToneList.Tones)
@@ -9425,7 +9418,6 @@ namespace Integra_7_Xamarin
             String lastCategory = "";
             //CategoriesSource.Clear();
             PushHandleControlEvents();
-            PushHandleControlEvents();
             cbStudioSetPartSettings1Category.Items.Clear();
             foreach (List<String> line in commonState.ToneList.Tones.OrderBy(o => o[1]))
             {
@@ -9443,7 +9435,6 @@ namespace Integra_7_Xamarin
         private void PopulateCbStudioSetPartSettings1Program()
         {
             t.Trace("private void PopulateCbStudioSetPartSettings1Program ()");
-            PushHandleControlEvents();
             PushHandleControlEvents();
             try
             {

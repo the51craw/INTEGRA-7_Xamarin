@@ -53,6 +53,8 @@ namespace Integra_7_Xamarin
 
         Boolean VenderDriverDetected();
 
+        void MakeMidiDeviceList();
+
         List<String> GetMidiDeviceList();
     }
 }

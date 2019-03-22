@@ -56,12 +56,6 @@ namespace Integra_7_Xamarin.UWP
         {
             if (MessageReceived)
             {
-                // Just skip the keep-alive messages:
-                if (rawData.Length == 1 && rawData[0] == 0xfe)
-                {
-                    return;
-                }
-
                 // Alert mainPage
                 mainPage.uIHandler.rawData = rawData;
                 mainPage.uIHandler.MidiInPort_MessageRecceived();
@@ -72,6 +66,14 @@ namespace Integra_7_Xamarin.UWP
         public void MidiInPort_MessageReceived(MidiInPort sender, MidiMessageReceivedEventArgs args)
         {
             IMidiMessage receivedMidiMessage = args.Message;
+            byte[] temp = receivedMidiMessage.RawData.ToArray();
+
+            // Just skip the keep-alive messages:
+            if (temp.Length == 1 && temp[0] == 0xfe)
+            {
+                return;
+            }
+
             rawData = receivedMidiMessage.RawData.ToArray();
             MessageReceived = true;
         }
@@ -194,10 +196,8 @@ namespace Integra_7_Xamarin.UWP
                 midiOutPort = (MidiOutPort)await MidiOutPort.FromIdAsync(midiOutDevInfo.Id);
             }
 
-            MidiDevices.Clear();
             foreach (DeviceInformation device in midiInputDevices)
             {
-                MidiDevices.Add(device.Name);
                 if (device.Name.Contains(deviceName))
                 {
                     midiInDevInfo = device;
@@ -348,6 +348,23 @@ namespace Integra_7_Xamarin.UWP
         public List<String> GetMidiDeviceList()
         {
             return MidiDevices;
+        }
+
+        public async void MakeMidiDeviceList()
+        {
+            DeviceInformationCollection midiInputDevices = await DeviceInformation.FindAllAsync(MidiInPort.GetDeviceSelector());
+            MidiDevices.Clear();
+            foreach (DeviceInformation device in midiInputDevices)
+            {
+                if (device.Name.Contains("["))
+                {
+                    MidiDevices.Add(device.Name.Remove(device.Name.IndexOf('[')));
+                }
+                else
+                {
+                    MidiDevices.Add(device.Name);
+                }
+            }
         }
 
         public void NoteOn(byte currentChannel, byte noteNumber, byte velocity)
