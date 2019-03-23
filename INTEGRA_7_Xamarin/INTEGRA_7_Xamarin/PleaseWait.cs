@@ -11,12 +11,13 @@ namespace Integra_7_Xamarin
         MIDI,
         INTEGRA_7,
         EDIT,
-        READING_STUDIO_SET_NAMES
+        READING_STUDIO_SET_NAMES,
+        IDLE
     }
 
     public partial class UIHandler
     {
-        public ProgressBar ProgressBar { get; set; }
+        //public ProgressBar ProgressBar { get; set; }
 
         private WaitingFor waitingFor;
         private Object o;
@@ -29,17 +30,17 @@ namespace Integra_7_Xamarin
         /// <param name="o">Pass any object needed if applicable</param>
         public void ShowPleaseWaitPage(WaitingFor waitingFor, Object o = null)
         {
+            currentPage = CurrentPage.PLEASE_WAIT;
             if (!PleaseWait_IsCreated)
             {
                 DrawPleaseWaitPage();
                 PleaseWait_StackLayout.MinimumWidthRequest = 1;
                 mainStackLayout.Children.Add(PleaseWait_StackLayout);
-                PleaseWait_Init();
                 PleaseWait_IsCreated = true;
             }
-            currentPage = CurrentPage.PLEASE_WAIT;
             PleaseWait_StackLayout.IsVisible = true;
             this.waitingFor = waitingFor;
+            PleaseWait_Init();
             this.o = o;
         }
 
@@ -60,6 +61,7 @@ namespace Integra_7_Xamarin
                     break;
                 case WaitingFor.READING_STUDIO_SET_NAMES:
                     tbPleaseWait.Text = "Please wait while scanning Studio set names and initiating studio set editor form...";
+                    pb_WaitingProgress.Progress = 0;
                     break;
             }
         }
@@ -226,6 +228,10 @@ namespace Integra_7_Xamarin
 
         private void PleaseWait_ReadStudioSetNames()
         {
+            waitingFor = WaitingFor.IDLE;
+            queryType = QueryType.STUDIO_SET_NAMES;
+            ShowStudioSetEditorPage();
+            pb_WaitingProgress.Progress = 0;
         }
 
         public void PleaseWait_MidiInPort_MessageReceived()
@@ -233,6 +239,11 @@ namespace Integra_7_Xamarin
             if (queryType == QueryType.CHECKING_I_7_READINESS)
             {
                 integra_7Ready = true;
+            }
+            else if (queryType == QueryType.STUDIO_SET_NAMES)
+            {
+                pb_WaitingProgress.Progress += 1F / 64F;
+                EditStudioSet_MidiInPort_MessageReceived();
             }
         }
 

@@ -946,106 +946,109 @@ namespace Integra_7_Xamarin
             {
                 t.Trace("private void UpdateFoldersList(SelectedIndex = " + SelectedFolderIndex.ToString() + ")");
                 PushHandleControlEvents();
-                try
+                if (Favorites_ocFavoriteList != null)
                 {
-                    Int32 count = 0;
-                    Favorites_ocFavoriteList.Clear(); // Since we will not have a selected folder, do not show favorites!
-                    Favorites_CurrentlyInFavoriteList.Clear();
-                    //Int32 selectedItemIndex = -1;
-                    Favorites_btnDeleteFolder.IsEnabled = false;
-                    Favorites_ocFolderList.Clear();
-                    //Favorites_lvGroupList.ItemSelected -= Favorites_lvGroupList_ItemSelected;
-                    //Favorites_lvGroupList.DoubleTapped -= Favorites_lvGroupList_DoubleTapped;
-                    //Favorites_lvGroupList = new ListView();
-                    //Favorites_lvGroupList.Name = "Favorites_lvGroupList";
-                    //Favorites_lvGroupList.Margin = new Thickness(2, 2, 2, 2);
-                    //Favorites_lvGroupList.BorderThickness = new Thickness(1);
-                    //Favorites_lvGroupList.BorderBrush = black;
-                    //Favorites_lvGroupList.Visibility = Visibility.Visible;
-                    //Favorites_lvGroupList.SelectionChanged += Favorites_lvGroupList_SelectionChanged;
-                    //Favorites_lvGroupList.DoubleTapped += Favorites_lvGroupList_DoubleTapped;
-                    //Favorites_ocGroupList gcFolders.Children.Add(Favorites_lvGroupList);
-                    UInt16 i = 0;
-                    foreach (FavoritesFolder folder in commonState.FavoritesList.folders)
+                    try
                     {
-                        Boolean mark = false;
-                        if (favoritesAction == FavoritesAction.ADD || favoritesAction == FavoritesAction.REMOVE)
+                        Int32 count = 0;
+                        Favorites_ocFavoriteList.Clear(); // Since we will not have a selected folder, do not show favorites!
+                        Favorites_CurrentlyInFavoriteList.Clear();
+                        //Int32 selectedItemIndex = -1;
+                        Favorites_btnDeleteFolder.IsEnabled = false;
+                        Favorites_ocFolderList.Clear();
+                        //Favorites_lvGroupList.ItemSelected -= Favorites_lvGroupList_ItemSelected;
+                        //Favorites_lvGroupList.DoubleTapped -= Favorites_lvGroupList_DoubleTapped;
+                        //Favorites_lvGroupList = new ListView();
+                        //Favorites_lvGroupList.Name = "Favorites_lvGroupList";
+                        //Favorites_lvGroupList.Margin = new Thickness(2, 2, 2, 2);
+                        //Favorites_lvGroupList.BorderThickness = new Thickness(1);
+                        //Favorites_lvGroupList.BorderBrush = black;
+                        //Favorites_lvGroupList.Visibility = Visibility.Visible;
+                        //Favorites_lvGroupList.SelectionChanged += Favorites_lvGroupList_SelectionChanged;
+                        //Favorites_lvGroupList.DoubleTapped += Favorites_lvGroupList_DoubleTapped;
+                        //Favorites_ocGroupList gcFolders.Children.Add(Favorites_lvGroupList);
+                        UInt16 i = 0;
+                        foreach (FavoritesFolder folder in commonState.FavoritesList.folders)
                         {
-                            foreach (FavoriteTone fav in folder.FavoriteTones)
+                            Boolean mark = false;
+                            if (favoritesAction == FavoritesAction.ADD || favoritesAction == FavoritesAction.REMOVE)
                             {
-                                if (fav.Group == commonState.CurrentTone.Group
-                                    && fav.Category == commonState.CurrentTone.Category
-                                    && fav.Name == commonState.CurrentTone.Name)
+                                foreach (FavoriteTone fav in folder.FavoriteTones)
                                 {
-                                    mark = true;
-                                    SelectedFolderIndex = i;
-                                    count++;
+                                    if (fav.Group == commonState.CurrentTone.Group
+                                        && fav.Category == commonState.CurrentTone.Category
+                                        && fav.Name == commonState.CurrentTone.Name)
+                                    {
+                                        mark = true;
+                                        SelectedFolderIndex = i;
+                                        count++;
+                                    }
+                                }
+                            }
+                            if (favoritesAction == FavoritesAction.ADD)
+                            {
+                                mark = !mark;
+                            }
+
+                            if (mark)
+                            {
+                                Favorites_ocFolderList.Add("*" + folder.Name);
+                            }
+                            else
+                            {
+                                Favorites_ocFolderList.Add(folder.Name);
+                            }
+                            i++;
+                        }
+                        if ((SelectedFolderIndex > -1 && favoritesAction == FavoritesAction.SHOW) || (count > 0 && favoritesAction == FavoritesAction.REMOVE) || (count == 0 && favoritesAction == FavoritesAction.ADD))
+                        {
+                            // There are still items to delete or still room for more items, 
+                            // stay in marked mode:
+                            if (Favorites_ocFolderList.Count() > 0)
+                            {
+                                if (SelectedFolderIndex > -1 && SelectedFolderIndex < Favorites_ocFolderList.Count)
+                                {
+                                    Favorites_lvFolderList.SelectedItem = Favorites_ocFolderList[SelectedFolderIndex];
+                                }
+                                else
+                                {
+                                    Favorites_lvFolderList.SelectedItem = Favorites_ocFolderList[0];
+                                    Favorites_CurrentFolder = 0;
                                 }
                             }
                         }
-                        if (favoritesAction == FavoritesAction.ADD)
-                        {
-                            mark = !mark;
-                        }
-
-                        if (mark)
-                        {
-                            Favorites_ocFolderList.Add("*" + folder.Name);
-                        }
                         else
                         {
-                            Favorites_ocFolderList.Add(folder.Name);
-                        }
-                        i++;
-                    }
-                    if ((SelectedFolderIndex > -1 && favoritesAction == FavoritesAction.SHOW) || (count > 0 && favoritesAction == FavoritesAction.REMOVE) || (count == 0 && favoritesAction == FavoritesAction.ADD))
-                    {
-                        // There are still items to delete or still room for more items, 
-                        // stay in marked mode:
-                        if (Favorites_ocFolderList.Count() > 0)
-                        {
-                            if (SelectedFolderIndex > -1 && SelectedFolderIndex < Favorites_ocFolderList.Count)
+                            // There are no more items to delete, or no folders that 
+                            // does not have the item to add, go to normal mode:
+                            if (Favorites_CurrentFolder > -1 && Favorites_CurrentFolder < Favorites_ocFolderList.Count())
                             {
-                                Favorites_lvFolderList.SelectedItem = Favorites_ocFolderList[SelectedFolderIndex];
+                                Favorites_lvFolderList.SelectedItem = Favorites_ocFolderList[Favorites_CurrentFolder];
                             }
-                            else
+                            else if (Favorites_ocFolderList.Count() > 0)
                             {
                                 Favorites_lvFolderList.SelectedItem = Favorites_ocFolderList[0];
                                 Favorites_CurrentFolder = 0;
                             }
                         }
+                        //PopHandleControlEvents();
+                        if (Favorites_lvFolderList.SelectedItem == null)
+                        {
+                            if (Favorites_ocFolderList.Count > 0)
+                            {
+                                Favorites_lvFolderList.SelectedItem = Favorites_ocFolderList[0];
+                                Favorites_CurrentFolder = 0;
+                            }
+                        }
+                        UpdateFavoritesList(Favorites_lvFolderList.SelectedItem.ToString());
+                        //Favorites_lvFolderList.ItemsSource = Favorites_ocFolderList;
                     }
-                    else
+                    catch { }
+                    if (Favorites_ocFolderList.Count() > 0)
                     {
-                        // There are no more items to delete, or no folders that 
-                        // does not have the item to add, go to normal mode:
-                        if (Favorites_CurrentFolder > -1 && Favorites_CurrentFolder < Favorites_ocFolderList.Count())
-                        {
-                            Favorites_lvFolderList.SelectedItem = Favorites_ocFolderList[Favorites_CurrentFolder];
-                        }
-                        else if (Favorites_ocFolderList.Count() > 0)
-                        {
-                            Favorites_lvFolderList.SelectedItem = Favorites_ocFolderList[0];
-                            Favorites_CurrentFolder = 0;
-                        }
+                        Favorites_lvFolderList.SelectedItem = Favorites_ocFolderList[0];
+                        Favorites_CurrentFolder = 0;
                     }
-                    //PopHandleControlEvents();
-                    if (Favorites_lvFolderList.SelectedItem == null)
-                    {
-                        if (Favorites_ocFolderList.Count > 0)
-                        {
-                            Favorites_lvFolderList.SelectedItem = Favorites_ocFolderList[0];
-                            Favorites_CurrentFolder = 0;
-                        }
-                    }
-                    UpdateFavoritesList(Favorites_lvFolderList.SelectedItem.ToString());
-                    //Favorites_lvFolderList.ItemsSource = Favorites_ocFolderList;
-                }
-                catch { }
-                if (Favorites_ocFolderList.Count() > 0)
-                {
-                    Favorites_lvFolderList.SelectedItem = Favorites_ocFolderList[0];
-                    Favorites_CurrentFolder = 0;
                 }
                 PopHandleControlEvents();
             }

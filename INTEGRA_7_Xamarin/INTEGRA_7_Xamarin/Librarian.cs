@@ -1693,8 +1693,16 @@ namespace Integra_7_Xamarin
         {
             //mainStackLayout.Children.RemoveAt(0);
             Librarian_StackLayout.IsVisible = false;
+            if (EditStudioSet_IsCreated)
+            {
+                StudioSetEditor_StackLayout.IsVisible = true;
+            }
+            else
+            {
+                mainPage.uIHandler.ShowPleaseWaitPage(WaitingFor.READING_STUDIO_SET_NAMES, null);
+            }
             //Waiting(true, "Please wait while scanning Studio set names and initiating form...", Librarian_StackLayout);
-            ShowStudioSetEditorPage();
+            //ShowStudioSetEditorPage();
         }
 
         private void Librarian_btnResetVolume_Clicked(object sender, EventArgs e)
@@ -2057,7 +2065,7 @@ namespace Integra_7_Xamarin
                 //DrawLibrarianPage(); // Librarian page is created in advace because the MIDI pickers must be present
                 // before creating the MIDI object, and the MIDI object is needed before showing the librarian page.
                 mainStackLayout.Children.Add(Librarian_StackLayout);
-                DrawPleaseWaitPage(); // Librarian is always first to start, but this page is used by other pages.
+                //DrawPleaseWaitPage(); // Librarian is always first to start, but this page is used by other pages.
                 //mainStackLayout.Children.Add(PleaseWait_StackLayout);
                 Librarian_IsCreated = true;
 

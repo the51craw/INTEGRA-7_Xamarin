@@ -593,7 +593,7 @@ namespace Integra_7_Xamarin
         Boolean setVisibility = false;
         public void ShowStudioSetEditorPage()
         {
-            currentPage = CurrentPage.EDIT_STUDIO_SET;
+            //currentPage = CurrentPage.EDIT_STUDIO_SET;
             if (!EditStudioSet_IsCreated)
             {
                 initDone = false;
@@ -603,6 +603,7 @@ namespace Integra_7_Xamarin
                 DrawStudioSetEditorPage();
                 StudioSetEditor_StackLayout.MinimumWidthRequest = 1;
                 mainStackLayout.Children.Add(StudioSetEditor_StackLayout);
+                StudioSetEditor_StackLayout.IsVisible = false;
                 EditStudioSet_IsCreated = true;
                 PopHandleControlEvents();
                 commonState.StudioSet = new StudioSet();
@@ -610,7 +611,7 @@ namespace Integra_7_Xamarin
                 PopulateComboBoxes();
                 setVisibility = true;
             }
-            StudioSetEditor_StackLayout.IsVisible = true;
+            StudioSetEditor_StackLayout.IsVisible = false;
         }
 
         /*
@@ -2311,7 +2312,7 @@ namespace Integra_7_Xamarin
                 //commonState.reactToMidiInAndTimerTick = CommonState.ReactToMidiInAndTimerTick.EDIT_STUDIO_SET;
             }
             catch { }
-            Waiting(true, "Please wait while scanning Studio set names and initiating form...", StudioSetEditor_StackLayout);
+            //Waiting(true, "Please wait while scanning Studio set names and initiating form...", StudioSetEditor_StackLayout);
             studioSetEditor_State = StudioSetEditor_State.INIT;
             ResetComboBoxes();
             hex2Midi = new Hex2Midi();
@@ -3452,6 +3453,11 @@ namespace Integra_7_Xamarin
                     {
                         // All titles received, set a status that will be caught in Timer_Tick:
                         studioSetEditor_State = StudioSetEditor_State.DONE;
+
+                        // PleaseWait has had the control so far, so take it and let Studio set editor be visible.
+                        currentPage = CurrentPage.EDIT_STUDIO_SET;
+                        PleaseWait_StackLayout.IsVisible = false;
+                        StudioSetEditor_StackLayout.IsVisible = true;
                     }
                 }
                 else

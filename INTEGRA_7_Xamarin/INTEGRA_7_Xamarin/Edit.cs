@@ -1219,7 +1219,7 @@ namespace Integra_7_Xamarin
                 //commonState.reactToMidiInAndTimerTick = CommonState.ReactToMidiInAndTimerTick.EDIT;
             }
             catch { }
-            Waiting(true, "Working...", Edit_StackLayout);
+            //Waiting(true, "Working...", Edit_StackLayout);
             edit_State = Edit_State.NONE;
             //blackBorder = new SolidColorBrush(Windows.UI.Color.FromArgb(255,0,0,0));
             //borderThickness = new Thickness(1);
