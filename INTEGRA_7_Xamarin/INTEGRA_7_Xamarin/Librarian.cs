@@ -2077,6 +2077,7 @@ namespace Integra_7_Xamarin
                 Favorites_StackLayout.IsVisible = false;
                 Favorites_IsCreated = true;
                 Init2();
+                Favorites_UpdateFoldersList();
             }
             //else if(MidiState == MIDIState.INITIALIZING)
             //{
@@ -2085,7 +2086,7 @@ namespace Integra_7_Xamarin
             //    ShowPleaseWaitPage(WaitingFor.INTEGRA_7, null);
             //}
             PopHandleControlEvents();
-            Favorites_UpdateFoldersList();
+            //Favorites_UpdateFoldersList();
             //mainStackLayout.Children.Add(LibrarianStackLayout);
             Librarian_StackLayout.IsVisible = true;
             if (Librarian_Groups.Count == 0)
@@ -2299,10 +2300,12 @@ namespace Integra_7_Xamarin
                 if (IsFavorite())
                 {
                     Librarian_btnShowFavorites.BackgroundColor = colorSettings.IsFavorite;
+                    Librarian_btnRemoveFavorite.IsEnabled = true;
                 }
                 else
                 {
                     Librarian_btnShowFavorites.BackgroundColor = colorSettings.ControlBackground;
+                    Librarian_btnRemoveFavorite.IsEnabled = false;
                 }
                 Librarian_btnAddFavorite.IsEnabled = true;
                 try

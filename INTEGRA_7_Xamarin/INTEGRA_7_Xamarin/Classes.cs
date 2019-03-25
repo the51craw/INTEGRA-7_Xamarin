@@ -1713,6 +1713,13 @@ namespace Integra_7_Xamarin
             this.Category = Category;
             this.Name = Name;
         }
+
+        public FavoriteTone(Tone Tone)
+        {
+            this.Group = Tone.Group;
+            this.Category = Tone.Category;
+            this.Name = Tone.Name;
+        }
     }
 
     class Buddy
