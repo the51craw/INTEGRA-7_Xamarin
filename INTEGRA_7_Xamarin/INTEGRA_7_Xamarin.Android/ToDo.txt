@@ -1,0 +1,14 @@
+﻿Implement MyFileIO
+
+To Upload the file in external storage of android:
+var documentsPath = Android.OS.Environment.ExternalStorageDirectory.ToString();
+var filePath = Path.Combine(documentsPath, "test.txt");
+System.IO.File.WriteAllText (filePath, "Om Sai Ram");
+Add the following permission:
+<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+To create a new folder:
+var dir =  new Java.IO.File(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + "/Sample/");
+    if (!dir.Exists ())
+        dir.Mkdirs ();
+    if(dir.Exists())
+        dir.Delete();

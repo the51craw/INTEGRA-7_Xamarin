@@ -14,6 +14,8 @@ namespace Integra_7_Xamarin
 
         String ReadFile(String filename);
 
-        String LoadFavorites();
+        void SaveFileAsync(String content, String extension);
+
+        //String LoadFavorites();
     }
 }

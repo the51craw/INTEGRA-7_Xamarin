@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-//using System.Runtime.InteropServices.WindowsRuntime;
-//using Windows.Storage;
-//using Windows.Storage.Pickers;
 using System.Runtime.Serialization;
 using System.Xml;
 using System.Threading.Tasks;
+using Plugin.FilePicker;
+using Plugin.FilePicker.Abstractions;
+using System.IO.MemoryMappedFiles;
+using System.IO.Pipes;
 
 namespace Integra_7_Xamarin
 {
@@ -61,103 +61,100 @@ namespace Integra_7_Xamarin
             "1/8T", "1/16.", "1/8", "1/4T", "1/8.", "1/4", "1/2T", "1/4.", "1/2", "1/1T",
             "1/2.", "1/1", "2/1T", "1/1.", "2/1" };
 
-        public static async Task<StudioSet> Deserialize<StudioSet>(StudioSet studioSet)
+        public static async Task<StudioSet> StudioSet_Deserialize<StudioSet>(StudioSet studioSet)
         {
-            //try
-            //{
-            //    FileOpenPicker openPicker = new FileOpenPicker();
-            //    openPicker.ViewMode = PickerViewMode.Thumbnail;
-            //    openPicker.FileTypeFilter.Add(".xml");
-            //    StorageFile openStudioSetFile = await openPicker.PickSingleFileAsync();
-
-            //    if (openStudioSetFile != null)
-            //    {
-            //        Stream stream = await openStudioSetFile.OpenStreamForReadAsync();
-            //        await Task.Run(() =>
-            //        {
-            //            MemoryStream memoryStream = new MemoryStream();
-            //            stream.CopyTo(memoryStream);
-            //            memoryStream.Position = 0;
-            //            DataContractSerializer dataContractSerializer = new DataContractSerializer(typeof(StudioSet));
-            //            XmlReader xmlReader = XmlReader.Create(memoryStream);
-            //            XmlDictionaryReader xmlDictionaryReader = XmlDictionaryReader.CreateDictionaryReader(xmlReader);
-            //            studioSet = (StudioSet)dataContractSerializer.ReadObject(xmlDictionaryReader);
-            //            xmlReader.Dispose();
-            //        });
-            //    }
-            //}
-            //catch (Exception e) { }
+            try
+            {
+                FileData fileData = await CrossFilePicker.Current.PickFile();
+                if (fileData != null)
+                {
+                    byte[] data = fileData.DataArray;
+                    await Task.Run(() =>
+                    {
+                        MemoryStream memoryStream = new MemoryStream(data);
+                        memoryStream.Position = 0;
+                        DataContractSerializer dataContractSerializer = new DataContractSerializer(typeof(StudioSet));
+                        XmlReader xmlReader = XmlReader.Create(memoryStream);
+                        XmlDictionaryReader xmlDictionaryReader = XmlDictionaryReader.CreateDictionaryReader(xmlReader);
+                        studioSet = (StudioSet)dataContractSerializer.ReadObject(xmlDictionaryReader);
+                        xmlReader.Dispose();
+                    });
+                }
+            }
+            catch (Exception e) { }
             return studioSet;
         }
 
         public static async Task Serialize<StudioSet>(StudioSet studioSet)
         {
-            //try
-            //{
-            //    FileSavePicker savePicker = new FileSavePicker();
-            //    savePicker.FileTypeChoices.Add("Plain Text", new List<string>() { ".xml" });
-            //    StorageFile saveStudioSetFile = await savePicker.PickSaveFileAsync();
-            //    if (saveStudioSetFile != null)
-            //    {
-            //        //await saveStudioSetFile. DeleteAsync(StorageDeleteOption.Default);
-            //        CachedFileManager.DeferUpdates(saveStudioSetFile);
-            //        Stream fileStream = await saveStudioSetFile.OpenStreamForWriteAsync();
-            //        fileStream.SetLength(0);
-            //        await Task.Run(() =>
-            //        {
-            //            MemoryStream memoryStream = new MemoryStream();
-            //            XmlWriter xmlWriter = XmlWriter.Create(memoryStream);
-            //            using (XmlDictionaryWriter xmlDictionaryWriter = XmlDictionaryWriter.CreateDictionaryWriter(xmlWriter))
-            //            {
-            //                var dataContractSerializer = new DataContractSerializer(typeof(StudioSet));
-            //                dataContractSerializer.WriteObject(memoryStream, studioSet);
-            //                fileStream.Seek(0, SeekOrigin.Begin);
-            //                ArraySegment<byte> data = new ArraySegment<byte>();
-            //                memoryStream.TryGetBuffer(out data);
-            //                xmlWriter.Flush();
-            //                fileStream.Write(data.ToArray(), 0, (Int32)data.Count);
-            //                fileStream.Flush();
-            //                xmlDictionaryWriter.Dispose();
-            //            }
-            //            xmlWriter.Dispose();
-            //            memoryStream.Dispose();
-            //        });
-            //        fileStream.Dispose();
-            //        String xmlText = await FileIO.ReadTextAsync(saveStudioSetFile);
-            //        xmlText = xmlText.Replace("><", ">\n<");
-            //        String[] lines = xmlText.Split('\n');
-            //        String indent = "";
-            //        xmlText = "";
-            //        Boolean firstLine = true;
-            //        foreach (String line in lines)
-            //        {
-            //            if (firstLine)
-            //            {
-            //                xmlText = line + "\r\n";
-            //                firstLine = false;
-            //            }
-            //            else if (line.StartsWith("</"))
-            //            {
-            //                if (indent.Length > 0)
-            //                {
-            //                    indent = indent.Remove(0, 1);
-            //                }
-            //                xmlText += indent + line + "\r\n";
-            //            }
-            //            else if (line.Contains("</"))
-            //            {
-            //                xmlText += indent + line + "\r\n";
-            //            }
-            //            else
-            //            {
-            //                xmlText += indent + line + "\r\n";
-            //                indent += "\t";
-            //            }
-            //        }
-            //        await FileIO.WriteTextAsync(saveStudioSetFile, xmlText);
-            //    }
-            //}
-            //catch (Exception e) { }
+            try
+            {
+                FileData fileData = await CrossFilePicker.Current.PickFile();
+                if (fileData != null)
+                {
+                    String fileName = fileData.FileName;
+                    //CachedFileManager.DeferUpdates(saveStudioSetFile);
+                    //Stream fileStream = await saveStudioSetFile.OpenStreamForWriteAsync();
+                    //fileStream.SetLength(0);
+                    //IFileSystem fileSystem = FileSystem.Current;
+                    //IFile selfiePhotoFile = await photosFolder.CreateFileAsync("selfie.png", CreationCollisionOption.ReplaceExisting);
+                    await Task.Run(() =>
+                    {
+                        MemoryStream memoryStream = new MemoryStream();
+                        XmlWriter xmlWriter = XmlWriter.Create(memoryStream);
+                        using (XmlDictionaryWriter xmlDictionaryWriter = XmlDictionaryWriter.CreateDictionaryWriter(xmlWriter))
+                        {
+                            var dataContractSerializer = new DataContractSerializer(typeof(StudioSet));
+                            dataContractSerializer.WriteObject(memoryStream, studioSet);
+                            FileStream fileStream = File.Create(fileData.FileName);
+                            fileStream.Seek(0, SeekOrigin.Begin);
+                            memoryStream.CopyTo(fileStream);
+                            //ArraySegment<byte> data = new ArraySegment<byte>();
+                            //memoryStream.TryGetBuffer(out data);
+                            xmlWriter.Flush();
+                            //fileStream.Write(data, 0, (Int32)data.Count);
+                            fileStream.Flush();
+                            xmlDictionaryWriter.Dispose();
+                        }
+                        xmlWriter.Dispose();
+                        memoryStream.Dispose();
+                    });
+                    //fileStream.Dispose();
+                    //String xmlText = await FileIO.ReadTextAsync(saveStudioSetFile);
+                    //xmlText = xmlText.Replace("><", ">\n<");
+                    //String[] lines = xmlText.Split('\n');
+                    //String indent = "";
+                    //xmlText = "";
+                    //Boolean firstLine = true;
+                    //foreach (String line in lines)
+                    //{
+                    //    if (firstLine)
+                    //    {
+                    //        xmlText = line + "\r\n";
+                    //        firstLine = false;
+                    //    }
+                    //    else if (line.StartsWith("</"))
+                    //    {
+                    //        if (indent.Length > 0)
+                    //        {
+                    //            indent = indent.Remove(0, 1);
+                    //        }
+                    //        xmlText += indent + line + "\r\n";
+                    //    }
+                    //    else if (line.Contains("</"))
+                    //    {
+                    //        xmlText += indent + line + "\r\n";
+                    //    }
+                    //    else
+                    //    {
+                    //        xmlText += indent + line + "\r\n";
+                    //        indent += "\t";
+                    //    }
+                    //}
+                    //await FileIO.WriteTextAsync(saveStudioSetFile, xmlText);
+                }
+            }
+            catch (Exception e) { }
         }
     }
 

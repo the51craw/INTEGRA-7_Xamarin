@@ -44,6 +44,18 @@ namespace Integra_7_Xamarin.UWP
             throw new NotImplementedException();
         }
 
+        public async void SaveFileAsync(string content, string extension)
+        {
+            try
+            {
+                FileSavePicker savePicker = new FileSavePicker();
+                savePicker.FileTypeChoices.Add("Plain Text", new List<string>() { extension });
+                StorageFile saveStudioSetFile = await savePicker.PickSaveFileAsync();
+                await FileIO.WriteTextAsync(saveStudioSetFile, content);
+            }
+            catch { }
+        }
+
         public void SetMainPagePortable(Integra_7_Xamarin.MainPage mainPage)
         {
             throw new NotImplementedException();

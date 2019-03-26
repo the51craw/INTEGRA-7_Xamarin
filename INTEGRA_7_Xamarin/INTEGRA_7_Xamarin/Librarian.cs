@@ -2346,7 +2346,7 @@ namespace Integra_7_Xamarin
             //t.Trace("private Boolean IsFavorite()");
             if (commonState.FavoritesList != null)
             {
-                foreach (FavoritesFolder folder in commonState.FavoritesList.folders)
+                foreach (FavoritesFolder folder in commonState.FavoritesList.FavoritesFolders)
                 {
                     foreach (FavoriteTone favorite in folder.FavoriteTones)
                     {

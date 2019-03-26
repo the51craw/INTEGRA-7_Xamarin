@@ -1659,6 +1659,18 @@ namespace Integra_7_Xamarin
     }
 
     [DataContract]
+    public class FavoritesList
+    {
+        [DataMember]
+        public List<FavoritesFolder> FavoritesFolders { get; set; }
+
+        public FavoritesList()
+        {
+            FavoritesFolders = new List<FavoritesFolder>();
+        }
+    }
+
+    [DataContract]
     public class FavoritesFolder
     {
         [DataMember]
@@ -1683,13 +1695,6 @@ namespace Integra_7_Xamarin
             }
             return null;
         }
-    }
-
-    [DataContract]
-    public class FavoritesList
-    {
-        [DataMember]
-        public List<FavoritesFolder> folders = new List<FavoritesFolder>();
     }
 
     /// <summary>

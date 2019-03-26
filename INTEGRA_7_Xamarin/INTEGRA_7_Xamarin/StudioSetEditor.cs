@@ -9283,7 +9283,7 @@ namespace Integra_7_Xamarin
         private async void btnFileLoad_Click(object sender, EventArgs e)
         {
             PushHandleControlEvents();
-            commonState.StudioSet = await StudioSet.Deserialize<StudioSet>(commonState.StudioSet);
+            commonState.StudioSet = await StudioSet.StudioSet_Deserialize<StudioSet>(commonState.StudioSet);
             UpdateControlsAndIntegra7FromClasses(cbStudioSetPartSelector.SelectedIndex);
             PopHandleControlEvents();
             ;
