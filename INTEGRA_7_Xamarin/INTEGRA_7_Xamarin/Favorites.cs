@@ -2,14 +2,11 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 using Plugin.FilePicker;
 using Plugin.FilePicker.Abstractions;
-//using Plugin.FileSystem;
-//using Plugin.FileSystem.Abstractions;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Xml;
@@ -47,7 +44,6 @@ namespace Integra_7_Xamarin
         Button Favorites_btnAddFolder = null;
         Button Favorites_btnDeleteFolder = null;
         TextBlock Favorites_tbHelp = null;
-        //Button Favorites_btnCopyFavorite = null;
         Button Favorites_btnAddFavorite = null;
         Button Favorites_btnDeleteFavorite = null;
         Button Favorites_btnSelectFavorite = null;
@@ -577,6 +573,7 @@ namespace Integra_7_Xamarin
             ShowLibrarianPage();
         }
 
+        // Backup/restore button handlers -------------------------------------------------------------------------------
         private async void Favorites_btnRestore_Clicked(object sender, EventArgs e)
         {
             try
@@ -584,7 +581,7 @@ namespace Integra_7_Xamarin
                 FileData fileData = await CrossFilePicker.Current.PickFile();
                 if (fileData != null)
                 {
-                    if (fileData.FileName.EndsWith(".fav"))
+                    if (fileData.FileName.ToLower().EndsWith(".fav"))
                     {
                         byte[] data = fileData.DataArray;
                         String favorites = "";
@@ -594,7 +591,7 @@ namespace Integra_7_Xamarin
                         }
                         Favorites_Restore(favorites);
                     }
-                    else if (fileData.FileName.EndsWith(".favxml"))
+                    else if (fileData.FileName.ToLower().EndsWith(".fav_xml"))
                     {
                         byte[] data = fileData.DataArray;
                         await Task.Run(() =>
@@ -611,12 +608,16 @@ namespace Integra_7_Xamarin
                         UpdateFavoritesListFromCommonstate((String)Favorites_lvFolderList.SelectedItem);
                         SaveToLocalSettings();
                     }
+                    else
+                    {
+                        await mainPage.DisplayAlert("Integra-7 Librarian", "You can only restore favorites from a file with " +
+                            "a file extension '.fav_xml' (or '.fav' if you have saved from the old version of the program)!", "Cancel");
+                    }
                 }
             }
             catch { }
         }
 
-        // Backup/restore button handlers -------------------------------------------------------------------------------
         private async void Favorites_btnBackup_Clicked(object sender, EventArgs e)
         {
             t.Trace("private void btnSave_Click (" + "object" + sender + ", " + "RoutedEventArgs" + e + ", " + ")");

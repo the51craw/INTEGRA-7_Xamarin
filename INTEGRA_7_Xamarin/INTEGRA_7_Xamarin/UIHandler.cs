@@ -390,7 +390,7 @@ namespace Integra_7_Xamarin
         // but can have when mouse is connected via OTG! Still has no waitcursor.
         // In those cases image UI might have some 'disabled' look and not respond to tapping.
         // This is platform dependent! UWP and MacOS definitely can show a waitcursor.
-        private void Waiting(Boolean on, String WaitText, StackLayout stackLayout = null)
+        private void Waiting(Boolean on, String WaitText = "", StackLayout stackLayout = null)
         {
             //t.Trace("private void Waiting(" + on.ToString() + ")");
             // Maybe also test for platform and use different methods?

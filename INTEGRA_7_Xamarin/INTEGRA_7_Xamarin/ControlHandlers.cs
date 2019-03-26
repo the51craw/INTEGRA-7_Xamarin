@@ -140,13 +140,12 @@ namespace Integra_7_Xamarin
             }
         }
 
-        private void cbEditTone_ParameterPages_SelectionChanged(object sender, EventArgs e)
+        private async void cbEditTone_ParameterPages_SelectionChanged(object sender, EventArgs e)
         {
             //t.Trace("private void cbEditTone_ParameterPages_SelectionChanged (" + "object" + sender + ", " + "EventArgs" + e + ", " + ")");
             if (initDone && handleControlEvents)
             {
                 Waiting(true, "Working...", Edit_StackLayout);
-                currentHandleControlEvents = handleControlEvents;
                 PushHandleControlEvents();
                 currentParameterPageIndex = (byte)cbEditTone_ParameterPages.SelectedIndex;
                 currentParameterPage = (String)cbEditTone_ParameterPages.SelectedItem;
@@ -155,31 +154,35 @@ namespace Integra_7_Xamarin
                 switch (currentProgramType)
                 {
                     case ProgramType.PCM_SYNTH_TONE:
-/*                        if (currentParameterPage == "Save file")
+                        if (currentParameterPage == "Save file")
                         {
                             PCMData pcmData = new PCMData();
                             pcmData.ToneData = pCMSynthTone;
                             pcmData.MFX = commonMFX;
-                            await PCMData.Serialize(pcmData);
+                            await PCMData.Serialize(pcmData, pcmData.ToneData.pCMSynthToneCommon.Name);
                             Waiting(false);
                         }
                         else if (currentParameterPage == "Load file")
                         {
                             PCMData pcmData = new PCMData();
                             pcmData.ToneData = pCMSynthTone;
+                            pcmData.ToneType = CommonState.SimpleToneTypes.UNKNOWN;
                             pcmData = await PCMData.Deserialize(pcmData);
-                            try
+                            if (pcmData.ToneType == CommonState.SimpleToneTypes.PCM_SYNTH_TONE)
                             {
-                                pCMSynthTone = pcmData.ToneData;
-                                commonMFX = pcmData.MFX;
-                                UpdateIntegra7FromPCM();
-                                currentParameterPageIndex = 0;
-                                UpdatePCMSynthToneControls();
+                                try
+                                {
+                                    pCMSynthTone = pcmData.ToneData;
+                                    commonMFX = pcmData.MFX;
+                                    UpdateIntegra7FromPCM();
+                                }
+                                catch { }
                             }
-                            catch { }
+                            currentParameterPageIndex = 0;
+                            UpdatePCMSynthToneControls();
                             Waiting(false);
                         }
-                        else*/ if (currentParameterPageIndex == 15)
+                        else if (currentParameterPageIndex == 15)
                         {
                             SetMFXOffsetValues(commonMFX.MFXType);
                             if (commonMFX.MFXType == mfxPageReadFromIntegra7)
@@ -198,31 +201,36 @@ namespace Integra_7_Xamarin
                         }
                         break;
                     case ProgramType.PCM_DRUM_KIT:
-                        /*if (currentParameterPage == "Save file")
+                        if (currentParameterPage == "Save file")
                         {
                             PCMDData pcmdData = new PCMDData();
                             pcmdData.ToneData = pCMDrumKit;
                             pcmdData.MFX = commonMFX;
-                            await PCMDData.Serialize(pcmdData);
+                            await PCMDData.Serialize(pcmdData, pcmdData.ToneData.pCMDrumKitCommon.Name);
+                            UpdatePCMDrumKitControls();
                             Waiting(false);
                         }
                         else if (currentParameterPage == "Load file")
                         {
                             PCMDData pcmdData = new PCMDData();
                             pcmdData.ToneData = pCMDrumKit;
+                            pcmdData.ToneType = CommonState.SimpleToneTypes.UNKNOWN;
                             pcmdData = await PCMDData.Deserialize(pcmdData);
-                            try
+                            if (pcmdData.ToneType == CommonState.SimpleToneTypes.PCM_DRUM_KIT)
                             {
-                                pCMDrumKit = pcmdData.ToneData;
-                                commonMFX = pcmdData.MFX;
-                                UpdateIntegra7FromPCMD();
-                                currentParameterPageIndex = 0;
-                                UpdatePCMDrumKitControls();
+                                try
+                                {
+                                    pCMDrumKit = pcmdData.ToneData;
+                                    commonMFX = pcmdData.MFX;
+                                    UpdateIntegra7FromPCMD();
+                                }
+                                catch { }
                             }
-                            catch { }
+                            currentParameterPageIndex = 0;
+                            UpdatePCMDrumKitControls();
                             Waiting(false);
                         }
-                        else*/ if (currentParameterPageIndex == 12)
+                        else if (currentParameterPageIndex == 12)
                         {
                             SetMFXOffsetValues(commonMFX.MFXType);
                             if (commonMFX.MFXType == mfxPageReadFromIntegra7)
@@ -246,31 +254,35 @@ namespace Integra_7_Xamarin
                         }
                         break;
                     case ProgramType.SUPERNATURAL_ACOUSTIC_TONE:
-                        /*if (currentParameterPage == "Save file")
+                        if (currentParameterPage == "Save file")
                         {
                             SNAData snaData = new SNAData();
                             snaData.ToneData = superNATURALAcousticTone;
                             snaData.MFX = commonMFX;
-                            await SNAData.Serialize(snaData);
+                            await SNAData.Serialize(snaData, snaData.ToneData.superNATURALAcousticToneCommon.Name);
                             Waiting(false);
                         }
                         else if (currentParameterPage == "Load file")
                         {
                             SNAData snaData = new SNAData();
                             snaData.ToneData = superNATURALAcousticTone;
+                            snaData.ToneType = CommonState.SimpleToneTypes.UNKNOWN;
                             snaData = await SNAData.Deserialize(snaData);
-                            try
+                            if (snaData.ToneType == CommonState.SimpleToneTypes.SUPERNATURAL_ACOUSTIC_TONE)
                             {
-                                superNATURALAcousticTone = snaData.ToneData;
-                                commonMFX = snaData.MFX;
-                                UpdateIntegra7FromSNA();
-                                currentParameterPageIndex = 0;
+                                try
+                                {
+                                    superNATURALAcousticTone = snaData.ToneData;
+                                    commonMFX = snaData.MFX;
+                                    UpdateIntegra7FromSNA();
+                                }
+                                catch { }
                             }
-                            catch { }
+                            currentParameterPageIndex = 0;
                             UpdateSuperNATURALAcousticToneControls();
                             Waiting(false);
                         }
-                        else*/ if (currentParameterPageIndex == 2)
+                        else if (currentParameterPageIndex == 2)
                         {
                             SetMFXOffsetValues(commonMFX.MFXType);
                             if (commonMFX.MFXType == mfxPageReadFromIntegra7)
@@ -289,30 +301,35 @@ namespace Integra_7_Xamarin
                         }
                         break;
                     case ProgramType.SUPERNATURAL_SYNTH_TONE:
-                        /*if (currentParameterPage == "Save file")
+                        if (currentParameterPage == "Save file")
                         {
                             SNSData snsData = new SNSData();
                             snsData.ToneData = superNATURALSynthTone;
                             snsData.MFX = commonMFX;
-                            await SNSData.Serialize(snsData);
+                            await SNSData.Serialize(snsData, snsData.ToneData.superNATURALSynthToneCommon.Name);
                             Waiting(false);
                         }
                         else if (currentParameterPage == "Load file")
                         {
                             SNSData snsData = new SNSData();
                             snsData.ToneData = superNATURALSynthTone;
+                            snsData.ToneType = CommonState.SimpleToneTypes.UNKNOWN;
                             snsData = await SNSData.Deserialize(snsData);
-                            try
+                            if (snsData.ToneType == CommonState.SimpleToneTypes.SUPERNATURAL_SYNTH_TONE)
                             {
-                                superNATURALSynthTone = snsData.ToneData;
-                                commonMFX = snsData.MFX;
-                                UpdateIntegra7FromSNS();
-                                currentParameterPageIndex = 0;
-                                UpdateSuperNATURALSynthToneControls();
-                            } catch { }
+                                try
+                                {
+                                    superNATURALSynthTone = snsData.ToneData;
+                                    commonMFX = snsData.MFX;
+                                    UpdateIntegra7FromSNS();
+                                }
+                                catch { }
+                            }
+                            currentParameterPageIndex = 0;
+                            UpdateSuperNATURALSynthToneControls();
                             Waiting(false);
                         }
-                        else*/ if (currentParameterPageIndex == 9)
+                        else if (currentParameterPageIndex == 9)
                         {
                             SetMFXOffsetValues(commonMFX.MFXType);
                             if (commonMFX.MFXType == mfxPageReadFromIntegra7)
@@ -331,32 +348,35 @@ namespace Integra_7_Xamarin
                         }
                         break;
                     case ProgramType.SUPERNATURAL_DRUM_KIT:
-                        /*if (currentParameterPage == "Save file")
+                        if (currentParameterPage == "Save file")
                         {
                             SNDData sndData = new SNDData();
                             sndData.ToneData = superNATURALDrumKit;
                             sndData.MFX = commonMFX;
-                            await SNDData.Serialize(sndData);
+                            await SNDData.Serialize(sndData, sndData.ToneData.superNATURALDrumKitCommon.Name);
                             Waiting(false);
                         }
                         else if (currentParameterPage == "Load file")
                         {
                             SNDData sndData = new SNDData();
                             sndData.ToneData = superNATURALDrumKit;
+                            sndData.ToneType = CommonState.SimpleToneTypes.UNKNOWN;
                             sndData = await SNDData.Deserialize(sndData);
-                            try
+                            if (sndData.ToneType == CommonState.SimpleToneTypes.SUPERNATURAL_DRUM_KIT)
                             {
-                                superNATURALDrumKit = sndData.ToneData;
-                                PushHandleControlEvents();
-                                commonMFX = sndData.MFX;
-                                UpdateIntegra7FromSND();
-                                currentParameterPageIndex = 0;
-                                UpdateSuperNATURALDrumKitControls();
+                                try
+                                {
+                                    superNATURALDrumKit = sndData.ToneData;
+                                    commonMFX = sndData.MFX;
+                                    UpdateIntegra7FromSND();
+                                }
+                                catch { }
                             }
-                            catch { }
+                            currentParameterPageIndex = 0;
+                            UpdateSuperNATURALDrumKitControls();
                             Waiting(false);
                         }
-                        else*/ if (currentParameterPageIndex == 4)
+                        else if (currentParameterPageIndex == 4)
                         {
                             SetMFXOffsetValues(commonMFX.MFXType);
                             if (commonMFX.MFXType == mfxPageReadFromIntegra7)

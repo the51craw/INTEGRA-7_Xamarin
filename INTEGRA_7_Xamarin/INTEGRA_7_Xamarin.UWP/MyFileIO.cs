@@ -44,12 +44,13 @@ namespace Integra_7_Xamarin.UWP
             throw new NotImplementedException();
         }
 
-        public async void SaveFileAsync(string content, string extension)
+        public async void SaveFileAsync(string content, string extension, string filename = "")
         {
             try
             {
                 FileSavePicker savePicker = new FileSavePicker();
-                savePicker.FileTypeChoices.Add("Plain Text", new List<string>() { extension });
+                savePicker.FileTypeChoices.Add("XML text", new List<string>() { extension });
+                savePicker.SuggestedFileName = filename;
                 StorageFile saveStudioSetFile = await savePicker.PickSaveFileAsync();
                 await FileIO.WriteTextAsync(saveStudioSetFile, content);
             }
