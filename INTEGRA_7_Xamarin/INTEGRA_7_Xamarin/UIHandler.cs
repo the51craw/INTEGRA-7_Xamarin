@@ -30,7 +30,7 @@ namespace Integra_7_Xamarin
             ANDROID,
         }
 
-        enum CurrentPage
+        public enum CurrentPage
         {
             PLEASE_WAIT,
             LIBRARIAN,
@@ -283,7 +283,12 @@ namespace Integra_7_Xamarin
         {
             if (stackLayout.Children != null && stackLayout.Children.Count > 0)
             {
-                Int32 size = (Int32)(stackLayout.Width < stackLayout.Height * 1.25 ? stackLayout.Width / 80 : stackLayout.Height / 70);
+                Int32 size = (Int32)stackLayout.Height / 50;
+                if (stackLayout.Width < stackLayout.Height * 1.25)
+                {
+                    size = (Int32)stackLayout.Width / 60;
+                }
+
                 if (size > 0 && size != lastfontSize)
                 {
                     lastfontSize = size;

@@ -3455,9 +3455,9 @@ namespace Integra_7_Xamarin
                         studioSetEditor_State = StudioSetEditor_State.DONE;
 
                         // PleaseWait has had the control so far, so take it and let Studio set editor be visible.
-                        currentPage = CurrentPage.EDIT_STUDIO_SET;
-                        PleaseWait_StackLayout.IsVisible = false;
-                        StudioSetEditor_StackLayout.IsVisible = true;
+                        //currentPage = CurrentPage.EDIT_STUDIO_SET;
+                        //PleaseWait_StackLayout.IsVisible = false;          Moved to PleaseWait.cs!
+                        //StudioSetEditor_StackLayout.IsVisible = true;
                     }
                 }
                 else
@@ -9286,7 +9286,6 @@ namespace Integra_7_Xamarin
             commonState.StudioSet = await StudioSet.StudioSet_Deserialize<StudioSet>(commonState.StudioSet);
             UpdateControlsAndIntegra7FromClasses(cbStudioSetPartSelector.SelectedIndex);
             PopHandleControlEvents();
-            ;
         }
 
         private void btnStudioSetReturn_Click(object sender, EventArgs e)

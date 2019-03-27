@@ -89,15 +89,8 @@ namespace Integra_7_Xamarin
         {
             try
             {
-                FileData fileData = await CrossFilePicker.Current.PickFile();
-                if (fileData != null)
+                String xmlText = "";
                 {
-                    String fileName = fileData.FileName;
-                    //CachedFileManager.DeferUpdates(saveStudioSetFile);
-                    //Stream fileStream = await saveStudioSetFile.OpenStreamForWriteAsync();
-                    //fileStream.SetLength(0);
-                    //IFileSystem fileSystem = FileSystem.Current;
-                    //IFile selfiePhotoFile = await photosFolder.CreateFileAsync("selfie.png", CreationCollisionOption.ReplaceExisting);
                     await Task.Run(() =>
                     {
                         MemoryStream memoryStream = new MemoryStream();
@@ -106,52 +99,52 @@ namespace Integra_7_Xamarin
                         {
                             var dataContractSerializer = new DataContractSerializer(typeof(StudioSet));
                             dataContractSerializer.WriteObject(memoryStream, studioSet);
-                            FileStream fileStream = File.Create(fileData.FileName);
-                            fileStream.Seek(0, SeekOrigin.Begin);
-                            memoryStream.CopyTo(fileStream);
-                            //ArraySegment<byte> data = new ArraySegment<byte>();
-                            //memoryStream.TryGetBuffer(out data);
+                            memoryStream.Seek(0, SeekOrigin.Begin);
+                            for (Int32 i = 0; i < memoryStream.Length; i++)
+                            {
+                                xmlText += (char)memoryStream.ReadByte();
+                            }
                             xmlWriter.Flush();
-                            //fileStream.Write(data, 0, (Int32)data.Count);
-                            fileStream.Flush();
                             xmlDictionaryWriter.Dispose();
                         }
                         xmlWriter.Dispose();
                         memoryStream.Dispose();
                     });
-                    //fileStream.Dispose();
-                    //String xmlText = await FileIO.ReadTextAsync(saveStudioSetFile);
-                    //xmlText = xmlText.Replace("><", ">\n<");
-                    //String[] lines = xmlText.Split('\n');
-                    //String indent = "";
-                    //xmlText = "";
-                    //Boolean firstLine = true;
-                    //foreach (String line in lines)
-                    //{
-                    //    if (firstLine)
-                    //    {
-                    //        xmlText = line + "\r\n";
-                    //        firstLine = false;
-                    //    }
-                    //    else if (line.StartsWith("</"))
-                    //    {
-                    //        if (indent.Length > 0)
-                    //        {
-                    //            indent = indent.Remove(0, 1);
-                    //        }
-                    //        xmlText += indent + line + "\r\n";
-                    //    }
-                    //    else if (line.Contains("</"))
-                    //    {
-                    //        xmlText += indent + line + "\r\n";
-                    //    }
-                    //    else
-                    //    {
-                    //        xmlText += indent + line + "\r\n";
-                    //        indent += "\t";
-                    //    }
-                    //}
-                    //await FileIO.WriteTextAsync(saveStudioSetFile, xmlText);
+                    xmlText = xmlText.Replace("><", ">\n<");
+                    String[] lines = xmlText.Split('\n');
+                    String indent = "";
+                    xmlText = "";
+                    Boolean firstLine = true;
+                    foreach (String line in lines)
+                    {
+                        if (firstLine)
+                        {
+                            xmlText = line + "\r\n";
+                            firstLine = false;
+                        }
+                        else if (line.StartsWith("</"))
+                        {
+                            if (indent.Length > 0)
+                            {
+                                indent = indent.Remove(0, 1);
+                            }
+                            xmlText += indent + line + "\r\n";
+                        }
+                        else if (line.Contains("</"))
+                        {
+                            xmlText += indent + line + "\r\n";
+                        }
+                        else if (line.EndsWith("/>"))
+                        {
+                            xmlText += indent + line + "\r\n";
+                        }
+                        else
+                        {
+                            xmlText += indent + line + "\r\n";
+                            indent += "\t";
+                        }
+                    }
+                    MainPage.GetMainPage().uIHandler.myFileIO.SaveFileAsync(xmlText, ".sts_xml");
                 }
             }
             catch (Exception e) { }

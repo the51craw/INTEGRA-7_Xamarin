@@ -20,17 +20,19 @@ namespace Integra_7_Xamarin
         //public ProgressBar ProgressBar { get; set; }
 
         private WaitingFor waitingFor;
-        private Object o;
+        private CurrentPage continueTo;
         private Int32 waitCount;
+        private Int32 studioSetNumber;
 
         /// <summary>
         /// Call to show a wait page with a progress bar
         /// </summary>
         /// <param name="waitingFor">Controls text and behaviour</param>
         /// <param name="o">Pass any object needed if applicable</param>
-        public void ShowPleaseWaitPage(WaitingFor waitingFor, Object o = null)
+        public void ShowPleaseWaitPage(WaitingFor waitingFor, CurrentPage continueTo)
         {
             currentPage = CurrentPage.PLEASE_WAIT;
+            this.continueTo = continueTo;
             if (!PleaseWait_IsCreated)
             {
                 DrawPleaseWaitPage();
@@ -41,7 +43,7 @@ namespace Integra_7_Xamarin
             PleaseWait_StackLayout.IsVisible = true;
             this.waitingFor = waitingFor;
             PleaseWait_Init();
-            this.o = o;
+            //this.o = o;
         }
 
         private void PleaseWait_Init()
@@ -60,8 +62,16 @@ namespace Integra_7_Xamarin
                     tbPleaseWait.Text = "Please wait while initiating editor form...";
                     break;
                 case WaitingFor.READING_STUDIO_SET_NAMES:
-                    tbPleaseWait.Text = "Please wait while scanning Studio set names and initiating studio set editor form...";
+                    if (continueTo == CurrentPage.EDIT_STUDIO_SET)
+                    {
+                        tbPleaseWait.Text = "Please wait while scanning Studio set names and initiating studio set editor form...";
+                    }
+                    else
+                    {
+                        tbPleaseWait.Text = "Please wait while scanning Studio set names...";
+                    }
                     pb_WaitingProgress.Progress = 0;
+                    studioSetNumber = 0;
                     break;
             }
         }
@@ -244,6 +254,28 @@ namespace Integra_7_Xamarin
             {
                 pb_WaitingProgress.Progress += 1F / 64F;
                 EditStudioSet_MidiInPort_MessageReceived();
+
+                if (studioSetEditor_State == StudioSetEditor_State.DONE)
+                {
+                    if (continueTo == CurrentPage.LIBRARIAN)
+                    {
+                        currentPage = CurrentPage.LIBRARIAN;
+                        PleaseWait_StackLayout.IsVisible = false;
+                        Librarian_StackLayout.IsVisible = true;
+                        studioSetNamesJustRead = StudioSetNames.READ_BUT_NOT_LISTED;
+                        initDone = true;
+                    }
+                    else
+                    {
+                        // PleaseWait has had the control so far, so take it and let Studio set editor be visible.
+                        currentPage = CurrentPage.EDIT_STUDIO_SET;
+                        PleaseWait_StackLayout.IsVisible = false;
+                        initDone = true;
+                        StudioSetEditor_StackLayout.IsVisible = true;
+                        commonState.StudioSetNames = new List<String>();
+                        QueryCurrentStudioSetNumber();
+                    }
+                }
             }
         }
 

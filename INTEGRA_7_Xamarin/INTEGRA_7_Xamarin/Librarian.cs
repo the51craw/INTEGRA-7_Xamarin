@@ -16,9 +16,17 @@ namespace Integra_7_Xamarin
             USER = 2,
             INIT = 3,
         }
+
+        enum StudioSetNames
+        {
+            NOT_READ,
+            READ_BUT_NOT_LISTED,
+            READ_AND_LISTED
+        }
+
         ToneNamesFilter toneNamesFilter = ToneNamesFilter.INIT;
         Boolean toneNamesRead = false;
-        Boolean studioSetNamesJustRead = false;
+        StudioSetNames studioSetNamesJustRead = StudioSetNames.NOT_READ;
         Boolean putBankInClipboard = false;
         Boolean updateIntegra7 = false;
         Boolean needToSetFontSize = true;
@@ -42,15 +50,18 @@ namespace Integra_7_Xamarin
         Grid Librarian_gridGroups;
         Button Librarian_lblGroups;
         ListView Librarian_lvGroups;
-        ObservableCollection<String> Librarian_Groups;
+        ObservableCollection<String> Librarian_ocGroups;
         Grid Librarian_gridCategories;
         Button Librarian_lblCategories;
         ListView Librarian_lvCategories;
-        ObservableCollection<String> Librarian_Categories;
+        ObservableCollection<String> Librarian_ocCategories;
+        //Button Librarian_lblStudioSets;
+        //ListView Librarian_lvStudioSets;
+        //ObservableCollection<String> Librarian_ocStudioSets;
         Grid Librarian_gridTones;
         Button Librarian_filterPresetAndUser;
         ListView Librarian_lvToneNames;
-        ObservableCollection<String> Librarian_ToneNames;
+        ObservableCollection<String> Librarian_ocToneNames;
         //ListView Librarian_lvSearchResult;
         //ObservableCollection<String> Librarian_SearchResult;
         Grid Librarian_gridToneData;
@@ -77,9 +88,10 @@ namespace Integra_7_Xamarin
         MyLabel Librarian_lblKeys;
         Boolean usingSearchResults = false;
         Int32 rowHeight;
-        Int32 listingHeight;
+        byte listingHeight;
         byte keyTranspose = 0;
         private Int32 lowKey = 36;
+        byte currentStudioSet;
 
         // Buttons for the keyboard:
         Button[] Librarian_btnWhiteKeys;
@@ -131,12 +143,12 @@ namespace Integra_7_Xamarin
                 // Populate lvGroups:
                 foreach (List<String> tone in commonState.ToneList.Tones)
                 {
-                    if (!Librarian_Groups.Contains(tone[0]))
+                    if (!Librarian_ocGroups.Contains(tone[0]))
                     {
-                        Librarian_Groups.Add(tone[0]);
+                        Librarian_ocGroups.Add(tone[0]);
                     }
                 }
-                Librarian_Groups.Add("Studio Sets");
+                Librarian_ocGroups.Add("Studio sets");
 
                 // Populate lvCategories and tone names:
                 //PopulateCategories();
@@ -172,9 +184,9 @@ namespace Integra_7_Xamarin
             try
             {
                 //Librarian_btnEditTone.IsEnabled = cbChannel.SelectedIndex == 0 && InstrumentSettings.Editable[Librarian_lvGroups.SelectedIndex];
-                if (Librarian_lvGroups.SelectedItem != null && Librarian_Groups.IndexOf((String)Librarian_lvGroups.SelectedItem) > -1)
+                if (Librarian_lvGroups.SelectedItem != null && Librarian_ocGroups.IndexOf((String)Librarian_lvGroups.SelectedItem) > -1)
                 {
-                    Librarian_btnEditTone.IsEnabled = InstrumentSettings.Editable[Librarian_Groups.IndexOf((String)Librarian_lvGroups.SelectedItem)];
+                    Librarian_btnEditTone.IsEnabled = InstrumentSettings.Editable[Librarian_ocGroups.IndexOf((String)Librarian_lvGroups.SelectedItem)];
                 }
             } catch { }
         }
@@ -314,15 +326,24 @@ namespace Integra_7_Xamarin
             Librarian_lblGroups.Text = "Synth types & Expansion slots";
             Librarian_lblGroups.IsEnabled = false;
             Librarian_lvGroups = new ListView();
-            Librarian_Groups = new ObservableCollection<String>();
-            Librarian_lvGroups.ItemsSource = Librarian_Groups;
+            Librarian_ocGroups = new ObservableCollection<String>();
+            Librarian_lvGroups.ItemsSource = Librarian_ocGroups;
 
             // Make a listview lvCategories for column 1:
             Librarian_lblCategories = new Button();
             Librarian_lblCategories.Text = "Sound categories";
             Librarian_lvCategories = new ListView();
-            Librarian_Categories = new ObservableCollection<String>();
-            Librarian_lvCategories.ItemsSource = Librarian_Categories;
+            Librarian_ocCategories = new ObservableCollection<String>();
+            Librarian_lvCategories.ItemsSource = Librarian_ocCategories;
+
+            // Make a listview for studio sets:
+            //Librarian_lblStudioSets = new Button();
+            //Librarian_lblStudioSets.Text = "Studio sets";
+            //Librarian_lblStudioSets.IsVisible = false;
+            //Librarian_lvStudioSets = new ListView();
+            //Librarian_lvStudioSets.IsVisible = false;
+            //Librarian_ocStudioSets = new ObservableCollection<String>();
+            //Librarian_lvStudioSets.ItemsSource = Librarian_ocStudioSets;
 
             // Make Grids for column 0 - 2:
             Librarian_gridGroups = new Grid();
@@ -340,8 +361,8 @@ namespace Integra_7_Xamarin
             // Make listviews lvToneNames and lvSearchResult for column 2:
             Librarian_lvToneNames = new ListView();
             //Librarian_lvToneNames.BackgroundColor = colorSettings.ControlBackground;
-            Librarian_Categories = new ObservableCollection<String>();
-            Librarian_lvToneNames.ItemsSource = Librarian_ToneNames;
+            //Librarian_ocCategories = new ObservableCollection<String>();
+            //Librarian_lvToneNames.ItemsSource = Librarian_ocToneNames;
             //Librarian_lvSearchResult = new ListView();
             //Librarian_lvSearchResult.BackgroundColor = colorSettings.Background;
             //Librarian_SearchResult = new ObservableCollection<String>();
@@ -537,6 +558,7 @@ namespace Integra_7_Xamarin
 
             Librarian_lvGroups.ItemSelected += Librarian_LvGroups_ItemSelected;
             Librarian_lvCategories.ItemSelected += Librarian_LvCategories_ItemSelected;
+            //Librarian_lvStudioSets.ItemSelected += Librarian_lvStudioSets_ItemSelected;
             Librarian_filterPresetAndUser.Clicked += Librarian_FilterPresetAndUser_Clicked;
             Librarian_lvToneNames.ItemSelected += Librarian_LvToneNames_ItemSelected;
             //Librarian_lvSearchResult.ItemSelected += Librarian_lvSearchResult_ItemSelected;
@@ -567,80 +589,89 @@ namespace Integra_7_Xamarin
 
             // Assemble column 0:
             Librarian_gridGroups.Children.Add((new GridRow(0, new View[] { Librarian_lblGroups } )).Row);
-            Librarian_gridGroups.Children.Add((new GridRow(1, new View[] { Librarian_lvGroups } )).Row);
-            Librarian_gridGroups.RowDefinitions = new RowDefinitionCollection();
-            Librarian_gridGroups.RowDefinitions.Add(new RowDefinition());
-            Librarian_gridGroups.RowDefinitions.Add(new RowDefinition());
-            Librarian_gridGroups.RowDefinitions.Add(new RowDefinition());
-            Librarian_gridGroups.RowDefinitions.Add(new RowDefinition());
-            Librarian_gridGroups.RowDefinitions.Add(new RowDefinition());
-            Librarian_gridGroups.RowDefinitions.Add(new RowDefinition());
-            Librarian_gridGroups.RowDefinitions.Add(new RowDefinition());
-            Librarian_gridGroups.Children.Add((new GridRow(2, new View[] { Librarian_midiOutputDevice,  Librarian_midiOutputChannel } )).Row);
-            Librarian_gridGroups.Children.Add((new GridRow(3, new View[] { Librarian_tbSearch } )).Row);
-            Librarian_gridGroups.Children.Add((new GridRow(4, new View[] { Librarian_ltToneName } )).Row);
-            Librarian_gridGroups.Children.Add((new GridRow(5, new View[] { Librarian_ltType } )).Row);
-            Librarian_gridGroups.Children.Add((new GridRow(6, new View[] { Librarian_ltToneNumber } )).Row);
-            Librarian_gridGroups.RowDefinitions[0].Height = new GridLength(rowHeight, GridUnitType.Star);
-            Librarian_gridGroups.RowDefinitions[1].Height = new GridLength(listingHeight, GridUnitType.Star);
-            Librarian_gridGroups.RowDefinitions[2].Height = new GridLength(rowHeight, GridUnitType.Star);
-            Librarian_gridGroups.RowDefinitions[3].Height = new GridLength(rowHeight, GridUnitType.Star);
-            Librarian_gridGroups.RowDefinitions[4].Height = new GridLength(rowHeight, GridUnitType.Star);
-            Librarian_gridGroups.RowDefinitions[5].Height = new GridLength(rowHeight, GridUnitType.Star);
-            Librarian_gridGroups.RowDefinitions[6].Height = new GridLength(rowHeight, GridUnitType.Star);
+            Librarian_gridGroups.Children.Add((new GridRow(1, new View[] { Librarian_lvGroups }, null, false, false, listingHeight)).Row);
+            //Librarian_gridGroups.RowDefinitions = new RowDefinitionCollection();
+            //Librarian_gridGroups.RowDefinitions.Add(new RowDefinition());
+            //Librarian_gridGroups.RowDefinitions.Add(new RowDefinition());
+            //Librarian_gridGroups.RowDefinitions.Add(new RowDefinition());
+            //Librarian_gridGroups.RowDefinitions.Add(new RowDefinition());
+            //Librarian_gridGroups.RowDefinitions.Add(new RowDefinition());
+            //Librarian_gridGroups.RowDefinitions.Add(new RowDefinition());
+            //Librarian_gridGroups.RowDefinitions.Add(new RowDefinition());
+            Librarian_gridGroups.Children.Add((new GridRow((byte)(listingHeight + 1), new View[] { Librarian_midiOutputChannel } )).Row);
+            Librarian_gridGroups.Children.Add((new GridRow((byte)(listingHeight + 2), new View[] { Librarian_tbSearch } )).Row);
+            Librarian_gridGroups.Children.Add((new GridRow((byte)(listingHeight + 3), new View[] { Librarian_ltToneName } )).Row);
+            Librarian_gridGroups.Children.Add((new GridRow((byte)(listingHeight + 4), new View[] { Librarian_ltType } )).Row);
+            Librarian_gridGroups.Children.Add((new GridRow((byte)(listingHeight + 5), new View[] { Librarian_ltToneNumber } )).Row);
+            //Librarian_gridGroups.RowDefinitions[0].Height = new GridLength(rowHeight, GridUnitType.Star);
+            //Librarian_gridGroups.RowDefinitions[1].Height = new GridLength(listingHeight, GridUnitType.Star);
+            //Librarian_gridGroups.RowDefinitions[2].Height = new GridLength(rowHeight, GridUnitType.Star);
+            //Librarian_gridGroups.RowDefinitions[3].Height = new GridLength(rowHeight, GridUnitType.Star);
+            //Librarian_gridGroups.RowDefinitions[4].Height = new GridLength(rowHeight, GridUnitType.Star);
+            //Librarian_gridGroups.RowDefinitions[5].Height = new GridLength(rowHeight, GridUnitType.Star);
+            //Librarian_gridGroups.RowDefinitions[6].Height = new GridLength(rowHeight, GridUnitType.Star);
 
             // Assemble column 1:
             Librarian_gridCategories.Children.Add((new GridRow(0, new View[] { Librarian_lblCategories } )).Row);
-            Librarian_gridCategories.Children.Add((new GridRow(1, new View[] { Librarian_lvCategories } )).Row);
-            Librarian_gridCategories.RowDefinitions = new RowDefinitionCollection();
-            Librarian_gridCategories.RowDefinitions.Add(new RowDefinition());
-            Librarian_gridCategories.RowDefinitions.Add(new RowDefinition());
-            Librarian_gridCategories.RowDefinitions.Add(new RowDefinition());
-            Librarian_gridCategories.RowDefinitions.Add(new RowDefinition());
-            Librarian_gridCategories.RowDefinitions.Add(new RowDefinition());
-            Librarian_gridCategories.RowDefinitions.Add(new RowDefinition());
-            Librarian_gridCategories.RowDefinitions.Add(new RowDefinition());
-            Librarian_gridCategories.Children.Add((new GridRow(2, new View[] { Librarian_ltBankAddress } )).Row);
-            Librarian_gridCategories.Children.Add((new GridRow(3, new View[] { Librarian_ltPatchMSB } )).Row);
-            Librarian_gridCategories.Children.Add((new GridRow(4, new View[] { Librarian_ltPatchLSB } )).Row);
-            Librarian_gridCategories.Children.Add((new GridRow(5, new View[] { Librarian_ltProgramNumber } )).Row);
-            Librarian_gridCategories.Children.Add((new GridRow(6, new View[] { Librarian_btnPlay } )).Row);
-            Librarian_gridCategories.RowDefinitions[0].Height = new GridLength(rowHeight, GridUnitType.Star);
-            Librarian_gridCategories.RowDefinitions[1].Height = new GridLength(listingHeight, GridUnitType.Star);
-            Librarian_gridCategories.RowDefinitions[2].Height = new GridLength(rowHeight, GridUnitType.Star);
-            Librarian_gridCategories.RowDefinitions[3].Height = new GridLength(rowHeight, GridUnitType.Star);
-            Librarian_gridCategories.RowDefinitions[4].Height = new GridLength(rowHeight, GridUnitType.Star);
-            Librarian_gridCategories.RowDefinitions[5].Height = new GridLength(rowHeight, GridUnitType.Star);
-            Librarian_gridCategories.RowDefinitions[6].Height = new GridLength(rowHeight, GridUnitType.Star);
+            Librarian_gridCategories.Children.Add((new GridRow(1, new View[] { Librarian_lvCategories }, null, false, false, listingHeight)).Row);
+            //Librarian_gridCategories.Children.Add((new GridRow(0, new View[] { Librarian_lblStudioSets } )).Row);
+            //Librarian_gridCategories.Children.Add((new GridRow(1, new View[] { Librarian_lvStudioSets }, null, false, false, listingHeight)).Row);
+            //Librarian_gridCategories.RowDefinitions = new RowDefinitionCollection();
+            //Librarian_gridCategories.RowDefinitions.Add(new RowDefinition());
+            //Librarian_gridCategories.RowDefinitions.Add(new RowDefinition());
+            //Librarian_gridCategories.RowDefinitions.Add(new RowDefinition());
+            //Librarian_gridCategories.RowDefinitions.Add(new RowDefinition());
+            //Librarian_gridCategories.RowDefinitions.Add(new RowDefinition());
+            //Librarian_gridCategories.RowDefinitions.Add(new RowDefinition());
+            //Librarian_gridCategories.RowDefinitions.Add(new RowDefinition());
+            Librarian_gridCategories.Children.Add((new GridRow((byte)(listingHeight + 1), new View[] { Librarian_ltBankAddress } )).Row);
+            Librarian_gridCategories.Children.Add((new GridRow((byte)(listingHeight + 2), new View[] { Librarian_ltPatchMSB } )).Row);
+            Librarian_gridCategories.Children.Add((new GridRow((byte)(listingHeight + 3), new View[] { Librarian_ltPatchLSB } )).Row);
+            Librarian_gridCategories.Children.Add((new GridRow((byte)(listingHeight + 4), new View[] { Librarian_ltProgramNumber } )).Row);
+            Librarian_gridCategories.Children.Add((new GridRow((byte)(listingHeight + 5), new View[] { Librarian_btnPlay } )).Row);
+            //Librarian_gridCategories.RowDefinitions[0].Height = new GridLength(rowHeight, GridUnitType.Star);
+            //Librarian_gridCategories.RowDefinitions[1].Height = new GridLength(listingHeight, GridUnitType.Star);
+            //Librarian_gridCategories.RowDefinitions[2].Height = new GridLength(rowHeight, GridUnitType.Star);
+            //Librarian_gridCategories.RowDefinitions[3].Height = new GridLength(rowHeight, GridUnitType.Star);
+            //Librarian_gridCategories.RowDefinitions[4].Height = new GridLength(rowHeight, GridUnitType.Star);
+            //Librarian_gridCategories.RowDefinitions[5].Height = new GridLength(rowHeight, GridUnitType.Star);
+            //Librarian_gridCategories.RowDefinitions[6].Height = new GridLength(rowHeight, GridUnitType.Star);
 
             // Assemble column 2:
             Librarian_gridTones.Children.Add((new GridRow(0, new View[] { Librarian_filterPresetAndUser })).Row);
-            Librarian_gridTones.Children.Add((new GridRow(1, new View[] { Librarian_lvToneNames } )).Row);
+            Librarian_gridTones.Children.Add((new GridRow(1, new View[] { Librarian_lvToneNames }, null, false, false, listingHeight)).Row);
             //Librarian_gridTones.Children.Add((new GridRow(2, new View[] { Librarian_lvSearchResult }, null, false, false)).Row);
-            Librarian_gridTones.RowDefinitions = new RowDefinitionCollection();
-            Librarian_gridTones.RowDefinitions.Add(new RowDefinition());
-            Librarian_gridTones.RowDefinitions.Add(new RowDefinition());
-            Librarian_gridTones.RowDefinitions.Add(new RowDefinition());
-            Librarian_gridTones.RowDefinitions.Add(new RowDefinition());
-            Librarian_gridTones.RowDefinitions.Add(new RowDefinition());
-            Librarian_gridTones.RowDefinitions.Add(new RowDefinition());
-            Librarian_gridTones.RowDefinitions.Add(new RowDefinition());
-            Librarian_gridTones.Children.Add((new GridRow(2, new View[] { Librarian_btnEditTone, Librarian_btnEditStudioSet }, new byte[] { 1, 2 })).Row);
-            Librarian_gridTones.Children.Add((new GridRow(3, new View[] { Librarian_btnMotionalSurround } )).Row);
-            Librarian_gridTones.Children.Add((new GridRow(4, new View[] { Librarian_btnShowFavorites, Librarian_btnAddFavorite, Librarian_btnRemoveFavorite }, new byte[] { 1, 1, 1 } )).Row);
-            Librarian_gridTones.Children.Add((new GridRow(5, new View[] { Librarian_btnResetHangingNotes, Librarian_btnResetVolume }, new byte[] { 2, 1 } )).Row);
-            Librarian_gridTones.Children.Add((new GridRow(6, new View[] { Librarian_lblKeys, Librarian_btnMinus12keys, Librarian_btnPlus12keys }, new byte[] { 3, 1, 1 } )).Row);
-            Librarian_gridTones.RowDefinitions[0].Height = new GridLength(rowHeight, GridUnitType.Star);
-            Librarian_gridTones.RowDefinitions[1].Height = new GridLength(listingHeight, GridUnitType.Star);
-            Librarian_gridTones.RowDefinitions[2].Height = new GridLength(rowHeight, GridUnitType.Star);
-            Librarian_gridTones.RowDefinitions[3].Height = new GridLength(rowHeight, GridUnitType.Star);
-            Librarian_gridTones.RowDefinitions[4].Height = new GridLength(rowHeight, GridUnitType.Star);
-            Librarian_gridTones.RowDefinitions[5].Height = new GridLength(rowHeight, GridUnitType.Star);
-            Librarian_gridTones.RowDefinitions[6].Height = new GridLength(rowHeight, GridUnitType.Star);
+            //Librarian_gridTones.RowDefinitions = new RowDefinitionCollection();
+            //Librarian_gridTones.RowDefinitions.Add(new RowDefinition());
+            //Librarian_gridTones.RowDefinitions.Add(new RowDefinition());
+            //Librarian_gridTones.RowDefinitions.Add(new RowDefinition());
+            //Librarian_gridTones.RowDefinitions.Add(new RowDefinition());
+            //Librarian_gridTones.RowDefinitions.Add(new RowDefinition());
+            //Librarian_gridTones.RowDefinitions.Add(new RowDefinition());
+            //Librarian_gridTones.RowDefinitions.Add(new RowDefinition());
+            Librarian_gridTones.Children.Add((new GridRow((byte)(listingHeight + 1), 
+                new View[] { Librarian_btnEditTone, Librarian_btnEditStudioSet }, new byte[] { 1, 2 })).Row);
+            Librarian_gridTones.Children.Add((new GridRow((byte)(listingHeight + 2), 
+                new View[] { Librarian_btnMotionalSurround } )).Row);
+            Librarian_gridTones.Children.Add((new GridRow((byte)(listingHeight + 3), 
+                new View[] { Librarian_btnShowFavorites, Librarian_btnAddFavorite, Librarian_btnRemoveFavorite }, new byte[] { 1, 1, 1 } )).Row);
+            Librarian_gridTones.Children.Add((new GridRow((byte)(listingHeight + 4), 
+                new View[] { Librarian_btnResetHangingNotes, Librarian_btnResetVolume }, new byte[] { 2, 1 } )).Row);
+            Librarian_gridTones.Children.Add((new GridRow((byte)(listingHeight + 5), 
+                new View[] { Librarian_lblKeys, Librarian_btnMinus12keys, Librarian_btnPlus12keys }, new byte[] { 3, 1, 1 } )).Row);
+            //Librarian_gridTones.RowDefinitions[0].Height = new GridLength(rowHeight, GridUnitType.Star);
+            //Librarian_gridTones.RowDefinitions[1].Height = new GridLength(listingHeight, GridUnitType.Star);
+            //Librarian_gridTones.RowDefinitions[2].Height = new GridLength(rowHeight, GridUnitType.Star);
+            //Librarian_gridTones.RowDefinitions[3].Height = new GridLength(rowHeight, GridUnitType.Star);
+            //Librarian_gridTones.RowDefinitions[4].Height = new GridLength(rowHeight, GridUnitType.Star);
+            //Librarian_gridTones.RowDefinitions[5].Height = new GridLength(rowHeight, GridUnitType.Star);
+            //Librarian_gridTones.RowDefinitions[6].Height = new GridLength(rowHeight, GridUnitType.Star);
 
             // Assemble LibrarianStackLayout --------------------------------------------------------------
 
             Librarian_StackLayout = new StackLayout();
+            Librarian_StackLayout.HorizontalOptions = LayoutOptions.FillAndExpand;
+            Librarian_StackLayout.VerticalOptions = LayoutOptions.FillAndExpand;
             Librarian_gridGroups.BackgroundColor = colorSettings.Border;
             Librarian_gridCategories.BackgroundColor = colorSettings.Border;
             Librarian_gridTones.BackgroundColor = colorSettings.Border;
@@ -777,11 +808,19 @@ namespace Integra_7_Xamarin
                 if (commonState.CurrentTone.ToneIndex > -1)
                 {
                     updateIntegra7 = false;
-                    Librarian_lvGroups.SelectedItem = commonState.ToneList.Tones[commonState.CurrentTone.ToneIndex][0];
-                    Librarian_lvCategories.SelectedItem = commonState.ToneList.Tones[commonState.CurrentTone.ToneIndex][1];
-                    Librarian_lvToneNames.SelectedItem = commonState.ToneList.Tones[commonState.CurrentTone.ToneIndex][3];
+                    PushHandleControlEvents();
+                    Librarian_lvGroups.SelectedItem = commonState.CurrentTone.Group;
+                    PopulateCategories();
+                    Librarian_lvCategories.SelectedItem = commonState.CurrentTone.Category;
+                    PopulateToneNames();
+                    Librarian_lvToneNames.SelectedItem = commonState.CurrentTone.Name;
+                    PopulateToneData();
+                    //Librarian_lvGroups.SelectedItem = commonState.ToneList.Tones[commonState.CurrentTone.ToneIndex][0];
+                    //Librarian_lvCategories.SelectedItem = commonState.ToneList.Tones[commonState.CurrentTone.ToneIndex][1];
+                    //Librarian_lvToneNames.SelectedItem = commonState.ToneList.Tones[commonState.CurrentTone.ToneIndex][3];
                     showCurrentToneReadFromI7 = false;
                     updateIntegra7 = true;
+                    PopHandleControlEvents();
                 }
             }
             if (toneNamesRead)
@@ -790,13 +829,15 @@ namespace Integra_7_Xamarin
                 //gridMainPage.Visibility = Visibility.Visible;
                 toneNamesRead = false;
             }
-            if (studioSetNamesJustRead)
+            if (studioSetNamesJustRead == StudioSetNames.READ_BUT_NOT_LISTED)
             {
                 // All studio set names has been received and stored in studioSetNames,
                 // populate the combobox:
                 updateIntegra7 = false;
-                PopulateStudioSetSelector();
-                studioSetNamesJustRead = false;
+                Librarian_PopulateStudioSetListview();
+                studioSetNamesJustRead = StudioSetNames.READ_AND_LISTED;
+                //Librarian_lvCategories.IsVisible = false;
+                //Librarian_lvStudioSets.IsVisible = true;
                 //PleaseWaitWhileScanning.Visibility = Visibility.Collapsed;
                 //gridMainPage.Visibility = Visibility.Visible;
             }
@@ -1262,6 +1303,8 @@ namespace Integra_7_Xamarin
                                 catch { }
                                 queryType = QueryType.NONE;
                                 break;
+                            case QueryType.STUDIO_SET_NAMES:
+                                break;
                         }
                     }
                 }
@@ -1273,35 +1316,41 @@ namespace Integra_7_Xamarin
         {
             if (initDone && handleControlEvents)
             {
-                if ((String)Librarian_lvGroups.SelectedItem == "Studio Sets")
+                if ((String)Librarian_lvGroups.SelectedItem == "Studio sets")
                 {
-                    //Librarian_lvToneNames.IsEnabled = false;
-                    ////ControlRows.Visibility = Visibility.Collapsed;
-                    //Librarian_lvToneNames. Items.Clear();
+                    currentStudioSet = commonState.CurrentStudioSet;
+                    Librarian_lblCategories.Content = "Studio sets";
+                    Librarian_lvToneNames.IsEnabled = false;
+                    //ControlRows.Visibility = Visibility.Collapsed;
+                    Librarian_ocToneNames.Clear();
                     //PleaseWaitWhileScanning.Visibility = Visibility.Visible;
                     //txtScanning.Text = "Please wait while reading Studio Set names from your INTEGRA-7...";
                     //gridMainPage.Visibility = Visibility.Collapsed;
 
-                    //if (commonState.studioSetNames == null)
-                    //{
-                    //    // Get a list of all studio set names. Start by storing the current studio set number.
-                    //    // Note that consequent queries will be sent from MidiInPort_MessageReceived and Timer_Tick.
-                    //    commonState.studioSetNames = new List<String>();
-                    //    QueryCurrentStudioSetNumber();
-                    //}
-                    //else
-                    //{
-                    //    // Tell Timer_Tick that we have the studio set names:
-                    //    QueryCurrentStudioSetNumber(false);
-                    //}
+                    if (commonState.StudioSetNames == null || commonState.StudioSetNames.Count() < 1)
+                    {
+                        // Get a list of all studio set names. Start by storing the current studio set number.
+                        // Note that consequent queries will be sent from MidiInPort_MessageReceived and Timer_Tick.
+                        Librarian_StackLayout.IsVisible = false;
+                        ShowPleaseWaitPage(WaitingFor.READING_STUDIO_SET_NAMES, CurrentPage.LIBRARIAN);
+                        //commonState.StudioSetNames = new List<String>();
+                        //QueryCurrentStudioSetNumber();
+                    }
+                    else
+                    {
+                        // Tell Timer_Tick that we have the studio set names:
+                        studioSetNamesJustRead = StudioSetNames.READ_BUT_NOT_LISTED;
+                        //QueryCurrentStudioSetNumber(false);
+                    }
                 }
                 else
                 {
+                    Librarian_lblCategories.Content = "Sound categories";
                     commonState.CurrentTone.Group = (String)Librarian_lvGroups.SelectedItem;
                     PushHandleControlEvents();
                     PopulateCategories();
-                    Librarian_lvCategories.SelectedItem = Librarian_Categories[0];
-                    commonState.CurrentTone.Category = Librarian_Categories[0];
+                    Librarian_lvCategories.SelectedItem = Librarian_ocCategories[0];
+                    commonState.CurrentTone.Category = Librarian_ocCategories[0];
                     PopulateToneNames();
                     PopHandleControlEvents();
                 }
@@ -1312,7 +1361,7 @@ namespace Integra_7_Xamarin
         {
             if (initDone && handleControlEvents && !scanning)
             {
-                if ((String)Librarian_lvGroups.SelectedItem != "Studio set")
+                if ((String)Librarian_lvGroups.SelectedItem != "Studio sets")
                 {
                     commonState.CurrentTone.Category = (String)Librarian_lvCategories.SelectedItem;
                     // Synthesizer type or extension pack selected.
@@ -1331,17 +1380,49 @@ namespace Integra_7_Xamarin
                     // Studio set selected.
                     // Note that we must not do this when new names was just fetched since
                     // this is called also when populating the group list:
-                    if (!studioSetNamesJustRead)
+                    if (studioSetNamesJustRead == StudioSetNames.NOT_READ)
                     {
-                        commonState.CurrentStudioSet = (byte)(Librarian_Categories.IndexOf((String)Librarian_lvCategories.SelectedItem));
-                        SetStudioSet((byte)Librarian_Categories.IndexOf((String)Librarian_lvCategories.SelectedItem));
+                        commonState.CurrentStudioSet = (byte)(Librarian_ocCategories.IndexOf((String)Librarian_lvCategories.SelectedItem));
+                        SetStudioSet((byte)Librarian_ocCategories.IndexOf((String)Librarian_lvCategories.SelectedItem));
                         Librarian_lvToneNames.IsVisible = true;
                         commonState.CurrentPart = (byte)Librarian_midiOutputChannel.SelectedIndex;
                         PartChanged();
                     }
+                    else if (studioSetNamesJustRead == StudioSetNames.READ_AND_LISTED)
+                    {
+                        commonState.CurrentStudioSet = (byte)(Librarian_ocCategories.IndexOf((String)Librarian_lvCategories.SelectedItem));
+                        SetStudioSet(commonState.CurrentStudioSet);
+                        commonState.CurrentPart = (byte)Librarian_midiOutputChannel.SelectedIndex;
+                        GetToneFromI7(); // This will be catched in Librarian_MidiInPort_MessageReceived, and displayed in Timer_Tick.
+                        //Librarian_lvGroups.SelectedItem = commonState.CurrentTone.Group;
+                        ////Librarian_lvCategories.IsVisible = true;
+                        ////Librarian_lvStudioSets.IsVisible = false;
+                        //PopulateCategories();
+                        Librarian_lvToneNames.IsEnabled = true;
+                    }
                 }
             }
         }
+
+        //private void Librarian_lvStudioSets_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        //{
+        //    if (initDone && handleControlEvents)
+        //    {
+        //        // Studio set selected.
+        //        // Note that we must not do this when new names was just fetched since
+        //        // this is called also when populating the group list:
+        //        if (!studioSetNamesJustRead)
+        //        {
+        //            commonState.CurrentStudioSet = (byte)(Librarian_ocStudioSets.IndexOf((String)Librarian_lvStudioSets.SelectedItem));
+        //            SetStudioSet(commonState.CurrentStudioSet);
+        //            commonState.CurrentPart = (byte)Librarian_midiOutputChannel.SelectedIndex;
+        //            Librarian_lvCategories.IsVisible = true;
+        //            Librarian_lvStudioSets.IsVisible = false;
+        //            Librarian_lvToneNames.IsEnabled = true;
+        //            PartChanged();
+        //        }
+        //    }
+        //}
 
         //private void UpdateLvToneNames()
         //{
@@ -1462,9 +1543,9 @@ namespace Integra_7_Xamarin
                             //currentToneNameIndex = Librarian_ToneNames.IndexOf(Librarian_lvToneNames.SelectedItem.ToString());
                             commonState.CurrentTone.Name = (String)Librarian_lvToneNames.SelectedItem;
                             commonState.CurrentTone = new Tone(
-                                Librarian_Groups.IndexOf(Librarian_lvGroups.SelectedItem.ToString()),
-                                Librarian_Categories.IndexOf(Librarian_lvCategories.SelectedItem.ToString()),
-                                Librarian_ToneNames.IndexOf(Librarian_lvToneNames.SelectedItem.ToString()),
+                                Librarian_ocGroups.IndexOf(Librarian_lvGroups.SelectedItem.ToString()),
+                                Librarian_ocCategories.IndexOf(Librarian_lvCategories.SelectedItem.ToString()),
+                                Librarian_ocToneNames.IndexOf(Librarian_lvToneNames.SelectedItem.ToString()),
                                 Librarian_lvGroups.SelectedItem.ToString(),
                                 Librarian_lvCategories.SelectedItem.ToString(), commonState.CurrentTone.Name);
                             if (!String.IsNullOrEmpty(commonState.CurrentTone.Name))
@@ -1699,7 +1780,7 @@ namespace Integra_7_Xamarin
             }
             else
             {
-                mainPage.uIHandler.ShowPleaseWaitPage(WaitingFor.READING_STUDIO_SET_NAMES, null);
+                mainPage.uIHandler.ShowPleaseWaitPage(WaitingFor.READING_STUDIO_SET_NAMES, CurrentPage.EDIT_STUDIO_SET);
             }
             //Waiting(true, "Please wait while scanning Studio set names and initiating form...", Librarian_StackLayout);
             //ShowStudioSetEditorPage();
@@ -2089,7 +2170,7 @@ namespace Integra_7_Xamarin
             //Favorites_UpdateFoldersList();
             //mainStackLayout.Children.Add(LibrarianStackLayout);
             Librarian_StackLayout.IsVisible = true;
-            if (Librarian_Groups.Count == 0)
+            if (Librarian_ocGroups.Count == 0)
             {
                 PopulateGroups();
             }
@@ -2110,9 +2191,9 @@ namespace Integra_7_Xamarin
             PushHandleControlEvents();
             foreach (List<String> tone in commonState.ToneList.Tones)
             {
-                if (!Librarian_Groups.Contains(tone[0]))
+                if (!Librarian_ocGroups.Contains(tone[0]))
                 {
-                    Librarian_Groups.Add(tone[0]);
+                    Librarian_ocGroups.Add(tone[0]);
                 }
             }
             Librarian_lvGroups.SelectedItem = "SuperNATURAL Acoustic Tone";
@@ -2124,18 +2205,41 @@ namespace Integra_7_Xamarin
             //t.Trace("private void PopulateCategories (" + "String" + group + ", " + ")");
             String lastCategory = "";
             PushHandleControlEvents();
-            Librarian_Categories.Clear();
+            Librarian_ocCategories.Clear();
             foreach (List<String> line in commonState.ToneList.Tones.OrderBy(o => o[1]))
             {
-                if (line[0] == commonState.CurrentTone.Group && line[1] != lastCategory && !Librarian_Categories.Contains(line[1]))
+                if (line[0] == commonState.CurrentTone.Group && line[1] != lastCategory && !Librarian_ocCategories.Contains(line[1]))
                 {
-                    Librarian_Categories.Add(line[1]);
+                    Librarian_ocCategories.Add(line[1]);
                     lastCategory = line[1];
                 }
             }
-            Librarian_lvCategories.ItemsSource = Librarian_Categories;
+            Librarian_lvCategories.ItemsSource = Librarian_ocCategories;
             PopHandleControlEvents();
             //Librarian_lvCategories.SelectedItem = Librarian_Categories[0];
+        }
+
+        private void Librarian_PopulateStudioSetListview()
+        {
+            // All studio set names has been received and stored in studioSetNames,
+            // populate the combobox:
+            PushHandleControlEvents();
+            Librarian_ocCategories.Clear();
+            UInt16 i = 1;
+            foreach (String s in commonState.StudioSetNames)
+            {
+                String num = i.ToString();
+                if (num.Length < 2)
+                {
+                    num = "0" + num;
+                }
+                Librarian_ocCategories.Add(num + " " + s);
+                i++;
+            }
+            commonState.CurrentStudioSet = currentStudioSet;
+            Librarian_lvCategories.SelectedItem = commonState.CurrentStudioSet;
+            PopHandleControlEvents();
+            SetStudioSet(commonState.CurrentStudioSet);
         }
 
         private void PopulateToneNames()
@@ -2145,22 +2249,22 @@ namespace Integra_7_Xamarin
             {
                 try
                 {
-                    if (Librarian_ToneNames == null)
+                    if (Librarian_ocToneNames == null)
                     {
                         try
                         {
-                            Librarian_ToneNames = new ObservableCollection<String>();
+                            Librarian_ocToneNames = new ObservableCollection<String>();
                         }
                         catch (Exception e)
                         {
 
                         }
                     }
-                    if (Librarian_ToneNames.Count() > 0)
+                    if (Librarian_ocToneNames.Count() > 0)
                     {
                         try
                         {
-                            Librarian_ToneNames.Clear();
+                            Librarian_ocToneNames.Clear();
                         }
                         catch (Exception e)
                         {
@@ -2176,7 +2280,7 @@ namespace Integra_7_Xamarin
                             || toneNamesFilter == ToneNamesFilter.INIT
                             || toneNamesFilter == ToneNamesFilter.ALL))
                         {
-                            Librarian_ToneNames.Add(tone[3]);
+                            Librarian_ocToneNames.Add(tone[3]);
                         }
                     }
                     //Librarian_lvToneNames.SelectedItem = Librarian_ToneNames[0];
@@ -2186,7 +2290,7 @@ namespace Integra_7_Xamarin
                         toneData.Add(Librarian_lvGroups.SelectedItem.ToString());
                         toneData.Add(Librarian_lvCategories.SelectedItem.ToString());
                         toneData.Add("");
-                        toneData.Add(Librarian_ToneNames[0].ToString());
+                        toneData.Add(Librarian_ocToneNames[0].ToString());
                         toneData.Add("");
                         toneData.Add("");
                         toneData.Add("");
@@ -2226,7 +2330,7 @@ namespace Integra_7_Xamarin
 
                 }
                 //SetFavorite();
-                Librarian_lvToneNames.ItemsSource = Librarian_ToneNames;
+                Librarian_lvToneNames.ItemsSource = Librarian_ocToneNames;
             }
         }
 
@@ -2235,10 +2339,10 @@ namespace Integra_7_Xamarin
             try
             {
                 //SearchResultSource.Clear();
-                Librarian_ToneNames.Clear();
+                Librarian_ocToneNames.Clear();
             }
             catch { }
-            Librarian_ToneNames.Add("=== Tones =============");
+            Librarian_ocToneNames.Add("=== Tones =============");
             String searchString = Librarian_tbSearch.Editor.Text.ToLower();
             // Search voices:
             foreach (List<String> tone in commonState.ToneList.Tones)
@@ -2249,11 +2353,11 @@ namespace Integra_7_Xamarin
                     || toneNamesFilter == ToneNamesFilter.INIT
                     || toneNamesFilter == ToneNamesFilter.ALL))
                 {
-                    Librarian_ToneNames.Add(tone[3] + ", " + tone[0] + ", " + tone[1]);
+                    Librarian_ocToneNames.Add(tone[3] + ", " + tone[0] + ", " + tone[1]);
                 }
             }
             // Search drum sounds:
-            Librarian_ToneNames.Add("=== Drums ==============");
+            Librarian_ocToneNames.Add("=== Drums ==============");
             Boolean first = true; // To skip the key number column
             foreach (List<String> toneNames in commonState.DrumKeyAssignLists.ToneNames)
             {
@@ -2274,13 +2378,13 @@ namespace Integra_7_Xamarin
                         {
                             if (toneName.ToLower().Contains(searchString))
                             {
-                                Librarian_ToneNames.Add(toneName + ", " + toneNames[0] + ", " + toneNames[1] + "\t");
+                                Librarian_ocToneNames.Add(toneName + ", " + toneNames[0] + ", " + toneNames[1] + "\t");
                             }
                         }
                     }
                 }
             }
-            Librarian_lvToneNames.ItemsSource = Librarian_ToneNames;
+            Librarian_lvToneNames.ItemsSource = Librarian_ocToneNames;
         }
 
         private void PopulateToneData()
