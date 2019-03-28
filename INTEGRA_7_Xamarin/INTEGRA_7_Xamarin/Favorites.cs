@@ -192,7 +192,7 @@ namespace Integra_7_Xamarin
             Favorites_edNewFolderName.TextChanged += Favorites_edNewFolderName_TextChanged;
             btnOk.Clicked += BtnOk_Clicked;
             btnNok.Clicked += BtnNok_Clicked;
-            Favorites_btnAddFolder.Clicked += Favorites_btnAddFolder_Clicked;
+            //Favorites_btnAddFolder.Clicked += Favorites_btnAddFolder_Clicked;
             //Favorites_btnCopyFavorite.Clicked += Favorites_btnCopyFavorite_Clicked;
             Favorites_btnDeleteFolder.Clicked += Favorites_btnDeleteFolder_Clicked;
             Favorites_btnAddFavorite.Clicked += Favorites_btnAddFavorite_Clicked;
@@ -235,16 +235,17 @@ namespace Integra_7_Xamarin
 
             // Create the new folder grid:
             gNewFolder.Children.Add(new GridRow(0, new View[] { Favorites_edNewFolderName }).Row);
-            gNewFolder.Children.Add(new GridRow(1, new View[] { btnOk, btnNok }).Row);
-            gNewFolder.Children.Add(new GridRow(1, new View[] { imgOk, imgNok }).Row);
-            gNewFolder.Children.Add(new GridRow(0, new View[] { Favorites_btnAddFolder }, null, false, false, 2).Row);
-            Favorites_edNewFolderName.IsVisible = false;
-            imgOk.IsVisible = false;
-            imgNok.IsVisible = false;
+            gNewFolder.Children.Add(new GridRow(1, new View[] { btnOk, null, btnNok }).Row);
+            gNewFolder.Children.Add(new GridRow(1, new View[] { imgOk, Favorites_btnAddFolder, imgNok }).Row);
+            //gNewFolder.Children.Add(new GridRow(0, new View[] { Favorites_btnAddFolder }, null, false, false, 2).Row);
+            Favorites_btnAddFolder.IsEnabled = false;
+            //Favorites_edNewFolderName.IsVisible = false;
+            //imgOk.IsVisible = false;
+            //imgNok.IsVisible = false;
             imgOk.InputTransparent = true;
             imgNok.InputTransparent = true;
-            btnOk.IsVisible = false;
-            btnNok.IsVisible = false;
+            //btnOk.IsVisible = false;
+            //btnNok.IsVisible = false;
 
             // A grid for the right column:
 
@@ -451,7 +452,7 @@ namespace Integra_7_Xamarin
                     }
                     if (!found)
                     {
-                        Favorites_btnAddFolder.IsEnabled = true;
+                        //Favorites_btnAddFolder.IsEnabled = true;
                         if (((String)e.NewTextValue).Contains("\r"))
                         {
                             commonState.FavoritesList.FavoritesFolders.Add(new FavoritesFolder(Favorites_edNewFolderName.Text.Trim().Replace("\r", "")));
@@ -461,34 +462,35 @@ namespace Integra_7_Xamarin
                     }
                     else
                     {
-                        Favorites_btnAddFolder.IsEnabled = false;
+                        //Favorites_btnAddFolder.IsEnabled = false;
                     }
                 }
             }
             else
             {
-                Favorites_btnAddFolder.IsEnabled = false;
+                //Favorites_btnAddFolder.IsEnabled = false;
             }
         }
 
         private void BtnNok_Clicked(object sender, EventArgs e)
         {
-            imgOk.IsVisible = false;
-            imgNok.IsVisible = false;
-            btnOk.IsVisible = false;
-            btnNok.IsVisible = false;
-            Favorites_edNewFolderName.IsVisible = false;
-            Favorites_btnAddFolder.IsVisible = true;
+            //imgOk.IsVisible = false;
+            //imgNok.IsVisible = false;
+            //btnOk.IsVisible = false;
+            //btnNok.IsVisible = false;
+            //Favorites_edNewFolderName.IsVisible = false;
+            //Favorites_btnAddFolder.IsVisible = true;
+            Favorites_edNewFolderName.Text = "";
         }
 
         private void BtnOk_Clicked(object sender, EventArgs e)
         {
-            imgOk.IsVisible = false;
-            imgNok.IsVisible = false;
-            btnOk.IsVisible = false;
-            btnNok.IsVisible = false;
-            Favorites_edNewFolderName.IsVisible = false;
-            Favorites_btnAddFolder.IsVisible = true;
+            //imgOk.IsVisible = false;
+            //imgNok.IsVisible = false;
+            //btnOk.IsVisible = false;
+            //btnNok.IsVisible = false;
+            //Favorites_edNewFolderName.IsVisible = false;
+            //Favorites_btnAddFolder.IsVisible = true;
             if (String.IsNullOrEmpty(Favorites_edNewFolderName.Text)
                 || Favorites_ocFolderList.Contains(Favorites_edNewFolderName.Text))
             {
