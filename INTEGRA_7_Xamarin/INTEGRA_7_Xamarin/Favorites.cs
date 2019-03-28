@@ -895,89 +895,95 @@ namespace Integra_7_Xamarin
                         Favorites_CurrentlyInFavoriteList.Clear();
                         Favorites_ocFolderList.Clear();
                         UInt16 i = 0;
-                        foreach (FavoritesFolder folder in commonState.FavoritesList.FavoritesFolders)
+                        if (commonState.FavoritesList.FavoritesFolders != null)
                         {
-                            Boolean mark = false;
-                            if (favoritesAction == FavoritesAction.ADD || favoritesAction == FavoritesAction.REMOVE)
+                            foreach (FavoritesFolder folder in commonState.FavoritesList.FavoritesFolders)
                             {
-                                foreach (FavoriteTone fav in folder.FavoriteTones)
+                                Boolean mark = false;
+                                if (favoritesAction == FavoritesAction.ADD || favoritesAction == FavoritesAction.REMOVE)
                                 {
-                                    if (fav.Group == commonState.CurrentTone.Group
-                                        && fav.Category == commonState.CurrentTone.Category
-                                        && fav.Name == commonState.CurrentTone.Name)
+                                    foreach (FavoriteTone fav in folder.FavoriteTones)
                                     {
-                                        mark = true;
-                                        SelectedFolderIndex = i;
-                                        count++;
+                                        if (fav.Group == commonState.CurrentTone.Group
+                                            && fav.Category == commonState.CurrentTone.Category
+                                            && fav.Name == commonState.CurrentTone.Name)
+                                        {
+                                            mark = true;
+                                            SelectedFolderIndex = i;
+                                            count++;
+                                        }
+                                    }
+                                }
+                                if (favoritesAction == FavoritesAction.ADD)
+                                {
+                                    mark = !mark;
+                                }
+
+                                if (mark)
+                                {
+                                    Favorites_ocFolderList.Add("*" + folder.Name);
+                                }
+                                else
+                                {
+                                    Favorites_ocFolderList.Add(folder.Name);
+                                }
+                                i++;
+                            }
+                            if ((SelectedFolderIndex > -1 && favoritesAction == FavoritesAction.SHOW) || (count > 0 && favoritesAction == FavoritesAction.REMOVE) || (count == 0 && favoritesAction == FavoritesAction.ADD))
+                            {
+                                // There are still items to delete or still room for more items, 
+                                // stay in marked mode:
+                                if (Favorites_ocFolderList.Count() > 0)
+                                {
+                                    if (SelectedFolderIndex > -1 && SelectedFolderIndex < Favorites_ocFolderList.Count)
+                                    {
+                                        Favorites_lvFolderList.SelectedItem = Favorites_ocFolderList[SelectedFolderIndex];
+                                    }
+                                    else
+                                    {
+                                        Favorites_lvFolderList.SelectedItem = Favorites_ocFolderList[0];
+                                        Favorites_CurrentFolder = 0;
                                     }
                                 }
                             }
-                            if (favoritesAction == FavoritesAction.ADD)
-                            {
-                                mark = !mark;
-                            }
-
-                            if (mark)
-                            {
-                                Favorites_ocFolderList.Add("*" + folder.Name);
-                            }
                             else
                             {
-                                Favorites_ocFolderList.Add(folder.Name);
-                            }
-                            i++;
-                        }
-                        if ((SelectedFolderIndex > -1 && favoritesAction == FavoritesAction.SHOW) || (count > 0 && favoritesAction == FavoritesAction.REMOVE) || (count == 0 && favoritesAction == FavoritesAction.ADD))
-                        {
-                            // There are still items to delete or still room for more items, 
-                            // stay in marked mode:
-                            if (Favorites_ocFolderList.Count() > 0)
-                            {
-                                if (SelectedFolderIndex > -1 && SelectedFolderIndex < Favorites_ocFolderList.Count)
+                                // There are no more items to delete, or no folders that 
+                                // does not have the item to add, go to normal mode:
+                                if (Favorites_CurrentFolder > -1 && Favorites_CurrentFolder < Favorites_ocFolderList.Count())
                                 {
-                                    Favorites_lvFolderList.SelectedItem = Favorites_ocFolderList[SelectedFolderIndex];
+                                    Favorites_lvFolderList.SelectedItem = Favorites_ocFolderList[Favorites_CurrentFolder];
                                 }
-                                else
+                                else if (Favorites_ocFolderList.Count() > 0)
                                 {
                                     Favorites_lvFolderList.SelectedItem = Favorites_ocFolderList[0];
                                     Favorites_CurrentFolder = 0;
                                 }
                             }
+                            if (Favorites_lvFolderList.SelectedItem == null)
+                            {
+                                if (Favorites_ocFolderList.Count > 0)
+                                {
+                                    Favorites_lvFolderList.SelectedItem = Favorites_ocFolderList[0];
+                                    Favorites_CurrentFolder = 0;
+                                }
+                            }
+                            UpdateFavoritesListFromCommonstate(Favorites_lvFolderList.SelectedItem.ToString());
+                        }
+                    }
+                    catch { }
+                    if (Favorites_ocFolderList.Count() > 0)
+                    {
+                        if (SelectedFolderIndex > -1)
+                        {
+                            Favorites_lvFolderList.SelectedItem = Favorites_ocFolderList[SelectedFolderIndex];
+                            Favorites_CurrentFolder = SelectedFolderIndex;
                         }
                         else
                         {
-                            // There are no more items to delete, or no folders that 
-                            // does not have the item to add, go to normal mode:
-                            if (Favorites_CurrentFolder > -1 && Favorites_CurrentFolder < Favorites_ocFolderList.Count())
-                            {
-                                Favorites_lvFolderList.SelectedItem = Favorites_ocFolderList[Favorites_CurrentFolder];
-                            }
-                            else if (Favorites_ocFolderList.Count() > 0)
-                            {
-                                Favorites_lvFolderList.SelectedItem = Favorites_ocFolderList[0];
-                                Favorites_CurrentFolder = 0;
-                            }
+                            Favorites_lvFolderList.SelectedItem = Favorites_ocFolderList[0];
+                            Favorites_CurrentFolder = 0;
                         }
-                        if (Favorites_lvFolderList.SelectedItem == null)
-                        {
-                            if (Favorites_ocFolderList.Count > 0)
-                            {
-                                Favorites_lvFolderList.SelectedItem = Favorites_ocFolderList[0];
-                                Favorites_CurrentFolder = 0;
-                            }
-                        }
-                        UpdateFavoritesListFromCommonstate(Favorites_lvFolderList.SelectedItem.ToString());
-                    }
-                    catch { }
-                    if (Favorites_ocFolderList.Count() > 0 && SelectedFolderIndex > -1)
-                    {
-                        Favorites_lvFolderList.SelectedItem = Favorites_ocFolderList[SelectedFolderIndex];
-                        Favorites_CurrentFolder = SelectedFolderIndex;
-                    }
-                    else
-                    {
-                        Favorites_lvFolderList.SelectedItem = Favorites_ocFolderList[0];
-                        Favorites_CurrentFolder = 0;
                     }
                 }
                 PopHandleControlEvents();

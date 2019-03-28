@@ -1332,7 +1332,7 @@ namespace Integra_7_Xamarin
                         // Get a list of all studio set names. Start by storing the current studio set number.
                         // Note that consequent queries will be sent from MidiInPort_MessageReceived and Timer_Tick.
                         Librarian_StackLayout.IsVisible = false;
-                        ShowPleaseWaitPage(WaitingFor.READING_STUDIO_SET_NAMES, CurrentPage.LIBRARIAN);
+                        ShowPleaseWaitPage(WaitingFor.READING_STUDIO_SET_NAMES, CurrentPage.LIBRARIAN, null);
                         //commonState.StudioSetNames = new List<String>();
                         //QueryCurrentStudioSetNumber();
                     }
@@ -1780,7 +1780,7 @@ namespace Integra_7_Xamarin
             }
             else
             {
-                mainPage.uIHandler.ShowPleaseWaitPage(WaitingFor.READING_STUDIO_SET_NAMES, CurrentPage.EDIT_STUDIO_SET);
+                mainPage.uIHandler.ShowPleaseWaitPage(WaitingFor.READING_STUDIO_SET_NAMES, CurrentPage.EDIT_STUDIO_SET, null);
             }
             //Waiting(true, "Please wait while scanning Studio set names and initiating form...", Librarian_StackLayout);
             //ShowStudioSetEditorPage();

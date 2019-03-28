@@ -87,7 +87,7 @@ namespace Integra_7_Xamarin.Droid
                     }
                 }
             }
-            else if (!IsReady && /*!HasPermission &&*/ USB_DEVICE_ATTACHED.Equals(action))
+            else if (!IsReady && !HasPermission && USB_DEVICE_ATTACHED.Equals(action))
             {
                 // Parse for usb devices:
                 ParseForUsbDevices();
@@ -110,7 +110,7 @@ namespace Integra_7_Xamarin.Droid
             }
         }
 
-        private void ParseForUsbDevices()
+        public void ParseForUsbDevices()
         {
             Int32 deviceIndex = 0;
             Int32 deviceCount = 0;

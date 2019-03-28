@@ -88,7 +88,7 @@ namespace Integra_7_Xamarin.UWP
             // The input selector is never shown. When changing output, input follows.
             InputSelector = MainPage_Portable.uIHandler.Librarian_midiInputDevice;
 
-            MainPage_Portable.uIHandler.ShowPleaseWaitPage(WaitingFor.MIDI, UIHandler.CurrentPage.LIBRARIAN);
+            MainPage_Portable.uIHandler.ShowPleaseWaitPage(WaitingFor.MIDI, UIHandler.CurrentPage.LIBRARIAN, null);
 
             //MainPage_Portable.SetDeviceSpecificMainPage(this);
 

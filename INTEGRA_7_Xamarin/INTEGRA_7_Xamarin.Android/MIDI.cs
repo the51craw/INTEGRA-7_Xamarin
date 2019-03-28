@@ -1,6 +1,7 @@
 ﻿using System;
 using Java.Util;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 //[assembly: Dependency(typeof(MIDI))]
 
@@ -38,6 +39,7 @@ namespace Integra_7_Xamarin.Droid
         {
             mainActivity = (MainActivity)MainActivity;
             this.MainPage_Portable = mainPage;
+            mainActivity.usb.ParseForUsbDevices();
             timer = new Timer();
             timer.ScheduleAtFixedRate(this, 1, 1);
         }
@@ -102,10 +104,10 @@ namespace Integra_7_Xamarin.Droid
         public Boolean MidiIsReady()
         {
             //USB usb = (USB)MainPage_Portable.platform_specific[0];
-            return mainActivity != null && MainPage_Portable != null 
-                && mainActivity.usb != null 
-                && mainActivity.usb.HasPermission 
-                && mainActivity.usb.DeviceConnection != null;
+            return mainActivity != null && MainPage_Portable != null
+                && mainActivity.usb != null
+                && mainActivity.usb.HasPermission
+                && mainActivity.usb.DeviceConnection != null; // This seems to be initiated on incoming data, not for test now?
         }
 
         public void UpdateMidiComboBoxes(Picker midiOutputComboBox, Picker midiInputComboBox)
@@ -369,6 +371,16 @@ namespace Integra_7_Xamarin.Droid
                 chksum += bytes[i];
             }
             bytes[bytes.Length - 2] = (byte)((0x80 - (chksum & 0x7f)) & 0x7f);
+        }
+
+        public void MakeMidiDeviceList()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<string> GetMidiDeviceList()
+        {
+            throw new NotImplementedException();
         }
     }
 

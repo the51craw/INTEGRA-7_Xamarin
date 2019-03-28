@@ -23,16 +23,18 @@ namespace Integra_7_Xamarin
         private CurrentPage continueTo;
         private Int32 waitCount;
         private Int32 studioSetNumber;
+        private Object deviceSpecifics; 
 
         /// <summary>
         /// Call to show a wait page with a progress bar
         /// </summary>
         /// <param name="waitingFor">Controls text and behaviour</param>
         /// <param name="o">Pass any object needed if applicable</param>
-        public void ShowPleaseWaitPage(WaitingFor waitingFor, CurrentPage continueTo)
+        public void ShowPleaseWaitPage(WaitingFor waitingFor, CurrentPage continueTo, Object deviceSpecifics)
         {
             currentPage = CurrentPage.PLEASE_WAIT;
             this.continueTo = continueTo;
+            this.deviceSpecifics = deviceSpecifics;
             if (!PleaseWait_IsCreated)
             {
                 DrawPleaseWaitPage();
@@ -148,7 +150,17 @@ namespace Integra_7_Xamarin
                 if (waitCount > 10)
                 {
                     // Try to find I-7 via USB interface:
-                    commonState.Midi.Init(mainPage, "INTEGRA-7", Librarian_midiOutputDevice, Librarian_midiInputDevice, 0, 0);
+                    if (appType == _appType.ANDROID)
+                    {
+                        if (!commonState.Midi.MidiIsReady())
+                        {
+                            commonState.Midi.Init(mainPage, "INTEGRA-7", Librarian_midiOutputDevice, Librarian_midiInputDevice, deviceSpecifics, 0, 0);
+                        }
+                    }
+                    else
+                    {
+                        commonState.Midi.Init(mainPage, "INTEGRA-7", Librarian_midiOutputDevice, Librarian_midiInputDevice, 0, 0);
+                    }
                     pb_WaitingProgress.Progress = pb_WaitingProgress.Progress + ((1 - pb_WaitingProgress.Progress) / 100);
                     if (commonState.Midi.MidiIsReady())
                     {

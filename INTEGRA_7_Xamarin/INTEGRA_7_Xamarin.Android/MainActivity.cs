@@ -105,6 +105,7 @@ namespace Integra_7_Xamarin.Droid
 
             // Ask user for permission to use USB if creation and initiation was successful:
             if (usb.Device != null && usb.Interface != null && usb.OutputEndpoint != null && usb.InputEndpoint != null)
+            //if (!usb.HasPermission)
             {
                 usb.Manager.RequestPermission(usb.Device, pendingIntent);
                 usb.HasPermission = usb.Manager.HasPermission(usb.Device);
@@ -116,9 +117,11 @@ namespace Integra_7_Xamarin.Droid
             //}
 
             // Initiate MIDI:
-            OutputSelector = MainPage_Portable.uIHandler.Librarian_midiOutputDevice;
-            InputSelector = MainPage_Portable.uIHandler.Librarian_midiInputDevice;
-            MainPage_Portable.uIHandler.commonState.Midi.Init(MainPage_Portable, "INTEGRA-7", OutputSelector, InputSelector, this, 0, 0);
+            //OutputSelector = MainPage_Portable.uIHandler.Librarian_midiOutputDevice;
+            //InputSelector = MainPage_Portable.uIHandler.Librarian_midiInputDevice;
+
+            //MainPage_Portable.uIHandler.commonState.Midi.Init(MainPage_Portable, "INTEGRA-7", OutputSelector, InputSelector, this, 0, 0);
+            MainPage_Portable.uIHandler.ShowPleaseWaitPage(WaitingFor.MIDI, UIHandler.CurrentPage.LIBRARIAN, this);
 
             // Wait for MIDI to get ready:
             //timer = new Timer();
