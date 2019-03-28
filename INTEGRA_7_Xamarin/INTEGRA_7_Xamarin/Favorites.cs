@@ -37,10 +37,10 @@ namespace Integra_7_Xamarin
         List<FavoriteTone> Favorites_CurrentlyInFavoriteList = null;
         Grid gNewFolder = null;
         Editor Favorites_edNewFolderName = null;
-        Image imgOk = null;
-        Image imgNok = null;
-        Button btnOk = null;
-        Button btnNok = null;
+        //Image imgOk = null;
+        //Image imgNok = null;
+        //Button btnOk = null;
+        //Button btnNok = null;
         Button Favorites_btnAddFolder = null;
         Button Favorites_btnDeleteFolder = null;
         TextBlock Favorites_tbHelp = null;
@@ -113,14 +113,14 @@ namespace Integra_7_Xamarin
             gNewFolder = new Grid();
             Favorites_btnAddFolder = new Button();
             Favorites_btnAddFolder.Text = "Add folder";
-            btnOk = new Button();
-            btnNok = new Button();
-            btnOk.BackgroundColor = colorSettings.Transparent;
-            btnNok.BackgroundColor = colorSettings.Transparent;
-            imgOk = new Image();
-            imgNok = new Image();
-            imgOk.Source = ImageSource.FromFile("Ok.png");
-            imgNok.Source = ImageSource.FromFile("Nok.png");
+            //btnOk = new Button();
+            //btnNok = new Button();
+            //btnOk.BackgroundColor = colorSettings.Transparent;
+            //btnNok.BackgroundColor = colorSettings.Transparent;
+            //imgOk = new Image();
+            //imgNok = new Image();
+            //imgOk.Source = ImageSource.FromFile("Ok.png");
+            //imgNok.Source = ImageSource.FromFile("Nok.png");
 
             Favorites_btnDeleteFolder = new Button();
             Favorites_btnDeleteFolder.Text = "Delete selected folder";
@@ -190,9 +190,9 @@ namespace Integra_7_Xamarin
 
             // Other handlers:
             Favorites_edNewFolderName.TextChanged += Favorites_edNewFolderName_TextChanged;
-            btnOk.Clicked += BtnOk_Clicked;
-            btnNok.Clicked += BtnNok_Clicked;
-            //Favorites_btnAddFolder.Clicked += Favorites_btnAddFolder_Clicked;
+            //btnOk.Clicked += BtnOk_Clicked;
+            //btnNok.Clicked += BtnNok_Clicked;
+            Favorites_btnAddFolder.Clicked += Favorites_btnAddFolder_Clicked;
             //Favorites_btnCopyFavorite.Clicked += Favorites_btnCopyFavorite_Clicked;
             Favorites_btnDeleteFolder.Clicked += Favorites_btnDeleteFolder_Clicked;
             Favorites_btnAddFavorite.Clicked += Favorites_btnAddFavorite_Clicked;
@@ -235,15 +235,17 @@ namespace Integra_7_Xamarin
 
             // Create the new folder grid:
             gNewFolder.Children.Add(new GridRow(0, new View[] { Favorites_edNewFolderName }).Row);
-            gNewFolder.Children.Add(new GridRow(1, new View[] { btnOk, null, btnNok }).Row);
-            gNewFolder.Children.Add(new GridRow(1, new View[] { imgOk, Favorites_btnAddFolder, imgNok }).Row);
+            //gNewFolder.Children.Add(new GridRow(1, new View[] { btnOk, null, btnNok }).Row);
+            //gNewFolder.Children.Add(new GridRow(1, new View[] { imgOk, Favorites_btnAddFolder, imgNok }).Row);
+            gNewFolder.Children.Add(new GridRow(1, new View[] { Favorites_btnAddFolder }).Row);
             //gNewFolder.Children.Add(new GridRow(0, new View[] { Favorites_btnAddFolder }, null, false, false, 2).Row);
             Favorites_btnAddFolder.IsEnabled = false;
+            Favorites_edNewFolderName.VerticalOptions = LayoutOptions.FillAndExpand;
             //Favorites_edNewFolderName.IsVisible = false;
             //imgOk.IsVisible = false;
             //imgNok.IsVisible = false;
-            imgOk.InputTransparent = true;
-            imgNok.InputTransparent = true;
+            //imgOk.InputTransparent = true;
+            //imgNok.InputTransparent = true;
             //btnOk.IsVisible = false;
             //btnNok.IsVisible = false;
 
@@ -255,9 +257,9 @@ namespace Integra_7_Xamarin
             for (Int32 i = 0; i < 10; i++)
             {
                 Favorites_rdcRight.Add(new RowDefinition());
-                if (i == 2)
+                if (i == 3)
                 {
-                    Favorites_rdcRight[i].Height = new GridLength(5, GridUnitType.Star);
+                    Favorites_rdcRight[i].Height = new GridLength(3, GridUnitType.Star);
                 }
                 else
                 {
@@ -266,17 +268,17 @@ namespace Integra_7_Xamarin
                 Favorites_grRightColumn.RowDefinitions.Add(Favorites_rdcRight[i]);
             }
 
-            Favorites_grRightColumn.Children.Add(new GridRow(0, new View[] { gNewFolder }).Row);
-            Favorites_grRightColumn.Children.Add(new GridRow(1, new View[] { Favorites_btnDeleteFolder }).Row);
-            Favorites_grRightColumn.Children.Add(new GridRow(2, new View[] { Favorites_tbHelp }, null, false, false).Row);
+            Favorites_grRightColumn.Children.Add(new GridRow(0, new View[] { gNewFolder }, null, false, false, 2).Row);
+            Favorites_grRightColumn.Children.Add(new GridRow(2, new View[] { Favorites_btnDeleteFolder }).Row);
+            Favorites_grRightColumn.Children.Add(new GridRow(3, new View[] { Favorites_tbHelp }, null, false, false).Row);
             //Favorites_grRightColumn.Children.Add(new GridRow(3, new View[] { Favorites_btnCopyFavorite }, null, false, false).Row);
-            Favorites_grRightColumn.Children.Add(new GridRow(3, new View[] { Favorites_btnAddFavorite }).Row);
-            Favorites_grRightColumn.Children.Add(new GridRow(4, new View[] { Favorites_btnDeleteFavorite }).Row);
-            Favorites_grRightColumn.Children.Add(new GridRow(5, new View[] { Favorites_btnSelectFavorite }).Row);
-            Favorites_grRightColumn.Children.Add(new GridRow(6, new View[] { Favorites_btnPlay }).Row);
-            Favorites_grRightColumn.Children.Add(new GridRow(7, new View[] { Favorites_btnBackup }).Row);
-            Favorites_grRightColumn.Children.Add(new GridRow(8, new View[] { Favorites_btnRestore }).Row);
-            Favorites_grRightColumn.Children.Add(new GridRow(9, new View[] { Favorites_btnReturn }).Row);
+            Favorites_grRightColumn.Children.Add(new GridRow(4, new View[] { Favorites_btnAddFavorite }).Row);
+            Favorites_grRightColumn.Children.Add(new GridRow(5, new View[] { Favorites_btnDeleteFavorite }).Row);
+            Favorites_grRightColumn.Children.Add(new GridRow(6, new View[] { Favorites_btnSelectFavorite }).Row);
+            Favorites_grRightColumn.Children.Add(new GridRow(7, new View[] { Favorites_btnPlay }).Row);
+            Favorites_grRightColumn.Children.Add(new GridRow(8, new View[] { Favorites_btnBackup }).Row);
+            Favorites_grRightColumn.Children.Add(new GridRow(9, new View[] { Favorites_btnRestore }).Row);
+            Favorites_grRightColumn.Children.Add(new GridRow(10, new View[] { Favorites_btnReturn }).Row);
 
             // Assemble FavoritesStackLayout --------------------------------------------------------------
 
@@ -458,39 +460,65 @@ namespace Integra_7_Xamarin
                             commonState.FavoritesList.FavoritesFolders.Add(new FavoritesFolder(Favorites_edNewFolderName.Text.Trim().Replace("\r", "")));
                             Favorites_edNewFolderName.Text = "";
                             Favorites_UpdateFoldersList();
+                            Favorites_btnAddFolder.IsEnabled = false;
+                        }
+                        else
+                        {
+                            Favorites_btnAddFolder.IsEnabled = true;
                         }
                     }
                     else
                     {
-                        //Favorites_btnAddFolder.IsEnabled = false;
+                        Favorites_btnAddFolder.IsEnabled = false;
                     }
                 }
             }
             else
             {
-                //Favorites_btnAddFolder.IsEnabled = false;
+                Favorites_btnAddFolder.IsEnabled = false;
             }
         }
 
-        private void BtnNok_Clicked(object sender, EventArgs e)
-        {
-            //imgOk.IsVisible = false;
-            //imgNok.IsVisible = false;
-            //btnOk.IsVisible = false;
-            //btnNok.IsVisible = false;
-            //Favorites_edNewFolderName.IsVisible = false;
-            //Favorites_btnAddFolder.IsVisible = true;
-            Favorites_edNewFolderName.Text = "";
-        }
+        //private void BtnNok_Clicked(object sender, EventArgs e)
+        //{
+        //    //imgOk.IsVisible = false;
+        //    //imgNok.IsVisible = false;
+        //    //btnOk.IsVisible = false;
+        //    //btnNok.IsVisible = false;
+        //    //Favorites_edNewFolderName.IsVisible = false;
+        //    //Favorites_btnAddFolder.IsVisible = true;
+        //    Favorites_edNewFolderName.Text = "";
+        //}
 
-        private void BtnOk_Clicked(object sender, EventArgs e)
+        //private void BtnOk_Clicked(object sender, EventArgs e)
+        //{
+        //    //imgOk.IsVisible = false;
+        //    //imgNok.IsVisible = false;
+        //    //btnOk.IsVisible = false;
+        //    //btnNok.IsVisible = false;
+        //    //Favorites_edNewFolderName.IsVisible = false;
+        //    //Favorites_btnAddFolder.IsVisible = true;
+        //    if (String.IsNullOrEmpty(Favorites_edNewFolderName.Text)
+        //        || Favorites_ocFolderList.Contains(Favorites_edNewFolderName.Text))
+        //    {
+        //        ShowMessage("Please type a unique name for the new folder.");
+        //    }
+        //    else
+        //    {
+        //        commonState.FavoritesList.FavoritesFolders.Add(new FavoritesFolder(Favorites_edNewFolderName.Text.Trim()));
+        //        Favorites_edNewFolderName.Text = "";
+        //        Favorites_UpdateFoldersList();
+        //    }
+        //}
+
+        private void Favorites_btnAddFolder_Clicked(object sender, EventArgs e)
         {
-            //imgOk.IsVisible = false;
-            //imgNok.IsVisible = false;
-            //btnOk.IsVisible = false;
-            //btnNok.IsVisible = false;
-            //Favorites_edNewFolderName.IsVisible = false;
-            //Favorites_btnAddFolder.IsVisible = true;
+            //imgOk.IsVisible = true;
+            //imgNok.IsVisible = true;
+            //btnOk.IsVisible = true;
+            //btnNok.IsVisible = true;
+            //Favorites_edNewFolderName.IsVisible = true;
+            //Favorites_btnAddFolder.IsVisible = false;
             if (String.IsNullOrEmpty(Favorites_edNewFolderName.Text)
                 || Favorites_ocFolderList.Contains(Favorites_edNewFolderName.Text))
             {
@@ -501,17 +529,8 @@ namespace Integra_7_Xamarin
                 commonState.FavoritesList.FavoritesFolders.Add(new FavoritesFolder(Favorites_edNewFolderName.Text.Trim()));
                 Favorites_edNewFolderName.Text = "";
                 Favorites_UpdateFoldersList();
+                Favorites_btnAddFolder.IsEnabled = false;
             }
-        }
-
-        private void Favorites_btnAddFolder_Clicked(object sender, EventArgs e)
-        {
-            imgOk.IsVisible = true;
-            imgNok.IsVisible = true;
-            btnOk.IsVisible = true;
-            btnNok.IsVisible = true;
-            Favorites_edNewFolderName.IsVisible = true;
-            Favorites_btnAddFolder.IsVisible = false;
         }
 
         private void Favorites_btnDeleteFolder_Clicked(object sender, EventArgs e)
