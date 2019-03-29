@@ -22,7 +22,7 @@
     <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x86</AppxBundlePlatforms>
-    <PackageCertificateThumbprint>BCCEE97DF436368AEBEA87759777A8414DB1C344</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>9B34A57F2E9435F038B45A0F5818039FDC7EFBE6</PackageCertificateThumbprint>
     <AppInstallerUpdateFrequency>1</AppInstallerUpdateFrequency>
     <AppInstallerCheckForUpdateFrequency>OnApplicationRun</AppInstallerCheckForUpdateFrequency>
   </PropertyGroup>
@@ -113,17 +113,30 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <None Include="INTEGRA_7_Xamarin.UWP_StoreKey2.pfx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="INTEGRA_7_Xamarin.UWP_TemporaryKey.pfx" />
-    <None Include="Package.StoreAssociation.xml" />
+    <None Include="mrmartin.pfx" />
+    <None Include="Package.StoreAssociation.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Content Include="Center.png" />
     <Content Include="DoubleDownArrow.png" />
     <Content Include="DoubleDownLeftArrow.png" />
+    <Content Include="DoubleDownLeftDownArrow.png" />
+    <Content Include="DoubleDownLeftLeftArrow.png" />
     <Content Include="DoubleDownRightArrow.png" />
+    <Content Include="DoubleDownRightDownArrow.png" />
+    <Content Include="DoubleDownRightRightArrow.png" />
     <Content Include="DoubleLeftArrow.png" />
     <Content Include="DoubleRightArrow.png" />
     <Content Include="DoubleUpArrow.png" />
     <Content Include="DoubleUpLeftArrow.png" />
+    <Content Include="DoubleUpLeftLeftArrow.png" />
+    <Content Include="DoubleUpLeftTopArrow.png" />
     <Content Include="DoubleUpRightArrow.png" />
+    <Content Include="DoubleUpRightTopArrow.png" />
     <Content Include="DownArrow.png" />
     <Content Include="DownLeftArrow.png" />
     <Content Include="DownRightArrow.png" />
@@ -136,6 +149,7 @@
     <Content Include="UpArrow.png" />
     <Content Include="UpLeftArrow.png" />
     <Content Include="UpRightArrow.png" />
+    <Content Include="DoubleUpRightRightArrow.png" />
     <Content Include="VelocityCurve1Off.png" />
     <Content Include="VelocityCurve1On.png" />
     <Content Include="VelocityCurve2Off.png" />
@@ -340,6 +354,13 @@
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
 </Project>

@@ -194,16 +194,23 @@ namespace Integra_7_Xamarin
                             commonState.Midi.MakeMidiDeviceList();
                             MidiInterfaceName = await mainPage.DisplayActionSheet("Please select MIDI interface:",
                                 "Close", null, commonState.Midi.GetMidiDeviceList().ToArray());
-                            mainPage.SaveLocalValue("MidiDevice", MidiInterfaceName);
-                            commonState.Midi.Init(mainPage, MidiInterfaceName, Librarian_midiOutputDevice, Librarian_midiInputDevice, 0, 0);
-                            pb_WaitingProgress.Progress = pb_WaitingProgress.Progress + ((1 - pb_WaitingProgress.Progress) / 100);
-                            if (commonState.Midi.MidiIsReady())
+                            if (MidiInterfaceName == "Close")
                             {
-                                MidiState = MIDIState.INITIALIZED;
+                                MidiState = MIDIState.NO_MIDI_INTERFACE_AVAILABLE;
                             }
                             else
                             {
-                                MidiState = MIDIState.NOT_INITIALIZED;
+                                mainPage.SaveLocalValue("MidiDevice", MidiInterfaceName);
+                                commonState.Midi.Init(mainPage, MidiInterfaceName, Librarian_midiOutputDevice, Librarian_midiInputDevice, 0, 0);
+                                pb_WaitingProgress.Progress = pb_WaitingProgress.Progress + ((1 - pb_WaitingProgress.Progress) / 100);
+                                if (commonState.Midi.MidiIsReady())
+                                {
+                                    MidiState = MIDIState.INITIALIZED;
+                                }
+                                else
+                                {
+                                    MidiState = MIDIState.NOT_INITIALIZED;
+                                }
                             }
                         }
                     }
@@ -221,6 +228,12 @@ namespace Integra_7_Xamarin
             {
                 waitingFor = WaitingFor.INTEGRA_7;
                 CheckForIntegra_7_readiness();
+            }
+
+            else if (MidiState == MIDIState.NO_MIDI_INTERFACE_AVAILABLE)
+            {
+                PleaseWait_StackLayout.IsVisible = false;
+                ShowLibrarianPage();
             }
         }
 

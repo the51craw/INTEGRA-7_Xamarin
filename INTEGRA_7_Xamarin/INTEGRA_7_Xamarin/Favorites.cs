@@ -113,14 +113,6 @@ namespace Integra_7_Xamarin
             gNewFolder = new Grid();
             Favorites_btnAddFolder = new Button();
             Favorites_btnAddFolder.Text = "Add folder";
-            //btnOk = new Button();
-            //btnNok = new Button();
-            //btnOk.BackgroundColor = colorSettings.Transparent;
-            //btnNok.BackgroundColor = colorSettings.Transparent;
-            //imgOk = new Image();
-            //imgNok = new Image();
-            //imgOk.Source = ImageSource.FromFile("Ok.png");
-            //imgNok.Source = ImageSource.FromFile("Nok.png");
 
             Favorites_btnDeleteFolder = new Button();
             Favorites_btnDeleteFolder.Text = "Delete selected folder";
@@ -271,7 +263,6 @@ namespace Integra_7_Xamarin
             Favorites_grRightColumn.Children.Add(new GridRow(0, new View[] { gNewFolder }, null, false, false, 2).Row);
             Favorites_grRightColumn.Children.Add(new GridRow(2, new View[] { Favorites_btnDeleteFolder }).Row);
             Favorites_grRightColumn.Children.Add(new GridRow(3, new View[] { Favorites_tbHelp }, null, false, false).Row);
-            //Favorites_grRightColumn.Children.Add(new GridRow(3, new View[] { Favorites_btnCopyFavorite }, null, false, false).Row);
             Favorites_grRightColumn.Children.Add(new GridRow(4, new View[] { Favorites_btnAddFavorite }).Row);
             Favorites_grRightColumn.Children.Add(new GridRow(5, new View[] { Favorites_btnDeleteFavorite }).Row);
             Favorites_grRightColumn.Children.Add(new GridRow(6, new View[] { Favorites_btnSelectFavorite }).Row);
@@ -989,7 +980,10 @@ namespace Integra_7_Xamarin
                                     Favorites_CurrentFolder = 0;
                                 }
                             }
-                            UpdateFavoritesListFromCommonstate(Favorites_lvFolderList.SelectedItem.ToString());
+                            if (Favorites_lvFolderList.SelectedItem != null)
+                            {
+                                UpdateFavoritesListFromCommonstate(Favorites_lvFolderList.SelectedItem.ToString());
+                            }
                         }
                     }
                     catch { }

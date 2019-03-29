@@ -46,7 +46,8 @@ namespace Integra_7_Xamarin
             INITIALIZING,
             INITIALIZING_FAILED,
             MIDI_NOT_AVAILABLE,
-            INITIALIZED
+            INITIALIZED,
+            NO_MIDI_INTERFACE_AVAILABLE
         }
 
         public enum QueryType

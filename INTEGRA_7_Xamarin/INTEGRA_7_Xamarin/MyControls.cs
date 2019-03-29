@@ -13,15 +13,6 @@ namespace Integra_7_Xamarin
         public Boolean Visibility { get { return (Boolean)IsVisible; } set { IsVisible = value; } }
         public Object Tag { get; set; }
         public String Name { get; set; }
-        //public object SelectedItem { get { return picker.SelectedItem; } set { picker.SelectedItem = value; } }
-        //public Int32 SelectedIndex { get { return picker.SelectedIndex; } set { picker.SelectedIndex = value; } }
-        //public IList<String> Items { get { return picker.Items; } }
-        //private Picker picker;
-
-        //public ComboBox()
-        //{
-        //    picker = new Picker();
-        //}
     }
 
     public static class Visibility
@@ -61,45 +52,6 @@ namespace Integra_7_Xamarin
         BEFORE,
         AFTER,
     }
-
-    //public enum _colorSettings
-    //{
-    //    TEST,
-    //    DARK,
-    //    LIGHT,
-    //}
-
-    //public class ColorSettings
-    //{
-    //    public Color ControlBackground { get; set; }
-    //    public Color Background { get; set; }
-    //    public Color Text { get; set; }
-    //    public Color LabelBackground { get; set; }
-    //    public Color IsFavorite { get; set; }
-
-    //    public ColorSettings(_colorSettings colorSettings)
-    //    {
-    //        switch (colorSettings)
-    //        {
-    //            case _colorSettings.DARK:
-    //                break;
-    //            case _colorSettings.LIGHT:
-    //                ControlBackground = Color.White;
-    //                Background = new Color(200, 200, 145);
-    //                Text = Color.Black;
-    //                LabelBackground = Color.White;
-    //                IsFavorite = Color.LightGreen;
-    //                break;
-    //            case _colorSettings.TEST:
-    //                ControlBackground = Color.Yellow;
-    //                Background = Color.Red;
-    //                Text = Color.Blue;
-    //                LabelBackground = Color.Cyan;
-    //                IsFavorite = Color.LightGreen;
-    //                break;
-    //        }
-    //    }
-    //}
 
     public class BorderThicknesSettings
     {
@@ -153,31 +105,6 @@ namespace Integra_7_Xamarin
 
         public new Boolean IsEnabled { get { return _editor.IsEnabled; } set { _editor.IsEnabled = value; } }
     }
-
-    //public class CheckBox : Switch
-    //{
-    //    //public new Boolean IsEnabled { get { return _switch.IsEnabled; } set { _switch.IsEnabled = value; } }
-    //    public Boolean IsChecked { get { return IsToggled; } set { IsToggled = value; } }
-    //    public String Name { get; set; }
-    //    public Object Tag { get; set; }
-    //    public String Content { get; set; }
-
-
-    //    //Switch _switch = new Switch();
-
-    //    public CheckBox()
-    //    {
-    //        //MinimumWidthRequest = 1;
-    //        MinimumHeightRequest = UIHandler.minimumHeightRequest;
-    //        //SetValue(VisualElement.MinimumHeightRequestProperty, 1);
-    //    }
-
-
-    //    //    //public static implicit operator Switch(CheckBox, _switch, )
-    //    //    //{
-    //    //    //    return _switch;
-    //    //    //}
-    //}
 
     public class CheckBox : Xamarin.Forms.Grid
     {
@@ -631,76 +558,6 @@ namespace Integra_7_Xamarin
         }
     }
 
-    //public partial class IntermediateSlider : Xamarin.Forms.Slider
-    //{
-    //    public Double StepFrequency { get; set; }
-    //    //EventHandler<ValueChangedEventArgs> eventHandler;
-    //    private Double lastValue = 0;
-    //    public IntermediateSlider()
-    //    {
-    //        //eventHandler = new EventHandler<ValueChangedEventArgs>(IntValueChanged);
-    //        ValueChanged += IntValueChanged;
-    //        StepFrequency = 1;
-    //        Value = 0;
-    //    }
-
-    //    public void IntValueChanged(object sender, ValueChangedEventArgs e)
-    //    {
-    //        if (((Slider)sender).Value > lastValue)
-    //        {
-    //            Value = lastValue + StepFrequency;
-    //        }
-    //        else if (((Slider)sender).Value < lastValue)
-    //        {
-    //            Value = lastValue - StepFrequency;
-    //        }
-    //        lastValue = Value;
-    //        //ValueChangedEventArgs valueChangedEventArgs = new ValueChangedEventArgs(lastValue, Value);
-    //    }
-    //}
-
-    //public partial class Slider : IntermediateSlider
-    //{
-    //    public String Name { get; set; }
-    //    public Object Tag { get; set; }
-    //    public Double Value { get; set; }
-    //    private IntermediateSlider slider;
-
-    //    public Slider()
-    //    {
-    //        MinimumWidthRequest = 1;
-    //        MinimumHeightRequest = UIHandler.minimumHeightRequest;
-    //        HeightRequest = UIHandler.minimumHeightRequest;
-    //        WidthRequest = 10;
-    //        slider = new IntermediateSlider();
-    //        ValueChanged += Slider_ValueChanged;
-    //    }
-
-    //    private void Slider_ValueChanged(object sender, ValueChangedEventArgs e)
-    //    {
-    //        Value = slider.Value;
-    //    }
-
-    //    //public override EventHandler<ValueChangedEventArgs> ValueChanged(object sender, ValueChangedEventArgs e)
-    //    //{
-    //    //    ((Slider)sender).Value
-    //    //}
-    //}
-    //public partial class Control
-    //{
-    //    public String Name { get; set; }
-
-    //    public static implicit operator Switch(Control v)
-    //    {
-    //        throw new NotImplementedException();
-    //    }
-
-    //    public static explicit operator Control(CheckBox v)
-    //    {
-    //        throw new NotImplementedException();
-    //    }
-    //}
-
     public partial class Picker : Xamarin.Forms.Picker
     {
 
@@ -757,49 +614,146 @@ namespace Integra_7_Xamarin
             IsEnabled = true;
         }
 
-        public void Step(Direction direction, Double width, Double height)
+        public void Step(Int32 direction, Double width, Double height)
         {
-            byte steps = 1;
-
-            if (direction != Direction.CENTER && direction >= Direction.DOUBLE_UP)
-            {
-                steps = 10;
-                direction -= Direction.DOUBLE_UP;
-            }
+            byte hsteps;
+            byte vsteps;
 
             switch (direction)
             {
-                case Direction.UP:
-                    Vertical = Vertical > steps ? (byte)(Vertical - steps) : (byte)0;
+                case 0:
+                    hsteps = 10;
+                    vsteps = 10;
+                    Horizontal = Horizontal > hsteps ? (byte)(Horizontal - hsteps) : (byte)0;
+                    Vertical = Vertical > vsteps ? (byte)(Vertical - vsteps) : (byte)0;
                     break;
-                case Direction.DOWN:
-                    Vertical = Vertical < 127 - steps ? (byte)(Vertical + steps) : (byte)127;
+                case 1:
+                    hsteps = 5;
+                    vsteps = 10;
+                    Horizontal = Horizontal > hsteps ? (byte)(Horizontal - hsteps) : (byte)0;
+                    Vertical = Vertical > vsteps ? (byte)(Vertical - vsteps) : (byte)0;
                     break;
-                case Direction.LEFT:
-                    Horizontal = Horizontal > steps ? (byte)(Horizontal - steps) : (byte)0;
+                case 2:
+                    vsteps = 10;
+                    Vertical = Vertical > vsteps ? (byte)(Vertical - vsteps) : (byte)0;
                     break;
-                case Direction.RIGHT:
-                    Horizontal = Horizontal < 127 - steps ? (byte)(Horizontal + steps) : (byte)127;
+                case 3:
+                    hsteps = 5;
+                    vsteps = 10;
+                    Horizontal = Horizontal < 127 - hsteps ? (byte)(Horizontal + hsteps) : (byte)127;
+                    Vertical = Vertical > vsteps ? (byte)(Vertical - vsteps) : (byte)0;
                     break;
-                case Direction.UPLEFT:
-                    Horizontal = Horizontal > steps ? (byte)(Horizontal - steps) : (byte)0;
-                    Vertical = Vertical > steps ? (byte)(Vertical - steps) : (byte)0;
+                case 4:
+                    hsteps = 10;
+                    vsteps = 10;
+                    Horizontal = Horizontal < 127 - hsteps ? (byte)(Horizontal + hsteps) : (byte)0;
+                    Vertical = Vertical > vsteps ? (byte)(Vertical - vsteps) : (byte)0;
                     break;
-                case Direction.UPRIGHT:
-                    Horizontal = Horizontal < 127 - steps ? (byte)(Horizontal + steps) : (byte)127;
-                    Vertical = Vertical > steps ? (byte)(Vertical - steps) : (byte)0;
+                case 5:
+                    hsteps = 10;
+                    vsteps = 5;
+                    Horizontal = Horizontal > hsteps ? (byte)(Horizontal - hsteps) : (byte)0;
+                    Vertical = Vertical > vsteps ? (byte)(Vertical - vsteps) : (byte)0;
                     break;
-                case Direction.DOWNLEFT:
-                    Horizontal = Horizontal > steps ? (byte)(Horizontal - steps) : (byte)0;
-                    Vertical = Vertical < 127 - steps ? (byte)(Vertical + steps) : (byte)127;
+                case 6:
+                    hsteps = 1;
+                    vsteps = 1;
+                    Horizontal = Horizontal > hsteps ? (byte)(Horizontal - hsteps) : (byte)0;
+                    Vertical = Vertical > vsteps ? (byte)(Vertical - vsteps) : (byte)0;
                     break;
-                case Direction.DOWNRIGHT:
-                    Horizontal = Horizontal < 127 - steps ? (byte)(Horizontal + steps) : (byte)127;
-                    Vertical = Vertical < 127 - steps ? (byte)(Vertical + steps) : (byte)127;
+                case 7:
+                    vsteps = 1;
+                    Vertical = Vertical > vsteps ? (byte)(Vertical - vsteps) : (byte)0;
                     break;
-                case Direction.CENTER:
+                case 8:
+                    hsteps = 1;
+                    vsteps = 1;
+                    Horizontal = Horizontal < 127 - hsteps ? (byte)(Horizontal + hsteps) : (byte)0;
+                    Vertical = Vertical > vsteps ? (byte)(Vertical - vsteps) : (byte)0;
+                    break;
+                case 9:
+                    hsteps = 10;
+                    vsteps = 5;
+                    Horizontal = Horizontal < 127 - hsteps ? (byte)(Horizontal + hsteps) : (byte)0;
+                    Vertical = Vertical > vsteps ? (byte)(Vertical - vsteps) : (byte)0;
+                    break;
+                case 10:
+                    hsteps = 10;
+                    Horizontal = Horizontal > hsteps ? (byte)(Horizontal - hsteps) : (byte)0;
+                    break;
+                case 11:
+                    hsteps = 1;
+                    Horizontal = Horizontal > hsteps ? (byte)(Horizontal - hsteps) : (byte)0;
+                    break;
+                case 12:
                     Horizontal = 63;
                     Vertical = 63;
+                    break;
+                case 13:
+                    hsteps = 1;
+                    Horizontal = Horizontal < 127 - hsteps ? (byte)(Horizontal + hsteps) : (byte)0;
+                    break;
+                case 14:
+                    hsteps = 10;
+                    Horizontal = Horizontal < 127 - hsteps ? (byte)(Horizontal + hsteps) : (byte)0;
+                    break;
+                case 15:
+                    hsteps = 10;
+                    vsteps = 5;
+                    Horizontal = Horizontal > hsteps ? (byte)(Horizontal - hsteps) : (byte)0;
+                    Vertical = Vertical < 127 - vsteps ? (byte)(Vertical + vsteps) : (byte)127;
+                    break;
+                case 16:
+                    hsteps = 1;
+                    vsteps = 1;
+                    Horizontal = Horizontal > hsteps ? (byte)(Horizontal - hsteps) : (byte)0;
+                    Vertical = Vertical < 127 - vsteps ? (byte)(Vertical + vsteps) : (byte)127;
+                    break;
+                case 17:
+                    vsteps = 1;
+                    Vertical = Vertical < 127 - vsteps ? (byte)(Vertical + vsteps) : (byte)127;
+                    break;
+                case 18:
+                    hsteps = 1;
+                    vsteps = 1;
+                    Horizontal = Horizontal < 127 - hsteps ? (byte)(Horizontal + hsteps) : (byte)0;
+                    Vertical = Vertical < 127 - vsteps ? (byte)(Vertical + vsteps) : (byte)127;
+                    break;
+                case 19:
+                    hsteps = 10;
+                    vsteps = 5;
+                    Horizontal = Horizontal < 127 - hsteps ? (byte)(Horizontal + hsteps) : (byte)0;
+                    Vertical = Vertical < 127 - vsteps ? (byte)(Vertical + vsteps) : (byte)127;
+                    break;
+                case 20:
+                    hsteps = 10;
+                    vsteps = 10;
+                    Horizontal = Horizontal > hsteps ? (byte)(Horizontal - hsteps) : (byte)0;
+                    Vertical = Vertical < 127 - vsteps ? (byte)(Vertical + vsteps) : (byte)127;
+                    break;
+                case 21:
+                    hsteps = 5;
+                    vsteps = 10;
+                    Horizontal = Horizontal > hsteps ? (byte)(Horizontal - hsteps) : (byte)0;
+                    Vertical = Vertical < 127 - vsteps ? (byte)(Vertical + vsteps) : (byte)127;
+                    break;
+                case 22:
+                    hsteps = 1;
+                    vsteps = 1;
+                    Horizontal = Horizontal > hsteps ? (byte)(Horizontal - hsteps) : (byte)0;
+                    Vertical = Vertical < 127 - vsteps ? (byte)(Vertical + vsteps) : (byte)127;
+                    break;
+                case 23:
+                    hsteps = 5;
+                    vsteps = 10;
+                    Horizontal = Horizontal < 127 - hsteps ? (byte)(Horizontal + hsteps) : (byte)0;
+                    Vertical = Vertical < 127 - vsteps ? (byte)(Vertical + vsteps) : (byte)127;
+                    break;
+                case 24:
+                    hsteps = 10;
+                    vsteps = 10;
+                    Horizontal = Horizontal < 127 - hsteps ? (byte)(Horizontal + hsteps) : (byte)0;
+                    Vertical = Vertical < 127 - vsteps ? (byte)(Vertical + vsteps) : (byte)127;
                     break;
             }
             Plot(width, height);

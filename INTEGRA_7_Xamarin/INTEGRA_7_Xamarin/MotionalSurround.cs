@@ -14,76 +14,49 @@ namespace Integra_7_Xamarin
         INITIALIZED
     }
 
-    public enum Direction
-    {
-        UP,
-        DOWN,
-        LEFT,
-        RIGHT,
-        UPLEFT,
-        UPRIGHT,
-        DOWNLEFT,
-        DOWNRIGHT,
-        DOUBLE_UP,
-        DOUBLE_DOWN,
-        DOUBLE_LEFT,
-        DOUBLE_RIGHT,
-        DOUBLE_UPLEFT,
-        DOUBLE_UPRIGHT,
-        DOUBLE_DOWNLEFT,
-        DOUBLE_DOWNRIGHT,
-        CENTER
-    }
-
     public partial class UIHandler
     {
         Grid gMotionalSurroundMainArea;
-        Grid gMotionalSurroundBackground;
         Grid gMotionalSurroundLabelsArea;
         Grid gRightColumn;
         Grid gParts;
         Grid gArrows;
-        TaggedImage imgMotionalSurroundBackground;
-        TaggedImage imgCenter;
-        TaggedImage imgUpArrow;
-        TaggedImage imgDownArrow;
-        TaggedImage imgLeftArrow;
-        TaggedImage imgRightArrow;
-        TaggedImage imgUpRightArrow;
-        TaggedImage imgDownRightArrow;
-        TaggedImage imgUpLeftArrow;
-        TaggedImage imgDownLeftArrow;
-        TaggedImage imgDoubleUpArrow;
-        TaggedImage imgDoubleDownArrow;
-        TaggedImage imgDoubleLeftArrow;
-        TaggedImage imgDoubleRightArrow;
-        TaggedImage imgDoubleUpRightArrow;
-        TaggedImage imgDoubleDownRightArrow;
-        TaggedImage imgDoubleUpLeftArrow;
-        TaggedImage imgDoubleDownLeftArrow;
-        Button btnCenter;
-        Button btnUpArrow;
-        Button btnDownArrow;
-        Button btnLeftArrow;
-        Button btnRightArrow;
-        Button btnUpRightArrow;
-        Button btnDownRightArrow;
-        Button btnUpLeftArrow;
-        Button btnDownLeftArrow;
-        Button btnDoubleUpArrow;
-        Button btnDoubleDownArrow;
-        Button btnDoubleLeftArrow;
-        Button btnDoubleRightArrow;
-        Button btnDoubleUpRightArrow;
-        Button btnDoubleDownRightArrow;
-        Button btnDoubleUpLeftArrow;
-        Button btnDoubleDownLeftArrow;
-        //Button tbPart1;
+
+        Image imgDoubleUpLeftArrow;
+        Image imgDoubleUpLeftTopArrow;
+        Image imgDoubleUpArrow;
+        Image imgDoubleUpRightTopArrow;
+        Image imgDoubleUpRightArrow;
+
+        Image imgDoubleUpLeftLeftArrow;
+        Image imgUpLeftArrow;
+        Image imgUpArrow;
+        Image imgUpRightArrow;
+        Image imgDoubleUpRightRightArrow;
+
+        Image imgDoubleLeftArrow;
+        Image imgLeftArrow;
+        Image imgCenter;
+        Image imgRightArrow;
+        Image imgDoubleRightArrow;
+
+        Image imgDoubleDownLeftLeftArrow;
+        Image imgDownLeftArrow;
+        Image imgDownArrow;
+        Image imgDownRightArrow;
+        Image imgDoubleDownRightRightArrow;
+
+        Image imgDoubleDownLeftArrow;
+        Image imgDoubleDownLeftDownArrow;
+        Image imgDoubleDownArrow;
+        Image imgDoubleDownRightDownArrow;
+        Image imgDoubleDownRightArrow;
+
+        Button tbPart1;
         MotionalSurroundPartLabel[] mslPart;
         MotionalSurroundPartEditor[] msePart;
         Button btnMotionalSurroundReturn;
         Int32 currentMotionalSurroundPart = 0;
-        //Boolean MotionalSurround_Initiating;
         MotionalSurroundInitializationState motionalSurroundInitializationState;
 
         public void ShowMotionalSurroundPage()
@@ -108,9 +81,6 @@ namespace Integra_7_Xamarin
             gMotionalSurroundMainArea = new Grid();
             gMotionalSurroundMainArea.HorizontalOptions = LayoutOptions.CenterAndExpand;
             gMotionalSurroundMainArea.VerticalOptions = LayoutOptions.CenterAndExpand;
-            gMotionalSurroundBackground = new Grid();
-            gMotionalSurroundBackground.HorizontalOptions = LayoutOptions.FillAndExpand;
-            gMotionalSurroundBackground.VerticalOptions = LayoutOptions.FillAndExpand;
             gMotionalSurroundLabelsArea = new Grid();
             gMotionalSurroundLabelsArea.HorizontalOptions = LayoutOptions.CenterAndExpand;
             gMotionalSurroundLabelsArea.VerticalOptions = LayoutOptions.CenterAndExpand;
@@ -124,300 +94,399 @@ namespace Integra_7_Xamarin
             }
             gRightColumn = new Grid();
             gParts = new Grid();
-            imgMotionalSurroundBackground = new TaggedImage();
-            imgCenter = new TaggedImage();
-            imgUpArrow = new TaggedImage();
-            imgDownArrow = new TaggedImage();
-            imgLeftArrow = new TaggedImage();
-            imgRightArrow = new TaggedImage();
-            imgUpRightArrow = new TaggedImage();
-            imgDownRightArrow = new TaggedImage();
-            imgUpLeftArrow = new TaggedImage();
-            imgDownLeftArrow = new TaggedImage();
-            imgDoubleUpArrow = new TaggedImage();
-            imgDoubleDownArrow = new TaggedImage();
-            imgDoubleLeftArrow = new TaggedImage();
-            imgDoubleRightArrow = new TaggedImage();
-            imgDoubleUpRightArrow = new TaggedImage();
-            imgDoubleDownRightArrow = new TaggedImage();
-            imgDoubleUpLeftArrow = new TaggedImage();
-            imgDoubleDownLeftArrow = new TaggedImage();
-            imgMotionalSurroundBackground.Source = ImageSource.FromFile("MotionalSurround.png");
-            imgCenter.Source = ImageSource.FromFile("Center.png");
-            imgUpArrow.Source = ImageSource.FromFile("UpArrow.png");
-            imgDownArrow.Source = ImageSource.FromFile("DownArrow.png");
-            imgLeftArrow.Source = ImageSource.FromFile("LeftArrow.png");
-            imgRightArrow.Source = ImageSource.FromFile("RightArrow.png");
-            imgUpRightArrow.Source = ImageSource.FromFile("UpRightArrow.png");
-            imgDownRightArrow.Source = ImageSource.FromFile("DownRightArrow.png");
-            imgUpLeftArrow.Source = ImageSource.FromFile("UpLeftArrow.png");
-            imgDownLeftArrow.Source = ImageSource.FromFile("DownLeftArrow.png");
-            imgDoubleUpArrow.Source = ImageSource.FromFile("DoubleUpArrow.png");
-            imgDoubleDownArrow.Source = ImageSource.FromFile("DoubleDownArrow.png");
-            imgDoubleLeftArrow.Source = ImageSource.FromFile("DoubleLeftArrow.png");
-            imgDoubleRightArrow.Source = ImageSource.FromFile("DoubleRightArrow.png");
-            imgDoubleUpRightArrow.Source = ImageSource.FromFile("DoubleUpRightArrow.png");
-            imgDoubleDownRightArrow.Source = ImageSource.FromFile("DoubleDownRightArrow.png");
-            imgDoubleUpLeftArrow.Source = ImageSource.FromFile("DoubleUpLeftArrow.png");
-            imgDoubleDownLeftArrow.Source = ImageSource.FromFile("DoubleDownLeftArrow.png");
-            Grid.SetRow(imgCenter, 2);
-            Grid.SetRow(imgUpArrow, 1);
-            Grid.SetRow(imgDownArrow, 3);
-            Grid.SetRow(imgLeftArrow, 2);
-            Grid.SetRow(imgRightArrow, 2);
-            Grid.SetRow(imgUpRightArrow, 1);
-            Grid.SetRow(imgDownRightArrow, 3);
-            Grid.SetRow(imgUpLeftArrow, 1);
-            Grid.SetRow(imgDownLeftArrow, 3);
-            Grid.SetRow(imgDoubleUpArrow, 0);
-            Grid.SetRow(imgDoubleDownArrow, 4);
-            Grid.SetRow(imgDoubleLeftArrow, 2);
-            Grid.SetRow(imgDoubleRightArrow, 2);
-            Grid.SetRow(imgDoubleUpRightArrow, 0);
-            Grid.SetRow(imgDoubleDownRightArrow, 4);
-            Grid.SetRow(imgDoubleUpLeftArrow, 0);
-            Grid.SetRow(imgDoubleDownLeftArrow, 4);
-            Grid.SetColumn(imgCenter, 2);
-            Grid.SetColumn(imgUpArrow, 2);
-            Grid.SetColumn(imgDownArrow, 2);
-            Grid.SetColumn(imgLeftArrow, 1);
-            Grid.SetColumn(imgRightArrow, 3);
-            Grid.SetColumn(imgUpRightArrow, 3);
-            Grid.SetColumn(imgDownRightArrow, 3);
-            Grid.SetColumn(imgUpLeftArrow, 1);
-            Grid.SetColumn(imgDownLeftArrow, 1);
-            Grid.SetColumn(imgDoubleUpArrow, 2);
-            Grid.SetColumn(imgDoubleDownArrow, 2);
-            Grid.SetColumn(imgDoubleLeftArrow, 0);
-            Grid.SetColumn(imgDoubleRightArrow, 4);
-            Grid.SetColumn(imgDoubleUpRightArrow, 4);
-            Grid.SetColumn(imgDoubleDownRightArrow, 4);
-            Grid.SetColumn(imgDoubleUpLeftArrow, 0);
-            Grid.SetColumn(imgDoubleDownLeftArrow, 0);
-            gArrows.Children.Add(imgCenter);
-            gArrows.Children.Add(imgUpArrow);
-            gArrows.Children.Add(imgDownArrow);
-            gArrows.Children.Add(imgLeftArrow);
-            gArrows.Children.Add(imgRightArrow);
-            gArrows.Children.Add(imgUpRightArrow);
-            gArrows.Children.Add(imgDownRightArrow);
-            gArrows.Children.Add(imgUpLeftArrow);
-            gArrows.Children.Add(imgDownLeftArrow);
-            gArrows.Children.Add(imgDoubleUpArrow);
-            gArrows.Children.Add(imgDoubleDownArrow);
-            gArrows.Children.Add(imgDoubleLeftArrow);
-            gArrows.Children.Add(imgDoubleRightArrow);
-            gArrows.Children.Add(imgDoubleUpRightArrow);
-            gArrows.Children.Add(imgDoubleDownRightArrow);
-            gArrows.Children.Add(imgDoubleUpLeftArrow);
-            gArrows.Children.Add(imgDoubleDownLeftArrow);
-            imgMotionalSurroundBackground.HorizontalOptions = LayoutOptions.FillAndExpand;
-            imgCenter.HorizontalOptions = LayoutOptions.FillAndExpand;
-            imgUpArrow.HorizontalOptions = LayoutOptions.FillAndExpand;
-            imgDownArrow.HorizontalOptions = LayoutOptions.FillAndExpand;
-            imgLeftArrow.HorizontalOptions = LayoutOptions.FillAndExpand;
-            imgRightArrow.HorizontalOptions = LayoutOptions.FillAndExpand;
-            imgUpRightArrow.HorizontalOptions = LayoutOptions.FillAndExpand;
-            imgDownRightArrow.HorizontalOptions = LayoutOptions.FillAndExpand;
-            imgUpLeftArrow.HorizontalOptions = LayoutOptions.FillAndExpand;
-            imgDownLeftArrow.HorizontalOptions = LayoutOptions.FillAndExpand;
-            imgDoubleUpArrow.HorizontalOptions = LayoutOptions.FillAndExpand;
-            imgDoubleDownArrow.HorizontalOptions = LayoutOptions.FillAndExpand;
-            imgDoubleLeftArrow.HorizontalOptions = LayoutOptions.FillAndExpand;
-            imgDoubleRightArrow.HorizontalOptions = LayoutOptions.FillAndExpand;
-            imgDoubleUpRightArrow.HorizontalOptions = LayoutOptions.FillAndExpand;
-            imgDoubleDownRightArrow.HorizontalOptions = LayoutOptions.FillAndExpand;
-            imgDoubleUpLeftArrow.HorizontalOptions = LayoutOptions.FillAndExpand;
-            imgDoubleDownLeftArrow.HorizontalOptions = LayoutOptions.FillAndExpand;
-            imgMotionalSurroundBackground.VerticalOptions = LayoutOptions.FillAndExpand;
-            imgCenter.VerticalOptions = LayoutOptions.FillAndExpand;
-            imgUpArrow.VerticalOptions = LayoutOptions.FillAndExpand;
-            imgDownArrow.VerticalOptions = LayoutOptions.FillAndExpand;
-            imgLeftArrow.VerticalOptions = LayoutOptions.FillAndExpand;
-            imgRightArrow.VerticalOptions = LayoutOptions.FillAndExpand;
-            imgUpRightArrow.VerticalOptions = LayoutOptions.FillAndExpand;
-            imgDownRightArrow.VerticalOptions = LayoutOptions.FillAndExpand;
-            imgUpLeftArrow.VerticalOptions = LayoutOptions.FillAndExpand;
-            imgDownLeftArrow.VerticalOptions = LayoutOptions.FillAndExpand;
-            imgDoubleUpArrow.VerticalOptions = LayoutOptions.FillAndExpand;
-            imgDoubleDownArrow.VerticalOptions = LayoutOptions.FillAndExpand;
-            imgDoubleLeftArrow.VerticalOptions = LayoutOptions.FillAndExpand;
-            imgDoubleRightArrow.VerticalOptions = LayoutOptions.FillAndExpand;
-            imgDoubleUpRightArrow.VerticalOptions = LayoutOptions.FillAndExpand;
-            imgDoubleDownRightArrow.VerticalOptions = LayoutOptions.FillAndExpand;
-            imgDoubleUpLeftArrow.VerticalOptions = LayoutOptions.FillAndExpand;
-            imgDoubleDownLeftArrow.VerticalOptions = LayoutOptions.FillAndExpand;
-            imgMotionalSurroundBackground.Aspect = Aspect.Fill;
-            imgCenter.Aspect = Aspect.Fill;
-            imgUpArrow.Aspect = Aspect.Fill;
-            imgDownArrow.Aspect = Aspect.Fill;
-            imgLeftArrow.Aspect = Aspect.Fill;
-            imgRightArrow.Aspect = Aspect.Fill;
-            imgUpRightArrow.Aspect = Aspect.Fill;
-            imgDownRightArrow.Aspect = Aspect.Fill;
-            imgUpLeftArrow.Aspect = Aspect.Fill;
-            imgDownLeftArrow.Aspect = Aspect.Fill;
-            imgDoubleUpArrow.Aspect = Aspect.Fill;
-            imgDoubleDownArrow.Aspect = Aspect.Fill;
-            imgDoubleLeftArrow.Aspect = Aspect.Fill;
-            imgDoubleRightArrow.Aspect = Aspect.Fill;
-            imgDoubleUpRightArrow.Aspect = Aspect.Fill;
-            imgDoubleDownRightArrow.Aspect = Aspect.Fill;
-            imgDoubleUpLeftArrow.Aspect = Aspect.Fill;
-            imgDoubleDownLeftArrow.Aspect = Aspect.Fill;
-            imgCenter.Row = 2;
-            imgUpArrow.Row = 1;
-            imgDownArrow.Row = 3;
-            imgLeftArrow.Row = 2;
-            imgRightArrow.Row = 2;
-            imgUpRightArrow.Row = 1;
-            imgDownRightArrow.Row = 3;
-            imgUpLeftArrow.Row = 1;
-            imgDownLeftArrow.Row = 3;
-            imgDoubleUpArrow.Row = 0;
-            imgDoubleDownArrow.Row = 4;
-            imgDoubleLeftArrow.Row = 2;
-            imgDoubleRightArrow.Row = 2;
-            imgDoubleUpRightArrow.Row = 0;
-            imgDoubleDownRightArrow.Row = 4;
-            imgDoubleUpLeftArrow.Row = 0;
-            imgDoubleDownLeftArrow.Row = 4;
-            imgCenter.Column = 2;
-            imgUpArrow.Column = 2;
-            imgDownArrow.Column = 2;
-            imgLeftArrow.Column = 1;
-            imgRightArrow.Column = 3;
-            imgUpRightArrow.Column = 3;
-            imgDownRightArrow.Column = 3;
-            imgUpLeftArrow.Column = 1;
-            imgDownLeftArrow.Column = 1;
-            imgDoubleUpArrow.Column = 2;
-            imgDoubleDownArrow.Column = 2;
-            imgDoubleLeftArrow.Column = 0;
-            imgDoubleRightArrow.Column = 4;
-            imgDoubleUpRightArrow.Column = 4;
-            imgDoubleDownRightArrow.Column = 4;
-            imgDoubleUpLeftArrow.Column = 0;
-            imgDoubleDownLeftArrow.Column = 0;
 
-            btnCenter = new Button();
-            btnUpArrow = new Button();
-            btnDownArrow = new Button();
-            btnLeftArrow = new Button();
-            btnRightArrow = new Button();
-            btnUpRightArrow = new Button();
-            btnDownRightArrow = new Button();
-            btnUpLeftArrow = new Button();
-            btnDownLeftArrow = new Button();
-            btnDoubleUpArrow = new Button();
-            btnDoubleDownArrow = new Button();
-            btnDoubleLeftArrow = new Button();
-            btnDoubleRightArrow = new Button();
-            btnDoubleUpRightArrow = new Button();
-            btnDoubleDownRightArrow = new Button();
-            btnDoubleUpLeftArrow = new Button();
-            btnDoubleDownLeftArrow = new Button();
-            btnCenter.Tag = Direction.CENTER;
-            btnUpArrow.Tag = Direction.UP;
-            btnDownArrow.Tag = Direction.DOWN;
-            btnLeftArrow.Tag = Direction.LEFT;
-            btnRightArrow.Tag = Direction.RIGHT;
-            btnUpRightArrow.Tag = Direction.UPRIGHT;
-            btnDownRightArrow.Tag = Direction.DOWNRIGHT;
-            btnUpLeftArrow.Tag = Direction.UPLEFT;
-            btnDownLeftArrow.Tag = Direction.DOWNLEFT;
-            btnDoubleUpArrow.Tag = Direction.DOUBLE_UP;
-            btnDoubleDownArrow.Tag = Direction.DOUBLE_DOWN;
-            btnDoubleLeftArrow.Tag = Direction.DOUBLE_LEFT;
-            btnDoubleRightArrow.Tag = Direction.DOUBLE_RIGHT;
-            btnDoubleUpRightArrow.Tag = Direction.DOUBLE_UPRIGHT;
-            btnDoubleDownRightArrow.Tag = Direction.DOUBLE_DOWNRIGHT;
-            btnDoubleUpLeftArrow.Tag = Direction.DOUBLE_UPLEFT;
-            btnDoubleDownLeftArrow.Tag = Direction.DOUBLE_DOWNLEFT;
-            Grid.SetRow(btnCenter, 2);
-            Grid.SetRow(btnUpArrow, 1);
-            Grid.SetRow(btnDownArrow, 3);
-            Grid.SetRow(btnLeftArrow, 2);
-            Grid.SetRow(btnRightArrow, 2);
-            Grid.SetRow(btnUpRightArrow, 1);
-            Grid.SetRow(btnDownRightArrow, 3);
-            Grid.SetRow(btnUpLeftArrow, 1);
-            Grid.SetRow(btnDownLeftArrow, 3);
-            Grid.SetRow(btnDoubleUpArrow, 0);
-            Grid.SetRow(btnDoubleDownArrow, 4);
-            Grid.SetRow(btnDoubleLeftArrow, 2);
-            Grid.SetRow(btnDoubleRightArrow, 2);
-            Grid.SetRow(btnDoubleUpRightArrow, 0);
-            Grid.SetRow(btnDoubleDownRightArrow, 4);
-            Grid.SetRow(btnDoubleUpLeftArrow, 0);
-            Grid.SetRow(btnDoubleDownLeftArrow, 4);
-            Grid.SetColumn(btnCenter, 2);
-            Grid.SetColumn(btnUpArrow, 2);
-            Grid.SetColumn(btnDownArrow, 2);
-            Grid.SetColumn(btnLeftArrow, 1);
-            Grid.SetColumn(btnRightArrow, 3);
-            Grid.SetColumn(btnUpRightArrow, 3);
-            Grid.SetColumn(btnDownRightArrow, 3);
-            Grid.SetColumn(btnUpLeftArrow, 1);
-            Grid.SetColumn(btnDownLeftArrow, 1);
-            Grid.SetColumn(btnDoubleUpArrow, 2);
-            Grid.SetColumn(btnDoubleDownArrow, 2);
-            Grid.SetColumn(btnDoubleLeftArrow, 0);
-            Grid.SetColumn(btnDoubleRightArrow, 4);
-            Grid.SetColumn(btnDoubleUpRightArrow, 4);
-            Grid.SetColumn(btnDoubleDownRightArrow, 4);
-            Grid.SetColumn(btnDoubleUpLeftArrow, 0);
-            Grid.SetColumn(btnDoubleDownLeftArrow, 0);
-            btnCenter.Clicked += BtnArrow_Clicked;
-            btnUpArrow.Clicked += BtnArrow_Clicked;
-            btnDownArrow.Clicked += BtnArrow_Clicked;
-            btnLeftArrow.Clicked += BtnArrow_Clicked;
-            btnRightArrow.Clicked += BtnArrow_Clicked;
-            btnUpRightArrow.Clicked += BtnArrow_Clicked;
-            btnDownRightArrow.Clicked += BtnArrow_Clicked;
-            btnUpLeftArrow.Clicked += BtnArrow_Clicked;
-            btnDownLeftArrow.Clicked += BtnArrow_Clicked;
-            btnDoubleUpArrow.Clicked += BtnArrow_Clicked;
-            btnDoubleDownArrow.Clicked += BtnArrow_Clicked;
-            btnDoubleLeftArrow.Clicked += BtnArrow_Clicked;
-            btnDoubleRightArrow.Clicked += BtnArrow_Clicked;
-            btnDoubleUpRightArrow.Clicked += BtnArrow_Clicked;
-            btnDoubleDownRightArrow.Clicked += BtnArrow_Clicked;
-            btnDoubleUpLeftArrow.Clicked += BtnArrow_Clicked;
-            btnDoubleDownLeftArrow.Clicked += BtnArrow_Clicked;
-            gArrows.Children.Add(btnCenter);
-            gArrows.Children.Add(btnUpArrow);
-            gArrows.Children.Add(btnDownArrow);
-            gArrows.Children.Add(btnLeftArrow);
-            gArrows.Children.Add(btnRightArrow);
-            gArrows.Children.Add(btnUpRightArrow);
-            gArrows.Children.Add(btnDownRightArrow);
-            gArrows.Children.Add(btnUpLeftArrow);
-            gArrows.Children.Add(btnDownLeftArrow);
-            gArrows.Children.Add(btnDoubleUpArrow);
-            gArrows.Children.Add(btnDoubleDownArrow);
-            gArrows.Children.Add(btnDoubleLeftArrow);
-            gArrows.Children.Add(btnDoubleRightArrow);
-            gArrows.Children.Add(btnDoubleUpRightArrow);
-            gArrows.Children.Add(btnDoubleDownRightArrow);
-            gArrows.Children.Add(btnDoubleUpLeftArrow);
-            gArrows.Children.Add(btnDoubleDownLeftArrow);
+            imgDoubleUpLeftArrow = new Image();
+            imgDoubleUpLeftTopArrow = new Image();
+            imgDoubleUpArrow = new Image();
+            imgDoubleUpRightTopArrow = new Image();
+            imgDoubleUpRightArrow = new Image();
+
+            imgDoubleUpLeftLeftArrow = new Image();
+            imgUpLeftArrow = new Image();
+            imgUpArrow = new Image();
+            imgUpRightArrow = new Image();
+            imgDoubleUpRightRightArrow = new Image();
+
+            imgDoubleLeftArrow = new Image();
+            imgLeftArrow = new Image();
+            imgCenter = new Image();
+            imgRightArrow = new Image();
+            imgDoubleRightArrow = new Image();
+
+            imgDoubleDownLeftLeftArrow = new Image();
+            imgDownLeftArrow = new Image();
+            imgDownArrow = new Image();
+            imgDownRightArrow = new Image();
+            imgDoubleDownRightRightArrow = new Image();
+
+            imgDoubleDownLeftArrow = new Image();
+            imgDoubleDownLeftDownArrow = new Image();
+            imgDoubleDownArrow = new Image();
+            imgDoubleDownRightDownArrow = new Image();
+            imgDoubleDownRightArrow = new Image();
+
+            imgDoubleUpLeftArrow.Source = ImageSource.FromFile("DoubleUpLeftArrow.png");
+            imgDoubleUpLeftTopArrow.Source = ImageSource.FromFile("DoubleUpLeftTopArrow.png");
+            imgDoubleUpArrow.Source = ImageSource.FromFile("DoubleUpArrow.png");
+            imgDoubleUpRightTopArrow.Source = ImageSource.FromFile("DoubleUpRightTopArrow.png");
+            imgDoubleUpRightArrow.Source = ImageSource.FromFile("DoubleUpRightArrow.png");
+
+            imgDoubleUpLeftLeftArrow.Source = ImageSource.FromFile("DoubleUpLeftLeftArrow.png");
+            imgUpLeftArrow.Source = ImageSource.FromFile("UpLeftArrow.png");
+            imgUpArrow.Source = ImageSource.FromFile("UpArrow.png");
+            imgUpRightArrow.Source = ImageSource.FromFile("UpRightArrow.png");
+            imgDoubleUpRightRightArrow.Source = ImageSource.FromFile("DoubleUpRightRightArrow.png");
+
+            imgDoubleLeftArrow.Source = ImageSource.FromFile("DoubleLeftArrow.png");
+            imgLeftArrow.Source = ImageSource.FromFile("LeftArrow.png");
+            imgCenter.Source = ImageSource.FromFile("Center.png");
+            imgRightArrow.Source = ImageSource.FromFile("RightArrow.png");
+            imgDoubleRightArrow.Source = ImageSource.FromFile("DoubleRightArrow.png");
+
+            imgDoubleDownLeftLeftArrow.Source = ImageSource.FromFile("DoubleDownLeftLeftArrow.png");
+            imgDownLeftArrow.Source = ImageSource.FromFile("DownLeftArrow.png");
+            imgDownArrow.Source = ImageSource.FromFile("DownArrow.png");
+            imgDownRightArrow.Source = ImageSource.FromFile("DownRightArrow.png");
+            imgDoubleDownRightRightArrow.Source = ImageSource.FromFile("DoubleDownRightRightArrow.png");
+
+            imgDoubleDownLeftArrow.Source = ImageSource.FromFile("DoubleDownLeftArrow.png");
+            imgDoubleDownLeftDownArrow.Source = ImageSource.FromFile("DoubleDownLeftDownArrow.png");
+            imgDoubleDownArrow.Source = ImageSource.FromFile("DoubleDownArrow.png");
+            imgDoubleDownRightDownArrow.Source = ImageSource.FromFile("DoubleDownRightDownArrow.png");
+            imgDoubleDownRightArrow.Source = ImageSource.FromFile("DoubleDownRightArrow.png");
+
+            Grid.SetRow(imgDoubleUpLeftArrow, 0);
+            Grid.SetRow(imgDoubleUpLeftTopArrow, 0);
+            Grid.SetRow(imgDoubleUpArrow, 0);
+            Grid.SetRow(imgDoubleUpRightTopArrow, 0);
+            Grid.SetRow(imgDoubleUpRightArrow, 0);
+
+            Grid.SetRow(imgDoubleUpLeftLeftArrow, 1);
+            Grid.SetRow(imgUpLeftArrow, 1);
+            Grid.SetRow(imgUpArrow, 1);
+            Grid.SetRow(imgUpRightArrow, 1);
+            Grid.SetRow(imgDoubleUpRightRightArrow, 1);
+
+            Grid.SetRow(imgDoubleLeftArrow, 2);
+            Grid.SetRow(imgLeftArrow, 2);
+            Grid.SetRow(imgCenter, 2);
+            Grid.SetRow(imgRightArrow, 2);
+            Grid.SetRow(imgDoubleRightArrow, 2);
+
+            Grid.SetRow(imgDoubleDownLeftLeftArrow, 3);
+            Grid.SetRow(imgDownLeftArrow, 3);
+            Grid.SetRow(imgDownArrow, 3);
+            Grid.SetRow(imgDownRightArrow, 3);
+            Grid.SetRow(imgDoubleDownRightRightArrow, 3);
+
+            Grid.SetRow(imgDoubleDownLeftArrow, 4);
+            Grid.SetRow(imgDoubleDownLeftDownArrow, 4);
+            Grid.SetRow(imgDoubleDownArrow, 4);
+            Grid.SetRow(imgDoubleDownRightDownArrow, 4);
+            Grid.SetRow(imgDoubleDownRightArrow, 4);
+
+            Grid.SetColumn(imgDoubleUpLeftArrow, 0);
+            Grid.SetColumn(imgDoubleUpLeftTopArrow, 1);
+            Grid.SetColumn(imgDoubleUpArrow, 2);
+            Grid.SetColumn(imgDoubleUpRightTopArrow, 3);
+            Grid.SetColumn(imgDoubleUpRightArrow, 4);
+
+            Grid.SetColumn(imgDoubleUpLeftLeftArrow, 0);
+            Grid.SetColumn(imgUpLeftArrow, 1);
+            Grid.SetColumn(imgUpArrow, 2);
+            Grid.SetColumn(imgUpRightArrow, 3);
+            Grid.SetColumn(imgDoubleUpRightRightArrow, 4);
+
+            Grid.SetColumn(imgDoubleLeftArrow, 0);
+            Grid.SetColumn(imgLeftArrow, 1);
+            Grid.SetColumn(imgCenter, 2);
+            Grid.SetColumn(imgRightArrow, 3);
+            Grid.SetColumn(imgDoubleRightArrow, 4);
+
+            Grid.SetColumn(imgDoubleDownLeftLeftArrow, 0);
+            Grid.SetColumn(imgDownLeftArrow, 1);
+            Grid.SetColumn(imgDownArrow, 2);
+            Grid.SetColumn(imgDownRightArrow, 3);
+            Grid.SetColumn(imgDoubleDownRightRightArrow, 4);
+
+            Grid.SetColumn(imgDoubleDownLeftArrow, 0);
+            Grid.SetColumn(imgDoubleDownLeftDownArrow, 1);
+            Grid.SetColumn(imgDoubleDownArrow, 2);
+            Grid.SetColumn(imgDoubleDownRightDownArrow, 3);
+            Grid.SetColumn(imgDoubleDownRightArrow, 4);
+
+            imgDoubleUpLeftArrow.Aspect = Aspect.Fill;
+            imgDoubleUpLeftTopArrow.Aspect = Aspect.Fill;
+            imgDoubleUpArrow.Aspect = Aspect.Fill;
+            imgDoubleUpRightTopArrow.Aspect = Aspect.Fill;
+            imgDoubleUpRightArrow.Aspect = Aspect.Fill;
+
+            imgDoubleUpLeftLeftArrow.Aspect = Aspect.Fill;
+            imgUpLeftArrow.Aspect = Aspect.Fill;
+            imgUpArrow.Aspect = Aspect.Fill;
+            imgUpRightArrow.Aspect = Aspect.Fill;
+            imgDoubleUpRightRightArrow.Aspect = Aspect.Fill;
+
+            imgDoubleLeftArrow.Aspect = Aspect.Fill;
+            imgLeftArrow.Aspect = Aspect.Fill;
+            imgCenter.Aspect = Aspect.Fill;
+            imgRightArrow.Aspect = Aspect.Fill;
+            imgDoubleRightArrow.Aspect = Aspect.Fill;
+
+            imgDoubleDownLeftLeftArrow.Aspect = Aspect.Fill;
+            imgDownLeftArrow.Aspect = Aspect.Fill;
+            imgDownArrow.Aspect = Aspect.Fill;
+            imgDownRightArrow.Aspect = Aspect.Fill;
+            imgDoubleDownRightRightArrow.Aspect = Aspect.Fill;
+
+            imgDoubleDownLeftArrow.Aspect = Aspect.Fill;
+            imgDoubleDownLeftDownArrow.Aspect = Aspect.Fill;
+            imgDoubleDownArrow.Aspect = Aspect.Fill;
+            imgDoubleDownRightDownArrow.Aspect = Aspect.Fill;
+            imgDoubleDownRightArrow.Aspect = Aspect.Fill;
+
+            gArrows.Children.Add(imgDoubleUpLeftArrow);
+            gArrows.Children.Add(imgDoubleUpLeftTopArrow);
+            gArrows.Children.Add(imgDoubleUpArrow);
+            gArrows.Children.Add(imgDoubleUpRightTopArrow);
+            gArrows.Children.Add(imgDoubleUpRightArrow);
+
+            gArrows.Children.Add(imgDoubleUpLeftLeftArrow);
+            gArrows.Children.Add(imgUpLeftArrow);
+            gArrows.Children.Add(imgUpArrow);
+            gArrows.Children.Add(imgUpRightArrow);
+            gArrows.Children.Add(imgDoubleUpRightRightArrow);
+
+            gArrows.Children.Add(imgDoubleLeftArrow);
+            gArrows.Children.Add(imgLeftArrow);
+            gArrows.Children.Add(imgCenter);
+            gArrows.Children.Add(imgRightArrow);
+            gArrows.Children.Add(imgDoubleRightArrow);
+
+            gArrows.Children.Add(imgDoubleDownLeftLeftArrow);
+            gArrows.Children.Add(imgDownLeftArrow);
+            gArrows.Children.Add(imgDownArrow);
+            gArrows.Children.Add(imgDownRightArrow);
+            gArrows.Children.Add(imgDoubleDownRightRightArrow);
+
+            gArrows.Children.Add(imgDoubleDownLeftArrow);
+            gArrows.Children.Add(imgDoubleDownLeftDownArrow);
+            gArrows.Children.Add(imgDoubleDownArrow);
+            gArrows.Children.Add(imgDoubleDownRightDownArrow);
+            gArrows.Children.Add(imgDoubleDownRightArrow);
+
+            imgDoubleUpLeftArrow.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                Command = new Command(() => {
+                    TapGestureRecognizer_Tapped(0);
+                }),
+                NumberOfTapsRequired = 1
+            });
+
+            imgDoubleUpLeftTopArrow.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                Command = new Command(() => {
+                    TapGestureRecognizer_Tapped(1);
+                }),
+                NumberOfTapsRequired = 1
+            });
+
+            imgDoubleUpArrow.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                Command = new Command(() => {
+                    TapGestureRecognizer_Tapped(2);
+                }),
+                NumberOfTapsRequired = 1
+            });
+
+            imgDoubleUpRightTopArrow.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                Command = new Command(() => {
+                    TapGestureRecognizer_Tapped(3);
+                }),
+                NumberOfTapsRequired = 1
+            });
+
+            imgDoubleUpRightArrow.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                Command = new Command(() => {
+                    TapGestureRecognizer_Tapped(4);
+                }),
+                NumberOfTapsRequired = 1
+            });
+
+            imgDoubleUpLeftLeftArrow.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                Command = new Command(() => {
+                    TapGestureRecognizer_Tapped(5);
+                }),
+                NumberOfTapsRequired = 1
+            });
+
+            imgUpLeftArrow.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                Command = new Command(() => {
+                    TapGestureRecognizer_Tapped(6);
+                }),
+                NumberOfTapsRequired = 1
+            });
+
+            imgUpArrow.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                Command = new Command(() => {
+                    TapGestureRecognizer_Tapped(7);
+                }),
+                NumberOfTapsRequired = 1
+            });
+
+            imgUpRightArrow.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                Command = new Command(() => {
+                    TapGestureRecognizer_Tapped(8);
+                }),
+                NumberOfTapsRequired = 1
+            });
+
+            imgDoubleUpRightRightArrow.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                Command = new Command(() => {
+                    TapGestureRecognizer_Tapped(9);
+                }),
+                NumberOfTapsRequired = 1
+            });
+
+            imgDoubleLeftArrow.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                Command = new Command(() => {
+                    TapGestureRecognizer_Tapped(10);
+                }),
+                NumberOfTapsRequired = 1
+            });
+
+            imgLeftArrow.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                Command = new Command(() => {
+                    TapGestureRecognizer_Tapped(11);
+                }),
+                NumberOfTapsRequired = 1
+            });
+
+            imgCenter.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                Command = new Command(() => {
+                    TapGestureRecognizer_Tapped(12);
+                }),
+                NumberOfTapsRequired = 1
+            });
+
+            imgRightArrow.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                Command = new Command(() => {
+                    TapGestureRecognizer_Tapped(13);
+                }),
+                NumberOfTapsRequired = 1
+            });
+
+            imgDoubleRightArrow.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                Command = new Command(() => {
+                    TapGestureRecognizer_Tapped(14);
+                }),
+                NumberOfTapsRequired = 1
+            });
+
+            imgDoubleDownLeftLeftArrow.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                Command = new Command(() => {
+                    TapGestureRecognizer_Tapped(15);
+                }),
+                NumberOfTapsRequired = 1
+            });
+
+            imgDownLeftArrow.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                Command = new Command(() => {
+                    TapGestureRecognizer_Tapped(16);
+                }),
+                NumberOfTapsRequired = 1
+            });
+
+            imgDownArrow.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                Command = new Command(() => {
+                    TapGestureRecognizer_Tapped(17);
+                }),
+                NumberOfTapsRequired = 1
+            });
+
+            imgDownRightArrow.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                Command = new Command(() => {
+                    TapGestureRecognizer_Tapped(18);
+                }),
+                NumberOfTapsRequired = 1
+            });
+
+            imgDoubleDownRightRightArrow.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                Command = new Command(() => {
+                    TapGestureRecognizer_Tapped(19);
+                }),
+                NumberOfTapsRequired = 1
+            });
+
+            imgDoubleDownLeftArrow.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                Command = new Command(() => {
+                    TapGestureRecognizer_Tapped(20);
+                }),
+                NumberOfTapsRequired = 1
+            });
+
+            imgDoubleDownLeftDownArrow.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                Command = new Command(() => {
+                    TapGestureRecognizer_Tapped(21);
+                }),
+                NumberOfTapsRequired = 1
+            });
+
+            imgDoubleDownArrow.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                Command = new Command(() => {
+                    TapGestureRecognizer_Tapped(22);
+                }),
+                NumberOfTapsRequired = 1
+            });
+
+            imgDoubleDownRightDownArrow.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                Command = new Command(() => {
+                    TapGestureRecognizer_Tapped(23);
+                }),
+                NumberOfTapsRequired = 1
+            });
+
+            imgDoubleDownRightArrow.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                Command = new Command(() => {
+                    TapGestureRecognizer_Tapped(24);
+                }),
+                NumberOfTapsRequired = 1
+            });
 
             // Assemble MotionalSurroundStackLayout --------------------------------------------------------------
 
-            Grid.SetRow(gMotionalSurroundBackground, 0);
-            Grid.SetColumn(gMotionalSurroundBackground, 0);
             Grid.SetRow(gArrows, 0);
             Grid.SetColumn(gArrows, 0);
             Grid.SetRow(gMotionalSurroundLabelsArea, 0);
             Grid.SetColumn(gMotionalSurroundLabelsArea, 0);
-            gMotionalSurroundBackground.Margin = new Thickness(0);
             gArrows.Margin = new Thickness(0);
+            gArrows.ColumnSpacing = 0;
+            gArrows.RowSpacing = 0;
             gMotionalSurroundLabelsArea.HorizontalOptions = LayoutOptions.FillAndExpand;
             gMotionalSurroundLabelsArea.VerticalOptions = LayoutOptions.FillAndExpand;
             gMotionalSurroundLabelsArea.Margin = new Thickness(50);
-            gMotionalSurroundBackground.Children.Add(imgMotionalSurroundBackground);
-            gMotionalSurroundMainArea.Children.Add(gMotionalSurroundBackground);
             gMotionalSurroundMainArea.Children.Add(gArrows);
             gMotionalSurroundMainArea.Children.Add(gMotionalSurroundLabelsArea);
 
@@ -431,7 +500,6 @@ namespace Integra_7_Xamarin
                 gMotionalSurroundLabelsArea.Children.Add(mslPart[i - 1]);
             }
 
-            //gParts.BackgroundColor = Color.Black;
             msePart = new MotionalSurroundPartEditor[17];
             for (Int32 i = 0; i < 17; i++)
             {
@@ -463,8 +531,6 @@ namespace Integra_7_Xamarin
 
         private void MotionalSurround_Init()
         {
-            //commonState.reactToMidiInAndTimerTick = CommonState.ReactToMidiInAndTimerTick.SURROUND;
-
             if (commonState == null)
             {
                 // If commonState is not initialized, we have no business here, go back!
@@ -510,10 +576,6 @@ namespace Integra_7_Xamarin
 
         private void MotionalSurrouns_MidiInPort_MessageReceived()
         {
-            //if (commonState.reactToMidiInAndTimerTick != CommonState.ReactToMidiInAndTimerTick.SURROUND)
-            //{
-            //    return;
-            //}
             if (currentStudioSetEditorMidiRequest == StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_MOTIONAL_SURROUND)
             {
                 ReadMotionalSurround(); // We borrow this too from the Studio Set Editor
@@ -540,6 +602,13 @@ namespace Integra_7_Xamarin
                     motionalSurroundInitializationState = MotionalSurroundInitializationState.INITIALIZING;
                 }
             }
+        }
+
+        private void TapGestureRecognizer_Tapped(Int32 direction)
+        {
+            mslPart[currentMotionalSurroundPart].Step(direction,
+                gMotionalSurroundLabelsArea.Width, gMotionalSurroundLabelsArea.Height);
+            SendCoordinatesToIntegra7();
         }
 
         public void SendCoordinatesToIntegra7()
@@ -594,13 +663,6 @@ namespace Integra_7_Xamarin
         private void MsPart_Clicked(object sender, EventArgs e)
         {
             currentMotionalSurroundPart = (Int32)((Button)sender).Tag;
-        }
-
-        private void BtnArrow_Clicked(object sender, EventArgs e)
-        {
-            mslPart[currentMotionalSurroundPart].Step((Direction)((Button)sender).Tag,
-                gMotionalSurroundLabelsArea.Width, gMotionalSurroundLabelsArea.Height);
-            SendCoordinatesToIntegra7();
         }
 
         private void BtnMotionalSurroundReturn_Clicked(object sender, EventArgs e)
