@@ -405,6 +405,16 @@ namespace Integra_7_Xamarin
                 ((TextBlock)view).FontSize = size;
                 ((TextBlock)view).FontSize = size;
             }
+            else if (view.GetType() == typeof(Image))
+            {
+                ((Image)view).WidthRequest = ((Grid)((Image)view).Parent).Width;
+                ((Image)view).HeightRequest = ((Grid)((Image)view).Parent).Height;
+            }
+            else if (view.GetType() == typeof(TouchableImage))
+            {
+                ((TouchableImage)view).WidthRequest = ((Grid)((TouchableImage)view).Parent).Width;
+                ((TouchableImage)view).HeightRequest = ((Grid)((TouchableImage)view).Parent).Height;
+            }
             //else if (view.GetType() == typeof(ListView))
             //{
             //    ((ListView)view).SetValue(C ItemTemplate.f SetValue(Font.Default, size);
@@ -443,7 +453,7 @@ namespace Integra_7_Xamarin
             //commonState.CurrentStudioSet = number;
             commonState.Midi.ProgramChange((byte)15, (byte)85, (byte)0, (byte)(number + 1));
         }
-        
+
         //public void DrawPleaseWaitPage()
         //{
         //    /*
@@ -472,27 +482,24 @@ namespace Integra_7_Xamarin
         {
             //t.Trace("private void Waiting(" + on.ToString() + ")");
             // Maybe also test for platform and use different methods?
-            if (on)
+            if (stackLayout != null && PleaseWait_StackLayout != null)
             {
-                if (stackLayout != null)
+                if (on)
                 {
                     stackLayout.IsVisible = false;
                     ((TextBlock)((Grid)((Grid)((Grid)PleaseWait_StackLayout.Children[0]).
                         Children[0]).Children[0]).Children[0]).Text = WaitText;
+                    PleaseWait_StackLayout.IsVisible = true;
+                    //Window.Current.CoreWindow.PointerCursor =
+                    //    new Windows.UI.Core.CoreCursor(Windows.UI.Core.CoreCursorType.Wait, 1);
                 }
-                PleaseWait_StackLayout.IsVisible = true;
-                //Window.Current.CoreWindow.PointerCursor =
-                //    new Windows.UI.Core.CoreCursor(Windows.UI.Core.CoreCursorType.Wait, 1);
-            }
-            else
-            {
-                if (stackLayout != null)
+                else
                 {
                     stackLayout.IsVisible = true;
+                    PleaseWait_StackLayout.IsVisible = false;
+                    //Window.Current.CoreWindow.PointerCursor =
+                    //    new Windows.UI.Core.CoreCursor(Windows.UI.Core.CoreCursorType.Arrow, 1);
                 }
-                PleaseWait_StackLayout.IsVisible = false;
-                //Window.Current.CoreWindow.PointerCursor =
-                //    new Windows.UI.Core.CoreCursor(Windows.UI.Core.CoreCursorType.Arrow, 1);
             }
         }
 

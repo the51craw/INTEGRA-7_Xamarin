@@ -593,6 +593,21 @@ namespace Integra_7_Xamarin
             {
                 this.Source = ImageFile;
             }
+
+            //this.WidthRequest = ((Grid)(this).Parent).Width;
+            //this.HeightRequest = ((Grid)(this).Parent).Height;
+            this.WidthRequest = 10;
+            this.HeightRequest = 10;
+
+        }
+    }
+
+    public class Image : Xamarin.Forms.Image
+    {
+        public Image()
+        {
+            this.WidthRequest = ((Grid)(this).Parent).Width;
+            this.HeightRequest = ((Grid)(this).Parent).Height;
         }
     }
 
