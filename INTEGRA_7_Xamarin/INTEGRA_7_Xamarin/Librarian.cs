@@ -1781,6 +1781,7 @@ namespace Integra_7_Xamarin
         private void Librarian_BtnEditTone_Clicked(object sender, EventArgs e)
         {
             //mainStackLayout.Children.RemoveAt(0);
+            currentPage = CurrentPage.EDIT_TONE;
             Librarian_StackLayout.IsVisible = false;
             ShowToneEditorPage();
         }
