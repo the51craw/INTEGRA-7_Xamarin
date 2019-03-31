@@ -269,10 +269,10 @@ namespace Integra_7_Xamarin
 
         private void PopHandleControlEvents()
         {
-            if (previousHandleControlEvents.Count() > 0)
+            if (previousHandleControlEvents.Count > 0)
             {
-                handleControlEvents = previousHandleControlEvents[previousHandleControlEvents.Count() - 1];
-                previousHandleControlEvents.RemoveAt(previousHandleControlEvents.Count() - 1);
+                handleControlEvents = previousHandleControlEvents[previousHandleControlEvents.Count - 1];
+                previousHandleControlEvents.RemoveAt(previousHandleControlEvents.Count - 1);
             }
             else
             {

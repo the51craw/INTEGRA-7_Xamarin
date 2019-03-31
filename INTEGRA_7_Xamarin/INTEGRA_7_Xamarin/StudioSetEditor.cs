@@ -612,6 +612,7 @@ namespace Integra_7_Xamarin
                 StudioSetEditor_Init();
                 PopulateComboBoxes();
                 setVisibility = true;
+                needToSetFontSize = true;
             }
             StudioSetEditor_StackLayout.IsVisible = false;
         }
@@ -3438,6 +3439,13 @@ namespace Integra_7_Xamarin
         {
             t.Trace("private void EditStudioSet_MidiInPort_MessageReceived (" + "Windows.Devices.Midi.MidiInPort + sender + , Windows.Devices.Midi.MidiMessageReceivedEventArgs + args + , " + ")");
             {
+                // Set font size:
+                if (needToSetFontSize)
+                {
+                    SetFontSizes(StudioSetEditor_StackLayout);
+                    needToSetFontSize = false;
+                }
+
                 if ((currentStudioSetEditorMidiRequest == StudioSetEditor_currentStudioSetEditorMidiRequest.GET_CURRENT_STUDIO_SET_NUMBER
                     || currentStudioSetEditorMidiRequest == StudioSetEditor_currentStudioSetEditorMidiRequest.GET_CURRENT_STUDIO_SET_NUMBER_AND_SCAN)
                     && studioSetEditor_State == StudioSetEditor_State.QUERYING_CURRENT_STUDIO_SET_NUMBER)
@@ -3470,7 +3478,7 @@ namespace Integra_7_Xamarin
                     }
                     commonState.StudioSetNames.Add(text);
                     studioSetNumberTemp++;
-                    pb_WaitingProgress.Progress = (Double)studioSetNumberTemp / (Double) 64;
+                    //pb_WaitingProgress.Progress = (Double)studioSetNumberTemp / (Double) 64;
 
                     // Query next studio set if this was not last one:
                     if (studioSetNumberTemp < 64)
