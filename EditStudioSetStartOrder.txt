@@ -1,0 +1,9 @@
+QueryStudioSetCommon()
+QueryStudioSetChorus()
+QueryStudioSetReverb()
+QueryStudioSetMotionalSurround()
+QueryStudioSetMasterEQ()
+QueryStudioSetPart(studioSetEditor_PartToRead) 0 - 15
+QueryStudioSetPartToneName()
+QueryStudioSetPartMidiPhaselock()
+QueryStudioSetPartEQ(studioSetEditor_PartToRead) 0 - 15

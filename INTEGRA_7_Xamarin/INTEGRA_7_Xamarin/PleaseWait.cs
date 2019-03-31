@@ -242,16 +242,21 @@ namespace Integra_7_Xamarin
             waitCount--;
             if (integra_7Ready)
             {
+                // We got a response from I-7, so we are ready to show the Librarian page now:
                 PleaseWait_StackLayout.IsVisible = false;
                 ShowLibrarianPage();
             }
             else if (waitCount > 0)
             {
+                // No response, ask again and wait bit more:
                 CheckForIntegra_7_readiness();
             }
             else
             {
+                // We got no response. In case we have a saved MIDI
+                // interface name, it is no longer valid, erase it...
                 mainPage.SaveLocalValue("MidiDevice", null);
+                // ...and try again:
                 MidiState = MIDIState.NOT_INITIALIZED;
                 waitingFor = WaitingFor.MIDI;
             }
@@ -261,6 +266,19 @@ namespace Integra_7_Xamarin
         {
         }
 
+        /// <summary>
+        /// We need to read the studio set names for one of two reasons:
+        /// 1) Studio sets has been selected in Librarian_lvGroups and
+        ///     we should list groups in the Librarian
+        /// 2) The button Librarian_btnEditStudioSet has been pressed and
+        ///     we need to list the groups in the EditStudioSet group selector
+        ///     and in the free slots selector of the Studio Set Editor.
+        /// If this has already been done, commonState.StudioSetNames is
+        /// filled out, and we should not come here at all.
+        /// I.e. we should come here zero or one time per session, never more.
+        /// The enumerated variable continueTo will be used to navigate to
+        /// the correct page after names are read.
+        /// </summary>
         private void PleaseWait_ReadStudioSetNames()
         {
             waitingFor = WaitingFor.IDLE;
@@ -269,10 +287,15 @@ namespace Integra_7_Xamarin
             pb_WaitingProgress.Progress = 0;
         }
 
+        /// <summary>
+        /// MIDI received messages are currently sent here, to the PleaseWait page, 
+        /// where is is handled in accordance to what we are waiting for.
+        /// </summary>
         public void PleaseWait_MidiInPort_MessageReceived()
         {
             if (queryType == QueryType.CHECKING_I_7_READINESS)
             {
+                // Got response from the I-7, just set the integra_7Ready flag:
                 integra_7Ready = true;
             }
             else if (queryType == QueryType.STUDIO_SET_NAMES)
@@ -282,6 +305,9 @@ namespace Integra_7_Xamarin
 
                 if (studioSetEditor_State == StudioSetEditor_State.DONE)
                 {
+                    // Studio set names has been read. Go to the Librarian
+                    // or the studio set editor depending on what is in 
+                    // the enumertor continueTo:
                     if (continueTo == CurrentPage.LIBRARIAN)
                     {
                         currentPage = CurrentPage.LIBRARIAN;
@@ -290,15 +316,14 @@ namespace Integra_7_Xamarin
                         studioSetNamesJustRead = StudioSetNames.READ_BUT_NOT_LISTED;
                         initDone = true;
                     }
-                    else
+                    else if (continueTo == CurrentPage.EDIT_STUDIO_SET)
                     {
-                        // PleaseWait has had the control so far, so take it and let Studio set editor be visible.
+                        // PleaseWait has had the control so far, so take
+                        // it and let Studio set editor be visible.
                         currentPage = CurrentPage.EDIT_STUDIO_SET;
                         PleaseWait_StackLayout.IsVisible = false;
-                        initDone = true;
                         StudioSetEditor_StackLayout.IsVisible = true;
-                        commonState.StudioSetNames = new List<String>();
-                        QueryCurrentStudioSetNumber();
+                        PopulateStudioSetSelector();
                     }
                 }
             }

@@ -1298,9 +1298,16 @@ namespace Integra_7_Xamarin
                                     Int32 toneIndex = commonState.ToneList.Get(data[17], data[18], data[19]);
                                     commonState.CurrentTone = new Tone(commonState.ToneList.Tones[toneIndex]);
                                     commonState.CurrentTone.ToneIndex = toneIndex;
-                                    showCurrentToneReadFromI7 = true;
                                 }
-                                catch { }
+                                catch
+                                {
+                                    // If the user created a user tone, and that is the one selected,
+                                    // it must have been read in, or else we end up here. So, let's
+                                    // just pick number 0:
+                                    commonState.CurrentTone = new Tone(commonState.ToneList.Tones[0]);
+                                    commonState.CurrentTone.ToneIndex = 0;
+                                }
+                                showCurrentToneReadFromI7 = true;
                                 queryType = QueryType.NONE;
                                 break;
                             case QueryType.STUDIO_SET_NAMES:
@@ -1318,6 +1325,14 @@ namespace Integra_7_Xamarin
             {
                 if ((String)Librarian_lvGroups.SelectedItem == "Studio sets")
                 {
+                    if (Librarian_ocToneNames == null)
+                    {
+                        try
+                        {
+                            Librarian_ocToneNames = new ObservableCollection<String>();
+                        }
+                        catch { }
+                    }
                     currentStudioSet = commonState.CurrentStudioSet;
                     Librarian_lblCategories.Content = "Studio sets";
                     Librarian_lvToneNames.IsEnabled = false;
@@ -1776,11 +1791,25 @@ namespace Integra_7_Xamarin
             Librarian_StackLayout.IsVisible = false;
             if (EditStudioSet_IsCreated)
             {
+                currentPage = CurrentPage.EDIT_STUDIO_SET;
+                QueryCurrentStudioSetNumber(false);
                 StudioSetEditor_StackLayout.IsVisible = true;
             }
             else
             {
-                mainPage.uIHandler.ShowPleaseWaitPage(WaitingFor.READING_STUDIO_SET_NAMES, CurrentPage.EDIT_STUDIO_SET, null);
+                if (commonState.StudioSetNames == null || commonState.StudioSetNames.Count() < 1)
+                {
+                    // Get a list of all studio set names. Start by storing the current studio set number.
+                    // Note that consequent queries will be sent from MidiInPort_MessageReceived and Timer_Tick.
+                    Librarian_StackLayout.IsVisible = false;
+                    mainPage.uIHandler.ShowPleaseWaitPage(WaitingFor.READING_STUDIO_SET_NAMES, CurrentPage.EDIT_STUDIO_SET, null);
+                }
+                else
+                {
+                    // Studio set names are read, but studio set page is not created:
+                    Librarian_StackLayout.IsVisible = false;
+                    ShowStudioSetEditorPage();
+                }
             }
             //Waiting(true, "Please wait while scanning Studio set names and initiating form...", Librarian_StackLayout);
             //ShowStudioSetEditorPage();

@@ -575,7 +575,28 @@ namespace Integra_7_Xamarin
         public Int32 Column { get; set; }
     }
 
-    public class MotionalSurroundPartLabel : /*Xamarin.Forms.*/Button
+    public class TouchableImage : Xamarin.Forms.Image
+    {
+        
+        public TouchableImage(EventHandler Handler, object[] Arguments = null, String ImageFile = null, EventArgs e = null)
+        {
+            this.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                Command = new Command(() =>
+                {
+                    Handler(Arguments, e);
+                }),
+                NumberOfTapsRequired = 1
+            });
+
+            if (!String.IsNullOrEmpty(ImageFile))
+            {
+                this.Source = ImageFile;
+            }
+        }
+    }
+
+public class MotionalSurroundPartLabel : /*Xamarin.Forms.*/Button
     {
         public byte Horizontal { get; set; } // 0 - 127 => L64 - R63
         public byte Vertical { get; set; }   // 0 - 127 => B64 - F63

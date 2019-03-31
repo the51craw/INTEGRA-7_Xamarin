@@ -47,7 +47,12 @@ namespace Integra_7_Xamarin
         {
             //t.Trace("public StudioSet()");
             // This will populate chorus type classes with initial data:
-            //CommonChorus = new StudioSet_CommonChorus();
+            SystemCommon = new StudioSet_SystemCommon(null);
+            Common = new StudioSet_Common(null);
+            CommonChorus = new StudioSet_CommonChorus(null);
+            CommonReverb = new StudioSet_CommonReverb(null);
+            MotionalSurround = new StudioSet_MotionalSurround(null);
+            MasterEQ = new StudioSet_MasterEQ(null);
             PartMainSettings = new StudioSet_PartMainSettings[16];
             PartKeyboard = new StudioSet_PartKeyboard[16];
             PartScaleTune = new StudioSet_PartScaleTune[16];
@@ -207,28 +212,31 @@ namespace Integra_7_Xamarin
         public StudioSet_SystemCommon(ReceivedData Data)
         {
             //t.Trace("public StudioSet_SystemCommon (" + "ReceivedData" + Data + ", " + ")");
-            MasterTune = (256 * Data.GetByte(0x01) + 16 * Data.GetByte(0x02) + Data.GetByte(0x03)) - 1024;
-            MasterKeyShift = (byte)(Data.GetByte(0x04) - 64);
-            MasterLevel = Data.GetByte(0x05);
-            ScaleTuneSwitch = !(Data.GetByte(0x06) == 0x00);
-            StudioSetControlChannel = Data.GetByte(0x11);
-            SystemControl1Source = Data.GetByte(0x20);
-            if (SystemControl1Source == 32) SystemControl1Source--; // CC32 is not allowed!
-            SystemControl2Source = Data.GetByte(0x21);
-            if (SystemControl2Source == 32) SystemControl2Source--; // CC32 is not allowed!
-            SystemControl3Source = Data.GetByte(0x22);
-            if (SystemControl3Source == 32) SystemControl3Source--; // CC32 is not allowed!
-            SystemControl4Source = Data.GetByte(0x23);
-            if (SystemControl4Source == 32) SystemControl4Source--; // CC32 is not allowed!
-            ControlSource = Data.GetByte(0x24);
-            SystemClockSource = Data.GetByte(0x25);
-            SystemTempo = (Int16)(16 * Data.GetByte(0x26) + Data.GetByte(0x27));
-            TempoAssignSource = Data.GetByte(0x28);
-            ReceiveProgramChange = !(Data.GetByte(0x29) == 0x00);
-            ReceiveBankSelect = !(Data.GetByte(0x2a) == 0x00);
-            SurroundCenterSpeakerSwitch = !(Data.GetByte(0x2b) == 0x00);
-            SurroundSubWooferSwitch = !(Data.GetByte(0x2c) == 0x00);
-            StereoOutputMode = Data.GetByte(0x2d);
+            if (Data != null)
+            {
+                MasterTune = (256 * Data.GetByte(0x01) + 16 * Data.GetByte(0x02) + Data.GetByte(0x03)) - 1024;
+                MasterKeyShift = (byte)(Data.GetByte(0x04) - 64);
+                MasterLevel = Data.GetByte(0x05);
+                ScaleTuneSwitch = !(Data.GetByte(0x06) == 0x00);
+                StudioSetControlChannel = Data.GetByte(0x11);
+                SystemControl1Source = Data.GetByte(0x20);
+                if (SystemControl1Source == 32) SystemControl1Source--; // CC32 is not allowed!
+                SystemControl2Source = Data.GetByte(0x21);
+                if (SystemControl2Source == 32) SystemControl2Source--; // CC32 is not allowed!
+                SystemControl3Source = Data.GetByte(0x22);
+                if (SystemControl3Source == 32) SystemControl3Source--; // CC32 is not allowed!
+                SystemControl4Source = Data.GetByte(0x23);
+                if (SystemControl4Source == 32) SystemControl4Source--; // CC32 is not allowed!
+                ControlSource = Data.GetByte(0x24);
+                SystemClockSource = Data.GetByte(0x25);
+                SystemTempo = (Int16)(16 * Data.GetByte(0x26) + Data.GetByte(0x27));
+                TempoAssignSource = Data.GetByte(0x28);
+                ReceiveProgramChange = !(Data.GetByte(0x29) == 0x00);
+                ReceiveBankSelect = !(Data.GetByte(0x2a) == 0x00);
+                SurroundCenterSpeakerSwitch = !(Data.GetByte(0x2b) == 0x00);
+                SurroundSubWooferSwitch = !(Data.GetByte(0x2c) == 0x00);
+                StereoOutputMode = Data.GetByte(0x2d);
+            }
         }
     }
 
@@ -271,37 +279,40 @@ namespace Integra_7_Xamarin
         public StudioSet_Common(ReceivedData Data)
         {
             //t.Trace("public StudioSet_Common (" + "ReceivedData" + Data + ", " + ")");
-            Name = "";
-            for (Int32 i = 0x00; i < 0x10; i++)
+            if (Data != null)
             {
-                Name += (char)Data.GetByte(i);
+                Name = "";
+                for (Int32 i = 0x00; i < 0x10; i++)
+                {
+                    Name += (char)Data.GetByte(i);
+                }
+                VoiceReserve = new byte[16];
+                for (Int32 i = 0; i < 16; i++)
+                {
+                    VoiceReserve[i] = Data.GetByte(i + 0x18);
+                }
+                ToneControlSource = new byte[4];
+                for (Int32 i = 0; i < 4; i++)
+                {
+                    ToneControlSource[i] = Data.GetByte(i + 0x39);
+                }
+                Tempo = (byte)(16 * Data.GetByte(0x3d) + Data.GetByte(0x3e));
+                SoloPart = Data.GetByte(0x3f);
+                Reverb = !(Data.GetByte(0x40) == 0x00);
+                Chorus = !(Data.GetByte(0x41) == 0x00);
+                MasterEqualizer = !(Data.GetByte(0x42) == 0x00);
+                DrumCompressorAndEqualizer = !(Data.GetByte(0x43) == 0x00);
+                DrumCompressorAndEqualizerPart = Data.GetByte(0x44);
+                DrumCompressorAndEqualizerOutputAssign = new byte[6];
+                for (Int32 i = 0; i < 6; i++)
+                {
+                    DrumCompressorAndEqualizerOutputAssign[i] = Data.GetByte(i + 0x45);
+                }
+                ExternalPartLevel = Data.GetByte(0x4c);
+                ExternalPartChorusSendLevel = Data.GetByte(0x4d);
+                ExternalPartReverbSendLevel = Data.GetByte(0x4e);
+                ExternalPartMute = !(Data.GetByte(0x4f) == 0x00);
             }
-            VoiceReserve = new byte[16];
-            for (Int32 i = 0; i < 16; i++)
-            {
-                VoiceReserve[i] = Data.GetByte(i + 0x18);
-            }
-            ToneControlSource = new byte[4];
-            for (Int32 i = 0; i < 4; i++)
-            {
-                ToneControlSource[i] = Data.GetByte(i + 0x39);
-            }
-            Tempo = (byte)(16 * Data.GetByte(0x3d) + Data.GetByte(0x3e));
-            SoloPart = Data.GetByte(0x3f);
-            Reverb = !(Data.GetByte(0x40) == 0x00);
-            Chorus = !(Data.GetByte(0x41) == 0x00);
-            MasterEqualizer = !(Data.GetByte(0x42) == 0x00);
-            DrumCompressorAndEqualizer = !(Data.GetByte(0x43) == 0x00);
-            DrumCompressorAndEqualizerPart = Data.GetByte(0x44);
-            DrumCompressorAndEqualizerOutputAssign = new byte[6];
-            for (Int32 i = 0; i < 6; i++)
-            {
-                DrumCompressorAndEqualizerOutputAssign[i] = Data.GetByte(i + 0x45);
-            }
-            ExternalPartLevel = Data.GetByte(0x4c);
-            ExternalPartChorusSendLevel = Data.GetByte(0x4d);
-            ExternalPartReverbSendLevel = Data.GetByte(0x4e);
-            ExternalPartMute = !(Data.GetByte(0x4f) == 0x00);
         }
     }
 
@@ -330,52 +341,55 @@ namespace Integra_7_Xamarin
         public StudioSet_CommonChorus(ReceivedData Data)
         {
             //t.Trace("public StudioSet_CommonChorus(ReceivedData Data)");
-            Type = Data.GetByte(0);
-            Level = Data.GetByte(1);
-            OutputAssign = Data.GetByte(2);
-            OutputSelect = Data.GetByte(3);
+            if (Data != null)
+            {
+                Type = Data.GetByte(0);
+                Level = Data.GetByte(1);
+                OutputAssign = Data.GetByte(2);
+                OutputSelect = Data.GetByte(3);
 
-            // Data for the different types are stored in the same MIDI memory space!
-            // Changing type by sending type byte only will not make I-7 update MIDI data.
-            // I-7 will update MIDI data from some internal storage only when changed from the front panel.
-            // Below are default settigns for each type that I have read out from I-7 Integra Preview studio set.
-            // Create all type classes with receivedata = null and initialize with this data:
-            byte[] defaultChorusOff = { 0xf0, 0x41, 0x10, 0x00, 0x00, 0x64, 0x12, 0x18, 0x04, 0x00, 0x00, 0x00, 0x7f, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x06, 0x08, 0x00, 0x01, 0x04, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x0a, 0x08, 0x00, 0x01, 0x02, 0x08, 0x00, 0x01, 0x0e, 0x08, 0x00, 0x05, 0x0a, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x03, 0x0b, 0x08, 0x00, 0x01, 0x01, 0x08, 0x00, 0x07, 0x0f, 0x08, 0x00, 0x07, 0x0f, 0x08, 0x00, 0x07, 0x0f, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00 };
-            byte[] defaultChorusChorus = { 0xf0, 0x41, 0x10, 0x00, 0x00, 0x64, 0x12, 0x18, 0x04, 0x00, 0x00, 0x01, 0x7f, 0x00, 0x00, 0x08, 0x00, 0x00, 0x02, 0x08, 0x00, 0x00, 0x06, 0x08, 0x00, 0x01, 0x04, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x0a, 0x08, 0x00, 0x01, 0x02, 0x08, 0x00, 0x01, 0x0e, 0x08, 0x00, 0x05, 0x0a, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00 };
-            byte[] defaultChorusDelay = { 0xf0, 0x41, 0x10, 0x00, 0x00, 0x64, 0x12, 0x18, 0x04, 0x00, 0x00, 0x02, 0x7f, 0x00, 0x00, 0x08, 0x00, 0x00, 0x01, 0x08, 0x00, 0x0c, 0x08, 0x08, 0x00, 0x00, 0x07, 0x08, 0x00, 0x00, 0x01, 0x08, 0x01, 0x09, 0x00, 0x08, 0x00, 0x00, 0x0a, 0x08, 0x00, 0x00, 0x01, 0x08, 0x02, 0x05, 0x08, 0x08, 0x00, 0x00, 0x0c, 0x08, 0x00, 0x03, 0x0b, 0x08, 0x00, 0x01, 0x01, 0x08, 0x00, 0x07, 0x0f, 0x08, 0x00, 0x07, 0x0f, 0x08, 0x00, 0x07, 0x0f, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00 };
-            byte[] defaultChorusGM2Chorus = { 0xf0, 0x41, 0x10, 0x00, 0x00, 0x64, 0x12, 0x18, 0x04, 0x00, 0x00, 0x03, 0x7f, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x04, 0x00, 0x08, 0x00, 0x00, 0x08, 0x08, 0x00, 0x05, 0x00, 0x08, 0x00, 0x00, 0x03, 0x08, 0x00, 0x01, 0x03, 0x08, 0x00, 0x00, 0x00, 0x08, 0x02, 0x05, 0x08, 0x08, 0x00, 0x00, 0x0c, 0x08, 0x00, 0x03, 0x0b, 0x08, 0x00, 0x01, 0x01, 0x08, 0x00, 0x07, 0x0f, 0x08, 0x00, 0x07, 0x0f, 0x08, 0x00, 0x07, 0x0f, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00 };
-            if (Type == 0)
-            {
-                Off = new StudioSet_CommonChorusOff(Data);
+                // Data for the different types are stored in the same MIDI memory space!
+                // Changing type by sending type byte only will not make I-7 update MIDI data.
+                // I-7 will update MIDI data from some internal storage only when changed from the front panel.
+                // Below are default settigns for each type that I have read out from I-7 Integra Preview studio set.
+                // Create all type classes with receivedata = null and initialize with this data:
+                byte[] defaultChorusOff = { 0xf0, 0x41, 0x10, 0x00, 0x00, 0x64, 0x12, 0x18, 0x04, 0x00, 0x00, 0x00, 0x7f, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x06, 0x08, 0x00, 0x01, 0x04, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x0a, 0x08, 0x00, 0x01, 0x02, 0x08, 0x00, 0x01, 0x0e, 0x08, 0x00, 0x05, 0x0a, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x03, 0x0b, 0x08, 0x00, 0x01, 0x01, 0x08, 0x00, 0x07, 0x0f, 0x08, 0x00, 0x07, 0x0f, 0x08, 0x00, 0x07, 0x0f, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00 };
+                byte[] defaultChorusChorus = { 0xf0, 0x41, 0x10, 0x00, 0x00, 0x64, 0x12, 0x18, 0x04, 0x00, 0x00, 0x01, 0x7f, 0x00, 0x00, 0x08, 0x00, 0x00, 0x02, 0x08, 0x00, 0x00, 0x06, 0x08, 0x00, 0x01, 0x04, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x0a, 0x08, 0x00, 0x01, 0x02, 0x08, 0x00, 0x01, 0x0e, 0x08, 0x00, 0x05, 0x0a, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00 };
+                byte[] defaultChorusDelay = { 0xf0, 0x41, 0x10, 0x00, 0x00, 0x64, 0x12, 0x18, 0x04, 0x00, 0x00, 0x02, 0x7f, 0x00, 0x00, 0x08, 0x00, 0x00, 0x01, 0x08, 0x00, 0x0c, 0x08, 0x08, 0x00, 0x00, 0x07, 0x08, 0x00, 0x00, 0x01, 0x08, 0x01, 0x09, 0x00, 0x08, 0x00, 0x00, 0x0a, 0x08, 0x00, 0x00, 0x01, 0x08, 0x02, 0x05, 0x08, 0x08, 0x00, 0x00, 0x0c, 0x08, 0x00, 0x03, 0x0b, 0x08, 0x00, 0x01, 0x01, 0x08, 0x00, 0x07, 0x0f, 0x08, 0x00, 0x07, 0x0f, 0x08, 0x00, 0x07, 0x0f, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00 };
+                byte[] defaultChorusGM2Chorus = { 0xf0, 0x41, 0x10, 0x00, 0x00, 0x64, 0x12, 0x18, 0x04, 0x00, 0x00, 0x03, 0x7f, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x04, 0x00, 0x08, 0x00, 0x00, 0x08, 0x08, 0x00, 0x05, 0x00, 0x08, 0x00, 0x00, 0x03, 0x08, 0x00, 0x01, 0x03, 0x08, 0x00, 0x00, 0x00, 0x08, 0x02, 0x05, 0x08, 0x08, 0x00, 0x00, 0x0c, 0x08, 0x00, 0x03, 0x0b, 0x08, 0x00, 0x01, 0x01, 0x08, 0x00, 0x07, 0x0f, 0x08, 0x00, 0x07, 0x0f, 0x08, 0x00, 0x07, 0x0f, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00 };
+                if (Type == 0)
+                {
+                    Off = new StudioSet_CommonChorusOff(Data);
+                }
+                else
+                {
+                    Off = new StudioSet_CommonChorusOff(new ReceivedData(defaultChorusOff));
+                }
+                if (Type == 1)
+                {
+                    Chorus = new StudioSet_CommonChorusChorus(Data);
+                }
+                else
+                {
+                    Chorus = new StudioSet_CommonChorusChorus(new ReceivedData(defaultChorusChorus));
+                }
+                if (Type == 2)
+                {
+                    Delay = new StudioSet_CommonChorusDelay(Data);
+                }
+                else
+                {
+                    Delay = new StudioSet_CommonChorusDelay(new ReceivedData(defaultChorusDelay));
+                }
+                if (Type == 3)
+                {
+                    Gm2Chorus = new StudioSet_CommonChorusGM2Chorus(Data);
+                }
+                else
+                {
+                    Gm2Chorus = new StudioSet_CommonChorusGM2Chorus(new ReceivedData(defaultChorusGM2Chorus));
+                }
             }
-            //else
-            //{
-            //    Off = new StudioSet_CommonChorusOff(new ReceivedData(defaultChorusOff));
-            //}
-            if (Type == 1)
-            {
-                Chorus = new StudioSet_CommonChorusChorus(Data);
-            }
-            //else
-            //{
-            //    Chorus = new StudioSet_CommonChorusChorus(new ReceivedData(defaultChorusChorus));
-            //}
-            if (Type == 2)
-            {
-                Delay = new StudioSet_CommonChorusDelay(Data);
-            }
-            //else
-            //{
-            //    Delay = new StudioSet_CommonChorusDelay(new ReceivedData(defaultChorusDelay));
-            //}
-            if (Type == 3)
-            {
-                Gm2Chorus = new StudioSet_CommonChorusGM2Chorus(Data);
-            }
-            //else
-            //{
-            //    Gm2Chorus = new StudioSet_CommonChorusGM2Chorus(new ReceivedData(defaultChorusGM2Chorus));
-            //}
         }
 
         //public StudioSet_CommonChorus(ReceivedData Data)
@@ -552,19 +566,19 @@ namespace Integra_7_Xamarin
         [DataMember]
         public byte LeftMsNote { get; set; }
         [DataMember]
-        public byte LeftMs { get; set; }
+        public UInt16 LeftMs { get; set; }
         [DataMember]
         public byte LeftNote { get; set; }
         [DataMember]
         public byte RightMsNote { get; set; }
         [DataMember]
-        public byte RightMs { get; set; }
+        public UInt16 RightMs { get; set; }
         [DataMember]
         public byte RightNote { get; set; }
         [DataMember]
         public byte CenterMsNote { get; set; }
         [DataMember]
-        public byte CenterMs { get; set; }
+        public UInt16 CenterMs { get; set; }
         [DataMember]
         public byte CenterNote { get; set; }
         [DataMember]
@@ -792,79 +806,81 @@ namespace Integra_7_Xamarin
         public StudioSet_CommonReverb(ReceivedData Data)
         {
             //t.Trace("public StudioSet_CommonReverb (" + "ReceivedData" + Data + ", " + ")");
-
-            Type = Data.GetByte(0);
-            Level = Data.GetByte(1);
-            OutputAssign = Data.GetByte(2);
-            if (Type == 1)
+            if (Data != null)
             {
-                ReverbRoom1 = new StudioSet_CommonReverbReverb(Data);
-            }
-            else
-            {
-                ReverbRoom1 = new StudioSet_CommonReverbReverb(new ReceivedData(new byte[] {
+                Type = Data.GetByte(0);
+                Level = Data.GetByte(1);
+                OutputAssign = Data.GetByte(2);
+                if (Type == 1)
+                {
+                    ReverbRoom1 = new StudioSet_CommonReverbReverb(Data);
+                }
+                else
+                {
+                    ReverbRoom1 = new StudioSet_CommonReverbReverb(new ReceivedData(new byte[] {
                     0xf0, 0x41, 0x10, 0x00, 0x00, 0x64, 0x12, 0x18, 0x00, 0x06, 0x00, 0x01, 0x5f, 0x00, 0x08, 0x00,
                     0x05, 0x0f, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x09, 0x08, 0x00, 0x07, 0x0f, 0x08, 0x00,
                     0x07, 0x0f, 0x08, 0x00, 0x03, 0x02, 0x08, 0x00, 0x03, 0x02, 0x08, 0x00, 0x07, 0x0f, 0x08, 0x00,
                     0x04, 0x00, 0x4d, 0xf7 }));
-            }
-            if (Type == 2)
-            {
-                ReverbRoom2 = new StudioSet_CommonReverbReverb(Data);
-            }
-            else
-            {
-                ReverbRoom2 = new StudioSet_CommonReverbReverb(new ReceivedData(new byte[] {
+                }
+                if (Type == 2)
+                {
+                    ReverbRoom2 = new StudioSet_CommonReverbReverb(Data);
+                }
+                else
+                {
+                    ReverbRoom2 = new StudioSet_CommonReverbReverb(new ReceivedData(new byte[] {
                     0xf0, 0x41, 0x10, 0x00, 0x00, 0x64, 0x12, 0x18, 0x00, 0x06, 0x00, 0x02, 0x5f, 0x00, 0x08, 0x00,
                     0x05, 0x0f, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x09, 0x08, 0x00, 0x07, 0x0f, 0x08, 0x00,
                     0x07, 0x0f, 0x08, 0x00, 0x03, 0x02, 0x08, 0x00, 0x03, 0x02, 0x08, 0x00, 0x07, 0x0f, 0x08, 0x00,
                     0x04, 0x00, 0x4c, 0xf7 }));
-            }
-            if (Type == 3)
-            {
-                ReverbHall1 = new StudioSet_CommonReverbReverb(Data);
-            }
-            else
-            {
-                ReverbHall1 = new StudioSet_CommonReverbReverb(new ReceivedData(new byte[] {
+                }
+                if (Type == 3)
+                {
+                    ReverbHall1 = new StudioSet_CommonReverbReverb(Data);
+                }
+                else
+                {
+                    ReverbHall1 = new StudioSet_CommonReverbReverb(new ReceivedData(new byte[] {
                     0xf0, 0x41, 0x10, 0x00, 0x00, 0x64, 0x12, 0x18, 0x00, 0x06, 0x00, 0x03, 0x5f, 0x00, 0x08, 0x00,
                     0x05, 0x0f, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x01, 0x05, 0x08, 0x00, 0x07, 0x0f, 0x08, 0x00,
                     0x07, 0x0f, 0x08, 0x00, 0x03, 0x02, 0x08, 0x00, 0x03, 0x02, 0x08, 0x00, 0x07, 0x0f, 0x08, 0x00,
                     0x04, 0x00, 0x4e, 0xf7 }));
-            }
-            if (Type == 4)
-            {
-                ReverbHall2 = new StudioSet_CommonReverbReverb(Data);
-            }
-            else
-            {
-                ReverbHall2 = new StudioSet_CommonReverbReverb(new ReceivedData(new byte[] {
+                }
+                if (Type == 4)
+                {
+                    ReverbHall2 = new StudioSet_CommonReverbReverb(Data);
+                }
+                else
+                {
+                    ReverbHall2 = new StudioSet_CommonReverbReverb(new ReceivedData(new byte[] {
                     0xf0, 0x41, 0x10, 0x00, 0x00, 0x64, 0x12, 0x18, 0x00, 0x06, 0x00, 0x04, 0x5f, 0x00, 0x08, 0x00,
                     0x05, 0x0f, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x01, 0x0a, 0x08, 0x00, 0x07, 0x0f, 0x08, 0x00,
                     0x07, 0x0f, 0x08, 0x00, 0x03, 0x02, 0x08, 0x00, 0x03, 0x02, 0x08, 0x00, 0x07, 0x0f, 0x08, 0x00,
                     0x04, 0x00, 0x48, 0xf7 }));
-            }
-            if (Type == 5)
-            {
-                ReverbPlate = new StudioSet_CommonReverbReverb(Data);
-            }
-            else
-            {
-                ReverbPlate = new StudioSet_CommonReverbReverb(new ReceivedData(new byte[] {
+                }
+                if (Type == 5)
+                {
+                    ReverbPlate = new StudioSet_CommonReverbReverb(Data);
+                }
+                else
+                {
+                    ReverbPlate = new StudioSet_CommonReverbReverb(new ReceivedData(new byte[] {
                     0xf0, 0x41, 0x10, 0x00, 0x00, 0x64, 0x12, 0x18, 0x00, 0x06, 0x00, 0x05, 0x5f, 0x00, 0x08, 0x00,
                     0x05, 0x0f, 0x08, 0x00, 0x01, 0x04, 0x08, 0x00, 0x01, 0x0a, 0x08, 0x00, 0x07, 0x0f, 0x08, 0x00,
                     0x07, 0x0f, 0x08, 0x00, 0x03, 0x02, 0x08, 0x00, 0x03, 0x02, 0x08, 0x00, 0x07, 0x0f, 0x08, 0x00,
                     0x04, 0x00, 0x42, 0xf7 }));
-            }
-            if (Type == 6)
-            {
-                GM2Reverb = new StudioSet_CommonReverbGM2Reverb(Data);
-            }
-            else
-            {
-                GM2Reverb = new StudioSet_CommonReverbGM2Reverb(new ReceivedData(new byte[] {
+                }
+                if (Type == 6)
+                {
+                    GM2Reverb = new StudioSet_CommonReverbGM2Reverb(Data);
+                }
+                else
+                {
+                    GM2Reverb = new StudioSet_CommonReverbGM2Reverb(new ReceivedData(new byte[] {
                     0xf0, 0x41, 0x10, 0x00, 0x00, 0x64, 0x12, 0x18, 0x00, 0x06, 0x00, 0x06, 0x5f, 0x00, 0x08, 0x00,
                     0x00, 0x04, 0x08, 0x00, 0x04, 0x00, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x04, 0x00, 0x51, 0xf7 }));
+                }
             }
         }
     }
@@ -986,19 +1002,22 @@ namespace Integra_7_Xamarin
         public StudioSet_MotionalSurround(ReceivedData Data)
         {
             //t.Trace("public StudioSet_MotionalSurround (" + "ReceivedData" + Data + ", " + ")");
-            MotionalSurroundSwitch = Data.GetByte(0) > 0 ? true : false;
-            RoomType = Data.GetByte(1);
-            AmbienceLevel = Data.GetByte(2);
-            RoomSize = Data.GetByte(3);
-            AmbienceTime = Data.GetByte(4);
-            AmbienceDensity = Data.GetByte(5);
-            AmbienceHFDamp = Data.GetByte(6);
-            ExtPartLR = Data.GetByte(7);
-            ExtPartFB = Data.GetByte(8);
-            ExtPartWidth = Data.GetByte(9);
-            ExtPartAmbienceSendLevel = Data.GetByte(10);
-            ExtPartControlChannel = Data.GetByte(11);
-            MotionalSurroundDepth = Data.GetByte(12);
+            if (Data != null)
+            {
+                MotionalSurroundSwitch = Data.GetByte(0) > 0 ? true : false;
+                RoomType = Data.GetByte(1);
+                AmbienceLevel = Data.GetByte(2);
+                RoomSize = Data.GetByte(3);
+                AmbienceTime = Data.GetByte(4);
+                AmbienceDensity = Data.GetByte(5);
+                AmbienceHFDamp = Data.GetByte(6);
+                ExtPartLR = Data.GetByte(7);
+                ExtPartFB = Data.GetByte(8);
+                ExtPartWidth = Data.GetByte(9);
+                ExtPartAmbienceSendLevel = Data.GetByte(10);
+                ExtPartControlChannel = Data.GetByte(11);
+                MotionalSurroundDepth = Data.GetByte(12);
+            }
         }
     }
 
@@ -1025,13 +1044,16 @@ namespace Integra_7_Xamarin
         public StudioSet_MasterEQ(ReceivedData Data)
         {
             //t.Trace("public StudioSet_MasterEQ (" + "ReceivedData" + Data + ", " + ")");
-            EQLowFreq = Data.GetByte(0);
-            EQLowGain = Data.GetByte(1);
-            EQMidFreq = Data.GetByte(2);
-            EQMidGain = Data.GetByte(3);
-            EQMidQ = Data.GetByte(4);
-            EQHighFreq = Data.GetByte(5);
-            EQHighGain = Data.GetByte(6);
+            if (Data != null)
+            {
+                EQLowFreq = Data.GetByte(0);
+                EQLowGain = Data.GetByte(1);
+                EQMidFreq = Data.GetByte(2);
+                EQMidGain = Data.GetByte(3);
+                EQMidQ = Data.GetByte(4);
+                EQHighFreq = Data.GetByte(5);
+                EQHighGain = Data.GetByte(6);
+            }
         }
     }
 

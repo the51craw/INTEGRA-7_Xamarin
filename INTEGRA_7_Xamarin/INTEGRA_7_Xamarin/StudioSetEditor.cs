@@ -543,18 +543,20 @@ namespace Integra_7_Xamarin
         LabeledSwitch cbStudioSetPartMidiReceiveExpression;
         LabeledSwitch cbStudioSetPartMidiReceiveHold1;
         Grid gStudioSetPartVelocityCurve;
-        Image imgVelocityCurve1On;
-        Image imgVelocityCurve1Off;
-        Image imgVelocityCurve2On;
-        Image imgVelocityCurve2Off;
-        Image imgVelocityCurve3On;
-        Image imgVelocityCurve3Off;
-        Image imgVelocityCurve4On;
-        Image imgVelocityCurve4Off;
-        Button btnVelocityCurve1;
-        Button btnVelocityCurve2;
-        Button btnVelocityCurve3;
-        Button btnVelocityCurve4;
+        TouchableImage imgVelocityCurve0On;
+        TouchableImage imgVelocityCurve0Off;
+        TouchableImage imgVelocityCurve1On;
+        TouchableImage imgVelocityCurve1Off;
+        TouchableImage imgVelocityCurve2On;
+        TouchableImage imgVelocityCurve2Off;
+        TouchableImage imgVelocityCurve3On;
+        TouchableImage imgVelocityCurve3Off;
+        TouchableImage imgVelocityCurve4On;
+        TouchableImage imgVelocityCurve4Off;
+        //Button btnVelocityCurve1;
+        //Button btnVelocityCurve2;
+        //Button btnVelocityCurve3;
+        //Button btnVelocityCurve4;
         Grid StudioSetPartMotionalSurround;
         TextBlock tbStudioSetPartMotionalSurroundLR;
         Slider slStudioSetPartMotionalSurroundLR;
@@ -1130,18 +1132,20 @@ namespace Integra_7_Xamarin
                 cbStudioSetPartMidiReceiveExpression = new LabeledSwitch("Receive expression");
                 cbStudioSetPartMidiReceiveHold1 = new LabeledSwitch("Receive hold-1");
                 gStudioSetPartVelocityCurve = new Grid();
-                imgVelocityCurve1On = new Image();
-                imgVelocityCurve1Off = new Image();
-                imgVelocityCurve2On = new Image();
-                imgVelocityCurve2Off = new Image();
-                imgVelocityCurve3On = new Image();
-                imgVelocityCurve3Off = new Image();
-                imgVelocityCurve4On = new Image();
-                imgVelocityCurve4Off = new Image();
-                btnVelocityCurve1 = new Button();
-                btnVelocityCurve2 = new Button();
-                btnVelocityCurve3 = new Button();
-                btnVelocityCurve4 = new Button();
+                imgVelocityCurve0On = new TouchableImage(ImgVelocity0Curve_Clicked, new object[] { "Off" }, "VelocityCurve0On.png");
+                imgVelocityCurve0Off = new TouchableImage(ImgVelocity0Curve_Clicked, new object[] { "On" }, "VelocityCurve0Off.png");
+                imgVelocityCurve1On = new TouchableImage(ImgVelocity1Curve_Clicked, new object[] { "Off" }, "VelocityCurve1On.png");
+                imgVelocityCurve1Off = new TouchableImage(ImgVelocity1Curve_Clicked, new object[] { "On" }, "VelocityCurve1Off.png");
+                imgVelocityCurve2On = new TouchableImage(ImgVelocity2Curve_Clicked, new object[] { "Off" }, "VelocityCurve2On.png");
+                imgVelocityCurve2Off = new TouchableImage(ImgVelocity2Curve_Clicked, new object[] { "On" }, "VelocityCurve2Off.png");
+                imgVelocityCurve3On = new TouchableImage(ImgVelocity3Curve_Clicked, new object[] { "Off" }, "VelocityCurve3On.png");
+                imgVelocityCurve3Off = new TouchableImage(ImgVelocity3Curve_Clicked, new object[] { "On" }, "VelocityCurve3Off.png");
+                imgVelocityCurve4On = new TouchableImage(ImgVelocity4Curve_Clicked, new object[] { "Off" }, "VelocityCurve4On.png");
+                imgVelocityCurve4Off = new TouchableImage(ImgVelocity4Curve_Clicked, new object[] { "On" }, "VelocityCurve4Off.png");
+                //btnVelocityCurve1 = new Button();
+                //btnVelocityCurve2 = new Button();
+                //btnVelocityCurve3 = new Button();
+                //btnVelocityCurve4 = new Button();
                 StudioSetPartMotionalSurround = new Grid();
                 tbStudioSetPartMotionalSurroundLR = new TextBlock();
                 slStudioSetPartMotionalSurroundLR = new Slider();
@@ -1833,30 +1837,34 @@ namespace Integra_7_Xamarin
             gStudioSetPartVelocityCurve.ColumnDefinitions.Add(new ColumnDefinition());
             gStudioSetPartVelocityCurve.ColumnDefinitions.Add(new ColumnDefinition());
             gStudioSetPartVelocityCurve.ColumnDefinitions.Add(new ColumnDefinition());
-            Grid.SetColumn(imgVelocityCurve1On, 0);
+            Grid.SetColumn(imgVelocityCurve0On, 0);
+            Grid.SetRow(imgVelocityCurve0Off, 0);
+            Grid.SetColumn(imgVelocityCurve1On, 1);
             Grid.SetRow(imgVelocityCurve1Off, 0);
-            Grid.SetColumn(imgVelocityCurve1Off, 0);
+            Grid.SetColumn(imgVelocityCurve1Off, 1);
             Grid.SetRow(imgVelocityCurve2On, 0);
-            Grid.SetColumn(imgVelocityCurve2On, 1);
+            Grid.SetColumn(imgVelocityCurve2On, 2);
             Grid.SetRow(imgVelocityCurve2Off, 0);
-            Grid.SetColumn(imgVelocityCurve2Off, 1);
+            Grid.SetColumn(imgVelocityCurve2Off, 2);
             Grid.SetRow(imgVelocityCurve3On, 0);
-            Grid.SetColumn(imgVelocityCurve3On, 2);
+            Grid.SetColumn(imgVelocityCurve3On, 3);
             Grid.SetRow(imgVelocityCurve3Off, 0);
-            Grid.SetColumn(imgVelocityCurve3Off, 2);
+            Grid.SetColumn(imgVelocityCurve3Off, 3);
             Grid.SetRow(imgVelocityCurve4On, 0);
-            Grid.SetColumn(imgVelocityCurve4On, 3);
+            Grid.SetColumn(imgVelocityCurve4On, 4);
             Grid.SetRow(imgVelocityCurve4Off, 0);
-            Grid.SetColumn(imgVelocityCurve4Off, 3);
-            Grid.SetRow(btnVelocityCurve1, 0);
-            Grid.SetColumn(btnVelocityCurve1, 0);
-            Grid.SetRow(btnVelocityCurve2, 0);
-            Grid.SetColumn(btnVelocityCurve2, 1);
-            Grid.SetRow(btnVelocityCurve3, 0);
-            Grid.SetColumn(btnVelocityCurve3, 2);
-            Grid.SetRow(btnVelocityCurve4, 0);
-            Grid.SetColumn(btnVelocityCurve4, 3);
+            Grid.SetColumn(imgVelocityCurve4Off, 4);
+            //Grid.SetRow(btnVelocityCurve1, 0);
+            //Grid.SetColumn(btnVelocityCurve1, 0);
+            //Grid.SetRow(btnVelocityCurve2, 0);
+            //Grid.SetColumn(btnVelocityCurve2, 1);
+            //Grid.SetRow(btnVelocityCurve3, 0);
+            //Grid.SetColumn(btnVelocityCurve3, 2);
+            //Grid.SetRow(btnVelocityCurve4, 0);
+            //Grid.SetColumn(btnVelocityCurve4, 3);
 
+            imgVelocityCurve0On.HorizontalOptions = LayoutOptions.FillAndExpand;
+            imgVelocityCurve0Off.HorizontalOptions = LayoutOptions.FillAndExpand;
             imgVelocityCurve1On.HorizontalOptions = LayoutOptions.FillAndExpand;
             imgVelocityCurve1Off.HorizontalOptions = LayoutOptions.FillAndExpand;
             imgVelocityCurve2On.HorizontalOptions = LayoutOptions.FillAndExpand;
@@ -1865,10 +1873,10 @@ namespace Integra_7_Xamarin
             imgVelocityCurve3Off.HorizontalOptions = LayoutOptions.FillAndExpand;
             imgVelocityCurve4On.HorizontalOptions = LayoutOptions.FillAndExpand;
             imgVelocityCurve4Off.HorizontalOptions = LayoutOptions.FillAndExpand;
-            btnVelocityCurve1.HorizontalOptions = LayoutOptions.FillAndExpand;
-            btnVelocityCurve2.HorizontalOptions = LayoutOptions.FillAndExpand;
-            btnVelocityCurve3.HorizontalOptions = LayoutOptions.FillAndExpand;
-            btnVelocityCurve4.HorizontalOptions = LayoutOptions.FillAndExpand;
+            //btnVelocityCurve1.HorizontalOptions = LayoutOptions.FillAndExpand;
+            //btnVelocityCurve2.HorizontalOptions = LayoutOptions.FillAndExpand;
+            //btnVelocityCurve3.HorizontalOptions = LayoutOptions.FillAndExpand;
+            //btnVelocityCurve4.HorizontalOptions = LayoutOptions.FillAndExpand;
 
             imgVelocityCurve1On.VerticalOptions = LayoutOptions.FillAndExpand;
             imgVelocityCurve1Off.VerticalOptions = LayoutOptions.FillAndExpand;
@@ -1878,25 +1886,37 @@ namespace Integra_7_Xamarin
             imgVelocityCurve3Off.VerticalOptions = LayoutOptions.FillAndExpand;
             imgVelocityCurve4On.VerticalOptions = LayoutOptions.FillAndExpand;
             imgVelocityCurve4Off.VerticalOptions = LayoutOptions.FillAndExpand;
-            btnVelocityCurve1.VerticalOptions = LayoutOptions.FillAndExpand;
-            btnVelocityCurve2.VerticalOptions = LayoutOptions.FillAndExpand;
-            btnVelocityCurve3.VerticalOptions = LayoutOptions.FillAndExpand;
-            btnVelocityCurve4.VerticalOptions = LayoutOptions.FillAndExpand;
+            //btnVelocityCurve1.VerticalOptions = LayoutOptions.FillAndExpand;
+            //btnVelocityCurve2.VerticalOptions = LayoutOptions.FillAndExpand;
+            //btnVelocityCurve3.VerticalOptions = LayoutOptions.FillAndExpand;
+            //btnVelocityCurve4.VerticalOptions = LayoutOptions.FillAndExpand;
 
-            imgVelocityCurve1On.Source = ImageSource.FromFile("VelocityCurve1On.png");
-            imgVelocityCurve1Off.Source = ImageSource.FromFile("VelocityCurve1Off.png");
-            imgVelocityCurve2On.Source = ImageSource.FromFile("VelocityCurve2On.png");
-            imgVelocityCurve2Off.Source = ImageSource.FromFile("VelocityCurve2Off.png");
-            imgVelocityCurve3On.Source = ImageSource.FromFile("VelocityCurve3On.png");
-            imgVelocityCurve3Off.Source = ImageSource.FromFile("VelocityCurve3Off.png");
-            imgVelocityCurve4On.Source = ImageSource.FromFile("VelocityCurve4On.png");
-            imgVelocityCurve4Off.Source = ImageSource.FromFile("VelocityCurve4Off.png");
+            //imgVelocityCurve1On.Source = ImageSource.FromFile("VelocityCurve1On.png");
+            //imgVelocityCurve1Off.Source = ImageSource.FromFile("VelocityCurve1Off.png");
+            //imgVelocityCurve2On.Source = ImageSource.FromFile("VelocityCurve2On.png");
+            //imgVelocityCurve2Off.Source = ImageSource.FromFile("VelocityCurve2Off.png");
+            //imgVelocityCurve3On.Source = ImageSource.FromFile("VelocityCurve3On.png");
+            //imgVelocityCurve3Off.Source = ImageSource.FromFile("VelocityCurve3Off.png");
+            //imgVelocityCurve4On.Source = ImageSource.FromFile("VelocityCurve4On.png");
+            //imgVelocityCurve4Off.Source = ImageSource.FromFile("VelocityCurve4Off.png");
 
-            btnVelocityCurve1.Clicked += BtnVelocity1Curve_Clicked;
-            btnVelocityCurve2.Clicked += BtnVelocity2Curve_Clicked;
-            btnVelocityCurve3.Clicked += BtnVelocity3Curve_Clicked;
-            btnVelocityCurve4.Clicked += BtnVelocity4Curve_Clicked;
+            //btnVelocityCurve1.Clicked += BtnVelocity1Curve_Clicked;
+            //btnVelocityCurve2.Clicked += BtnVelocity2Curve_Clicked;
+            //btnVelocityCurve3.Clicked += BtnVelocity3Curve_Clicked;
+            //btnVelocityCurve4.Clicked += BtnVelocity4Curve_Clicked;
+            imgVelocityCurve0On.VerticalOptions = LayoutOptions.FillAndExpand;
+            imgVelocityCurve0Off.VerticalOptions = LayoutOptions.FillAndExpand;
+            imgVelocityCurve1On.VerticalOptions = LayoutOptions.FillAndExpand;
+            imgVelocityCurve1Off.VerticalOptions = LayoutOptions.FillAndExpand;
+            imgVelocityCurve2On.VerticalOptions = LayoutOptions.FillAndExpand;
+            imgVelocityCurve2Off.VerticalOptions = LayoutOptions.FillAndExpand;
+            imgVelocityCurve3On.VerticalOptions = LayoutOptions.FillAndExpand;
+            imgVelocityCurve3Off.VerticalOptions = LayoutOptions.FillAndExpand;
+            imgVelocityCurve4On.VerticalOptions = LayoutOptions.FillAndExpand;
+            imgVelocityCurve4Off.VerticalOptions = LayoutOptions.FillAndExpand;
 
+            gStudioSetPartVelocityCurve.Children.Add(imgVelocityCurve0On);
+            gStudioSetPartVelocityCurve.Children.Add(imgVelocityCurve0Off);
             gStudioSetPartVelocityCurve.Children.Add(imgVelocityCurve1On);
             gStudioSetPartVelocityCurve.Children.Add(imgVelocityCurve1Off);
             gStudioSetPartVelocityCurve.Children.Add(imgVelocityCurve2On);
@@ -1905,10 +1925,10 @@ namespace Integra_7_Xamarin
             gStudioSetPartVelocityCurve.Children.Add(imgVelocityCurve3Off);
             gStudioSetPartVelocityCurve.Children.Add(imgVelocityCurve4On);
             gStudioSetPartVelocityCurve.Children.Add(imgVelocityCurve4Off);
-            gStudioSetPartVelocityCurve.Children.Add(btnVelocityCurve1);
-            gStudioSetPartVelocityCurve.Children.Add(btnVelocityCurve2);
-            gStudioSetPartVelocityCurve.Children.Add(btnVelocityCurve3);
-            gStudioSetPartVelocityCurve.Children.Add(btnVelocityCurve4);
+            //gStudioSetPartVelocityCurve.Children.Add(btnVelocityCurve1);
+            //gStudioSetPartVelocityCurve.Children.Add(btnVelocityCurve2);
+            //gStudioSetPartVelocityCurve.Children.Add(btnVelocityCurve3);
+            //gStudioSetPartVelocityCurve.Children.Add(btnVelocityCurve4);
 
             // Part motional surround
             tbStudioSetPartMotionalSurroundLR.Text = "Motional surround L-R";
@@ -2117,7 +2137,7 @@ namespace Integra_7_Xamarin
             grid_PartSettings.Children.Add((new GridRow(0, new View[] { StudioSetPartSettings1 }, null, false, true, 14)).Row);
             grid_PartSettings.Children.Add((new GridRow(0, new View[] { StudioSetPartSettings2 }, null, false, true, 8)).Row);
             grid_PartSettings.Children.Add((new GridRow(0, new View[] { StudioSetPartEffects }, null, false, true, 3)).Row);
-            grid_PartSettings.Children.Add((new GridRow(0, new View[] { StudioSetPartKeyboard }, null, false, true, 11)).Row);
+            grid_PartSettings.Children.Add((new GridRow(0, new View[] { StudioSetPartKeyboard }, null, false, true, 10)).Row);
             grid_PartSettings.Children.Add((new GridRow(0, new View[] { StudioSetPartScaleTune }, null, false, true, 14)).Row);
             grid_PartSettings.Children.Add((new GridRow(0, new View[] { StudioSetPartMidi }, null, false, true, 14)).Row);
             grid_PartSettings.Children.Add((new GridRow(0, new View[] { StudioSetPartMotionalSurround }, null, false, true, 4)).Row);
@@ -2161,7 +2181,6 @@ namespace Integra_7_Xamarin
             StudioSetPartKeyboard.Children.Add((new GridRow(7, new View[] { tbStudioSetPartKeyboardVelocityRangeUpper, slStudioSetPartKeyboardVelocityRangeUpper })).Row);
             StudioSetPartKeyboard.Children.Add((new GridRow(8, new View[] { tbStudioSetPartKeyboardVelocityFadeWidthLower, slStudioSetPartKeyboardVelocityFadeWidthLower })).Row);
             StudioSetPartKeyboard.Children.Add((new GridRow(9, new View[] { tbStudioSetPartKeyboardVelocityFadeWidthUpper, slStudioSetPartKeyboardVelocityFadeWidthUpper })).Row);
-            StudioSetPartKeyboard.Children.Add((new GridRow(10, new View[] { tbStudioSetPartKeyboardVelocityCurveType, cbStudioSetPartKeyboardVelocityCurveType })).Row);
 
             StudioSetPartScaleTune.Children.Add((new GridRow(0, new View[] { tbStudioSetPartScaleTuneType, cbStudioSetPartScaleTuneType })).Row);
             StudioSetPartScaleTune.Children.Add((new GridRow(1, new View[] { tbStudioSetPartScaleTuneKey, cbStudioSetPartScaleTuneKey })).Row);
@@ -2189,7 +2208,7 @@ namespace Integra_7_Xamarin
             StudioSetPartMidi.Children.Add((new GridRow(8, new View[] { cbStudioSetPartMidiReceivePan })).Row);
             StudioSetPartMidi.Children.Add((new GridRow(9, new View[] { cbStudioSetPartMidiReceiveExpression })).Row);
             StudioSetPartMidi.Children.Add((new GridRow(10, new View[] { cbStudioSetPartMidiReceiveHold1 })).Row);
-            StudioSetPartMidi.Children.Add((new GridRow(11, new View[] { cbStudioSetPartKeyboardVelocityCurveType })).Row);
+            StudioSetPartMidi.Children.Add((new GridRow(11, new View[] { tbStudioSetPartKeyboardVelocityCurveType, cbStudioSetPartKeyboardVelocityCurveType })).Row);
             StudioSetPartMidi.Children.Add((new GridRow(12, new View[] { gStudioSetPartVelocityCurve }, null, false, false, 2)).Row);
 
             StudioSetPartMotionalSurround.Children.Add((new GridRow(0, new View[] { tbStudioSetPartMotionalSurroundLR, slStudioSetPartMotionalSurroundLR })).Row);
@@ -2280,7 +2299,9 @@ namespace Integra_7_Xamarin
             grid_StudioSet_Column0_Container.Children.Add(grid_StudioSet_Column0);
             grid_StudioSet_Column1_Container.Children.Add(grid_StudioSet_Column1);
             grid_StudioSet_Column2_Container.Children.Add(grid_StudioSet_Column2);
-            StudioSetEditor_StackLayout.Children.Add((new GridRow(0, new View[] { grid_StudioSet_Column0_Container, grid_StudioSet_Column1_Container, grid_StudioSet_Column2_Container }, null, true, false)).Row);
+            StudioSetEditor_StackLayout.Children.Add((new GridRow(0, new View[] {
+                grid_StudioSet_Column0_Container, grid_StudioSet_Column1_Container,
+                grid_StudioSet_Column2_Container }, null, true, false)).Row);
 
             //StudioSetEditor_StackLayout.BackgroundColor = Color.Black;
         }
@@ -2988,7 +3009,7 @@ namespace Integra_7_Xamarin
                 }
                 else if (studioSetEditor_State == StudioSetEditor_State.DONE && currentStudioSetEditorMidiRequest ==
                     StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_COMMON)
-                {
+                    {
                     t.Trace("private void Timer_Tick studioSetEditor_State == " +
                         "StudioSetEditor_State.DONE && currentStudioSetEditorMidiRequest == " +
                         "StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_COMMON");
@@ -3257,6 +3278,7 @@ namespace Integra_7_Xamarin
                     ReadStudioSetChorus();
                     UpdateChorusChorusSubwindow();
                     currentStudioSetEditorMidiRequest = StudioSetEditor_currentStudioSetEditorMidiRequest.NONE;
+                    QueryStudioSetChorusChorus();
                 }
                 else if (studioSetEditor_State == StudioSetEditor_State.DONE && currentStudioSetEditorMidiRequest == StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_CHORUS_OFF)
                 {
@@ -3279,6 +3301,7 @@ namespace Integra_7_Xamarin
                     UpdateStudioSetChorusChorusControls();
                     UpdateChorusChorusSubwindow();
                     currentStudioSetEditorMidiRequest = StudioSetEditor_currentStudioSetEditorMidiRequest.NONE;
+                    QueryStudioSetChorusDelay();
                 }
                 else if (studioSetEditor_State == StudioSetEditor_State.DONE && currentStudioSetEditorMidiRequest == StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_CHORUS_DELAY)
                 {
@@ -3290,6 +3313,7 @@ namespace Integra_7_Xamarin
                     UpdateStudioSetChorusDelayControls();
                     UpdateChorusChorusSubwindow();
                     currentStudioSetEditorMidiRequest = StudioSetEditor_currentStudioSetEditorMidiRequest.NONE;
+                    QueryStudioSetChorusGM2Chorus();
                 }
                 else if (studioSetEditor_State == StudioSetEditor_State.DONE && currentStudioSetEditorMidiRequest == StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_CHORUS_GM2_CHORUS)
                 {
@@ -3301,6 +3325,7 @@ namespace Integra_7_Xamarin
                     UpdateStudioSetChorusGM2ChorusControls();
                     UpdateChorusChorusSubwindow();
                     currentStudioSetEditorMidiRequest = StudioSetEditor_currentStudioSetEditorMidiRequest.NONE;
+                    QueryStudioSetReverb();
                 }
 
                 // These happens if another part is selected in 3:rd column:
@@ -3315,6 +3340,7 @@ namespace Integra_7_Xamarin
 
                     UpdateChorusReverbSubwindow();
                     currentStudioSetEditorMidiRequest = StudioSetEditor_currentStudioSetEditorMidiRequest.NONE;
+                    QueryStudioSetPart();
                 }
                 else if (studioSetEditor_State == StudioSetEditor_State.DONE && currentStudioSetEditorMidiRequest == StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_PART)
                 {
@@ -3402,6 +3428,9 @@ namespace Integra_7_Xamarin
                             ChorusGM2Chorus.IsVisible = true;
                             break;
                     }
+
+                    PopulateStudioSetSelector();
+                    PopulateComboBoxes();
                 }
             }
         }
@@ -3425,9 +3454,9 @@ namespace Integra_7_Xamarin
                     else
                     {
                         // Ask for system common settings:
-                        //QuerySystemCommon(); // This will be caught in MidiInPort_MessageReceived
-                        currentStudioSetEditorMidiRequest = StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_TITLES;
-                        studioSetEditor_State = StudioSetEditor_State.DONE;
+                        QuerySystemCommon(); // This will be caught in MidiInPort_MessageReceived
+                        //currentStudioSetEditorMidiRequest = StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_TITLES;
+                        //studioSetEditor_State = StudioSetEditor_State.DONE;
                         //currentStudioSetEditorMidiRequest = StudioSetEditor_currentStudioSetEditorMidiRequest.NONE;
                     }
                 }
@@ -6437,6 +6466,7 @@ namespace Integra_7_Xamarin
         {
             // All studio set names has been received and stored in studioSetNames,
             // populate the combobox:
+            PushHandleControlEvents();
             cbStudioSetSelector.Items.Clear();
             cbStudioSetSlot.Items.Clear();
             UInt16 i = 1;
@@ -6454,6 +6484,7 @@ namespace Integra_7_Xamarin
                 //}
                 i++;
             }
+            PopHandleControlEvents();
             cbStudioSetSelector.SelectedIndex = commonState.CurrentStudioSet;
             cbStudioSetSlot.SelectedIndex = commonState.CurrentStudioSet; // > 15 ? commonState.CurrentStudioSet - 16 : 0;
         }
@@ -6837,7 +6868,7 @@ namespace Integra_7_Xamarin
             {
                 // Unpack studio set common and update controls:
                 commonState.StudioSet.Common = new StudioSet_Common(new ReceivedData(rawData));
-                cbStudioSetSelector.SelectedItem = commonState.StudioSet.Common.Name;
+                //cbStudioSetSelector.SelectedItem = commonState.StudioSet.Common.Name;
                 slVoiceReserve01.Value = commonState.StudioSet.Common.VoiceReserve[0];
                 slVoiceReserve02.Value = commonState.StudioSet.Common.VoiceReserve[1];
                 slVoiceReserve03.Value = commonState.StudioSet.Common.VoiceReserve[2];
@@ -7305,6 +7336,7 @@ namespace Integra_7_Xamarin
                     slStudioSetPartKeyboardVelocityFadeWidthLower.Value = commonState.StudioSet.PartKeyboard[(byte)partToRead].VelocityFadeWidthLower;
                     slStudioSetPartKeyboardVelocityFadeWidthUpper.Value = commonState.StudioSet.PartKeyboard[(byte)partToRead].VelocityFadeWidthUpper;
                     cbStudioSetPartKeyboardVelocityCurveType.SelectedIndex = commonState.StudioSet.PartKeyboard[(byte)partToRead].VelocityCurveType;
+                    SetStudioSetStudioSetPartKeyboardVelocityCurveTypeImages(commonState.StudioSet.PartKeyboard[(byte)partToRead].VelocityCurveType);
                     cbStudioSetPartKeyboardMute.IsChecked = commonState.StudioSet.PartKeyboard[(byte)partToRead].Mute;
                     // Scale tune page
                     cbStudioSetPartScaleTuneType.SelectedIndex = commonState.StudioSet.PartScaleTune[(byte)partToRead].Type;
@@ -8143,56 +8175,29 @@ namespace Integra_7_Xamarin
             }
         }
 
-        private void BtnVelocity1Curve_Clicked(object sender, EventArgs e)
+        private void ImgVelocity0Curve_Clicked(object sender, EventArgs e)
         {
-            if (commonState.StudioSet.PartKeyboard[cbStudioSetPartSelector.SelectedIndex].VelocityCurveType == 1)
-            {
-                // This one is selected, turn it off:
-                cbStudioSetPartKeyboardVelocityCurveType.SelectedIndex = 0;
-            }
-            else
-            {
-                cbStudioSetPartKeyboardVelocityCurveType.SelectedIndex = 1;
-            }
+            cbStudioSetPartKeyboardVelocityCurveType.SelectedIndex = 0;
         }
 
-        private void BtnVelocity2Curve_Clicked(object sender, EventArgs e)
+        private void ImgVelocity1Curve_Clicked(object sender, EventArgs e)
         {
-            if (commonState.StudioSet.PartKeyboard[cbStudioSetPartSelector.SelectedIndex].VelocityCurveType == 2)
-            {
-                // This one is selected, turn it off:
-                cbStudioSetPartKeyboardVelocityCurveType.SelectedIndex = 0;
-            }
-            else
-            {
-                cbStudioSetPartKeyboardVelocityCurveType.SelectedIndex = 2;
-            }
+            cbStudioSetPartKeyboardVelocityCurveType.SelectedIndex = 1;
         }
 
-        private void BtnVelocity3Curve_Clicked(object sender, EventArgs e)
+        private void ImgVelocity2Curve_Clicked(object sender, EventArgs e)
         {
-            if (commonState.StudioSet.PartKeyboard[cbStudioSetPartSelector.SelectedIndex].VelocityCurveType == 3)
-            {
-                // This one is selected, turn it off:
-                cbStudioSetPartKeyboardVelocityCurveType.SelectedIndex = 0;
-            }
-            else
-            {
-                cbStudioSetPartKeyboardVelocityCurveType.SelectedIndex = 3;
-            }
+            cbStudioSetPartKeyboardVelocityCurveType.SelectedIndex = 2;
         }
 
-        private void BtnVelocity4Curve_Clicked(object sender, EventArgs e)
+        private void ImgVelocity3Curve_Clicked(object sender, EventArgs e)
         {
-            if (commonState.StudioSet.PartKeyboard[cbStudioSetPartSelector.SelectedIndex].VelocityCurveType == 4)
-            {
-                // This one is selected, turn it off:
-                cbStudioSetPartKeyboardVelocityCurveType.SelectedIndex = 0;
-            }
-            else
-            {
-                cbStudioSetPartKeyboardVelocityCurveType.SelectedIndex = 4;
-            }
+            cbStudioSetPartKeyboardVelocityCurveType.SelectedIndex = 3;
+        }
+
+        private void ImgVelocity4Curve_Clicked(object sender, EventArgs e)
+        {
+            cbStudioSetPartKeyboardVelocityCurveType.SelectedIndex = 4;
         }
 
         private void SetStudioSetStudioSetPartKeyboardVelocityCurveType(Int32 p, Int32 part)
@@ -8203,53 +8208,68 @@ namespace Integra_7_Xamarin
             byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
             waitingForResponseFromIntegra7 = 500;
             commonState.Midi.SendSystemExclusive(bytes);
+            SetStudioSetStudioSetPartKeyboardVelocityCurveTypeImages(p);
+        }
+
+        private void SetStudioSetStudioSetPartKeyboardVelocityCurveTypeImages(Int32 p)
+        {
             switch (p)
             {
                 case 0:
+                    imgVelocityCurve0On.IsVisible = true;
                     imgVelocityCurve1On.IsVisible = false;
                     imgVelocityCurve2On.IsVisible = false;
                     imgVelocityCurve3On.IsVisible = false;
                     imgVelocityCurve4On.IsVisible = false;
+                    imgVelocityCurve0Off.IsVisible = false;
                     imgVelocityCurve1Off.IsVisible = true;
                     imgVelocityCurve2Off.IsVisible = true;
                     imgVelocityCurve3Off.IsVisible = true;
                     imgVelocityCurve4Off.IsVisible = true;
                     break;
                 case 1:
+                    imgVelocityCurve0On.IsVisible = false;
                     imgVelocityCurve1On.IsVisible = true;
                     imgVelocityCurve2On.IsVisible = false;
                     imgVelocityCurve3On.IsVisible = false;
                     imgVelocityCurve4On.IsVisible = false;
+                    imgVelocityCurve0Off.IsVisible = true;
                     imgVelocityCurve1Off.IsVisible = false;
                     imgVelocityCurve2Off.IsVisible = true;
                     imgVelocityCurve3Off.IsVisible = true;
                     imgVelocityCurve4Off.IsVisible = true;
                     break;
                 case 2:
+                    imgVelocityCurve0On.IsVisible = false;
                     imgVelocityCurve1On.IsVisible = false;
                     imgVelocityCurve2On.IsVisible = true;
                     imgVelocityCurve3On.IsVisible = false;
                     imgVelocityCurve4On.IsVisible = false;
+                    imgVelocityCurve0Off.IsVisible = true;
                     imgVelocityCurve1Off.IsVisible = true;
                     imgVelocityCurve2Off.IsVisible = false;
                     imgVelocityCurve3Off.IsVisible = true;
                     imgVelocityCurve4Off.IsVisible = true;
                     break;
                 case 3:
+                    imgVelocityCurve0On.IsVisible = false;
                     imgVelocityCurve1On.IsVisible = false;
                     imgVelocityCurve2On.IsVisible = false;
                     imgVelocityCurve3On.IsVisible = true;
                     imgVelocityCurve4On.IsVisible = false;
+                    imgVelocityCurve0Off.IsVisible = true;
                     imgVelocityCurve1Off.IsVisible = true;
                     imgVelocityCurve2Off.IsVisible = true;
                     imgVelocityCurve3Off.IsVisible = false;
                     imgVelocityCurve4Off.IsVisible = true;
                     break;
                 case 4:
+                    imgVelocityCurve0On.IsVisible = false;
                     imgVelocityCurve1On.IsVisible = false;
                     imgVelocityCurve2On.IsVisible = false;
                     imgVelocityCurve3On.IsVisible = false;
                     imgVelocityCurve4On.IsVisible = true;
+                    imgVelocityCurve0Off.IsVisible = true;
                     imgVelocityCurve1Off.IsVisible = true;
                     imgVelocityCurve2Off.IsVisible = true;
                     imgVelocityCurve3Off.IsVisible = true;

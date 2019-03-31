@@ -150,6 +150,8 @@
     <Content Include="UpLeftArrow.png" />
     <Content Include="UpRightArrow.png" />
     <Content Include="DoubleUpRightRightArrow.png" />
+    <Content Include="VelocityCurve0Off.png" />
+    <Content Include="VelocityCurve0On.png" />
     <Content Include="VelocityCurve1Off.png" />
     <Content Include="VelocityCurve1On.png" />
     <Content Include="VelocityCurve2Off.png" />

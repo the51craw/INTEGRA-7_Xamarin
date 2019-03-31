@@ -8547,6 +8547,12 @@ private ParameterSets sets;
                                 controls[i].SetValue(Image.VerticalOptionsProperty, LayoutOptions.FillAndExpand);
                                 controls[i].SetValue(Image.MarginProperty, new Thickness(0, 0, 0, 0));
                             }
+                            else if (controls[i].GetType() == typeof(TouchableImage))
+                            {
+                                controls[i].SetValue(Image.HorizontalOptionsProperty, LayoutOptions.FillAndExpand);
+                                controls[i].SetValue(Image.VerticalOptionsProperty, LayoutOptions.FillAndExpand);
+                                controls[i].SetValue(Image.MarginProperty, new Thickness(0, 0, 0, 0));
+                            }
                             else if (controls[i].GetType() == typeof(LabeledText))
                             {
                                 controls[i].SetValue(LabeledText.HorizontalOptionsProperty, LayoutOptions.FillAndExpand);
