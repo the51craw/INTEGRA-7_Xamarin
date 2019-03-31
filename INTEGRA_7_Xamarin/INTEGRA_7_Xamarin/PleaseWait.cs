@@ -140,6 +140,7 @@ namespace Integra_7_Xamarin
                     PleaseWait_InitializeEditorForm();
                     break;
                 case WaitingFor.READING_STUDIO_SET_NAMES:
+                    waitingFor = WaitingFor.IDLE;
                     PleaseWait_ReadStudioSetNames();
                     break;
             }
@@ -312,7 +313,6 @@ namespace Integra_7_Xamarin
         /// </summary>
         private void PleaseWait_ReadStudioSetNames()
         {
-            waitingFor = WaitingFor.IDLE;
             queryType = QueryType.STUDIO_SET_NAMES;
             ShowStudioSetEditorPage();
             pb_WaitingProgress.Progress = 0;
