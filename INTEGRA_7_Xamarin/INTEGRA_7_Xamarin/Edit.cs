@@ -1077,6 +1077,7 @@ namespace Integra_7_Xamarin
                 Edit_IsCreated = true;
                 PopHandleControlEvents();
                 Edit_Init();
+                needsToSetFontSizes = NeedsToSetFontSizes.EDIT;
                 //Edit_StartTimer();
             }
             cbEditTone_PartSelector.SelectedIndex = commonState.CurrentPart;

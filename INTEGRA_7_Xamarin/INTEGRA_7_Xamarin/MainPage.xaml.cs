@@ -65,7 +65,7 @@ namespace Integra_7_Xamarin
 
         private void MainStackLayout_SizeChanged(object sender, EventArgs e)
         {
-            uIHandler.SetFontSizes(uIHandler.mainStackLayout);
+            uIHandler.SetFontSizes(null);
         }
 
         public void SaveLocalValue(String Key, Object Value)

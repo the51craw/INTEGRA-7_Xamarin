@@ -72,6 +72,7 @@ namespace Integra_7_Xamarin
                 MotionalSurround_Init();
                 MotionalSurround_IsCreated = true;
                 handleControlEvents = true;
+                needsToSetFontSizes = NeedsToSetFontSizes.MOTIONAL_SURROUND;
             }
             MotionalSurround_StackLayout.IsVisible = true;
         }

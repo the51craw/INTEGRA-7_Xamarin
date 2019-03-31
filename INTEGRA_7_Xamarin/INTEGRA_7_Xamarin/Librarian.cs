@@ -2188,6 +2188,7 @@ namespace Integra_7_Xamarin
                 Favorites_IsCreated = true;
                 Init2();
                 Favorites_UpdateFoldersList();
+                needsToSetFontSizes = NeedsToSetFontSizes.FAVORITES;
             }
             //else if(MidiState == MIDIState.INITIALIZING)
             //{

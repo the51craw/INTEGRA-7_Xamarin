@@ -70,6 +70,16 @@ namespace Integra_7_Xamarin
             STUDIO_SET_NAMES,
         }
 
+        public enum NeedsToSetFontSizes
+        {
+            NONE,
+            LIBRARIAN,
+            FAVORITES,
+            EDIT,
+            EDIT_STUDIO_SET,
+            MOTIONAL_SURROUND
+        }
+
         //public object MainPage_Device { get; set; }
         Boolean scanAll = false;
         UInt16 emptySlots = 10;
@@ -127,9 +137,10 @@ namespace Integra_7_Xamarin
         Hex2Midi hex2Midi = new Hex2Midi();
         //SuperNATURALDrumKitInstrumentList superNATURALDrumKitInstrumentList = new SuperNATURALDrumKitInstrumentList();
         public byte[] rawData;
-        Int32 lastfontSize = 15;
+        Double lastfontSize = 15;
         Boolean stopTimer = false;
         public static Int32 minimumHeightRequest = 14;
+        private NeedsToSetFontSizes needsToSetFontSizes = NeedsToSetFontSizes.NONE;
 
         MainPage mainPage;
         public StackLayout mainStackLayout { get; set; }
@@ -223,6 +234,31 @@ namespace Integra_7_Xamarin
                         MotionalSurround_Timer_Tick();
                         break;
                 }
+
+                switch (needsToSetFontSizes)
+                {
+                    case NeedsToSetFontSizes.LIBRARIAN:
+                        needsToSetFontSizes = NeedsToSetFontSizes.NONE;
+                        SetFontSizes(Librarian_StackLayout);
+                        break;
+                    case NeedsToSetFontSizes.FAVORITES:
+                        needsToSetFontSizes = NeedsToSetFontSizes.NONE;
+                        SetFontSizes(Favorites_StackLayout);
+                        break;
+                    case NeedsToSetFontSizes.EDIT:
+                        needsToSetFontSizes = NeedsToSetFontSizes.NONE;
+                        SetFontSizes(Edit_StackLayout);
+                        break;
+                    case NeedsToSetFontSizes.EDIT_STUDIO_SET:
+                        needsToSetFontSizes = NeedsToSetFontSizes.NONE;
+                        SetFontSizes(StudioSetEditor_StackLayout);
+                        break;
+                    case NeedsToSetFontSizes.MOTIONAL_SURROUND:
+                        needsToSetFontSizes = NeedsToSetFontSizes.NONE;
+                        SetFontSizes(MotionalSurround_StackLayout);
+                        break;
+                }
+
                 return true;
             });
         }
@@ -282,12 +318,43 @@ namespace Integra_7_Xamarin
 
         public void SetFontSizes(StackLayout stackLayout)
         {
+            if (stackLayout == null)
+            {
+                switch (currentPage)
+                {
+                    case CurrentPage.PLEASE_WAIT:
+                        needsToSetFontSizes = NeedsToSetFontSizes.NONE;
+                        stackLayout = PleaseWait_StackLayout;
+                        break;
+                    case CurrentPage.LIBRARIAN:
+                        needsToSetFontSizes = NeedsToSetFontSizes.NONE;
+                        stackLayout = Librarian_StackLayout;
+                        break;
+                    case CurrentPage.FAVORITES:
+                        needsToSetFontSizes = NeedsToSetFontSizes.NONE;
+                        stackLayout = Favorites_StackLayout;
+                        break;
+                    case CurrentPage.EDIT_TONE:
+                        needsToSetFontSizes = NeedsToSetFontSizes.NONE;
+                        stackLayout = Edit_StackLayout;
+                        break;
+                    case CurrentPage.EDIT_STUDIO_SET:
+                        needsToSetFontSizes = NeedsToSetFontSizes.NONE;
+                        stackLayout = StudioSetEditor_StackLayout;
+                        break;
+                    case CurrentPage.MOTIONAL_SURROUND:
+                        needsToSetFontSizes = NeedsToSetFontSizes.NONE;
+                        stackLayout = MotionalSurround_StackLayout;
+                        break;
+                }
+            }
+
             if (stackLayout.Children != null && stackLayout.Children.Count > 0)
             {
-                Int32 size = (Int32)stackLayout.Height / 50;
+                Double size = stackLayout.Height / 50F;
                 if (stackLayout.Width < stackLayout.Height * 1.25)
                 {
-                    size = (Int32)stackLayout.Width / 60;
+                    size = stackLayout.Width / 65F;
                 }
 
                 if (size > 0 && size != lastfontSize)
@@ -301,7 +368,7 @@ namespace Integra_7_Xamarin
             }
         }
 
-        public void SetFontSize(View view, Int32 size)
+        public void SetFontSize(View view, Double size)
         {
             if (view.GetType() == typeof(Button))
             {
@@ -332,6 +399,11 @@ namespace Integra_7_Xamarin
             {
                 ((LabeledTextInput)view).Label.FontSize = size;
                 ((LabeledTextInput)view).Editor.FontSize = size;
+            }
+            else if (view.GetType() == typeof(TextBlock))
+            {
+                ((TextBlock)view).FontSize = size;
+                ((TextBlock)view).FontSize = size;
             }
             //else if (view.GetType() == typeof(ListView))
             //{
