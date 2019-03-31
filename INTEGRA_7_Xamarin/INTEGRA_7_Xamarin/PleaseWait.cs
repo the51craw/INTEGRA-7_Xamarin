@@ -15,6 +15,14 @@ namespace Integra_7_Xamarin
         IDLE
     }
 
+    public enum UIAction
+    {
+        NONE,
+        PROGRESS,
+        GOTO_LIBRARIAN,
+        GOTO_EDIT_STUDIO_SET
+    }
+
     public partial class UIHandler
     {
         //public ProgressBar ProgressBar { get; set; }
@@ -23,7 +31,8 @@ namespace Integra_7_Xamarin
         private CurrentPage continueTo;
         private Int32 waitCount;
         private Int32 studioSetNumber;
-        private Object deviceSpecifics; 
+        private Object deviceSpecifics;
+        private UIAction uiAction;
 
         /// <summary>
         /// Call to show a wait page with a progress bar
@@ -44,6 +53,7 @@ namespace Integra_7_Xamarin
             }
             PleaseWait_StackLayout.IsVisible = true;
             this.waitingFor = waitingFor;
+            uiAction = UIAction.NONE;
             PleaseWait_Init();
             //this.o = o;
         }
@@ -133,6 +143,27 @@ namespace Integra_7_Xamarin
                     PleaseWait_ReadStudioSetNames();
                     break;
             }
+
+            switch (uiAction)
+            {
+                case UIAction.PROGRESS:
+                    pb_WaitingProgress.Progress += 1F / 64F;
+                    break;
+                case UIAction.GOTO_LIBRARIAN:
+                    PleaseWait_StackLayout.IsVisible = false;
+                    Librarian_StackLayout.IsVisible = true;
+                    currentPage = CurrentPage.LIBRARIAN;
+                    studioSetNamesJustRead = StudioSetNames.READ_BUT_NOT_LISTED;
+                    initDone = true;
+                    break;
+                case UIAction.GOTO_EDIT_STUDIO_SET:
+                    PleaseWait_StackLayout.IsVisible = false;
+                    StudioSetEditor_StackLayout.IsVisible = true;
+                    currentPage = CurrentPage.EDIT_STUDIO_SET;
+                    PopulateStudioSetSelector();
+                    break;
+            }
+            uiAction = UIAction.NONE;
         }
 
         private async void PleaseWait_FindMidiInterfaces()
@@ -300,7 +331,7 @@ namespace Integra_7_Xamarin
             }
             else if (queryType == QueryType.STUDIO_SET_NAMES)
             {
-                pb_WaitingProgress.Progress += 1F / 64F;
+                uiAction = UIAction.PROGRESS;
                 EditStudioSet_MidiInPort_MessageReceived();
 
                 if (studioSetEditor_State == StudioSetEditor_State.DONE)
@@ -310,20 +341,13 @@ namespace Integra_7_Xamarin
                     // the enumertor continueTo:
                     if (continueTo == CurrentPage.LIBRARIAN)
                     {
-                        currentPage = CurrentPage.LIBRARIAN;
-                        PleaseWait_StackLayout.IsVisible = false;
-                        Librarian_StackLayout.IsVisible = true;
-                        studioSetNamesJustRead = StudioSetNames.READ_BUT_NOT_LISTED;
-                        initDone = true;
+                        uiAction = UIAction.GOTO_LIBRARIAN;
                     }
                     else if (continueTo == CurrentPage.EDIT_STUDIO_SET)
                     {
                         // PleaseWait has had the control so far, so take
                         // it and let Studio set editor be visible.
-                        currentPage = CurrentPage.EDIT_STUDIO_SET;
-                        PleaseWait_StackLayout.IsVisible = false;
-                        StudioSetEditor_StackLayout.IsVisible = true;
-                        PopulateStudioSetSelector();
+                        uiAction = UIAction.GOTO_EDIT_STUDIO_SET;
                     }
                 }
             }
