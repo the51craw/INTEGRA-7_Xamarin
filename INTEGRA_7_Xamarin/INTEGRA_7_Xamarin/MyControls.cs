@@ -577,17 +577,19 @@ namespace Integra_7_Xamarin
 
     public class TouchableImage : Xamarin.Forms.Image
     {
+        public object Tag { get; set; }
         
-        public TouchableImage(EventHandler Handler, object[] Arguments = null, String ImageFile = null, EventArgs e = null)
+        public TouchableImage(EventHandler Handler, String ImageFile = null, object Tag = null, EventArgs e = null)
         {
             this.WidthRequest = 1000;
             this.HeightRequest = 1000;
+            this.Tag = Tag;
 
             this.GestureRecognizers.Add(new TapGestureRecognizer
             {
                 Command = new Command(() =>
                 {
-                    Handler(Arguments, e);
+                    Handler(this, e);
                 }),
                 NumberOfTapsRequired = 1
             });

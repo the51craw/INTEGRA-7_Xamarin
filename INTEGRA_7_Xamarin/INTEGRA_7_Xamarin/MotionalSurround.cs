@@ -22,35 +22,35 @@ namespace Integra_7_Xamarin
         Grid gParts;
         Grid gArrows;
 
-        Image imgDoubleUpLeftArrow;
-        Image imgDoubleUpLeftTopArrow;
-        Image imgDoubleUpArrow;
-        Image imgDoubleUpRightTopArrow;
-        Image imgDoubleUpRightArrow;
+        TouchableImage imgDoubleUpLeftArrow;
+        TouchableImage imgDoubleUpLeftTopArrow;
+        TouchableImage imgDoubleUpArrow;
+        TouchableImage imgDoubleUpRightTopArrow;
+        TouchableImage imgDoubleUpRightArrow;
 
-        Image imgDoubleUpLeftLeftArrow;
-        Image imgUpLeftArrow;
-        Image imgUpArrow;
-        Image imgUpRightArrow;
-        Image imgDoubleUpRightRightArrow;
+        TouchableImage imgDoubleUpLeftLeftArrow;
+        TouchableImage imgUpLeftArrow;
+        TouchableImage imgUpArrow;
+        TouchableImage imgUpRightArrow;
+        TouchableImage imgDoubleUpRightRightArrow;
 
-        Image imgDoubleLeftArrow;
-        Image imgLeftArrow;
-        Image imgCenter;
-        Image imgRightArrow;
-        Image imgDoubleRightArrow;
+        TouchableImage imgDoubleLeftArrow;
+        TouchableImage imgLeftArrow;
+        TouchableImage imgCenter;
+        TouchableImage imgRightArrow;
+        TouchableImage imgDoubleRightArrow;
 
-        Image imgDoubleDownLeftLeftArrow;
-        Image imgDownLeftArrow;
-        Image imgDownArrow;
-        Image imgDownRightArrow;
-        Image imgDoubleDownRightRightArrow;
+        TouchableImage imgDoubleDownLeftLeftArrow;
+        TouchableImage imgDownLeftArrow;
+        TouchableImage imgDownArrow;
+        TouchableImage imgDownRightArrow;
+        TouchableImage imgDoubleDownRightRightArrow;
 
-        Image imgDoubleDownLeftArrow;
-        Image imgDoubleDownLeftDownArrow;
-        Image imgDoubleDownArrow;
-        Image imgDoubleDownRightDownArrow;
-        Image imgDoubleDownRightArrow;
+        TouchableImage imgDoubleDownLeftArrow;
+        TouchableImage imgDoubleDownLeftDownArrow;
+        TouchableImage imgDoubleDownArrow;
+        TouchableImage imgDoubleDownRightDownArrow;
+        TouchableImage imgDoubleDownRightArrow;
 
         Button tbPart1;
         MotionalSurroundPartLabel[] mslPart;
@@ -96,65 +96,35 @@ namespace Integra_7_Xamarin
             gRightColumn = new Grid();
             gParts = new Grid();
 
-            imgDoubleUpLeftArrow = new Image();
-            imgDoubleUpLeftTopArrow = new Image();
-            imgDoubleUpArrow = new Image();
-            imgDoubleUpRightTopArrow = new Image();
-            imgDoubleUpRightArrow = new Image();
+            imgDoubleUpLeftArrow = new TouchableImage(TapGestureRecognizer_Tapped, "DoubleUpLeftArrow.png", 0);
+            imgDoubleUpLeftTopArrow = new TouchableImage(TapGestureRecognizer_Tapped, "DoubleUpLeftTopArrow.png", 1);
+            imgDoubleUpArrow = new TouchableImage(TapGestureRecognizer_Tapped, "DoubleUpArrow.png", 2);
+            imgDoubleUpRightTopArrow = new TouchableImage(TapGestureRecognizer_Tapped, "DoubleUpRightTopArrow.png", 3);
+            imgDoubleUpRightArrow = new TouchableImage(TapGestureRecognizer_Tapped, "DoubleUpRightArrow.png", 4);
 
-            imgDoubleUpLeftLeftArrow = new Image();
-            imgUpLeftArrow = new Image();
-            imgUpArrow = new Image();
-            imgUpRightArrow = new Image();
-            imgDoubleUpRightRightArrow = new Image();
+            imgDoubleUpLeftLeftArrow = new TouchableImage(TapGestureRecognizer_Tapped, "DoubleUpLeftLeftArrow.png", 5);
+            imgUpLeftArrow = new TouchableImage(TapGestureRecognizer_Tapped, "UpLeftArrow.png", 6);
+            imgUpArrow = new TouchableImage(TapGestureRecognizer_Tapped, "UpArrow.png", 7);
+            imgUpRightArrow = new TouchableImage(TapGestureRecognizer_Tapped, "UpRightArrow.png", 8);
+            imgDoubleUpRightRightArrow = new TouchableImage(TapGestureRecognizer_Tapped, "DoubleUpRightRightArrow.png", 9);
 
-            imgDoubleLeftArrow = new Image();
-            imgLeftArrow = new Image();
-            imgCenter = new Image();
-            imgRightArrow = new Image();
-            imgDoubleRightArrow = new Image();
+            imgDoubleLeftArrow = new TouchableImage(TapGestureRecognizer_Tapped, "DoubleLeftArrow.png", 10);
+            imgLeftArrow = new TouchableImage(TapGestureRecognizer_Tapped, "LeftArrow.png", 11);
+            imgCenter = new TouchableImage(TapGestureRecognizer_Tapped, "Center.png", 12);
+            imgRightArrow = new TouchableImage(TapGestureRecognizer_Tapped, "RightArrow.png", 13);
+            imgDoubleRightArrow = new TouchableImage(TapGestureRecognizer_Tapped, "DoubleRightArrow.png", 14);
 
-            imgDoubleDownLeftLeftArrow = new Image();
-            imgDownLeftArrow = new Image();
-            imgDownArrow = new Image();
-            imgDownRightArrow = new Image();
-            imgDoubleDownRightRightArrow = new Image();
+            imgDoubleDownLeftLeftArrow = new TouchableImage(TapGestureRecognizer_Tapped, "DoubleDownLeftLeftArrow.png", 15);
+            imgDownLeftArrow = new TouchableImage(TapGestureRecognizer_Tapped, "DownLeftArrow.png", 16);
+            imgDownArrow = new TouchableImage(TapGestureRecognizer_Tapped, "DownArrow.png", 17);
+            imgDownRightArrow = new TouchableImage(TapGestureRecognizer_Tapped, "DownRightArrow.png", 18);
+            imgDoubleDownRightRightArrow = new TouchableImage(TapGestureRecognizer_Tapped, "DoubleDownRightRightArrow.png", 19);
 
-            imgDoubleDownLeftArrow = new Image();
-            imgDoubleDownLeftDownArrow = new Image();
-            imgDoubleDownArrow = new Image();
-            imgDoubleDownRightDownArrow = new Image();
-            imgDoubleDownRightArrow = new Image();
-
-            imgDoubleUpLeftArrow.Source = ImageSource.FromFile("DoubleUpLeftArrow.png");
-            imgDoubleUpLeftTopArrow.Source = ImageSource.FromFile("DoubleUpLeftTopArrow.png");
-            imgDoubleUpArrow.Source = ImageSource.FromFile("DoubleUpArrow.png");
-            imgDoubleUpRightTopArrow.Source = ImageSource.FromFile("DoubleUpRightTopArrow.png");
-            imgDoubleUpRightArrow.Source = ImageSource.FromFile("DoubleUpRightArrow.png");
-
-            imgDoubleUpLeftLeftArrow.Source = ImageSource.FromFile("DoubleUpLeftLeftArrow.png");
-            imgUpLeftArrow.Source = ImageSource.FromFile("UpLeftArrow.png");
-            imgUpArrow.Source = ImageSource.FromFile("UpArrow.png");
-            imgUpRightArrow.Source = ImageSource.FromFile("UpRightArrow.png");
-            imgDoubleUpRightRightArrow.Source = ImageSource.FromFile("DoubleUpRightRightArrow.png");
-
-            imgDoubleLeftArrow.Source = ImageSource.FromFile("DoubleLeftArrow.png");
-            imgLeftArrow.Source = ImageSource.FromFile("LeftArrow.png");
-            imgCenter.Source = ImageSource.FromFile("Center.png");
-            imgRightArrow.Source = ImageSource.FromFile("RightArrow.png");
-            imgDoubleRightArrow.Source = ImageSource.FromFile("DoubleRightArrow.png");
-
-            imgDoubleDownLeftLeftArrow.Source = ImageSource.FromFile("DoubleDownLeftLeftArrow.png");
-            imgDownLeftArrow.Source = ImageSource.FromFile("DownLeftArrow.png");
-            imgDownArrow.Source = ImageSource.FromFile("DownArrow.png");
-            imgDownRightArrow.Source = ImageSource.FromFile("DownRightArrow.png");
-            imgDoubleDownRightRightArrow.Source = ImageSource.FromFile("DoubleDownRightRightArrow.png");
-
-            imgDoubleDownLeftArrow.Source = ImageSource.FromFile("DoubleDownLeftArrow.png");
-            imgDoubleDownLeftDownArrow.Source = ImageSource.FromFile("DoubleDownLeftDownArrow.png");
-            imgDoubleDownArrow.Source = ImageSource.FromFile("DoubleDownArrow.png");
-            imgDoubleDownRightDownArrow.Source = ImageSource.FromFile("DoubleDownRightDownArrow.png");
-            imgDoubleDownRightArrow.Source = ImageSource.FromFile("DoubleDownRightArrow.png");
+            imgDoubleDownLeftArrow = new TouchableImage(TapGestureRecognizer_Tapped, "DoubleDownLeftArrow.png", 20);
+            imgDoubleDownLeftDownArrow = new TouchableImage(TapGestureRecognizer_Tapped, "DoubleDownLeftDownArrow.png", 21);
+            imgDoubleDownArrow = new TouchableImage(TapGestureRecognizer_Tapped, "DoubleDownArrow.png", 22);
+            imgDoubleDownRightDownArrow = new TouchableImage(TapGestureRecognizer_Tapped, "DoubleDownRightDownArrow.png", 23);
+            imgDoubleDownRightArrow = new TouchableImage(TapGestureRecognizer_Tapped, "DoubleDownRightArrow.png", 24);
 
             Grid.SetRow(imgDoubleUpLeftArrow, 0);
             Grid.SetRow(imgDoubleUpLeftTopArrow, 0);
@@ -276,206 +246,6 @@ namespace Integra_7_Xamarin
             gArrows.Children.Add(imgDoubleDownRightDownArrow);
             gArrows.Children.Add(imgDoubleDownRightArrow);
 
-            imgDoubleUpLeftArrow.GestureRecognizers.Add(new TapGestureRecognizer
-            {
-                Command = new Command(() => {
-                    TapGestureRecognizer_Tapped(0);
-                }),
-                NumberOfTapsRequired = 1
-            });
-
-            imgDoubleUpLeftTopArrow.GestureRecognizers.Add(new TapGestureRecognizer
-            {
-                Command = new Command(() => {
-                    TapGestureRecognizer_Tapped(1);
-                }),
-                NumberOfTapsRequired = 1
-            });
-
-            imgDoubleUpArrow.GestureRecognizers.Add(new TapGestureRecognizer
-            {
-                Command = new Command(() => {
-                    TapGestureRecognizer_Tapped(2);
-                }),
-                NumberOfTapsRequired = 1
-            });
-
-            imgDoubleUpRightTopArrow.GestureRecognizers.Add(new TapGestureRecognizer
-            {
-                Command = new Command(() => {
-                    TapGestureRecognizer_Tapped(3);
-                }),
-                NumberOfTapsRequired = 1
-            });
-
-            imgDoubleUpRightArrow.GestureRecognizers.Add(new TapGestureRecognizer
-            {
-                Command = new Command(() => {
-                    TapGestureRecognizer_Tapped(4);
-                }),
-                NumberOfTapsRequired = 1
-            });
-
-            imgDoubleUpLeftLeftArrow.GestureRecognizers.Add(new TapGestureRecognizer
-            {
-                Command = new Command(() => {
-                    TapGestureRecognizer_Tapped(5);
-                }),
-                NumberOfTapsRequired = 1
-            });
-
-            imgUpLeftArrow.GestureRecognizers.Add(new TapGestureRecognizer
-            {
-                Command = new Command(() => {
-                    TapGestureRecognizer_Tapped(6);
-                }),
-                NumberOfTapsRequired = 1
-            });
-
-            imgUpArrow.GestureRecognizers.Add(new TapGestureRecognizer
-            {
-                Command = new Command(() => {
-                    TapGestureRecognizer_Tapped(7);
-                }),
-                NumberOfTapsRequired = 1
-            });
-
-            imgUpRightArrow.GestureRecognizers.Add(new TapGestureRecognizer
-            {
-                Command = new Command(() => {
-                    TapGestureRecognizer_Tapped(8);
-                }),
-                NumberOfTapsRequired = 1
-            });
-
-            imgDoubleUpRightRightArrow.GestureRecognizers.Add(new TapGestureRecognizer
-            {
-                Command = new Command(() => {
-                    TapGestureRecognizer_Tapped(9);
-                }),
-                NumberOfTapsRequired = 1
-            });
-
-            imgDoubleLeftArrow.GestureRecognizers.Add(new TapGestureRecognizer
-            {
-                Command = new Command(() => {
-                    TapGestureRecognizer_Tapped(10);
-                }),
-                NumberOfTapsRequired = 1
-            });
-
-            imgLeftArrow.GestureRecognizers.Add(new TapGestureRecognizer
-            {
-                Command = new Command(() => {
-                    TapGestureRecognizer_Tapped(11);
-                }),
-                NumberOfTapsRequired = 1
-            });
-
-            imgCenter.GestureRecognizers.Add(new TapGestureRecognizer
-            {
-                Command = new Command(() => {
-                    TapGestureRecognizer_Tapped(12);
-                }),
-                NumberOfTapsRequired = 1
-            });
-
-            imgRightArrow.GestureRecognizers.Add(new TapGestureRecognizer
-            {
-                Command = new Command(() => {
-                    TapGestureRecognizer_Tapped(13);
-                }),
-                NumberOfTapsRequired = 1
-            });
-
-            imgDoubleRightArrow.GestureRecognizers.Add(new TapGestureRecognizer
-            {
-                Command = new Command(() => {
-                    TapGestureRecognizer_Tapped(14);
-                }),
-                NumberOfTapsRequired = 1
-            });
-
-            imgDoubleDownLeftLeftArrow.GestureRecognizers.Add(new TapGestureRecognizer
-            {
-                Command = new Command(() => {
-                    TapGestureRecognizer_Tapped(15);
-                }),
-                NumberOfTapsRequired = 1
-            });
-
-            imgDownLeftArrow.GestureRecognizers.Add(new TapGestureRecognizer
-            {
-                Command = new Command(() => {
-                    TapGestureRecognizer_Tapped(16);
-                }),
-                NumberOfTapsRequired = 1
-            });
-
-            imgDownArrow.GestureRecognizers.Add(new TapGestureRecognizer
-            {
-                Command = new Command(() => {
-                    TapGestureRecognizer_Tapped(17);
-                }),
-                NumberOfTapsRequired = 1
-            });
-
-            imgDownRightArrow.GestureRecognizers.Add(new TapGestureRecognizer
-            {
-                Command = new Command(() => {
-                    TapGestureRecognizer_Tapped(18);
-                }),
-                NumberOfTapsRequired = 1
-            });
-
-            imgDoubleDownRightRightArrow.GestureRecognizers.Add(new TapGestureRecognizer
-            {
-                Command = new Command(() => {
-                    TapGestureRecognizer_Tapped(19);
-                }),
-                NumberOfTapsRequired = 1
-            });
-
-            imgDoubleDownLeftArrow.GestureRecognizers.Add(new TapGestureRecognizer
-            {
-                Command = new Command(() => {
-                    TapGestureRecognizer_Tapped(20);
-                }),
-                NumberOfTapsRequired = 1
-            });
-
-            imgDoubleDownLeftDownArrow.GestureRecognizers.Add(new TapGestureRecognizer
-            {
-                Command = new Command(() => {
-                    TapGestureRecognizer_Tapped(21);
-                }),
-                NumberOfTapsRequired = 1
-            });
-
-            imgDoubleDownArrow.GestureRecognizers.Add(new TapGestureRecognizer
-            {
-                Command = new Command(() => {
-                    TapGestureRecognizer_Tapped(22);
-                }),
-                NumberOfTapsRequired = 1
-            });
-
-            imgDoubleDownRightDownArrow.GestureRecognizers.Add(new TapGestureRecognizer
-            {
-                Command = new Command(() => {
-                    TapGestureRecognizer_Tapped(23);
-                }),
-                NumberOfTapsRequired = 1
-            });
-
-            imgDoubleDownRightArrow.GestureRecognizers.Add(new TapGestureRecognizer
-            {
-                Command = new Command(() => {
-                    TapGestureRecognizer_Tapped(24);
-                }),
-                NumberOfTapsRequired = 1
-            });
-
             // Assemble MotionalSurroundStackLayout --------------------------------------------------------------
 
             Grid.SetRow(gArrows, 0);
@@ -495,7 +265,6 @@ namespace Integra_7_Xamarin
             for (Int32 i = 17; i > 0; i--)
             {
                 mslPart[i - 1] = new MotionalSurroundPartLabel(i);
-                //mslPart[i - 1].Step(Direction.CENTER, gMotionalSurroundLabelsArea.Width, gMotionalSurroundLabelsArea.Height);
                 mslPart[i - 1].Tag = i - 1;
                 mslPart[i - 1].Clicked += MsPart_Clicked;
                 gMotionalSurroundLabelsArea.Children.Add(mslPart[i - 1]);
@@ -605,9 +374,10 @@ namespace Integra_7_Xamarin
             }
         }
 
-        private void TapGestureRecognizer_Tapped(Int32 direction)
+        private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
         {
-            mslPart[currentMotionalSurroundPart].Step(direction,
+            Int32 index = (Int32)((TouchableImage)sender).Tag;
+            mslPart[currentMotionalSurroundPart].Step(index,
                 gMotionalSurroundLabelsArea.Width, gMotionalSurroundLabelsArea.Height);
             SendCoordinatesToIntegra7();
         }
