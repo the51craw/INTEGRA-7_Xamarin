@@ -16,9 +16,6 @@ namespace Integra_7_Xamarin
 
     public partial class UIHandler
     {
-        Grid gMotionalSurroundMainArea;
-        Grid gMotionalSurroundLabelsArea;
-        Grid gRightColumn;
         Grid gParts;
         Grid gArrows;
 
@@ -79,12 +76,6 @@ namespace Integra_7_Xamarin
 
         public void DrawMotinalSurroundPage()
         {
-            gMotionalSurroundMainArea = new Grid();
-            gMotionalSurroundMainArea.HorizontalOptions = LayoutOptions.CenterAndExpand;
-            gMotionalSurroundMainArea.VerticalOptions = LayoutOptions.CenterAndExpand;
-            gMotionalSurroundLabelsArea = new Grid();
-            gMotionalSurroundLabelsArea.HorizontalOptions = LayoutOptions.CenterAndExpand;
-            gMotionalSurroundLabelsArea.VerticalOptions = LayoutOptions.CenterAndExpand;
             gArrows = new Grid();
             gArrows.HorizontalOptions = LayoutOptions.FillAndExpand;
             gArrows.VerticalOptions = LayoutOptions.FillAndExpand;
@@ -93,7 +84,6 @@ namespace Integra_7_Xamarin
                 gArrows.RowDefinitions.Add(new RowDefinition());
                 gArrows.ColumnDefinitions.Add(new ColumnDefinition());
             }
-            gRightColumn = new Grid();
             gParts = new Grid();
 
             imgDoubleUpLeftArrow = new TouchableImage(TapGestureRecognizer_Tapped, "DoubleUpLeftArrow.png", 0);
@@ -250,24 +240,19 @@ namespace Integra_7_Xamarin
 
             Grid.SetRow(gArrows, 0);
             Grid.SetColumn(gArrows, 0);
-            Grid.SetRow(gMotionalSurroundLabelsArea, 0);
-            Grid.SetColumn(gMotionalSurroundLabelsArea, 0);
             gArrows.Margin = new Thickness(0);
             gArrows.ColumnSpacing = 0;
             gArrows.RowSpacing = 0;
-            gMotionalSurroundLabelsArea.HorizontalOptions = LayoutOptions.FillAndExpand;
-            gMotionalSurroundLabelsArea.VerticalOptions = LayoutOptions.FillAndExpand;
-            gMotionalSurroundLabelsArea.Margin = new Thickness(50);
-            gMotionalSurroundMainArea.Children.Add(gArrows);
-            gMotionalSurroundMainArea.Children.Add(gMotionalSurroundLabelsArea);
 
             mslPart = new MotionalSurroundPartLabel[17];
             for (Int32 i = 17; i > 0; i--)
             {
                 mslPart[i - 1] = new MotionalSurroundPartLabel(i);
+                Grid.SetRowSpan(mslPart[i - 1], 5);
+                Grid.SetColumnSpan(mslPart[i - 1], 5);
                 mslPart[i - 1].Tag = i - 1;
                 mslPart[i - 1].Clicked += MsPart_Clicked;
-                gMotionalSurroundLabelsArea.Children.Add(mslPart[i - 1]);
+                gArrows.Children.Add(mslPart[i - 1]);
             }
 
             msePart = new MotionalSurroundPartEditor[17];
@@ -296,7 +281,7 @@ namespace Integra_7_Xamarin
             gParts.Children.Add(new GridRow(17, new View[] { btnMotionalSurroundReturn }).Row);
 
             MotionalSurround_StackLayout = new StackLayout();
-            MotionalSurround_StackLayout.Children.Add(new GridRow(0, new View[] { gMotionalSurroundMainArea, gParts }, new byte[] { 5, 2 }).Row);
+            MotionalSurround_StackLayout.Children.Add(new GridRow(0, new View[] { gArrows, gParts }, new byte[] { 5, 2 }).Row);
         }
 
         private void MotionalSurround_Init()
@@ -327,7 +312,7 @@ namespace Integra_7_Xamarin
                 {
                     mslPart[currentMotionalSurroundPart].Horizontal = commonState.StudioSet.PartMotionalSurround[currentMotionalSurroundPart].LR;
                     mslPart[currentMotionalSurroundPart].Vertical = (byte)(127 - commonState.StudioSet.PartMotionalSurround[currentMotionalSurroundPart].FB);
-                    mslPart[currentMotionalSurroundPart].Plot(gMotionalSurroundLabelsArea.Width, gMotionalSurroundLabelsArea.Height);
+                    mslPart[currentMotionalSurroundPart].Plot(gArrows.Width, gArrows.Height);
                     mslPart[currentMotionalSurroundPart].IsVisible = msePart[currentMotionalSurroundPart].Switch.LSSwitch.IsToggled;
                     mslPart[currentMotionalSurroundPart].Text = msePart[currentMotionalSurroundPart].Editor.Text;
                     mslPart[currentMotionalSurroundPart].MinimumWidthRequest = 20 + mslPart[currentMotionalSurroundPart].Text.Length * 10;
@@ -335,7 +320,7 @@ namespace Integra_7_Xamarin
                 }
                 mslPart[currentMotionalSurroundPart].Horizontal = commonState.StudioSet.MotionalSurround.ExtPartLR;
                 mslPart[currentMotionalSurroundPart].Vertical = (byte)(127 -commonState.StudioSet.MotionalSurround.ExtPartFB);
-                mslPart[currentMotionalSurroundPart].Plot(gMotionalSurroundLabelsArea.Width, gMotionalSurroundLabelsArea.Height);
+                mslPart[currentMotionalSurroundPart].Plot(gArrows.Width, gArrows.Height);
                 mslPart[currentMotionalSurroundPart].IsVisible = msePart[currentMotionalSurroundPart].Switch.LSSwitch.IsToggled;
                 mslPart[currentMotionalSurroundPart].Text = msePart[currentMotionalSurroundPart].Editor.Text;
                 mslPart[currentMotionalSurroundPart].MinimumWidthRequest = 20 + mslPart[currentMotionalSurroundPart].Text.Length * 10;
@@ -378,7 +363,7 @@ namespace Integra_7_Xamarin
         {
             Int32 index = (Int32)((TouchableImage)sender).Tag;
             mslPart[currentMotionalSurroundPart].Step(index,
-                gMotionalSurroundLabelsArea.Width, gMotionalSurroundLabelsArea.Height);
+                gArrows.Width, gArrows.Height);
             SendCoordinatesToIntegra7();
         }
 
@@ -427,7 +412,7 @@ namespace Integra_7_Xamarin
             // When turned on, also put it in right position:
             if (mslPart[Tag].IsVisible)
             {
-                mslPart[Tag].Plot(gMotionalSurroundLabelsArea.Width, gMotionalSurroundLabelsArea.Height);
+                mslPart[Tag].Plot(gArrows.Width, gArrows.Height);
             }
         }
 

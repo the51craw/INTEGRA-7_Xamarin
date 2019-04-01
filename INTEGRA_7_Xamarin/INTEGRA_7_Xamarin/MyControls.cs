@@ -601,11 +601,10 @@ namespace Integra_7_Xamarin
         }
     }
 
-public class MotionalSurroundPartLabel : /*Xamarin.Forms.*/Button
+public class MotionalSurroundPartLabel : Button
     {
         public byte Horizontal { get; set; } // 0 - 127 => L64 - R63
         public byte Vertical { get; set; }   // 0 - 127 => B64 - F63
-        //public Int32 Tag { get; set; }
 
         public MotionalSurroundPartLabel(Int32 partNumber)
         {
@@ -620,8 +619,6 @@ public class MotionalSurroundPartLabel : /*Xamarin.Forms.*/Button
                 Text = "Part " + partNumber.ToString();
             }
             BackgroundColor = Color.Yellow;
-            //TextColor = Color.Yellow;
-            //Focused += MotionalSurroundPartLabel_Focused;
 
             HorizontalOptions = LayoutOptions.Center;
             VerticalOptions = LayoutOptions.Center;
@@ -670,7 +667,7 @@ public class MotionalSurroundPartLabel : /*Xamarin.Forms.*/Button
                 case 4:
                     hsteps = 10;
                     vsteps = 10;
-                    Horizontal = Horizontal < 127 - hsteps ? (byte)(Horizontal + hsteps) : (byte)0;
+                    Horizontal = Horizontal < 127 - hsteps ? (byte)(Horizontal + hsteps) : (byte)127;
                     Vertical = Vertical > vsteps ? (byte)(Vertical - vsteps) : (byte)0;
                     break;
                 case 5:
@@ -692,13 +689,13 @@ public class MotionalSurroundPartLabel : /*Xamarin.Forms.*/Button
                 case 8:
                     hsteps = 1;
                     vsteps = 1;
-                    Horizontal = Horizontal < 127 - hsteps ? (byte)(Horizontal + hsteps) : (byte)0;
+                    Horizontal = Horizontal < 127 - hsteps ? (byte)(Horizontal + hsteps) : (byte)127;
                     Vertical = Vertical > vsteps ? (byte)(Vertical - vsteps) : (byte)0;
                     break;
                 case 9:
                     hsteps = 10;
                     vsteps = 5;
-                    Horizontal = Horizontal < 127 - hsteps ? (byte)(Horizontal + hsteps) : (byte)0;
+                    Horizontal = Horizontal < 127 - hsteps ? (byte)(Horizontal + hsteps) : (byte)127;
                     Vertical = Vertical > vsteps ? (byte)(Vertical - vsteps) : (byte)0;
                     break;
                 case 10:
@@ -715,11 +712,11 @@ public class MotionalSurroundPartLabel : /*Xamarin.Forms.*/Button
                     break;
                 case 13:
                     hsteps = 1;
-                    Horizontal = Horizontal < 127 - hsteps ? (byte)(Horizontal + hsteps) : (byte)0;
+                    Horizontal = Horizontal < 127 - hsteps ? (byte)(Horizontal + hsteps) : (byte)127;
                     break;
                 case 14:
                     hsteps = 10;
-                    Horizontal = Horizontal < 127 - hsteps ? (byte)(Horizontal + hsteps) : (byte)0;
+                    Horizontal = Horizontal < 127 - hsteps ? (byte)(Horizontal + hsteps) : (byte)127;
                     break;
                 case 15:
                     hsteps = 10;
@@ -740,13 +737,13 @@ public class MotionalSurroundPartLabel : /*Xamarin.Forms.*/Button
                 case 18:
                     hsteps = 1;
                     vsteps = 1;
-                    Horizontal = Horizontal < 127 - hsteps ? (byte)(Horizontal + hsteps) : (byte)0;
+                    Horizontal = Horizontal < 127 - hsteps ? (byte)(Horizontal + hsteps) : (byte)127;
                     Vertical = Vertical < 127 - vsteps ? (byte)(Vertical + vsteps) : (byte)127;
                     break;
                 case 19:
                     hsteps = 10;
                     vsteps = 5;
-                    Horizontal = Horizontal < 127 - hsteps ? (byte)(Horizontal + hsteps) : (byte)0;
+                    Horizontal = Horizontal < 127 - hsteps ? (byte)(Horizontal + hsteps) : (byte)127;
                     Vertical = Vertical < 127 - vsteps ? (byte)(Vertical + vsteps) : (byte)127;
                     break;
                 case 20:
@@ -762,21 +759,19 @@ public class MotionalSurroundPartLabel : /*Xamarin.Forms.*/Button
                     Vertical = Vertical < 127 - vsteps ? (byte)(Vertical + vsteps) : (byte)127;
                     break;
                 case 22:
-                    hsteps = 1;
-                    vsteps = 1;
-                    Horizontal = Horizontal > hsteps ? (byte)(Horizontal - hsteps) : (byte)0;
+                    vsteps = 10;
                     Vertical = Vertical < 127 - vsteps ? (byte)(Vertical + vsteps) : (byte)127;
                     break;
                 case 23:
                     hsteps = 5;
                     vsteps = 10;
-                    Horizontal = Horizontal < 127 - hsteps ? (byte)(Horizontal + hsteps) : (byte)0;
+                    Horizontal = Horizontal < 127 - hsteps ? (byte)(Horizontal + hsteps) : (byte)127;
                     Vertical = Vertical < 127 - vsteps ? (byte)(Vertical + vsteps) : (byte)127;
                     break;
                 case 24:
                     hsteps = 10;
                     vsteps = 10;
-                    Horizontal = Horizontal < 127 - hsteps ? (byte)(Horizontal + hsteps) : (byte)0;
+                    Horizontal = Horizontal < 127 - hsteps ? (byte)(Horizontal + hsteps) : (byte)127;
                     Vertical = Vertical < 127 - vsteps ? (byte)(Vertical + vsteps) : (byte)127;
                     break;
             }
@@ -785,13 +780,17 @@ public class MotionalSurroundPartLabel : /*Xamarin.Forms.*/Button
 
         public void Plot(Double width, Double height)
         {
-            byte hOffset = (byte)(Width / 2.0);
-            byte vOffset = (byte)(Height / 2.0);
+            // Offset from upper left corner to center:
+            Double hOffset = (Double)(width / 2.0);
+            Double vOffset = (Double)(height / 2.0);
 
-            Double left = width * Horizontal / 127;
-            Double top = height * Vertical / 127;
-            Double right = width - left;
-            Double bottom = height - top;
+            // Position in terms of grid coordinates adjusted for I-7 position:
+            Double left = 0.8 * width * (Double)Horizontal / (Double)127; // Horizontal varying from 0 to 127 gives left varying from 0.0 to grid width
+            Double top = 0.8 * height * (Double)Vertical / (Double)127;   // Vertical varying from 0 to 127 gives top varying from 0.0 to grid height
+            Double right = 0.8 * width - left;                            // Horizontal varying from 0 to 127 gives right varying from grid width to 0.0
+            Double bottom = 0.8 * height - top;                           // Vertical varying from 0 to 127 gives right varying from grid height to 0.0
+
+            // Sum of margin values are now twice the available space, adjust it_
             left -= hOffset;
             top -= vOffset;
             right -= hOffset;
