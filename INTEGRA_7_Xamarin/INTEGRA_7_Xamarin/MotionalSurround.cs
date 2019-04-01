@@ -512,7 +512,7 @@ namespace Integra_7_Xamarin
                 }
                 else
                 {
-                    msePart[i].Editor.Text = "Ext ";
+                    msePart[i].Editor.Text = "Ext";
                 }
                 msePart[i].Switch.LSSwitch.Toggled += msePart_Toggled;
                 msePart[i].Editor.TextChanged += msePartEditor_TextChanged;
@@ -644,8 +644,8 @@ namespace Integra_7_Xamarin
         {
             Int32 Tag = ((Integra_7_Xamarin.MotionalSurroundPartEditor)((Grid)((Editor)sender).Parent).Parent).Tag;
             mslPart[Tag].Text = ((Editor)sender).Text;
-            mslPart[Tag].MinimumWidthRequest = 20 + mslPart[Tag].Text.Length * 10;
-            mslPart[Tag].WidthRequest = 20 + mslPart[Tag].Text.Length * 10;
+            //mslPart[Tag].MinimumWidthRequest = 20 + mslPart[Tag].Text.Length * 10;
+            //mslPart[Tag].WidthRequest = 20 + mslPart[Tag].Text.Length * 10;
         }
 
         private void msePart_Toggled(object sender, ToggledEventArgs e)

@@ -580,6 +580,9 @@ namespace Integra_7_Xamarin
         
         public TouchableImage(EventHandler Handler, object[] Arguments = null, String ImageFile = null, EventArgs e = null)
         {
+            this.WidthRequest = 1000;
+            this.HeightRequest = 1000;
+
             this.GestureRecognizers.Add(new TapGestureRecognizer
             {
                 Command = new Command(() =>
@@ -593,21 +596,6 @@ namespace Integra_7_Xamarin
             {
                 this.Source = ImageFile;
             }
-
-            //this.WidthRequest = ((Grid)(this).Parent).Width;
-            //this.HeightRequest = ((Grid)(this).Parent).Height;
-            this.WidthRequest = 10;
-            this.HeightRequest = 10;
-
-        }
-    }
-
-    public class Image : Xamarin.Forms.Image
-    {
-        public Image()
-        {
-            this.WidthRequest = ((Grid)(this).Parent).Width;
-            this.HeightRequest = ((Grid)(this).Parent).Height;
         }
     }
 
@@ -623,12 +611,10 @@ public class MotionalSurroundPartLabel : /*Xamarin.Forms.*/Button
             Vertical = 63;
             if (partNumber == 17)
             {
-                //Text = "                              Ext                              \b";
                 Text = "Ext";
             }
             else
             {
-                //Text = "                              Part " + partNumber.ToString() + "                              \b";
                 Text = "Part " + partNumber.ToString();
             }
             BackgroundColor = Color.Yellow;
@@ -637,8 +623,8 @@ public class MotionalSurroundPartLabel : /*Xamarin.Forms.*/Button
 
             HorizontalOptions = LayoutOptions.Center;
             VerticalOptions = LayoutOptions.Center;
-            MinimumWidthRequest = 2000;
-            WidthRequest = 2000;
+            MinimumWidthRequest = 200;
+            WidthRequest = 200;
             MinimumHeightRequest = 30;
             HeightRequest = 30;
             IsVisible = true;

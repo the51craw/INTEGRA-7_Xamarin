@@ -1,3 +1,5 @@
+QueryCurrentStudioSetNumber(Boolean scan = true)
+
 QueryStudioSetCommon()
 QueryStudioSetChorus()
 QueryStudioSetReverb()
