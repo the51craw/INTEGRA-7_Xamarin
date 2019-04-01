@@ -345,6 +345,10 @@ namespace Integra_7_Xamarin
                     case CurrentPage.MOTIONAL_SURROUND:
                         needsToSetFontSizes = NeedsToSetFontSizes.NONE;
                         stackLayout = MotionalSurround_StackLayout;
+                        for (Int32 i = 17; i > 0; i--)
+                        {
+                            mslPart[i - 1].Plot(gArrows.Width, gArrows.Height);
+                        }
                         break;
                 }
             }
