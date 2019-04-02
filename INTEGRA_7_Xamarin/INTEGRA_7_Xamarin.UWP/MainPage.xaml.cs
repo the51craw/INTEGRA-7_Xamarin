@@ -17,24 +17,24 @@ using Xamarin.Forms;
 using Integra_7_Xamarin;
 using System.ServiceModel.Dispatcher;
 
-[assembly: Xamarin.Forms.Dependency(typeof(GenericHandlerInterface))]
+//[assembly: Xamarin.Forms.Dependency(typeof(GenericHandlerInterface))]
 
 [assembly: Dependency(typeof(MIDI))]
 
 namespace Integra_7_Xamarin.UWP
 {
-    public class GenericHandlerInterface: IGenericHandler
-    {
-        public MainPage mainPage { get; set; }
+    //public class GenericHandlerInterface: IGenericHandler
+    //{
+    //    public MainPage mainPage { get; set; }
 
-        public void GenericHandler(object sender, object e)
-        {
-            if (mainPage.midi.midiOutPort == null)
-            {
-                mainPage.midi.Init("INTEGRA-7");
-            }
-        }
-    }
+    //    public void GenericHandler(object sender, object e)
+    //    {
+    //        if (mainPage.midi.midiOutPort == null)
+    //        {
+    //            mainPage.midi.Init("INTEGRA-7");
+    //        }
+    //    }
+    //}
 
     public sealed partial class MainPage : IDeviceDependent
     {
@@ -50,7 +50,7 @@ namespace Integra_7_Xamarin.UWP
         //private Double x, y;
 
         // For accessing the genericHandlerInterface:
-        GenericHandlerInterface genericHandlerInterface;
+        //GenericHandlerInterface genericHandlerInterface;
         public Windows.UI.Core.CoreDispatcher Dispatcher_UWP { get; set; }
 
         public MainPage()
@@ -71,10 +71,10 @@ namespace Integra_7_Xamarin.UWP
             UIHandler.appType = UIHandler._appType.UWP;
 
             // Get the generic handler (same way as done in Integra_7_Xamarin.UIHandler):
-            genericHandlerInterface = (GenericHandlerInterface)DependencyService.Get<IGenericHandler>();
+            //genericHandlerInterface = (GenericHandlerInterface)DependencyService.Get<IGenericHandler>();
 
             // Let genericHandlerInterface know this MainPage:
-            genericHandlerInterface.mainPage = this;
+            //genericHandlerInterface.mainPage = this;
 
             // Let portable know this MainPage:
             MainPage_Portable.MainPage_Device = this;

@@ -11,7 +11,7 @@ using Xamarin.Forms;
 using Integra_7_Xamarin.UWP;
 using System.Collections.Generic;
 
-[assembly: Xamarin.Forms.Dependency(typeof(GenericHandlerInterface))]
+//[assembly: Xamarin.Forms.Dependency(typeof(GenericHandlerInterface))]
 
 [assembly: Dependency(typeof(MIDI))]
 
@@ -19,8 +19,8 @@ namespace Integra_7_Xamarin.UWP
 {
     public class MIDI : IMidi, IGenericHandler
     {
-        public MidiDeviceWatcher midiOutputDeviceWatcher;
-        public MidiDeviceWatcher midiInputDeviceWatcher;
+        //public MidiDeviceWatcher midiOutputDeviceWatcher;
+        //public MidiDeviceWatcher midiInputDeviceWatcher;
         //public MidiOutPort midiOutPort;
         //public MidiInPort midiInPort;
         public MidiOutPort midiOutPort;
@@ -100,10 +100,10 @@ namespace Integra_7_Xamarin.UWP
             MidiDevices = new List<String>();
             this.mainPage = mainPage;
             this.MainPage_UWP = mainPage_UWP;
-            midiOutputDeviceWatcher = new MidiDeviceWatcher(MidiOutPort.GetDeviceSelector(), OutputDeviceSelector, mainPage_UWP.Dispatcher_UWP);
-            midiInputDeviceWatcher = new MidiDeviceWatcher(MidiInPort.GetDeviceSelector(), InputDeviceSelector, mainPage_UWP.Dispatcher_UWP);
-            midiOutputDeviceWatcher.StartWatcher();
-            midiInputDeviceWatcher.StartWatcher();
+            //midiOutputDeviceWatcher = new MidiDeviceWatcher(MidiOutPort.GetDeviceSelector(), OutputDeviceSelector, mainPage_UWP.Dispatcher_UWP);
+            //midiInputDeviceWatcher = new MidiDeviceWatcher(MidiInPort.GetDeviceSelector(), InputDeviceSelector, mainPage_UWP.Dispatcher_UWP);
+            //midiOutputDeviceWatcher.StartWatcher();
+            //midiInputDeviceWatcher.StartWatcher();
             this.MidiOutPortChannel = MidiOutPortChannel;
             this.MidiInPortChannel = MidiInPortChannel;
         }
@@ -256,8 +256,8 @@ namespace Integra_7_Xamarin.UWP
 
         public void UpdateMidiComboBoxes(Picker midiOutputComboBox, Picker midiInputComboBox)
         {
-            midiOutputDeviceWatcher.UpdateComboBox(midiOutputComboBox, MidiOutPortSelectedIndex);
-            midiInputDeviceWatcher.UpdateComboBox(midiInputComboBox, MidiInPortSelectedIndex);
+            //midiOutputDeviceWatcher.UpdateComboBox(midiOutputComboBox, MidiOutPortSelectedIndex);
+            //midiInputDeviceWatcher.UpdateComboBox(midiInputComboBox, MidiInPortSelectedIndex);
         }
 
         public async void OutputDeviceChanged(Picker DeviceSelector)
@@ -266,7 +266,7 @@ namespace Integra_7_Xamarin.UWP
             {
                 if (!String.IsNullOrEmpty((String)DeviceSelector.SelectedItem))
                 {
-                    var midiOutDeviceInformationCollection = midiOutputDeviceWatcher.DeviceInformationCollection;
+                    var midiOutDeviceInformationCollection = await DeviceInformation.FindAllAsync(MidiOutPort.GetDeviceSelector());
 
                     if (midiOutDeviceInformationCollection == null)
                     {
@@ -298,7 +298,7 @@ namespace Integra_7_Xamarin.UWP
             {
                 if (!String.IsNullOrEmpty((String)DeviceSelector.SelectedItem))
                 {
-                    var midiInDeviceInformationCollection = midiInputDeviceWatcher.DeviceInformationCollection;
+                    var midiInDeviceInformationCollection = await DeviceInformation.FindAllAsync(MidiInPort.GetDeviceSelector());
 
                     if (midiInDeviceInformationCollection == null)
                     {

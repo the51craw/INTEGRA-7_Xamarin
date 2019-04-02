@@ -135,3 +135,8 @@ Maybe add a switch for turning motional surround on/off?
 Debug session is not closed after closing main window!
 
 Verification tool reports crashes! (Maybe that has same cause as issue above?)
+
+Librarian no longer changes sound on I-7!
+
+When selecting a _part_ with a drum set, keybord labels are not updated, unless a note is played first.
+
