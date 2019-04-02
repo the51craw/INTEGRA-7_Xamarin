@@ -116,6 +116,22 @@ Continue on the Favorites.
 
 * Add Surround page. Invent new way of 'dragging' controls since image has no coordinates in events.
 
-Add savint/loading settings in xml files (for all platforms!)
+Add saving/loading settings in xml files (for all platforms!)
+	Most done for UWP, except motional surround (if we need it).
 
 Why is not cbStudioSetPartKeyboardMute added to the GUI?
+
+* Studio set part selector returns to part 1 when other is selected!
+
+When selecting studio set editor after startup, and then return to librarian, 
+	motional surround is not fully read in. It is read in only when:
+	1) Motional surround is selected before studio set editor after startup.
+	2) Studio set editor is selected after startup and part subpage motional
+		surround is selected. If so, motional surround will place labels
+		correctly, if not they will all be centered due to this issue.
+
+Maybe add a switch for turning motional surround on/off?
+
+Debug session is not closed after closing main window!
+
+Verification tool reports crashes! (Maybe that has same cause as issue above?)

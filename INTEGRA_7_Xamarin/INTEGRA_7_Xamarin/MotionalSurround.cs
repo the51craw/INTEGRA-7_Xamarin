@@ -49,7 +49,6 @@ namespace Integra_7_Xamarin
         TouchableImage imgDoubleDownRightDownArrow;
         TouchableImage imgDoubleDownRightArrow;
 
-        Button tbPart1;
         MotionalSurroundPartLabel[] mslPart;
         MotionalSurroundPartEditor[] msePart;
         Button btnMotionalSurroundReturn;
@@ -72,6 +71,28 @@ namespace Integra_7_Xamarin
                 needsToSetFontSizes = NeedsToSetFontSizes.MOTIONAL_SURROUND;
             }
             MotionalSurround_StackLayout.IsVisible = true;
+            if (commonState.StudioSet.PartMotionalSurround != null
+                && commonState.StudioSet.PartMotionalSurround[0] != null
+                && commonState.StudioSet.PartMotionalSurround[1] != null
+                && commonState.StudioSet.PartMotionalSurround[2] != null
+                && commonState.StudioSet.PartMotionalSurround[3] != null
+                && commonState.StudioSet.PartMotionalSurround[4] != null
+                && commonState.StudioSet.PartMotionalSurround[5] != null
+                && commonState.StudioSet.PartMotionalSurround[6] != null
+                && commonState.StudioSet.PartMotionalSurround[7] != null
+                && commonState.StudioSet.PartMotionalSurround[8] != null
+                && commonState.StudioSet.PartMotionalSurround[9] != null
+                && commonState.StudioSet.PartMotionalSurround[10] != null
+                && commonState.StudioSet.PartMotionalSurround[11] != null
+                && commonState.StudioSet.PartMotionalSurround[12] != null
+                && commonState.StudioSet.PartMotionalSurround[13] != null
+                && commonState.StudioSet.PartMotionalSurround[14] != null
+                && commonState.StudioSet.PartMotionalSurround[15] != null
+                && commonState.StudioSet.MotionalSurround != null)
+            {
+                // Studio set might have been changed, so classes has other data, tell TimerTick to update controls:
+                motionalSurroundInitializationState = MotionalSurroundInitializationState.INITIALIZING;
+            }
         }
 
         public void DrawMotinalSurroundPage()
@@ -251,8 +272,19 @@ namespace Integra_7_Xamarin
                 Grid.SetRowSpan(mslPart[i - 1], 5);
                 Grid.SetColumnSpan(mslPart[i - 1], 5);
                 mslPart[i - 1].Tag = i - 1;
-                mslPart[i - 1].Clicked += MsPart_Clicked;
+                mslPart[i - 1].TextColor = UIHandler.colorSettings.MotionalSurroundPartLabelText;
+                if (i == 0)
+                {
+                    mslPart[i - 1].BackgroundColor = UIHandler.colorSettings.MotionalSurroundPartLabelUnfocused;
+                }
+                else
+                {
+                    mslPart[i - 1].BackgroundColor = UIHandler.colorSettings.MotionalSurroundPartLabelFocused;
+                }
                 gArrows.Children.Add(mslPart[i - 1]);
+                mslPart[i - 1].Clicked += MsPart_Clicked;
+                //mslPart[i - 1].Focused += MotionalSurroundPartLabel_Focused;
+                //mslPart[i - 1].Unfocused += MotionalSurroundPartLabel_Unfocused;
             }
 
             msePart = new MotionalSurroundPartEditor[17];
@@ -269,6 +301,7 @@ namespace Integra_7_Xamarin
                     msePart[i].Editor.Text = "Ext";
                 }
                 msePart[i].Switch.LSSwitch.Toggled += msePart_Toggled;
+                msePart[i].Switch.LSSwitch.IsToggled = true;
                 msePart[i].Editor.TextChanged += msePartEditor_TextChanged;
                 gParts.Children.Add(new GridRow((byte)i, new View[] { msePart[i] }).Row);
             }
@@ -307,25 +340,41 @@ namespace Integra_7_Xamarin
         {
             if (motionalSurroundInitializationState == MotionalSurroundInitializationState.INITIALIZING)
             {
+                motionalSurroundInitializationState =
+                    MotionalSurroundInitializationState.INITIALIZED;
+
                 // Place part labels:
                 for (currentMotionalSurroundPart = 0; currentMotionalSurroundPart < 16; currentMotionalSurroundPart++)
                 {
-                    mslPart[currentMotionalSurroundPart].Horizontal = commonState.StudioSet.PartMotionalSurround[currentMotionalSurroundPart].LR;
-                    mslPart[currentMotionalSurroundPart].Vertical = (byte)(127 - commonState.StudioSet.PartMotionalSurround[currentMotionalSurroundPart].FB);
+                    mslPart[currentMotionalSurroundPart].Horizontal = 
+                        commonState.StudioSet.PartMotionalSurround[currentMotionalSurroundPart].LR;
+                    mslPart[currentMotionalSurroundPart].Vertical = 
+                        (byte)(127 - commonState.StudioSet.PartMotionalSurround[currentMotionalSurroundPart].FB);
+                    mslPart[currentMotionalSurroundPart].IsVisible = 
+                        msePart[currentMotionalSurroundPart].Switch.LSSwitch.IsToggled;
+                    Int32 index = commonState.ToneList.Get(commonState.StudioSet
+                        .PartMainSettings[currentMotionalSurroundPart].ToneBankSelectMSB,
+                        commonState.StudioSet.PartMainSettings[currentMotionalSurroundPart].ToneBankSelectLSB,
+                        commonState.StudioSet.PartMainSettings[currentMotionalSurroundPart].ToneProgramNumber);
+                    mslPart[currentMotionalSurroundPart].Text = 
+                        commonState.ToneList.Tones[index][3];
+                    msePart[currentMotionalSurroundPart].Editor.Text = 
+                        mslPart[currentMotionalSurroundPart].Text;
+                    //msePart[currentMotionalSurroundPart].Switch.IsChecked = 
+                    //    commonState.StudioSet.PartMotionalSurround[currentMotionalSurroundPart].MotionalSurroundSwitch;
                     mslPart[currentMotionalSurroundPart].Plot(gArrows.Width, gArrows.Height);
-                    mslPart[currentMotionalSurroundPart].IsVisible = msePart[currentMotionalSurroundPart].Switch.LSSwitch.IsToggled;
-                    mslPart[currentMotionalSurroundPart].Text = msePart[currentMotionalSurroundPart].Editor.Text;
-                    mslPart[currentMotionalSurroundPart].MinimumWidthRequest = 20 + mslPart[currentMotionalSurroundPart].Text.Length * 10;
-                    mslPart[currentMotionalSurroundPart].WidthRequest = 20 + mslPart[currentMotionalSurroundPart].Text.Length * 10;
                 }
-                mslPart[currentMotionalSurroundPart].Horizontal = commonState.StudioSet.MotionalSurround.ExtPartLR;
-                mslPart[currentMotionalSurroundPart].Vertical = (byte)(127 -commonState.StudioSet.MotionalSurround.ExtPartFB);
+                mslPart[currentMotionalSurroundPart].Horizontal = 
+                    commonState.StudioSet.MotionalSurround.ExtPartLR;
+                mslPart[currentMotionalSurroundPart].Vertical = 
+                    (byte)(127 -commonState.StudioSet.MotionalSurround.ExtPartFB);
+                mslPart[currentMotionalSurroundPart].IsVisible = 
+                    msePart[currentMotionalSurroundPart].Switch.LSSwitch.IsToggled;
+                mslPart[currentMotionalSurroundPart].Text = 
+                    msePart[currentMotionalSurroundPart].Editor.Text;
+                //msePart[currentMotionalSurroundPart].Switch.IsChecked = 
+                //    commonState.StudioSet.MotionalSurround.MotionalSurroundSwitch;
                 mslPart[currentMotionalSurroundPart].Plot(gArrows.Width, gArrows.Height);
-                mslPart[currentMotionalSurroundPart].IsVisible = msePart[currentMotionalSurroundPart].Switch.LSSwitch.IsToggled;
-                mslPart[currentMotionalSurroundPart].Text = msePart[currentMotionalSurroundPart].Editor.Text;
-                mslPart[currentMotionalSurroundPart].MinimumWidthRequest = 20 + mslPart[currentMotionalSurroundPart].Text.Length * 10;
-                mslPart[currentMotionalSurroundPart].WidthRequest = 20 + mslPart[currentMotionalSurroundPart].Text.Length * 10;
-                motionalSurroundInitializationState = MotionalSurroundInitializationState.INITIALIZED;
             }
         }
 
@@ -333,14 +382,14 @@ namespace Integra_7_Xamarin
         {
             if (currentStudioSetEditorMidiRequest == StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_MOTIONAL_SURROUND)
             {
-                ReadMotionalSurround(); // We borrow this too from the Studio Set Editor
+                ReadMotionalSurround(false); // We borrow this too from the Studio Set Editor
                 currentMotionalSurroundPart = 0;
                 QueryStudioSetPart(currentMotionalSurroundPart);
             }
             else if (currentStudioSetEditorMidiRequest == StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_PART)
             {
                 // Unpack studio set part:
-                ReadStudioSetPart(currentMotionalSurroundPart); // We borrow this from the Studio Set Editor
+                ReadStudioSetPart(currentMotionalSurroundPart, false); // We borrow this from the Studio Set Editor
                 currentMotionalSurroundPart++;
                 if (currentMotionalSurroundPart < 16)
                 {
@@ -409,17 +458,38 @@ namespace Integra_7_Xamarin
             currentMotionalSurroundPart = Tag;
             mslPart[Tag].IsVisible = ((Switch)sender).IsToggled;
 
-            // When turned on, also put it in right position:
-            if (mslPart[Tag].IsVisible)
-            {
-                mslPart[Tag].Plot(gArrows.Width, gArrows.Height);
-            }
+            // When turned on, also put it in current position:
+            //if (mslPart[Tag].IsVisible)
+            //{
+            //    mslPart[Tag].Plot(gArrows.Width, gArrows.Height);
+            //}
         }
 
         private void MsPart_Clicked(object sender, EventArgs e)
         {
             currentMotionalSurroundPart = (Int32)((Button)sender).Tag;
+            for (Int32 i = 0; i < 17; i++)
+            {
+                if (i == currentMotionalSurroundPart)
+                {
+                    mslPart[i].BackgroundColor = UIHandler.colorSettings.MotionalSurroundPartLabelFocused;
+                }
+                else
+                {
+                    mslPart[i].BackgroundColor = UIHandler.colorSettings.MotionalSurroundPartLabelUnfocused;
+                }
+            }
         }
+
+        //private void MotionalSurroundPartLabel_Unfocused(object sender, FocusEventArgs e)
+        //{
+        //    ((MotionalSurroundPartLabel)sender).BackgroundColor = UIHandler.colorSettings.MotionalSurroundPartLabelUnfocused;
+        //}
+
+        //private void MotionalSurroundPartLabel_Focused(object sender, FocusEventArgs e)
+        //{
+        //    ((MotionalSurroundPartLabel)sender).BackgroundColor = UIHandler.colorSettings.MotionalSurroundPartLabelFocused;
+        //}
 
         private void BtnMotionalSurroundReturn_Clicked(object sender, EventArgs e)
         {

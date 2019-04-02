@@ -618,8 +618,7 @@ public class MotionalSurroundPartLabel : Button
             {
                 Text = "Part " + partNumber.ToString();
             }
-            BackgroundColor = Color.Yellow;
-
+            BackgroundColor = UIHandler.colorSettings.MotionalSurroundPartLabelUnfocused;
             HorizontalOptions = LayoutOptions.Center;
             VerticalOptions = LayoutOptions.Center;
             MinimumWidthRequest = 200;
@@ -629,11 +628,19 @@ public class MotionalSurroundPartLabel : Button
             IsVisible = true;
         }
 
-        private void MotionalSurroundPartLabel_Focused(object sender, FocusEventArgs e)
-        {
-            TextColor = Color.Black;
-            IsEnabled = true;
-        }
+        //private void MotionalSurroundPartLabel_Focused(object sender, FocusEventArgs e)
+        //{
+        //    TextColor = Color.Black;
+        //    BackgroundColor = UIHandler.colorSettings.MotionalSurroundPartLabelUnfocused;
+        //    IsEnabled = true;
+        //}
+
+        //private void MotionalSurroundPartLabel_Unfocused(object sender, FocusEventArgs e)
+        //{
+        //    TextColor = Color.Black;
+        //    BackgroundColor = UIHandler.colorSettings.MotionalSurroundPartLabelFocused;
+        //    IsEnabled = false;
+        //}
 
         public void Step(Int32 direction, Double width, Double height)
         {

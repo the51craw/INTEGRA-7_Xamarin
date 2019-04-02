@@ -3430,8 +3430,8 @@ namespace Integra_7_Xamarin
                             break;
                     }
 
-                    PopulateStudioSetSelector();
-                    PopulateComboBoxes();
+                    //PopulateStudioSetSelector();
+                    //PopulateComboBoxes();
                 }
             }
         }
@@ -6300,7 +6300,7 @@ namespace Integra_7_Xamarin
         private void SetStudioSetStudioSetPartSelector(Int32 p)
         {
             commonState.Midi.SetMidiOutPortChannel((byte)p); // We are actually talking part here, not MIDI channel. MIDI channel migth be changed and is stored in commonState.PartChannels[cbStudioSetPartSelector.SelectedIndex]
-            QueryStudioSetPart();
+            QueryStudioSetPart(p);
         }
 
         private void cbStudioSetPartSubSelector_SelectionChanged(object sender, EventArgs e)
@@ -7217,15 +7217,15 @@ namespace Integra_7_Xamarin
             PopHandleControlEvents();
         }
 
-        private void ReadMotionalSurround()
+        private void ReadMotionalSurround(Boolean UpdateControls = true)
         {
             t.Trace("private void ReadMotionalSurround()");
             commonState.StudioSet.MotionalSurround = new StudioSet_MotionalSurround(new ReceivedData(rawData));
-            PushHandleControlEvents();
             // Since this code is also called from the Motional surround editor, the controls below might not be
-            // created. It's ok, since in that case we do not need them, so use try-catch:
-            try
+            // created. It's ok, since in that case we do not need them:
+            if (UpdateControls)
             {
+                PushHandleControlEvents();
                 cbStudioSetMotionalSurround.IsChecked = commonState.StudioSet.MotionalSurround.MotionalSurroundSwitch;
                 cbStudioSetMotionalSurroundRoomType.SelectedIndex = commonState.StudioSet.MotionalSurround.RoomType;
                 slStudioSetMotionalSurroundAmbienceLevel.Value = commonState.StudioSet.MotionalSurround.AmbienceLevel;
@@ -7249,9 +7249,8 @@ namespace Integra_7_Xamarin
                 tbStudioSetMotionalSurroundExtpartAmbienceSend.Text = "External part ambience send" + 
                     slStudioSetMotionalSurroundExtpartAmbienceSend.Value.ToString();
                 tbStudioSetMotionalSurroundDepth.Text = "Motional surround depth " + slStudioSetMotionalSurroundDepth.Value.ToString();
+                PopHandleControlEvents();
             }
-            catch { }
-            PopHandleControlEvents();
         }
 
         private void ReadStudioSetMasterEQ()
@@ -7272,7 +7271,7 @@ namespace Integra_7_Xamarin
             PopHandleControlEvents();
         }
 
-        private void ReadStudioSetPart(Int32 partToRead = -1)
+        private void ReadStudioSetPart(Int32 partToRead = -1, Boolean UpdateControls = true)
         {
             if (partToRead == -1)
             {
@@ -7286,11 +7285,11 @@ namespace Integra_7_Xamarin
             commonState.StudioSet.PartScaleTune[(byte)partToRead] = new StudioSet_PartScaleTune(Data);
             commonState.StudioSet.PartMidi[(byte)partToRead] = new StudioSet_PartMidi(Data);
             commonState.StudioSet.PartMotionalSurround[(byte)partToRead] = new StudioSet_PartMotionalSurround(Data);
-            PushHandleControlEvents();
             // Since this code is also called from the Motional surround editor, the controls below might not be
-            // created. It's ok, since in that case we do not need them, so use try-catch:
-            try
+            // created. It's ok, since in that case we do not need them:
+            if (UpdateControls)
             {
+                PushHandleControlEvents();
                 // Part settings 1 page
                 if (cbStudioSetPartSelector.SelectedIndex > -1 && cbStudioSetPartSelector.SelectedIndex == partToRead)
                 {
@@ -7366,8 +7365,8 @@ namespace Integra_7_Xamarin
                     cbStudioSetPartMidiReceiveExpression.IsChecked = commonState.StudioSet.PartMidi[(byte)partToRead].ReceiveExpression;
                     cbStudioSetPartMidiReceiveHold1.IsChecked = commonState.StudioSet.PartMidi[(byte)partToRead].ReceiveHold1;
                     // Motional surround page
-                    slStudioSetPartMotionalSurroundLR.Value = commonState.StudioSet.PartMotionalSurround[(byte)partToRead].LR;
-                    slStudioSetPartMotionalSurroundFB.Value = commonState.StudioSet.PartMotionalSurround[(byte)partToRead].FB;
+                    slStudioSetPartMotionalSurroundLR.Value = commonState.StudioSet.PartMotionalSurround[(byte)partToRead].LR - 64;
+                    slStudioSetPartMotionalSurroundFB.Value = commonState.StudioSet.PartMotionalSurround[(byte)partToRead].FB - 64;
                     slStudioSetPartMotionalSurroundWidth.Value = commonState.StudioSet.PartMotionalSurround[(byte)partToRead].Width;
                     slStudioSetPartMotionalSurroundAmbienceSendLevel.Value = commonState.StudioSet.PartMotionalSurround[(byte)partToRead].AmbienceSendLevel;
                     // Texts for sliders, Part settings 1
@@ -7417,14 +7416,13 @@ namespace Integra_7_Xamarin
                     tbStudioSetPartScaleTuneAi.Text = "A# " + (commonState.StudioSet.PartScaleTune[(byte)partToRead].Ai).ToString();
                     tbStudioSetPartScaleTuneB.Text = "B " + (commonState.StudioSet.PartScaleTune[(byte)partToRead].B).ToString();
                     // Motional surround:
-                    tbStudioSetPartMotionalSurroundLR.Text = "L-R " + (commonState.StudioSet.PartMotionalSurround[(byte)partToRead].LR).ToString();
-                    tbStudioSetPartMotionalSurroundFB.Text = "F-B " + (commonState.StudioSet.PartMotionalSurround[(byte)partToRead].FB).ToString();
+                    tbStudioSetPartMotionalSurroundLR.Text = "L-R " + (commonState.StudioSet.PartMotionalSurround[(byte)partToRead].LR - 64).ToString();
+                    tbStudioSetPartMotionalSurroundFB.Text = "F-B " + (commonState.StudioSet.PartMotionalSurround[(byte)partToRead].FB - 64).ToString();
                     tbStudioSetPartMotionalSurroundWidth.Text = "Width " + (commonState.StudioSet.PartMotionalSurround[(byte)partToRead].Width).ToString();
                     tbStudioSetPartMotionalSurroundAmbienceSendLevel.Text = "Ambience send level " + (commonState.StudioSet.PartMotionalSurround[(byte)partToRead].AmbienceSendLevel).ToString();
                 }
+                PopHandleControlEvents();
             }
-            catch { }
-            PopHandleControlEvents();
         }
 
         private void ReadStudioSetPartToneName()
@@ -8819,14 +8817,14 @@ namespace Integra_7_Xamarin
             t.Trace("private void slStudioSetPartMotionalSurroundLR_ValueChanged (" + "object" + sender + ", " + "EventArgs" + e + ", " + ")");
             if (initDone && handleControlEvents)
             {
-                SetStudioSetStudioSetPartMotionalSurroundLR((Int32)slStudioSetPartMotionalSurroundLR.Value, cbStudioSetPartSelector.SelectedIndex);
+                SetStudioSetStudioSetPartMotionalSurroundLR((Int32)slStudioSetPartMotionalSurroundLR.Value + 64, cbStudioSetPartSelector.SelectedIndex);
             }
         }
 
         private void SetStudioSetStudioSetPartMotionalSurroundLR(Int32 p, Int32 part)
         {
             commonState.StudioSet.PartMotionalSurround[(byte)part].LR = (byte)p;
-            tbStudioSetPartMotionalSurroundLR.Text = "L-R " + (commonState.StudioSet.PartMotionalSurround[(byte)part].LR).ToString();
+            tbStudioSetPartMotionalSurroundLR.Text = "L-R " + (commonState.StudioSet.PartMotionalSurround[(byte)part].LR - 64).ToString();
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x44 };
             byte[] value = { (byte)commonState.StudioSet.PartMotionalSurround[(byte)part].LR };
             byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
@@ -8840,14 +8838,14 @@ namespace Integra_7_Xamarin
             t.Trace("private void slStudioSetPartMotionalSurroundFB_ValueChanged (" + "object" + sender + ", " + "EventArgs" + e + ", " + ")");
             if (initDone && handleControlEvents)
             {
-                SetStudioSetStudioSetPartMotionalSurroundFB((Int32)slStudioSetPartMotionalSurroundFB.Value, cbStudioSetPartSelector.SelectedIndex);
+                SetStudioSetStudioSetPartMotionalSurroundFB((Int32)slStudioSetPartMotionalSurroundFB.Value + 64, cbStudioSetPartSelector.SelectedIndex);
             }
         }
 
         private void SetStudioSetStudioSetPartMotionalSurroundFB(Int32 p, Int32 part)
         {
             commonState.StudioSet.PartMotionalSurround[(byte)part].FB = (byte)p;
-            tbStudioSetPartMotionalSurroundFB.Text = "F-B " + (commonState.StudioSet.PartMotionalSurround[(byte)part].FB).ToString();
+            tbStudioSetPartMotionalSurroundFB.Text = "F-B " + (commonState.StudioSet.PartMotionalSurround[(byte)part].FB - 64).ToString();
             byte[] address = { 0x18, 0x00, (byte)(0x20 + (byte)part), 0x46 };
             byte[] value = { (byte)commonState.StudioSet.PartMotionalSurround[(byte)part].FB };
             byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
@@ -11014,14 +11012,14 @@ namespace Integra_7_Xamarin
                 cbStudioSetPartMidiPhaseLock.IsChecked = commonState.StudioSet.PartMidi[part].PhaseLock;
                 SetStudioSetStudioSetPartMidiPhaseLock(commonState.StudioSet.PartMidi[part].PhaseLock, (byte)part);
             }
-            if (slStudioSetPartMotionalSurroundLR.Value != commonState.StudioSet.PartMotionalSurround[part].LR)
+            if (slStudioSetPartMotionalSurroundLR.Value != commonState.StudioSet.PartMotionalSurround[part].LR - 64)
             {
-                slStudioSetPartMotionalSurroundLR.Value = commonState.StudioSet.PartMotionalSurround[part].LR;
+                slStudioSetPartMotionalSurroundLR.Value = commonState.StudioSet.PartMotionalSurround[part].LR - 64;
                 SetStudioSetStudioSetPartMotionalSurroundLR(commonState.StudioSet.PartMotionalSurround[part].LR, (byte)part);
             }
-            if (slStudioSetPartMotionalSurroundFB.Value != commonState.StudioSet.PartMotionalSurround[part].FB)
+            if (slStudioSetPartMotionalSurroundFB.Value != commonState.StudioSet.PartMotionalSurround[part].FB - 64)
             {
-                slStudioSetPartMotionalSurroundFB.Value = commonState.StudioSet.PartMotionalSurround[part].FB;
+                slStudioSetPartMotionalSurroundFB.Value = commonState.StudioSet.PartMotionalSurround[part].FB - 64;
                 SetStudioSetStudioSetPartMotionalSurroundFB(commonState.StudioSet.PartMotionalSurround[part].FB, (byte)part);
             }
             if (slStudioSetPartMotionalSurroundWidth.Value != commonState.StudioSet.PartMotionalSurround[part].Width)

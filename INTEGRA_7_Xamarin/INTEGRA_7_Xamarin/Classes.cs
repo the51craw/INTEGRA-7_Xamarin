@@ -8358,6 +8358,9 @@ private ParameterSets sets;
         public Color LabelBackground { get; set; }
         public Color IsFavorite { get; set; }
         public Color Transparent { get; set; }
+        public Color MotionalSurroundPartLabelText { get; set; }
+        public Color MotionalSurroundPartLabelFocused { get; set; }
+        public Color MotionalSurroundPartLabelUnfocused { get; set; }
 
         public ColorSettings(_colorSettings colorSettings)
         {
@@ -8368,11 +8371,14 @@ private ParameterSets sets;
                 case _colorSettings.LIGHT:
                     Border = Color.Black;
                     ControlBackground = Color.White;
-                    Background = new Color(200, 200, 145);
+                    Background = new Color(0.85, 0.85, 0.6);
                     Text = Color.Black;
                     LabelBackground = Color.White;
                     IsFavorite = Color.LightGreen;
                     Transparent = new Color(0, 0, 0, 0);
+                    MotionalSurroundPartLabelText = new Color(1, 1, 0.5, 1);
+                    MotionalSurroundPartLabelFocused = new Color(0, 0.5, 0, 0.25);
+                    MotionalSurroundPartLabelUnfocused = new Color(0.5, 0.5, 0, 0.25);
                     break;
                 case _colorSettings.TEST:
                     ControlBackground = Color.Yellow;
