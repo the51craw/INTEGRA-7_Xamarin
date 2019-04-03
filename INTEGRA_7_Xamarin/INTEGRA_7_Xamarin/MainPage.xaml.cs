@@ -1,4 +1,4 @@
-﻿using Integra_7_Xamarin;
+﻿using INTEGRA_7_Xamarin;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
-namespace Integra_7_Xamarin
+namespace INTEGRA_7_Xamarin
 {
     public partial class MainPage : ContentPage
     {
@@ -65,7 +65,7 @@ namespace Integra_7_Xamarin
 
         private void MainStackLayout_SizeChanged(object sender, EventArgs e)
         {
-            uIHandler.SetFontSizes(null);
+            uIHandler.SetFontSizes(uIHandler.mainStackLayout);
         }
 
         public void SaveLocalValue(String Key, Object Value)

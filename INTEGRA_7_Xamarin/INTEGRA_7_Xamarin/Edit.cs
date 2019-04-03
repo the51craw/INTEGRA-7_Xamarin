@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
-namespace Integra_7_Xamarin
+namespace INTEGRA_7_Xamarin
 {
     public partial class UIHandler
     {
@@ -1552,112 +1552,176 @@ namespace Integra_7_Xamarin
                     break;
             }
             Edit_RenderRightColumn(Help.Show(currentProgramIndex, 0, 0, 0));
-            try
-            {
-                ((Button)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
-            }
-            catch
-            {
-                try
-                {
-                    ((ComboBox)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
-                }
-                catch
-                {
-                    try
-                    {
-                        ((Slider)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
-                    }
-                    catch
-                    {
-                        try
-                        {
-                            ((Switch)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
-                        }
-                        catch
-                        {
-                            try
-                            {
-                                ((LabeledSwitch)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
-                            }
-                            catch
-                            {
-                                try
-                                {
-                                    ((ListView)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
-                                }
-                                catch
-                                {
-                                    try
-                                    {
-                                        ((Picker)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
-                                    }
-                                    catch
-                                    {
-                                        try
-                                        {
-                                            ((LabeledPicker)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
-                                        }
-                                        catch
-                                        {
-                                            try
-                                            {
-                                                ((Label)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
-                                            }
-                                            catch
-                                            {
-                                                try
-                                                {
-                                                    ((Editor)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
-                                                }
-                                                catch
-                                                {
-                                                    try
-                                                    {
-                                                        ((Image)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
-                                                    }
-                                                    catch
-                                                    {
-                                                        try
-                                                        {
-                                                            ((LabeledText)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
-                                                        }
-                                                        catch
-                                                        {
-                                                            try
-                                                            {
-                                                                ((TextBox)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
-                                                            }
-                                                            catch
-                                                            {
-                                                                try
-                                                                {
-                                                                    ((LabeledTextInput)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
-                                                                }
-                                                                catch
-                                                                {
-                                                                    try
-                                                                    {
-                                                                        ((Grid)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
-                                                                    }
-                                                                    catch
-                                                                    {
-                                                                        t.Trace("Could not find type on line 1629");
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            //if ((((Object)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).GetType()) == typeof(Button))
+            //{
+            //    ((Button)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
+            //}
+            //else if ((((Object)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).GetType()) == typeof(ComboBox))
+            //{
+            //    ((ComboBox)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
+            //}
+            //else if ((((Object)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).GetType()) == typeof(Slider))
+            //{
+            //    ((Slider)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
+            //}
+            //else if ((((Object)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).GetType()) == typeof(Switch))
+            //{
+            //    ((Switch)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
+            //}
+            //else if ((((Object)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).GetType()) == typeof(LabeledSwitch))
+            //{
+            //    ((LabeledSwitch)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
+            //}
+            //else if ((((Object)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).GetType()) == typeof(ListView))
+            //{
+            //    ((ListView)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
+            //}
+            //else if ((((Object)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).GetType()) == typeof(Picker))
+            //{
+            //    ((Picker)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
+            //}
+            //else if ((((Object)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).GetType()) == typeof(LabeledPicker))
+            //{
+            //    ((LabeledPicker)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
+            //}
+            //else if ((((Object)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).GetType()) == typeof(Label))
+            //{
+            //    ((Label)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
+            //}
+            //else if ((((Object)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).GetType()) == typeof(Editor))
+            //{
+            //    ((Editor)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
+            //}
+            //else if ((((Object)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).GetType()) == typeof(Image))
+            //{
+            //    ((Image)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
+            //}
+            //else if ((((Object)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).GetType()) == typeof(LabeledText))
+            //{
+            //    ((LabeledText)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
+            //}
+            //else if ((((Object)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).GetType()) == typeof(TextBox))
+            //{
+            //    ((TextBox)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
+            //}
+            //else if ((((Object)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).GetType()) == typeof(LabeledTextInput))
+            //{
+            //    ((LabeledTextInput)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
+            //}
+            //else if ((((Object)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).GetType()) == typeof(Grid))
+            //{
+            //    ((Grid)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
+            //}
+            //else
+            //{
+            //    t.Trace("Could not find type on line 1617");
+            //}
+            //try
+            //{
+            //    ((Button)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
+            //}
+            //catch
+            //{
+            //    try
+            //    {
+            //        ((ComboBox)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
+            //    }
+            //    catch
+            //    {
+            //        try
+            //        {
+            //            ((Slider)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
+            //        }
+            //        catch
+            //        {
+            //            try
+            //            {
+            //                ((Switch)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
+            //            }
+            //            catch
+            //            {
+            //                try
+            //                {
+            //                    ((LabeledSwitch)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
+            //                }
+            //                catch
+            //                {
+            //                    try
+            //                    {
+            //                        ((ListView)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
+            //                    }
+            //                    catch
+            //                    {
+            //                        try
+            //                        {
+            //                            ((Picker)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
+            //                        }
+            //                        catch
+            //                        {
+            //                            try
+            //                            {
+            //                                ((LabeledPicker)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
+            //                            }
+            //                            catch
+            //                            {
+            //                                try
+            //                                {
+            //                                    ((Label)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
+            //                                }
+            //                                catch
+            //                                {
+            //                                    try
+            //                                    {
+            //                                        ((Editor)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
+            //                                    }
+            //                                    catch
+            //                                    {
+            //                                        try
+            //                                        {
+            //                                            ((Image)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
+            //                                        }
+            //                                        catch
+            //                                        {
+            //                                            try
+            //                                            {
+            //                                                ((LabeledText)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
+            //                                            }
+            //                                            catch
+            //                                            {
+            //                                                try
+            //                                                {
+            //                                                    ((TextBox)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
+            //                                                }
+            //                                                catch
+            //                                                {
+            //                                                    try
+            //                                                    {
+            //                                                        ((LabeledTextInput)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
+            //                                                    }
+            //                                                    catch
+            //                                                    {
+            //                                                        try
+            //                                                        {
+            //                                                            ((Grid)((Grid)((Grid)ControlsGrid.Children[0]).Children[0]).Children[0]).Focus();
+            //                                                        }
+            //                                                        catch
+            //                                                        {
+            //                                                            t.Trace("Could not find type on line 1646");
+            //                                                        }
+            //                                                    }
+            //                                                }
+            //                                            }
+            //                                        }
+            //                                    }
+            //                                }
+            //                            }
+            //                        }
+            //                    }
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
             //handleControlEvents = currentHandleControlEvents;
         }
 

@@ -5,7 +5,7 @@ using System.Linq;
 using Foundation;
 using UIKit;
 
-namespace Integra_7_Xamarin.iOS
+namespace INTEGRA_7_Xamarin.iOS
 {
     public class Application
     {

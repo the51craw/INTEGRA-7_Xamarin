@@ -9,13 +9,13 @@ using Plugin.FilePicker.Abstractions;
 using System.IO.MemoryMappedFiles;
 using System.IO.Pipes;
 
-namespace Integra_7_Xamarin
+namespace INTEGRA_7_Xamarin
 {
     [DataContract]
     public class StudioSet
     {
         //[IgnoreDataMember]
-        //HBTrace t = new HBTrace("class StudioSet");
+        HBTrace t = new HBTrace("class StudioSet");
         //[DataMember]
         //public StudioSet_Setup Setup { get; set; }
         [DataMember]

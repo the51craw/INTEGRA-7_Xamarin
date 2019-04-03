@@ -10,7 +10,7 @@ using Plugin.FilePicker.Abstractions;
 using Plugin.FilePicker;
 using Xamarin.Forms;
 
-namespace Integra_7_Xamarin
+namespace INTEGRA_7_Xamarin
 {
     /**
      * This class holds all settings for a Super Natural synth tone.

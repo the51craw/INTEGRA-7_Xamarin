@@ -8,7 +8,7 @@ using System.Text;
 
 using Xamarin.Forms;
 
-namespace Integra_7_Xamarin
+namespace INTEGRA_7_Xamarin
 {
     public sealed partial class UIHandler
     {

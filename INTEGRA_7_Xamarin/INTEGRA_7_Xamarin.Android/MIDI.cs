@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 //[assembly: Dependency(typeof(MIDI))]
 
-namespace Integra_7_Xamarin.Droid
+namespace INTEGRA_7_Xamarin.Droid
 {
     // This midi class does not implement MIDI, but it is called the same way as for other platforms.
     // Here we only forward all MIDI calls to MainActivity which in turn uses USB to
@@ -18,7 +18,7 @@ namespace Integra_7_Xamarin.Droid
         public byte MidiInPortChannel { get; set; }
         public Int32 MidiOutPortSelectedIndex { get; set; }
         public Int32 MidiInPortSelectedIndex { get; set; }
-        public Integra_7_Xamarin.MainPage mainPage;
+        public INTEGRA_7_Xamarin.MainPage mainPage;
         public byte[] rawData;
         public Timer timer;
         public Boolean MessageReceived = false;
@@ -31,11 +31,11 @@ namespace Integra_7_Xamarin.Droid
 
         public MIDI() { }
 
-        public void Init(Integra_7_Xamarin.MainPage mainPage, String deviceName, Picker OutputDeviceSelector, Picker InputDeviceSelector, byte MidiOutPortChannel, byte MidiInPortChannel)
+        public void Init(INTEGRA_7_Xamarin.MainPage mainPage, String deviceName, Picker OutputDeviceSelector, Picker InputDeviceSelector, byte MidiOutPortChannel, byte MidiInPortChannel)
         {
         }
 
-        public void Init(Integra_7_Xamarin.MainPage mainPage, String deviceName, Picker OutputDeviceSelector, Picker InputDeviceSelector, object MainActivity, byte MidiOutPortChannel, byte MidiInPortChannel)
+        public void Init(INTEGRA_7_Xamarin.MainPage mainPage, String deviceName, Picker OutputDeviceSelector, Picker InputDeviceSelector, object MainActivity, byte MidiOutPortChannel, byte MidiInPortChannel)
         {
             mainActivity = (MainActivity)MainActivity;
             this.MainPage_Portable = mainPage;

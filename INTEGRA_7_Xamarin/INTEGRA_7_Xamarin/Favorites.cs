@@ -11,7 +11,7 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Xml;
 
-namespace Integra_7_Xamarin
+namespace INTEGRA_7_Xamarin
 {
     public partial class UIHandler
     {
@@ -731,12 +731,12 @@ namespace Integra_7_Xamarin
                     Favorites_UpdateFoldersList();
                     break;
                 case FavoritesAction.REMOVE:
-                Favorites_tbHelp.Text = "The folder(s) that contains the Tone " + commonState.CurrentTone.Name +
-                    " has been marked with a \'*\'. Doubletap the folders you wish to remove the Tone \'" +
-                    commonState.CurrentTone.Name + "\' from (or select the folder name and click 'Delete " +
-                    commonState.CurrentTone.Name + "').";
-                Favorites_btnDeleteFavorite.Content = "Delete " + commonState.CurrentTone.Name;
-                Favorites_UpdateFoldersList();
+                    Favorites_tbHelp.Text = "The folder(s) that contains the Tone " + commonState.CurrentTone.Name +
+                        " has been marked with a \'*\'. Doubletap the folders you wish to remove the Tone \'" +
+                        commonState.CurrentTone.Name + "\' from (or select the folder name and click 'Delete " +
+                        commonState.CurrentTone.Name + "').";
+                    Favorites_btnDeleteFavorite.Content = "Delete " + commonState.CurrentTone.Name;
+                    Favorites_UpdateFoldersList();
                     break;
             }
         }

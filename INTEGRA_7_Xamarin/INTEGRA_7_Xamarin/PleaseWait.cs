@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
-namespace Integra_7_Xamarin
+namespace INTEGRA_7_Xamarin
 {
     public enum WaitingFor
     {
@@ -186,12 +186,13 @@ namespace Integra_7_Xamarin
                     {
                         if (!commonState.Midi.MidiIsReady())
                         {
-                            commonState.Midi.Init(mainPage, "INTEGRA-7", Librarian_midiOutputDevice, Librarian_midiInputDevice, deviceSpecifics, 0, 0);
+                            commonState.Midi.Init(mainPage, "INTEGRA-7", deviceSpecifics, 0, 0);
                         }
                     }
                     else
                     {
-                        commonState.Midi.Init(mainPage, "INTEGRA-7", Librarian_midiOutputDevice, Librarian_midiInputDevice, 0, 0);
+                        MidiState = MIDIState.INITIALIZING;
+                        commonState.Midi.Init(mainPage, "INTEGRA-7", 0, 0);
                     }
                     pb_WaitingProgress.Progress = pb_WaitingProgress.Progress + ((1 - pb_WaitingProgress.Progress) / 100);
                     if (commonState.Midi.MidiIsReady())
@@ -210,7 +211,7 @@ namespace Integra_7_Xamarin
                         {
                             // See if a connection via 5-pin connector and another MIDI device has worked before
                             MidiInterfaceName = (String)mainPage.LoadLocalValue("MidiDevice");
-                            commonState.Midi.Init(mainPage, MidiInterfaceName, Librarian_midiOutputDevice, Librarian_midiInputDevice, 0, 0);
+                            commonState.Midi.Init(mainPage, MidiInterfaceName, 0, 0);
                             if (commonState.Midi.MidiIsReady())
                             {
                                 MidiState = MIDIState. INITIALIZED;
@@ -219,9 +220,9 @@ namespace Integra_7_Xamarin
                         }
                         else
                         {
-                            // Hold this timer loop (MIDIState.INITIALIZING does not do anything) and ask the user
+                            // Hold this timer loop (MIDIState.WAITING_FOR_I7 does not do anything) and ask the user
                             // for a MIDI interface to use:
-                            MidiState = MIDIState.INITIALIZING;
+                            MidiState = MIDIState.WAITING_FOR_I7;
                             mainPage.SaveLocalValue("MidiDevice", null);
                             commonState.Midi.MakeMidiDeviceList();
                             MidiInterfaceName = await mainPage.DisplayActionSheet("Please select MIDI interface:",
@@ -233,7 +234,7 @@ namespace Integra_7_Xamarin
                             else
                             {
                                 mainPage.SaveLocalValue("MidiDevice", MidiInterfaceName);
-                                commonState.Midi.Init(mainPage, MidiInterfaceName, Librarian_midiOutputDevice, Librarian_midiInputDevice, 0, 0);
+                                commonState.Midi.Init(mainPage, MidiInterfaceName, 0, 0);
                                 pb_WaitingProgress.Progress = pb_WaitingProgress.Progress + ((1 - pb_WaitingProgress.Progress) / 100);
                                 if (commonState.Midi.MidiIsReady())
                                 {
@@ -253,6 +254,15 @@ namespace Integra_7_Xamarin
                 }
             }
             else if (MidiState == MIDIState.INITIALIZING)
+            {
+                if (commonState.Midi.MidiIsReady())
+                {
+                    pb_WaitingProgress.Progress = 1;
+                    MidiState = MIDIState.INITIALIZED;
+                }
+            }
+
+            else if (MidiState == MIDIState.WAITING_FOR_I7)
             {
             }
 

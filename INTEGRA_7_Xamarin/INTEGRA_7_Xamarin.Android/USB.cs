@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System;
 using Java.Nio;
 
-namespace Integra_7_Xamarin.Droid
+namespace INTEGRA_7_Xamarin.Droid
 {
     [Android.Runtime.Register("eu.mrmartin.MIDI", "(Ljava/nio/ByteBuffer;I)Z", "GetQueue_Ljava_nio_ByteBuffer_IHandler")]
 

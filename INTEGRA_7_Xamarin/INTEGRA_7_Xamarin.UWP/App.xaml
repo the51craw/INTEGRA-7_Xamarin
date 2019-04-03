@@ -1,8 +1,8 @@
 ﻿<Application
-    x:Class="Integra_7_Xamarin.UWP.App"
+    x:Class="INTEGRA_7_Xamarin.UWP.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:Integra_7_Xamarin.UWP"
+    xmlns:local="using:INTEGRA_7_Xamarin.UWP"
     RequestedTheme="Light">
 
 </Application>

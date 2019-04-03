@@ -7,18 +7,18 @@ using Android.Views;
 using Android.Widget;
 using Android.OS;
 using Android.Hardware.Usb;
-using Integra_7_Xamarin;
+using INTEGRA_7_Xamarin;
 using Xamarin.Forms;
-using Integra_7_Xamarin.Droid;
+using INTEGRA_7_Xamarin.Droid;
 using Android.Content;
 using System.Timers;
 
 [assembly: Dependency(typeof(MIDI))]
 [assembly: Dependency(typeof(MyFileIO))]
 
-namespace Integra_7_Xamarin.Droid
+namespace INTEGRA_7_Xamarin.Droid
 {
-    [Activity(Label = "Integra_7_Xamarin", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+    [Activity(Label = "INTEGRA_7_Xamarin", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     [IntentFilter(new[] { UsbManager.ActionUsbDeviceAttached })]
 
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
@@ -36,8 +36,8 @@ namespace Integra_7_Xamarin.Droid
         public PendingIntent pendingIntent;
 //        private Timer timer;
 
-        // For accessing Integra_7_Xamarin.MainPage from UWP:
-        private Integra_7_Xamarin.MainPage MainPage_Portable;
+        // For accessing INTEGRA_7_Xamarin.MainPage from UWP:
+        private INTEGRA_7_Xamarin.MainPage MainPage_Portable;
 
         public MainActivity mainActivity;
 
@@ -73,8 +73,8 @@ namespace Integra_7_Xamarin.Droid
         {
             Xamarin.Forms.DependencyService.Register<IMidi>();
 
-            // Get Integra_7_Xamarin.MainPage:
-            MainPage_Portable = Integra_7_Xamarin.MainPage.GetMainPage();
+            // Get INTEGRA_7_Xamarin.MainPage:
+            MainPage_Portable = INTEGRA_7_Xamarin.MainPage.GetMainPage();
             UIHandler.appType = UIHandler._appType.ANDROID;
 
             // Pre-draw librarian page, we need the midi pickers before we can create MIDI:

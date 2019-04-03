@@ -8,7 +8,7 @@ using Xamarin.Forms;
 using Plugin.FilePicker;
 using Plugin.FilePicker.Abstractions;
 
-namespace Integra_7_Xamarin
+namespace INTEGRA_7_Xamarin
 {
     /**
      * All pages are dynamically created here.
@@ -44,6 +44,7 @@ namespace Integra_7_Xamarin
         {
             NOT_INITIALIZED,
             INITIALIZING,
+            WAITING_FOR_I7,
             INITIALIZING_FAILED,
             MIDI_NOT_AVAILABLE,
             INITIALIZED,
@@ -138,7 +139,7 @@ namespace Integra_7_Xamarin
         //SuperNATURALDrumKitInstrumentList superNATURALDrumKitInstrumentList = new SuperNATURALDrumKitInstrumentList();
         public byte[] rawData;
         Double lastfontSize = 15;
-        Boolean stopTimer = false;
+        public static Boolean StopTimer = false;
         public static Int32 minimumHeightRequest = 14;
         private NeedsToSetFontSizes needsToSetFontSizes = NeedsToSetFontSizes.NONE;
 
@@ -172,7 +173,7 @@ namespace Integra_7_Xamarin
         //...
 
         // Constructor
-        public UIHandler(StackLayout mainStackLayout, Integra_7_Xamarin.MainPage mainPage)
+        public UIHandler(StackLayout mainStackLayout, INTEGRA_7_Xamarin.MainPage mainPage)
         {
             this.mainStackLayout = mainStackLayout;
             this.mainPage = mainPage;
@@ -210,58 +211,66 @@ namespace Integra_7_Xamarin
         /// </summary>
         public void StartTimer()
         {
-            Device.StartTimer(TimeSpan.FromMilliseconds(1), () =>
+            Device.BeginInvokeOnMainThread(() =>
             {
-                if (stopTimer)
+                Device.StartTimer(TimeSpan.FromMilliseconds(1), () =>
                 {
-                    return false;
-                }
-                switch (currentPage)
-                {
-                    case CurrentPage.PLEASE_WAIT:
-                        PleaseWait_Timer_Tick();
-                        break;
-                    case CurrentPage.LIBRARIAN:
-                        Librarian_Timer_Tick();
-                        break;
-                    case CurrentPage.EDIT_TONE:
-                        Edit_Timer_Tick();
-                        break;
-                    case CurrentPage.EDIT_STUDIO_SET:
-                        EditStudioSet_Timer_Tick();
-                        break;
-                    case CurrentPage.MOTIONAL_SURROUND:
-                        MotionalSurround_Timer_Tick();
-                        break;
-                }
+                    if (StopTimer)
+                    {
+                        return false;
+                    }
+                    switch (currentPage)
+                    {
+                        case CurrentPage.PLEASE_WAIT:
+                            PleaseWait_Timer_Tick();
+                            break;
+                        case CurrentPage.LIBRARIAN:
+                            Librarian_Timer_Tick();
+                            break;
+                        case CurrentPage.EDIT_TONE:
+                            Edit_Timer_Tick();
+                            break;
+                        case CurrentPage.EDIT_STUDIO_SET:
+                            EditStudioSet_Timer_Tick();
+                            break;
+                        case CurrentPage.MOTIONAL_SURROUND:
+                            MotionalSurround_Timer_Tick();
+                            break;
+                    }
 
-                switch (needsToSetFontSizes)
-                {
-                    case NeedsToSetFontSizes.LIBRARIAN:
-                        needsToSetFontSizes = NeedsToSetFontSizes.NONE;
-                        SetFontSizes(Librarian_StackLayout);
-                        break;
-                    case NeedsToSetFontSizes.FAVORITES:
-                        needsToSetFontSizes = NeedsToSetFontSizes.NONE;
-                        SetFontSizes(Favorites_StackLayout);
-                        break;
-                    case NeedsToSetFontSizes.EDIT:
-                        needsToSetFontSizes = NeedsToSetFontSizes.NONE;
-                        SetFontSizes(Edit_StackLayout);
-                        break;
-                    case NeedsToSetFontSizes.EDIT_STUDIO_SET:
-                        needsToSetFontSizes = NeedsToSetFontSizes.NONE;
-                        SetFontSizes(StudioSetEditor_StackLayout);
-                        break;
-                    case NeedsToSetFontSizes.MOTIONAL_SURROUND:
-                        needsToSetFontSizes = NeedsToSetFontSizes.NONE;
-                        SetFontSizes(MotionalSurround_StackLayout);
-                        break;
-                }
+                    switch (needsToSetFontSizes)
+                    {
+                        case NeedsToSetFontSizes.LIBRARIAN:
+                            needsToSetFontSizes = NeedsToSetFontSizes.NONE;
+                            SetFontSizes(Librarian_StackLayout);
+                            break;
+                        case NeedsToSetFontSizes.FAVORITES:
+                            needsToSetFontSizes = NeedsToSetFontSizes.NONE;
+                            SetFontSizes(Favorites_StackLayout);
+                            break;
+                        case NeedsToSetFontSizes.EDIT:
+                            needsToSetFontSizes = NeedsToSetFontSizes.NONE;
+                            SetFontSizes(Edit_StackLayout);
+                            break;
+                        case NeedsToSetFontSizes.EDIT_STUDIO_SET:
+                            needsToSetFontSizes = NeedsToSetFontSizes.NONE;
+                            SetFontSizes(StudioSetEditor_StackLayout);
+                            break;
+                        case NeedsToSetFontSizes.MOTIONAL_SURROUND:
+                            needsToSetFontSizes = NeedsToSetFontSizes.NONE;
+                            SetFontSizes(MotionalSurround_StackLayout);
+                            break;
+                    }
 
-                return true;
+                    return true;
+                });
             });
         }
+
+        //public static void KillTimer()
+        //{
+        //    StopTimer = true;
+        //}
 
         /// <summary>
         /// Device-specific classes fills out rawData and then calls MidiInPort_MessageRecceived().
@@ -486,25 +495,25 @@ namespace Integra_7_Xamarin
         {
             //t.Trace("private void Waiting(" + on.ToString() + ")");
             // Maybe also test for platform and use different methods?
-            if (stackLayout != null && PleaseWait_StackLayout != null)
-            {
-                if (on)
-                {
-                    stackLayout.IsVisible = false;
-                    ((TextBlock)((Grid)((Grid)((Grid)PleaseWait_StackLayout.Children[0]).
-                        Children[0]).Children[0]).Children[0]).Text = WaitText;
-                    PleaseWait_StackLayout.IsVisible = true;
-                    //Window.Current.CoreWindow.PointerCursor =
-                    //    new Windows.UI.Core.CoreCursor(Windows.UI.Core.CoreCursorType.Wait, 1);
-                }
-                else
-                {
-                    stackLayout.IsVisible = true;
-                    PleaseWait_StackLayout.IsVisible = false;
-                    //Window.Current.CoreWindow.PointerCursor =
-                    //    new Windows.UI.Core.CoreCursor(Windows.UI.Core.CoreCursorType.Arrow, 1);
-                }
-            }
+            //if (stackLayout != null && PleaseWait_StackLayout != null)
+            //{
+            //    if (on)
+            //    {
+            //        stackLayout.IsVisible = false;
+            //        ((TextBlock)((Grid)((Grid)((Grid)PleaseWait_StackLayout.Children[0]).
+            //            Children[0]).Children[0]).Children[0]).Text = WaitText;
+            //        PleaseWait_StackLayout.IsVisible = true;
+            //        //Window.Current.CoreWindow.PointerCursor =
+            //        //    new Windows.UI.Core.CoreCursor(Windows.UI.Core.CoreCursorType.Wait, 1);
+            //    }
+            //    else
+            //    {
+            //        stackLayout.IsVisible = true;
+            //        PleaseWait_StackLayout.IsVisible = false;
+            //        //Window.Current.CoreWindow.PointerCursor =
+            //        //    new Windows.UI.Core.CoreCursor(Windows.UI.Core.CoreCursorType.Arrow, 1);
+            //    }
+            //}
         }
 
         private async void ShowMessage(String message)

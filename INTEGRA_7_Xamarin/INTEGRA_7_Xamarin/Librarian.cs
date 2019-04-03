@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-//using Integra_7_Xamarin.Helpers;
+//using INTEGRA_7_Xamarin.Helpers;
 using Xamarin.Forms;
 
-namespace Integra_7_Xamarin
+namespace INTEGRA_7_Xamarin
 {
     public partial class UIHandler
     {
@@ -41,8 +41,8 @@ namespace Integra_7_Xamarin
         public TextBlock tbPleaseWait;
 
         // Librarian controls:
-        public Picker Librarian_midiOutputDevice { get; set; }
-        public Picker Librarian_midiInputDevice { get; set; }
+        //public Picker Librarian_midiOutputDevice { get; set; }
+        //public Picker Librarian_midiInputDevice { get; set; }
         public Picker Librarian_midiOutputChannel { get; set; }
         public Picker Librarian_midiInputChannel { get; set; }
         //public Image Librarian_Keyboard { get; set; }
@@ -284,6 +284,7 @@ namespace Integra_7_Xamarin
 
         public void DrawLibrarianPage()
         {
+            HBTrace t = new HBTrace("DrawLibrarianPage");
             //x = -1;
             //y = -1;
 
@@ -373,8 +374,8 @@ namespace Integra_7_Xamarin
             Librarian_gridKeyboard = new Grid();
 
             // Make pickers for MIDI:
-            Librarian_midiOutputDevice = new Picker();
-            Librarian_midiInputDevice = new Picker();
+            //Librarian_midiOutputDevice = new Picker();
+            //Librarian_midiInputDevice = new Picker();
             Librarian_midiOutputChannel = new Picker();
             for (Int32 i = 0; i < 16; i++)
             {
@@ -389,7 +390,7 @@ namespace Integra_7_Xamarin
                 Librarian_midiInputChannel.Items.Add(temp);
             }
             Librarian_midiInputChannel.SelectedIndex = 0;
-            Librarian_midiInputDevice.IsVisible = false;
+            //Librarian_midiInputDevice.IsVisible = false;
             Librarian_midiInputChannel.IsVisible = false;
 
             // Make labeled editor fields:
@@ -562,7 +563,7 @@ namespace Integra_7_Xamarin
             Librarian_filterPresetAndUser.Clicked += Librarian_FilterPresetAndUser_Clicked;
             Librarian_lvToneNames.ItemSelected += Librarian_LvToneNames_ItemSelected;
             //Librarian_lvSearchResult.ItemSelected += Librarian_lvSearchResult_ItemSelected;
-            Librarian_midiOutputDevice.SelectedIndexChanged += Librarian_MidiOutputDevice_SelectedIndexChanged;
+            //Librarian_midiOutputDevice.SelectedIndexChanged += Librarian_MidiOutputDevice_SelectedIndexChanged;
             Librarian_midiOutputChannel.SelectedIndexChanged += Librarian_MidiOutputChannel_SelectedIndexChanged;
             Librarian_tbSearch.Editor.TextChanged += Librarian_Editor_TextChanged;
             Librarian_btnEditTone.Clicked += Librarian_BtnEditTone_Clicked;
@@ -688,6 +689,7 @@ namespace Integra_7_Xamarin
                 new byte[] { 5, 5, 5, 3 }, false, true)).Row);
             // Make the entire grid background black to show as borders around controls by using margins:
             Librarian_StackLayout.BackgroundColor = colorSettings.Background;
+            t.Trace("Librarian created ");
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -805,6 +807,7 @@ namespace Integra_7_Xamarin
             //}
             if (showCurrentToneReadFromI7)
             {
+                showCurrentToneReadFromI7 = false;
                 if (commonState.CurrentTone.ToneIndex > -1)
                 {
                     updateIntegra7 = false;
@@ -818,7 +821,6 @@ namespace Integra_7_Xamarin
                     //Librarian_lvGroups.SelectedItem = commonState.ToneList.Tones[commonState.CurrentTone.ToneIndex][0];
                     //Librarian_lvCategories.SelectedItem = commonState.ToneList.Tones[commonState.CurrentTone.ToneIndex][1];
                     //Librarian_lvToneNames.SelectedItem = commonState.ToneList.Tones[commonState.CurrentTone.ToneIndex][3];
-                    showCurrentToneReadFromI7 = false;
                     updateIntegra7 = true;
                     PopHandleControlEvents();
                 }
@@ -1701,13 +1703,13 @@ namespace Integra_7_Xamarin
 
         }
 
-        private void Librarian_MidiOutputDevice_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (initDone)
-            {
-                commonState.Midi.OutputDeviceChanged((Picker)sender);
-            }
-        }
+        //private void Librarian_MidiOutputDevice_SelectedIndexChanged(object sender, EventArgs e)
+        //{
+        //    if (initDone)
+        //    {
+        //        commonState.Midi.OutputDeviceChanged((Picker)sender);
+        //    }
+        //}
 
         private void Librarian_Editor_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -2654,7 +2656,7 @@ namespace Integra_7_Xamarin
     }
     class Note
     {
-        //HBTrace t = new HBTrace("class Note");
+        HBTrace t = new HBTrace("class Note");
         public byte NoteNumber { get; set; }
         public byte Velocity { get; set; }
     }

@@ -11,7 +11,7 @@ using Android.Views;
 using Android.Widget;
 using Android.Hardware.Usb;
 
-namespace Integra_7_Xamarin.Droid
+namespace INTEGRA_7_Xamarin.Droid
 {
     public class UsbReceiver : BroadcastReceiver
     {

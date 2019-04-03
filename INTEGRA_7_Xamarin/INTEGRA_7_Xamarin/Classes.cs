@@ -6,21 +6,21 @@ using System.Text;
 //using System.Threading.Tasks;
 using Xamarin.Forms;
 using System.Runtime.Serialization;
-using Integra_7_Xamarin;
+using INTEGRA_7_Xamarin;
 using Switch = Xamarin.Forms.Switch;
 
-namespace Integra_7_Xamarin
+namespace INTEGRA_7_Xamarin
 {
     public class HBTrace
     {
-        Int32 debugLevel = -1; // 0 or greater enables if not given in call
+        Int32 debugLevel = 0; // 0 or greater enables if not given in call
         //StorageFolder localFolder = null;
         //StorageFile sampleFile = null;
 
         public HBTrace(String s, Int32 DebugLevel = 0)
         {
             //localFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
-            Debug.WriteLine(s);
+            Debug.WriteLine(s + " " + DateTime.Now.ToLongTimeString());
         }
 
         public void Trace(String s, Int32 DebugLevel = 0, Double ticks = 0)
@@ -33,7 +33,7 @@ namespace Integra_7_Xamarin
                 //           CreationCollisionOption.OpenIfExists);
                 //}
                 //await FileIO.AppendTextAsync(sampleFile, ticks > 0 ? ticks.ToString() + " " : "" + s + "\r\n");
-                Debug.WriteLine(s);
+                Debug.WriteLine(s + " " + DateTime.Now.ToLongTimeString());
             }
         }
     }
@@ -5128,7 +5128,7 @@ namespace Integra_7_Xamarin
 
         public SuperNATURALAcousticToneVariations()
         {
-            SuperNATURALAcousticToneVariation = new List<Integra_7_Xamarin.SuperNATURALAcousticToneVariation>();
+            SuperNATURALAcousticToneVariation = new List<INTEGRA_7_Xamarin.SuperNATURALAcousticToneVariation>();
             // Bank, Instrument number (VariationIndex), ?, Name, Variation 1, Variation 2, Variation 3, Variation 4
             SuperNATURALAcousticToneVariation.Add(new SuperNATURALAcousticToneVariation("INT", 24, 0, "Glockenspiel", "Dead Stroke", "", "", ""));
             SuperNATURALAcousticToneVariation.Add(new SuperNATURALAcousticToneVariation("INT", 25, 0, "Vibraphone", "Dead Stroke", "Tremolo Sw", "", ""));

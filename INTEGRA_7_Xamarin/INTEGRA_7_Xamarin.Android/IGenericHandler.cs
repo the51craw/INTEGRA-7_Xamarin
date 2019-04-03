@@ -1,4 +1,4 @@
-﻿namespace Integra_7_Xamarin.Droid
+﻿namespace INTEGRA_7_Xamarin.Droid
 {
     internal interface IGenericHandler
     {

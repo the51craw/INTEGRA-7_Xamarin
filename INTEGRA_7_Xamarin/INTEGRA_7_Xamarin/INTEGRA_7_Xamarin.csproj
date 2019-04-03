@@ -9,13 +9,13 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
 
-  <ItemGroup>
+<!--  <ItemGroup>
+    <Compile Remove="Settings.cs" />
     <Compile Remove="StudioSetEditor_.cs" />
   </ItemGroup>
-
+-->
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="6.2.8" />
-    <PackageReference Include="Xam.Plugins.Settings" Version="3.1.1" />
     <PackageReference Include="Xamarin.Forms" Version="3.4.0.1029999" />
     <PackageReference Include="Xamarin.Plugin.FilePicker" Version="2.0.135" />
   </ItemGroup>

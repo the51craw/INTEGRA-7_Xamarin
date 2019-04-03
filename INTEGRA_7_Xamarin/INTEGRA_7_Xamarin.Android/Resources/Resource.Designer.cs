@@ -9,9 +9,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: global::Android.Runtime.ResourceDesignerAttribute("Integra_7_Xamarin.Droid.Resource", IsApplication=true)]
+[assembly: global::Android.Runtime.ResourceDesignerAttribute("INTEGRA_7_Xamarin.Droid.Resource", IsApplication=true)]
 
-namespace Integra_7_Xamarin.Droid
+namespace INTEGRA_7_Xamarin.Droid
 {
 	
 	
@@ -26,7 +26,7 @@ namespace Integra_7_Xamarin.Droid
 		
 		public static void UpdateIdValues()
 		{
-			global::Xamarin.Forms.Platform.Android.Resource.Attribute.actionBarSize = global::Integra_7_Xamarin.Droid.Resource.Attribute.actionBarSize;
+			global::Xamarin.Forms.Platform.Android.Resource.Attribute.actionBarSize = global::INTEGRA_7_Xamarin.Droid.Resource.Attribute.actionBarSize;
 		}
 		
 		public partial class Animation

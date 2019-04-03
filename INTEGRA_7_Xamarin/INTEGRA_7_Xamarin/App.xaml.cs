@@ -3,7 +3,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
-namespace Integra_7_Xamarin
+namespace INTEGRA_7_Xamarin
 {
     public partial class App : Application
     {

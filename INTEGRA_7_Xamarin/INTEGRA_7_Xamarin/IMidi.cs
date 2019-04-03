@@ -5,14 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
-namespace Integra_7_Xamarin
+namespace INTEGRA_7_Xamarin
 {
     public interface IMidi
     {
-        void Init(Integra_7_Xamarin.MainPage mainPage, String deviceName,
-            Picker OutputDeviceSelector, Picker InputDeviceSelector, byte MidiOutPortChannel, byte MidiInPortChannel);
+        void Init(INTEGRA_7_Xamarin.MainPage mainPage, String deviceName,
+            byte MidiOutPortChannel, byte MidiInPortChannel);
 
-        void Init(Integra_7_Xamarin.MainPage mainPage, String deviceName, Picker OutputDeviceSelector, Picker InputDeviceSelector,
+        void Init(INTEGRA_7_Xamarin.MainPage mainPage, String deviceName,
             object DeviceSpecificObject, byte MidiOutPortChannel, byte MidiInPortChannel);
 
         Boolean MidiIsReady();
@@ -35,9 +35,9 @@ namespace Integra_7_Xamarin
 
         byte[] SystemExclusiveRQ1Message(byte[] Address, byte[] Length);
 
-        void OutputDeviceChanged(Picker DeviceSelector);
+        //void OutputDeviceChanged(Picker DeviceSelector);
 
-        void InputDeviceChanged(Picker DeviceSelector);
+        //void InputDeviceChanged(Picker DeviceSelector);
 
         byte GetMidiOutPortChannel();
 

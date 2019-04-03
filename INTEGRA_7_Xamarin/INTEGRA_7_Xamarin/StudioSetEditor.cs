@@ -7,7 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
-namespace Integra_7_Xamarin
+namespace INTEGRA_7_Xamarin
 {
     public partial class UIHandler
     {
@@ -3484,10 +3484,17 @@ namespace Integra_7_Xamarin
                         // All titles received, set a status that will be caught in Timer_Tick:
                         studioSetEditor_State = StudioSetEditor_State.DONE;
 
+                        // Restore the saved studio set:
+               //         SetStudioSet(commonState.CurrentStudioSet);
+
                         // PleaseWait has had the control so far, so take it and let Studio set editor be visible.
-                        //currentPage = CurrentPage.EDIT_STUDIO_SET;
-                        //PleaseWait_StackLayout.IsVisible = false;          Moved to PleaseWait.cs!
-                        //StudioSetEditor_StackLayout.IsVisible = true;
+               //         studioSetNamesJustRead = StudioSetNames.READ_BUT_NOT_LISTED;
+               //         if (continueTo == CurrentPage.LIBRARIAN)
+               //         {
+               //             PleaseWait_StackLayout.IsVisible = false;
+               //             ShowLibrarianPage();
+               //         }
+                        currentPage = continueTo;
                     }
                 }
                 else

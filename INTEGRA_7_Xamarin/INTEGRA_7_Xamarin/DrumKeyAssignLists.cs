@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Integra_7_Xamarin
+namespace INTEGRA_7_Xamarin
 {
     public class DrumKeyAssignLists
     {

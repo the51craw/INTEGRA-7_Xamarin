@@ -8,22 +8,16 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Xamarin.Forms;
-using Integra_7_Xamarin.UWP;
+using INTEGRA_7_Xamarin.UWP;
 using Windows.Storage.Pickers;
 using Windows.Storage;
 
-//[assembly: Xamarin.Forms.Dependency(typeof(GenericHandlerInterface))]
-
 [assembly: Dependency(typeof(MyFileIO))]
 
-namespace Integra_7_Xamarin.UWP
+namespace INTEGRA_7_Xamarin.UWP
 {
     public class MyFileIO : IMyFileIO
     {
-        //public void GenericHandler(object sender, object e)
-        //{
-        //}
-
         public MyFileIO()
         {
 
@@ -57,7 +51,7 @@ namespace Integra_7_Xamarin.UWP
             catch { }
         }
 
-        public void SetMainPagePortable(Integra_7_Xamarin.MainPage mainPage)
+        public void SetMainPagePortable(INTEGRA_7_Xamarin.MainPage mainPage)
         {
             throw new NotImplementedException();
         }

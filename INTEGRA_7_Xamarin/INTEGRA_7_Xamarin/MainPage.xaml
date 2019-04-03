@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:INTEGRA_7_Xamarin"
-             x:Class="Integra_7_Xamarin.MainPage">
+             x:Class="INTEGRA_7_Xamarin.MainPage">
 
     <ContentPage.Content
         VerticalOptions="Fill" 

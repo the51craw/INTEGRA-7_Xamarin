@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
-namespace Integra_7_Xamarin
+namespace INTEGRA_7_Xamarin
 {
     public enum MotionalSurroundInitializationState
     {
@@ -446,7 +446,7 @@ namespace Integra_7_Xamarin
 
         private void msePartEditor_TextChanged(object sender, TextChangedEventArgs e)
         {
-            Int32 Tag = ((Integra_7_Xamarin.MotionalSurroundPartEditor)((Grid)((Editor)sender).Parent).Parent).Tag;
+            Int32 Tag = ((INTEGRA_7_Xamarin.MotionalSurroundPartEditor)((Grid)((Editor)sender).Parent).Parent).Tag;
             mslPart[Tag].Text = ((Editor)sender).Text;
             //mslPart[Tag].MinimumWidthRequest = 20 + mslPart[Tag].Text.Length * 10;
             //mslPart[Tag].WidthRequest = 20 + mslPart[Tag].Text.Length * 10;

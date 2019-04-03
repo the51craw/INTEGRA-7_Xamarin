@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
-namespace Integra_7_Xamarin
+namespace INTEGRA_7_Xamarin
 {
     public sealed partial class UIHandler
     {
@@ -1356,7 +1356,7 @@ namespace Integra_7_Xamarin
             }
         }
 
-        private async void Reset()
+        private void Reset()
         {
             //t.Trace("Reset()");
             Waiting(true, "Working...", Edit_StackLayout);
@@ -1390,7 +1390,7 @@ namespace Integra_7_Xamarin
             commonState.Midi.ProgramChange(commonState.CurrentPart, msb, lsb, pc);
             initDone = false;
             Waiting(true, "Working...", Edit_StackLayout);
-            await Task.Delay(TimeSpan.FromMilliseconds(1000));
+            //await Task.Delay(TimeSpan.FromMilliseconds(1000));
             QueryToneType();
         }
 

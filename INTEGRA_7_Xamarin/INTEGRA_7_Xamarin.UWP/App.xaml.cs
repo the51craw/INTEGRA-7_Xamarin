@@ -15,13 +15,8 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-namespace Integra_7_Xamarin.UWP
+namespace INTEGRA_7_Xamarin.UWP
 {
-    public interface IGenericHandler
-    {
-        void GenericHandler(object sender, object e);
-    }
-
     /// <summary>
     /// Provides application-specific behavior to supplement the default Application class.
     /// </summary>
@@ -45,12 +40,6 @@ namespace Integra_7_Xamarin.UWP
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
 
-#if DEBUG
-            if (System.Diagnostics.Debugger.IsAttached)
-            {
-                this.DebugSettings.EnableFrameRateCounter = true;
-            }
-#endif
 
             Frame rootFrame = Window.Current.Content as Frame;
 
