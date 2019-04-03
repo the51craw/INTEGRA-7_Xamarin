@@ -140,3 +140,20 @@ Librarian no longer changes sound on I-7!
 
 When selecting a _part_ with a drum set, keybord labels are not updated, unless a note is played first.
 
+* Start -> Select studio set in Librarian -> never restores studio set and does nothing more.
+Start -> Select studio set in Librarian -> (fix above first!) Edit Studio Set -> App terminates.
+Start -> Select studio set in Librarian -> (fix above first!) Motional surround -> All labels at center.
+Start -> Select studio set in Librarian -> (fix above first!) Motional surround -> Edit -> Out of memory exception.
+Start -> Edit Studio Set -> PleaseWait_StackLayout is not hidden when all is done, otherwise, ok.
+Start -> Edit Studio Set -> Librarian -> Motional Surround -> All positioned at center.
+Start -> Edit Studio Set -> Librarian -> Select studio set -> Ok
+Start -> Edit Studio Set -> Librarian -> Edit -> Nothing happens!
+Start -> Motional surround -> Ok.
+Start -> Motional surround -> Librarian -> Edit Studio Set -> Ok, same as direct, see above.
+Start -> Motional surround -> Librarian -> Select Studio set -> Stops after reading Studio set names, before setting back studio set.
+Start -> Motional surround -> Librarian -> Modional Surround -> Ok.
+Start -> Edit -> Ok.
+Start -> Favorites -> Ok.
+Start -> Add favorite -> Star does not disappear when adding favorite via double-click. Works via button, however.
+Start -> Delete favorite folder -> Ok.
+Start -> Delete favorite -> Folders without favorite to delete has stars.

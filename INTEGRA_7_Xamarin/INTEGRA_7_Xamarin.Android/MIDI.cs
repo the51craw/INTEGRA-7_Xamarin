@@ -10,7 +10,7 @@ namespace INTEGRA_7_Xamarin.Droid
     // This midi class does not implement MIDI, but it is called the same way as for other platforms.
     // Here we only forward all MIDI calls to MainActivity which in turn uses USB to
     // send MIDI packets. The class that implements MIDI via USB is Android_Midi below.
-    public class MIDI : TimerTask, IMidi, IGenericHandler
+    public class MIDI : TimerTask, IMidi
     {
         MainActivity mainActivity = null;
         MainPage MainPage_Portable = null;
@@ -25,17 +25,13 @@ namespace INTEGRA_7_Xamarin.Droid
         private byte[] collectionBuffer = null;
         public Boolean VenderDriverPresent = false;
 
-        public void GenericHandler(object sender, object e)
-        {
-        }
-
         public MIDI() { }
 
-        public void Init(INTEGRA_7_Xamarin.MainPage mainPage, String deviceName, Picker OutputDeviceSelector, Picker InputDeviceSelector, byte MidiOutPortChannel, byte MidiInPortChannel)
+        public void Init(INTEGRA_7_Xamarin.MainPage mainPage, String deviceName, byte MidiOutPortChannel, byte MidiInPortChannel)
         {
         }
 
-        public void Init(INTEGRA_7_Xamarin.MainPage mainPage, String deviceName, Picker OutputDeviceSelector, Picker InputDeviceSelector, object MainActivity, byte MidiOutPortChannel, byte MidiInPortChannel)
+        public void Init(INTEGRA_7_Xamarin.MainPage mainPage, String deviceName, object MainActivity, byte MidiOutPortChannel, byte MidiInPortChannel)
         {
             mainActivity = (MainActivity)MainActivity;
             this.MainPage_Portable = mainPage;

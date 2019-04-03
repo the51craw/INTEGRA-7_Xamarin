@@ -838,6 +838,10 @@ namespace INTEGRA_7_Xamarin
                 updateIntegra7 = false;
                 Librarian_PopulateStudioSetListview();
                 studioSetNamesJustRead = StudioSetNames.READ_AND_LISTED;
+                PleaseWait_StackLayout.IsVisible = false;
+                Librarian_StackLayout.IsVisible = true;
+                initDone = true;
+                //ShowLibrarianPage();
                 //Librarian_lvCategories.IsVisible = false;
                 //Librarian_lvStudioSets.IsVisible = true;
                 //PleaseWaitWhileScanning.Visibility = Visibility.Collapsed;

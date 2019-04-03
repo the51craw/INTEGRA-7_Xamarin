@@ -3483,17 +3483,17 @@ namespace INTEGRA_7_Xamarin
                     {
                         // All titles received, set a status that will be caught in Timer_Tick:
                         studioSetEditor_State = StudioSetEditor_State.DONE;
-
+                        studioSetNamesJustRead = StudioSetNames.READ_BUT_NOT_LISTED;
                         // Restore the saved studio set:
-               //         SetStudioSet(commonState.CurrentStudioSet);
+                        //         SetStudioSet(commonState.CurrentStudioSet);
 
                         // PleaseWait has had the control so far, so take it and let Studio set editor be visible.
-               //         studioSetNamesJustRead = StudioSetNames.READ_BUT_NOT_LISTED;
-               //         if (continueTo == CurrentPage.LIBRARIAN)
-               //         {
-               //             PleaseWait_StackLayout.IsVisible = false;
-               //             ShowLibrarianPage();
-               //         }
+                        //         studioSetNamesJustRead = StudioSetNames.READ_BUT_NOT_LISTED;
+                        //         if (continueTo == CurrentPage.LIBRARIAN)
+                        //         {
+                        //             PleaseWait_StackLayout.IsVisible = false;
+                        //             ShowLibrarianPage();
+                        //         }
                         currentPage = continueTo;
                     }
                 }
