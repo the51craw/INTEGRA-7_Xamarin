@@ -3234,8 +3234,8 @@ namespace INTEGRA_7_Xamarin
                     }
                     initDone = true;
                     Waiting(false, "", StudioSetEditor_StackLayout);
-                    //PopHandleControlEvents();
-                    handleControlEvents = true;
+                    PopHandleControlEvents();
+                    //handleControlEvents = true;
                     studioSetEditor_State = StudioSetEditor_State.DONE;
                 }
             }
@@ -3448,17 +3448,12 @@ namespace INTEGRA_7_Xamarin
 
                     if (currentStudioSetEditorMidiRequest == StudioSetEditor_currentStudioSetEditorMidiRequest.GET_CURRENT_STUDIO_SET_NUMBER_AND_SCAN)
                     {
-                        currentStudioSetEditorMidiRequest = StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_TITLES;
                         studioSetEditor_State = StudioSetEditor_State.QUERYING_STUDIO_SET_NAMES;
                         ScanForStudioSetNames();
                     }
                     else
                     {
-                        // Ask for system common settings:
                         QuerySystemCommon(); // This will be caught in MidiInPort_MessageReceived
-                        //currentStudioSetEditorMidiRequest = StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_TITLES;
-                        //studioSetEditor_State = StudioSetEditor_State.DONE;
-                        //currentStudioSetEditorMidiRequest = StudioSetEditor_currentStudioSetEditorMidiRequest.NONE;
                     }
                 }
                 else if (currentStudioSetEditorMidiRequest == StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_TITLES)// && receivedMidiMessage.Type == MidiMessageType.SystemExclusive)
@@ -3494,6 +3489,7 @@ namespace INTEGRA_7_Xamarin
                         //             PleaseWait_StackLayout.IsVisible = false;
                         //             ShowLibrarianPage();
                         //         }
+                        PleaseWait_StackLayout.IsVisible = false;
                         currentPage = continueTo;
                     }
                 }
@@ -6504,12 +6500,12 @@ namespace INTEGRA_7_Xamarin
             SetStudioSet(studioSetNumberTemp);
 
             // Request studio set name:
+            currentStudioSetEditorMidiRequest = StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_TITLES;
             byte[] address = { 0x18, 0x00, 0x00, 0x00 };
             byte[] length = { 0x00, 0x00, 0x00, 0x10 };
             byte[] bytes = commonState.Midi.SystemExclusiveRQ1Message(address, length);
             waitingForResponseFromIntegra7 = 500;
             commonState.Midi.SendSystemExclusive(bytes); // Answer will be caught in MidiInPort_MessageReceived.
-            currentStudioSetEditorMidiRequest = StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_TITLES;
         }
 
         private void QueryCurrentStudioSetNumber(Boolean scan = true)
@@ -9317,7 +9313,8 @@ namespace INTEGRA_7_Xamarin
         private void btnStudioSetReturn_Click(object sender, EventArgs e)
         {
             StudioSetEditor_StackLayout.IsVisible = false;
-            stopEditTimer = true;
+            //stopEditTimer = true;
+            studioSetNamesJustRead = StudioSetNames.READ_AND_LISTED;
             ShowLibrarianPage();
         }
 

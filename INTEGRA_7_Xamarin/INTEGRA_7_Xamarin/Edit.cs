@@ -130,7 +130,7 @@ namespace INTEGRA_7_Xamarin
         Int32 KeySamplePlayingR = -1;
         byte chorusSendLevel;
         byte reverbSendLevel;
-        Boolean stopEditTimer;
+        //Boolean stopEditTimer;
 
         public Grid EditTonesGrid = null;
         public Grid EditTonesLeftColumnGrid = null;
@@ -1849,9 +1849,9 @@ namespace INTEGRA_7_Xamarin
                         if (currentKey < 88)
                         {
                             waitingForResponseFromIntegra7 = 0;
-                            t.Trace("*** " + DateTime.Now.TimeOfDay.Milliseconds.ToString());
+                            //t.Trace("*** " + DateTime.Now.TimeOfDay.Milliseconds.ToString());
                             QueryPCMDrumKitPartial();
-                            t.Trace("*** " + DateTime.Now.TimeOfDay.Milliseconds.ToString());
+                            //t.Trace("*** " + DateTime.Now.TimeOfDay.Milliseconds.ToString());
                         }
                         else
                         {
@@ -2051,7 +2051,8 @@ namespace INTEGRA_7_Xamarin
             t.Trace("private void QueryToneType()");
             initDone = false;
             edit_State = Edit_State.WAITING;
-            currentEditMidiRequest = Edit_CurrentMidiRequest.QUERYING_TONE_TYPE; 
+            currentEditMidiRequest = Edit_CurrentMidiRequest.QUERYING_TONE_TYPE;
+            waitingForResponseFromIntegra7 = 0;
             byte[] address = { 0x18, 0x00, (byte)(0x20 + commonState.CurrentPart), 0x00 };
             byte[] length = { 0x00, 0x00, 0x00, 0x09 };
             byte[] bytes = commonState.Midi.SystemExclusiveRQ1Message(address, length);

@@ -11,6 +11,8 @@ namespace INTEGRA_7_Xamarin
     {
         NOT_INITIALIZED,
         INITIALIZING,
+        INITIALIZING_1,
+        INITIALIZING_2,
         INITIALIZED
     }
 
@@ -67,7 +69,7 @@ namespace INTEGRA_7_Xamarin
                 mainStackLayout.Children.Add(MotionalSurround_StackLayout);
                 MotionalSurround_Init();
                 MotionalSurround_IsCreated = true;
-                handleControlEvents = true;
+                PopHandleControlEvents();
                 needsToSetFontSizes = NeedsToSetFontSizes.MOTIONAL_SURROUND;
             }
             MotionalSurround_StackLayout.IsVisible = true;
@@ -325,20 +327,60 @@ namespace INTEGRA_7_Xamarin
                 MotionalSurround_StackLayout.IsVisible = false;
                 ShowLibrarianPage();
             }
-            else if (commonState.StudioSet == null)
+            else if (commonState.StudioSet == null || commonState.StudioSet.MotionalSurround == null)
             {
                 // StudioSet set has not been read, thus we have no Motional Surround data. 
                 // Start by creating the studioSet object:
                 commonState.StudioSet = new StudioSet();
 
-                // Then get the Motional Lurround data by borrowing code from Studio set editor:
-                QueryStudioSetMotionalSurround(); // This will be caught in MotionalSurrouns_MidiInPort_MessageReceived()
+                // Then get the Motional Surround data by borrowing code from Studio set editor:
+                QueryStudioSetMotionalSurround(); // This will be caught in MotionalSurround_MidiInPort_MessageReceived()
+                // After received data we will also ask for the parts in order to get the parts surround positions.
+            }
+            else if (commonState.StudioSet.PartMotionalSurround[0] == null
+                || commonState.StudioSet.PartMotionalSurround[1] == null
+                || commonState.StudioSet.PartMotionalSurround[2] == null
+                || commonState.StudioSet.PartMotionalSurround[3] == null
+                || commonState.StudioSet.PartMotionalSurround[4] == null
+                || commonState.StudioSet.PartMotionalSurround[5] == null
+                || commonState.StudioSet.PartMotionalSurround[6] == null
+                || commonState.StudioSet.PartMotionalSurround[7] == null
+                || commonState.StudioSet.PartMotionalSurround[8] == null
+                || commonState.StudioSet.PartMotionalSurround[9] == null
+                || commonState.StudioSet.PartMotionalSurround[10] == null
+                || commonState.StudioSet.PartMotionalSurround[11] == null
+                || commonState.StudioSet.PartMotionalSurround[12] == null
+                || commonState.StudioSet.PartMotionalSurround[13] == null
+                || commonState.StudioSet.PartMotionalSurround[14] == null
+                || commonState.StudioSet.PartMotionalSurround[15] == null)
+            {
+                // We still do not have the part positions, so get it:
+                for (currentMotionalSurroundPart = 0; currentMotionalSurroundPart < 16; currentMotionalSurroundPart++)
+                {
+                    commonState.StudioSet.PartMotionalSurround[currentMotionalSurroundPart] = new StudioSet_PartMotionalSurround(null);
+                }
+                initDone = false;
+                currentMotionalSurroundPart = 0;
+                QueryStudioSetPart(currentMotionalSurroundPart); // This will be caught in MotionalSurrouns_MidiInPort_MessageReceived()
             }
         }
 
         public void MotionalSurround_Timer_Tick()
         {
-            if (motionalSurroundInitializationState == MotionalSurroundInitializationState.INITIALIZING)
+            // For some uncomprehendable reason I must come here three times before I can set the label
+            // positions right, if motional surround objects was initiated by the Stueio Set Editor.
+            // Since I do not understane why, I comply and wait till the third time before placing them.
+            if (initDone && motionalSurroundInitializationState == MotionalSurroundInitializationState.INITIALIZING)
+            {
+                motionalSurroundInitializationState =
+                    MotionalSurroundInitializationState.INITIALIZING_1;
+            }
+            else if (initDone && motionalSurroundInitializationState == MotionalSurroundInitializationState.INITIALIZING_1)
+            {
+                motionalSurroundInitializationState =
+                    MotionalSurroundInitializationState.INITIALIZING_2;
+            }
+            else if (initDone && motionalSurroundInitializationState == MotionalSurroundInitializationState.INITIALIZING_2)
             {
                 motionalSurroundInitializationState =
                     MotionalSurroundInitializationState.INITIALIZED;
@@ -378,7 +420,7 @@ namespace INTEGRA_7_Xamarin
             }
         }
 
-        private void MotionalSurrouns_MidiInPort_MessageReceived()
+        private void MotionalSurround_MidiInPort_MessageReceived()
         {
             if (currentStudioSetEditorMidiRequest == StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_MOTIONAL_SURROUND)
             {

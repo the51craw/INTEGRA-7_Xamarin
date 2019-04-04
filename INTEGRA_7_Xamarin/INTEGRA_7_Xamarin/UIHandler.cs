@@ -295,7 +295,7 @@ namespace INTEGRA_7_Xamarin
                         EditStudioSet_MidiInPort_MessageReceived();
                         break;
                     case CurrentPage.MOTIONAL_SURROUND:
-						MotionalSurrouns_MidiInPort_MessageReceived();
+						MotionalSurround_MidiInPort_MessageReceived();
                         break;
                 }
                 //rawData = new byte[0];

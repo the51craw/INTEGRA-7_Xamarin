@@ -1294,7 +1294,7 @@ namespace INTEGRA_7_Xamarin
     [DataContract]
     public class StudioSet_PartMotionalSurround
     {
-        public Boolean MotionalSurroundSwitch { get; set; }
+        //public Boolean MotionalSurroundSwitch { get; set; }
         HBTrace t = new HBTrace("class StudioSet_PartMotionalSurround");
         [DataMember]
         public byte LR { get; set; }
@@ -1308,10 +1308,20 @@ namespace INTEGRA_7_Xamarin
         public StudioSet_PartMotionalSurround(ReceivedData Data)
         {
             //t.Trace("public StudioSet_PartMotionalSurround (" + "ReceivedData" + Data + ", " + ")");
-            LR = (byte)(Data.GetByte(0x44));
-            FB = (byte)(Data.GetByte(0x46));
-            Width = Data.GetByte(0x48);
-            AmbienceSendLevel = Data.GetByte(0x49);
+            if (Data == null)
+            {
+                LR = 0x40;
+                FB = 0x40;
+                Width = 0x40;
+                AmbienceSendLevel = 0x7f;
+            }
+            else
+            {
+                LR = (byte)(Data.GetByte(0x44));
+                FB = (byte)(Data.GetByte(0x46));
+                Width = Data.GetByte(0x48);
+                AmbienceSendLevel = Data.GetByte(0x49);
+            }
         }
     }
 
