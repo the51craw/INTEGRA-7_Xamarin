@@ -163,3 +163,7 @@ Start -> Delete favorite -> Folders without favorite to delete has stars.
 * Remove stopEditTimer.
 
 Studio set editor return button must not be enabled before everything is read in!
+
+Try to remove the space between that sometime occurs images in Motional surround.
+
+Changing studio set from librarian does not update what is seen in motional surround and edit studio set.

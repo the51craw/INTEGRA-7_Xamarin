@@ -2305,6 +2305,12 @@ namespace INTEGRA_7_Xamarin
                 grid_StudioSet_Column2_Container }, null, true, false)).Row);
 
             //StudioSetEditor_StackLayout.BackgroundColor = Color.Black;
+            // Disable buttons:
+            btnFileSave.IsEnabled = false;
+            btnFileLoad.IsEnabled = false;
+            btnStudioSetSave.IsEnabled = false;
+            btnStudioSetDelete.IsEnabled = false;
+            btnStudioSetReturn.IsEnabled = false;
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2366,8 +2372,6 @@ namespace INTEGRA_7_Xamarin
 
                 QueryCurrentStudioSetNumber(false); // But don't scan all studio set names.
             }
-            btnStudioSetSave.IsEnabled = !commonState.VenderDriverIsInstalled;
-            btnStudioSetDelete.IsEnabled = !commonState.VenderDriverIsInstalled;
             StudioSetEditor_SearchResult = new ObservableCollection<String>();
             lvSearchResults.ItemsSource = StudioSetEditor_SearchResult;
         }
@@ -3107,6 +3111,14 @@ namespace INTEGRA_7_Xamarin
                     // This will be handled, so...
                     studioSetEditor_State = StudioSetEditor_State.NONE;
 
+                    // Now, we can remove the PleaseWait page and enable the buttons:
+                    PleaseWait_StackLayout.IsVisible = false;
+                    btnFileSave.IsEnabled = true;
+                    btnFileLoad.IsEnabled = true;
+                    btnStudioSetSave.IsEnabled = !commonState.VenderDriverIsInstalled;
+                    btnStudioSetDelete.IsEnabled = !commonState.VenderDriverIsInstalled;
+                    btnStudioSetReturn.IsEnabled = true;
+
                     // Unpack tone name and update controls:
                     ReadStudioSetPartToneName();
 
@@ -3489,7 +3501,7 @@ namespace INTEGRA_7_Xamarin
                         //             PleaseWait_StackLayout.IsVisible = false;
                         //             ShowLibrarianPage();
                         //         }
-                        PleaseWait_StackLayout.IsVisible = false;
+                        // PleaseWait_StackLayout.IsVisible = false; Not in this thread!
                         currentPage = continueTo;
                     }
                 }
