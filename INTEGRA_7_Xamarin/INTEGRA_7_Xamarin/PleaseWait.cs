@@ -120,9 +120,15 @@ namespace INTEGRA_7_Xamarin
                     {
                         divider = 10;
                     }
-                    if (divider % 10 == 0)
+                    if (MidiState != MIDIState.WAITING_FOR_INITIONALIZATION)
                     {
-                        PleaseWait_FindMidiInterfaces();
+                        // There are await calls in some MIDI implementations, so this thread
+                        // must not call again before the await calls finishes, thus the
+                        // test above.
+                        if (divider % 10 == 0)
+                        {
+                            PleaseWait_FindMidiInterfaces();
+                        }
                     }
                     break;
                 case WaitingFor.INTEGRA_7:
@@ -186,13 +192,16 @@ namespace INTEGRA_7_Xamarin
                     {
                         if (!commonState.Midi.MidiIsReady())
                         {
+                            MidiState = MIDIState.WAITING_FOR_INITIONALIZATION;
                             commonState.Midi.Init(mainPage, "INTEGRA-7", deviceSpecifics, 0, 0);
+                            MidiState = MIDIState.INITIALIZING;
                         }
                     }
                     else
                     {
-                        MidiState = MIDIState.INITIALIZING;
+                        MidiState = MIDIState.WAITING_FOR_INITIONALIZATION;
                         commonState.Midi.Init(mainPage, "INTEGRA-7", 0, 0);
+                        MidiState = MIDIState.INITIALIZING;
                     }
                     pb_WaitingProgress.Progress = pb_WaitingProgress.Progress + ((1 - pb_WaitingProgress.Progress) / 100);
                     if (commonState.Midi.MidiIsReady())
@@ -260,10 +269,24 @@ namespace INTEGRA_7_Xamarin
                     pb_WaitingProgress.Progress = 1;
                     MidiState = MIDIState.INITIALIZED;
                 }
+                else
+                {
+                    waitCount--;
+                    if (waitCount < 5)
+                    {
+                        MidiState = MIDIState.NO_MIDI_INTERFACE_AVAILABLE;
+                    }
+                    else
+                    {
+                        waitCount = 15;
+                        MidiState = MIDIState.NOT_INITIALIZED;
+                    }
+                }
             }
 
             else if (MidiState == MIDIState.WAITING_FOR_I7)
             {
+                pb_WaitingProgress.Progress = pb_WaitingProgress.Progress + ((1 - pb_WaitingProgress.Progress) / 100);
             }
 
             else if (MidiState == MIDIState.INITIALIZED)

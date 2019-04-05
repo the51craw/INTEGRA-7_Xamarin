@@ -1868,6 +1868,8 @@ namespace INTEGRA_7_Xamarin
             if (commonState.CurrentPart < 16 && localSettings != null)
             {
                 mainPage.SaveLocalValue("MidiChannel", commonState.CurrentPart);
+                commonState.Midi.SetMidiInPortChannel((byte)Librarian_midiOutputChannel.SelectedIndex);
+                commonState.Midi.SetMidiOutPortChannel((byte)Librarian_midiOutputChannel.SelectedIndex);
                 GetToneFromI7();
             }
             //if (cbChannel.SelectedIndex > -1 && cbChannel.SelectedIndex < 16 && commonState != null && commonState.midi != null)
@@ -2437,7 +2439,8 @@ namespace INTEGRA_7_Xamarin
                 Librarian_ltPatchMSB.Text = tone[4];
                 Librarian_ltPatchLSB.Text = tone[5];
                 Librarian_ltProgramNumber.Text = tone[7];
-                commonState.Midi.ProgramChange(commonState.Midi.GetMidiOutPortChannel(), tone[4], tone[5], tone[7]);
+                //commonState.Midi.ProgramChange(commonState.Midi.GetMidiOutPortChannel(), tone[4], tone[5], tone[7]);
+                UpdateDrumNames();
                 if (IsFavorite())
                 {
                     Librarian_btnShowFavorites.BackgroundColor = colorSettings.IsFavorite;

@@ -17,20 +17,20 @@ Category is set wrong in Edit. Fixed by changing it after wrong value has been f
 
 Some edit controls are too high.
 
-There is no black space between controls. Compare with I7 random app to see how to fix it.
+* There is no black space between controls. Compare with I7 random app to see how to fix it.
 
-Edit SN-D crashes in UpdateSuperNaturalDrumKitKeySelector().
+* Edit SN-D crashes in UpdateSuperNaturalDrumKitKeySelector().
 
 Fix the store images.
 
-Implement a close function in all device-dependent project, empty for tablets but closes apps for desktops.
-	Use when vender driver is detected.
+// Implement a close function in all device-dependent project, empty for tablets but closes apps for desktops.
+	// Use when vender driver is detected. No!
 
 Edit hangs when sending a change via 5-pin MIDI.
 
-If studio set editor button is hit with no tone selected, it chrashes!
+* If studio set editor button is hit with no tone selected, it chrashes!
 
-Do not show librarian window unless MIDI is ok.
+* Do not show librarian window unless MIDI is ok.
 
 Continue on the Studio set editor.
 	There are a lot of control labels that has no initial value.
@@ -42,7 +42,8 @@ Continue on the Studio set editor.
 	Column 2:
 		System common settings:
 			* Master key shift is not integer, is there a reason for that?
-			Cannot test 'Use scale tune switch' since I cannot find it in the manual, but it sends to I-7 so it is probably ok.
+			* Cannot test 'Use scale tune switch' since I cannot find it in the manual, but it sends to I-7 so it is probably ok.
+				(Not needed, there is an 'Equal' selection.)
 			* There is a system tempo here, reason for that? Yes, this is the system tempo. The one in first column is the 
 				* studio set tempo. And here below is a selector to let system control tempo, or studio set.
 				* But it has no values in its label...
@@ -53,6 +54,7 @@ Continue on the Studio set editor.
 				* Filter cutoff frequency is not properly set, but it works to change. Seems to be a bug in I-7. It reports wrong,
 					* but if changed on the front panel, and from program change to delay and back agin, I-7 reports correct value.
 				Rate/Hz controls (selectable with 'Rate (num/notesw)') occupies each one row, they should occupy the same row.
+					(Wait with this one until we know if the overlaying works on all platforms, even if it seems ok for now.)
 				* Hz low limits should be 0.05 to 10.
 				* Hz in not properly initialized and still has the slider int problem.
 				* Note in not properly initialized.
@@ -81,7 +83,7 @@ Continue on the Studio set editor.
 		MasterEQ:
 			* All sliders has the int problem.
 	Column 3:
-		Maybe swap settings page selector with part selector.
+		* Maybe swap settings page selector with part selector. No!
 		* Part is always set to part 2 after initialization, why?
 		* Page selector is not set.
 		Part settings page 1:
@@ -100,26 +102,29 @@ Continue on the Studio set editor.
 			* All sliders has the int problem.
 			* Velocity curve type (adr 0x43) missing? Why is there a 'Phase lock' switch?
 		Motional surround:
-			L/R and F/B lacks offsets. Should be in range -64 -- +63.
-			Ambience send level is not initialized.
+			* L/R and F/B lacks offsets. Should be in range -64 -- +63.
+			* Ambience send level is not initialized.
 		Studio set part EQ:
 			* All sliders has the int problem.
 			* Switch is missing.
 
 Test these now that they exist:
-There is no return button in studio set editor!
+* There is no return button in studio set editor!
 Save/SaveFile/LoadFile buttons missing
-Save slot selector is missing
-Save slot name input field s missing
+	Save and SaveFile are ok. LoadFile not yet fully implemented (see 6 lines below)
+* Save slot selector is missing
+* Save slot name input field s missing
 
-Continue on the Favorites.
+Delete studio set leaves in a state that causes to try to read a tone without any address (via Timer_Tick).
+
+* Continue on the Favorites.
 
 * Add Surround page. Invent new way of 'dragging' controls since image has no coordinates in events.
 
 Add saving/loading settings in xml files (for all platforms!)
 	Most done for UWP, except motional surround (if we need it).
 
-Why is not cbStudioSetPartKeyboardMute added to the GUI?
+* Why is not cbStudioSetPartKeyboardMute added to the GUI?
 
 * Studio set part selector returns to part 1 when other is selected!
 
@@ -130,15 +135,16 @@ When selecting studio set editor after startup, and then return to librarian,
 		surround is selected. If so, motional surround will place labels
 		correctly, if not they will all be centered due to this issue.
 
-Maybe add a switch for turning motional surround on/off?
+* Maybe add a switch for turning motional surround on/off?
 
-Debug session is not closed after closing main window!
+* Debug session is not closed after closing main window!
 
-Verification tool reports crashes! (Maybe that has same cause as issue above?)
+* Verification tool reports crashes! (Maybe that has same cause as issue above?)
 
-Librarian no longer changes sound on I-7!
+* Librarian no longer changes sound on I-7!
 
-When selecting a _part_ with a drum set, keybord labels are not updated, unless a note is played first.
+* When selecting a _part_ with a drum set, keybord labels are not updated, unless a note is played first.
+	* Also, when selecting part 10, part 1 is set to the drum set in part 10?!?
 
 * Start -> Select studio set in Librarian -> never restores studio set and does nothing more.
 * Start -> Select studio set in Librarian -> (fix above first!) Edit Tone -> Flickers and goes back to Librarian.
@@ -156,14 +162,28 @@ When selecting a _part_ with a drum set, keybord labels are not updated, unless 
 * Start -> Motional surround -> Librarian -> Modional Surround -> Ok.
 * Start -> Edit -> Ok.
 * Start -> Favorites -> Ok.
-Start -> Add favorite -> Star does not disappear when adding favorite via double-click. Works via button, however.
+* Start -> Add favorite -> Star does not disappear when adding favorite via double-click. Works via button, however.
 * Start -> Delete favorite folder -> Ok.
-Start -> Delete favorite -> Folders without favorite to delete has stars.
+* Start -> Delete favorite -> Folders without favorite to delete has stars.
+* Deleted favorite is still marked as favorite upon return to Librarian.
 
 * Remove stopEditTimer.
 
-Studio set editor return button must not be enabled before everything is read in!
+* Studio set editor return button must not be enabled before everything is read in!
 
-Try to remove the space between that sometime occurs images in Motional surround.
+Same thing with librarian.
+
+* Try to remove the space between that sometime occurs images in Motional surround.
+	They are now overlapping, which means that this must be tested on all platforms!
 
 Changing studio set from librarian does not update what is seen in motional surround and edit studio set.
+
+Finish color settings.
+
+Add settings:
+	Swap surround button with edit buttons and make a setting button to the right of the surround button.
+	Settings:
+		Put combined MSB and LSB in clipboard.
+		Selection of color schemes.
+
+Changing sub-pages in tone edit creates all controls everytime. Why not keep them in memory?

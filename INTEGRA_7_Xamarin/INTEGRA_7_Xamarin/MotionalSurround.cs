@@ -56,6 +56,7 @@ namespace INTEGRA_7_Xamarin
         Button btnMotionalSurroundReturn;
         Int32 currentMotionalSurroundPart = 0;
         MotionalSurroundInitializationState motionalSurroundInitializationState;
+        CheckBox cbMotionalSurroundSwitch;
 
         public void ShowMotionalSurroundPage()
         {
@@ -229,6 +230,37 @@ namespace INTEGRA_7_Xamarin
             imgDoubleDownRightDownArrow.Aspect = Aspect.Fill;
             imgDoubleDownRightArrow.Aspect = Aspect.Fill;
 
+            Thickness msMargins = new Thickness(0, 0, -1, -1); // To make them overlap one unit
+            imgDoubleUpLeftArrow.Margin = msMargins;
+            imgDoubleUpLeftTopArrow.Margin = msMargins;
+            imgDoubleUpArrow.Margin = msMargins;
+            imgDoubleUpRightTopArrow.Margin = msMargins;
+            imgDoubleUpRightArrow.Margin = msMargins;
+
+            imgDoubleUpLeftLeftArrow.Margin = msMargins;
+            imgUpLeftArrow.Margin = msMargins;
+            imgUpArrow.Margin = msMargins;
+            imgUpRightArrow.Margin = msMargins;
+            imgDoubleUpRightRightArrow.Margin = msMargins;
+
+            imgDoubleLeftArrow.Margin = msMargins;
+            imgLeftArrow.Margin = msMargins;
+            imgCenter.Margin = msMargins;
+            imgRightArrow.Margin = msMargins;
+            imgDoubleRightArrow.Margin = msMargins;
+
+            imgDoubleDownLeftLeftArrow.Margin = msMargins;
+            imgDownLeftArrow.Margin = msMargins;
+            imgDownArrow.Margin = msMargins;
+            imgDownRightArrow.Margin = msMargins;
+            imgDoubleDownRightRightArrow.Margin = msMargins;
+
+            imgDoubleDownLeftArrow.Margin = msMargins;
+            imgDoubleDownLeftDownArrow.Margin = msMargins;
+            imgDoubleDownArrow.Margin = msMargins;
+            imgDoubleDownRightDownArrow.Margin = msMargins;
+            imgDoubleDownRightArrow.Margin = msMargins;
+
             gArrows.Children.Add(imgDoubleUpLeftArrow);
             gArrows.Children.Add(imgDoubleUpLeftTopArrow);
             gArrows.Children.Add(imgDoubleUpArrow);
@@ -307,16 +339,23 @@ namespace INTEGRA_7_Xamarin
                 msePart[i].Editor.TextChanged += msePartEditor_TextChanged;
                 gParts.Children.Add(new GridRow((byte)i, new View[] { msePart[i] }).Row);
             }
+
+            cbMotionalSurroundSwitch = new CheckBox();
+            cbMotionalSurroundSwitch.HorizontalOptions = LayoutOptions.FillAndExpand;
+            cbMotionalSurroundSwitch.VerticalOptions = LayoutOptions.FillAndExpand;
+            cbMotionalSurroundSwitch.CBLabel.Text = "Motional Surround";
+            cbMotionalSurroundSwitch.CBSwitch.Toggled += CbMotionalSurroundSwitch_Toggled;
+
             btnMotionalSurroundReturn = new Button();
             btnMotionalSurroundReturn.HorizontalOptions = LayoutOptions.FillAndExpand;
             btnMotionalSurroundReturn.VerticalOptions = LayoutOptions.FillAndExpand;
             btnMotionalSurroundReturn.Text = "Return to Librarian";
             btnMotionalSurroundReturn.Clicked += BtnMotionalSurroundReturn_Clicked;
 
-            gParts.Children.Add(new GridRow(17, new View[] { btnMotionalSurroundReturn }).Row);
+            gParts.Children.Add(new GridRow(17, new View[] { cbMotionalSurroundSwitch, btnMotionalSurroundReturn }).Row);
 
             MotionalSurround_StackLayout = new StackLayout();
-            MotionalSurround_StackLayout.Children.Add(new GridRow(0, new View[] { gArrows, gParts }, new byte[] { 5, 2 }).Row);
+            MotionalSurround_StackLayout.Children.Add(new GridRow(0, new View[] { gArrows, gParts }, new byte[] { 5, 3 }).Row);
         }
 
         private void MotionalSurround_Init()
@@ -532,6 +571,15 @@ namespace INTEGRA_7_Xamarin
         //{
         //    ((MotionalSurroundPartLabel)sender).BackgroundColor = UIHandler.colorSettings.MotionalSurroundPartLabelFocused;
         //}
+
+        private void CbMotionalSurroundSwitch_Toggled(object sender, ToggledEventArgs e)
+        {
+            byte toggle = cbMotionalSurroundSwitch.CBSwitch.IsToggled ? (byte)0x01 : (byte)0x00;
+            byte[] address = new byte[] { 0x18, 0x00, 0x08, 0x00 };
+            byte[] data = new byte[] { toggle };
+            byte[] command = commonState.Midi.SystemExclusiveDT1Message(address, data);
+            commonState.Midi.SendSystemExclusive(command);
+        }
 
         private void BtnMotionalSurroundReturn_Clicked(object sender, EventArgs e)
         {

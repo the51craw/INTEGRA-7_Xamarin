@@ -314,6 +314,7 @@ namespace INTEGRA_7_Xamarin
             {
                 //t.Trace("private void lvFolders_DoubleTapped(" + ((ListView)sender).SelectedIndex.ToString() + ")");
                 //ListViewItem item = (ListViewItem)Favorites_lvFolderList.ContainerFromItem(Favorites_lvFolderList.SelectedItem);
+                String selectedFolder = ((String)Favorites_lvFolderList.SelectedItem).TrimEnd('*');
                 if (favoritesAction == FavoritesAction.ADD 
                     && ((String)Favorites_lvFolderList.SelectedItem).StartsWith("*"))
                 {
@@ -323,21 +324,22 @@ namespace INTEGRA_7_Xamarin
                             commonState.CurrentTone.Group,
                             commonState.CurrentTone.Category,
                             commonState.CurrentTone.Name));
-                    Favorites_lvFolderList.SelectedItem = 
-                        ((String)Favorites_lvFolderList.SelectedItem).TrimStart('*');
-                    if (Favorites_lvFolderList.SelectedItem != null)
-                    {
-                        UpdateFavoritesListFromCommonstate((String)Favorites_lvFolderList.SelectedItem);
-                        //Favorites_ocFolderList.IndexOf(Favorites_lvFolderList.SelectedItem));
-                        SaveToLocalSettings();
-                    }
+                    Favorites_UpdateFoldersList();
+                    UpdateFavoritesListFromCommonstate(selectedFolder);
+                    Favorites_lvFolderList.SelectedItem = selectedFolder;
+                    SaveToLocalSettings();
                 }
                 else if (favoritesAction == FavoritesAction.REMOVE && ((String)Favorites_lvFolderList.SelectedItem).StartsWith("*"))
                 {
-                    FavoriteTone tone = commonState.FavoritesList.FavoritesFolders[Favorites_ocFolderList.IndexOf(Favorites_lvFolderList.SelectedItem)].ByToneName(commonState.CurrentTone.Name);
-                    commonState.FavoritesList.FavoritesFolders[Favorites_ocFolderList.IndexOf(Favorites_lvFolderList.SelectedItem)].FavoriteTones.Remove(tone);
-                    Favorites_lvFolderList.SelectedItem = ((String)Favorites_lvFolderList.SelectedItem).TrimStart('*');
-                    UpdateFavoritesListFromCommonstate((String)Favorites_lvFolderList.SelectedItem);
+                    FavoriteTone tone = commonState.FavoritesList.FavoritesFolders
+                        [Favorites_ocFolderList.IndexOf(Favorites_lvFolderList.SelectedItem)]
+                        .ByToneName(commonState.CurrentTone.Name);
+                    commonState.FavoritesList.FavoritesFolders
+                        [Favorites_ocFolderList.IndexOf(Favorites_lvFolderList.SelectedItem)]
+                        .FavoriteTones.Remove(tone);
+                    Favorites_UpdateFoldersList();
+                    UpdateFavoritesListFromCommonstate(selectedFolder);
+                    Favorites_lvFolderList.SelectedItem = selectedFolder;
                     SaveToLocalSettings();
                 }
             }
@@ -693,6 +695,16 @@ namespace INTEGRA_7_Xamarin
         // Return to Librarian button handler ---------------------------------------------------------------------------
         private void Favorites_btnReturn_Clicked(object sender, EventArgs e)
         {
+            if (IsFavorite())
+            {
+                Librarian_btnShowFavorites.BackgroundColor = colorSettings.IsFavorite;
+                Librarian_btnRemoveFavorite.IsEnabled = true;
+            }
+            else
+            {
+                Librarian_btnShowFavorites.BackgroundColor = colorSettings.ControlBackground;
+                Librarian_btnRemoveFavorite.IsEnabled = false;
+            }
             Favorites_StackLayout.IsVisible = false;
             ShowLibrarianPage();
         }

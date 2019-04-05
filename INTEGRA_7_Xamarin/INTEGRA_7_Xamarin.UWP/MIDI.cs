@@ -133,17 +133,6 @@ namespace INTEGRA_7_Xamarin.UWP
 
         public void Init(INTEGRA_7_Xamarin.MainPage mainPage, String deviceName, byte MidiOutPortChannel, byte MidiInPortChannel)
         {
-            //Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
-            //    () =>
-            //    {
-            //        Init(mainPage, deviceName, OutputDeviceSelector, InputDeviceSelector,
-            //    CoreApplication.GetCurrentView().CoreWindow.Dispatcher, MidiOutPortChannel, MidiInPortChannel);
-            //    });
-            //await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(
-            //CoreDispatcherPriority.Normal,
-            //() => { // your code should be here});
-            //Init(mainPage, deviceName, OutputDeviceSelector, InputDeviceSelector,
-            //CoreApplication.GetCurrentView().CoreWindow.Dispatcher, MidiOutPortChannel, MidiInPortChannel);
             Init(mainPage, deviceName, null, MidiOutPortChannel, MidiInPortChannel);
         }
 

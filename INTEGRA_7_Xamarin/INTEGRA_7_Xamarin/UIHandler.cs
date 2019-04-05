@@ -43,6 +43,7 @@ namespace INTEGRA_7_Xamarin
         public enum MIDIState
         {
             NOT_INITIALIZED,
+            WAITING_FOR_INITIONALIZATION,
             INITIALIZING,
             WAITING_FOR_I7,
             INITIALIZING_FAILED,

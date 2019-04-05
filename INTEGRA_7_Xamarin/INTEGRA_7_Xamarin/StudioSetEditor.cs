@@ -2182,6 +2182,7 @@ namespace INTEGRA_7_Xamarin
             StudioSetPartKeyboard.Children.Add((new GridRow(7, new View[] { tbStudioSetPartKeyboardVelocityRangeUpper, slStudioSetPartKeyboardVelocityRangeUpper })).Row);
             StudioSetPartKeyboard.Children.Add((new GridRow(8, new View[] { tbStudioSetPartKeyboardVelocityFadeWidthLower, slStudioSetPartKeyboardVelocityFadeWidthLower })).Row);
             StudioSetPartKeyboard.Children.Add((new GridRow(9, new View[] { tbStudioSetPartKeyboardVelocityFadeWidthUpper, slStudioSetPartKeyboardVelocityFadeWidthUpper })).Row);
+            StudioSetPartKeyboard.Children.Add((new GridRow(10, new View[] { cbStudioSetPartKeyboardMute })).Row);
 
             StudioSetPartScaleTune.Children.Add((new GridRow(0, new View[] { tbStudioSetPartScaleTuneType, cbStudioSetPartScaleTuneType })).Row);
             StudioSetPartScaleTune.Children.Add((new GridRow(1, new View[] { tbStudioSetPartScaleTuneKey, cbStudioSetPartScaleTuneKey })).Row);
@@ -4721,7 +4722,7 @@ namespace INTEGRA_7_Xamarin
                     commonState.StudioSet.CommonChorus.Chorus.RateHzNote = (byte)cbChorusChorusRateHzNote.SelectedIndex;
                     slChorusChorusRateHz.Value = commonState.StudioSet.CommonChorus.Chorus.RateHz;
                     tbChorusChorusRateHz.Text = "Rate : " + commonState.StudioSet.CommonChorus.Chorus.RateHz.ToString();
-                    slChorusChorusRateNote.Value = commonState.StudioSet.CommonChorus.Chorus.RateHz;
+                    slChorusChorusRateNote.Value = commonState.StudioSet.CommonChorus.Chorus.RateNote;
                     tbChorusChorusRateNote.Text = "Rate : " + StudioSet.NoteString[commonState.StudioSet.CommonChorus.Chorus.RateNote];
                     if (commonState.StudioSet.CommonChorus.Chorus.RateHzNote == 0)
                     {
@@ -6998,7 +6999,7 @@ namespace INTEGRA_7_Xamarin
                         tbChorusChorusRateHz.Text = "Rate " + CalculateTimeHz(commonState.StudioSet.CommonChorus.Chorus.RateHz) + " Hz";
                         slChorusChorusRateHz.Value = (Double)(16 * rawData[33] + rawData[34]) / 20.0;
                         tbChorusChorusRateNote.Text = "Rate " + CalculateTimeNote(commonState.StudioSet.CommonChorus.Chorus.RateNote) + " note";
-                        slChorusChorusRateNote.Value = 16 * rawData[33] + rawData[34];
+                        slChorusChorusRateNote.Value = 16 * rawData[37] + rawData[38];
                         switch (commonState.StudioSet.CommonChorus.Chorus.RateHzNote)
                         {
                             case 0:

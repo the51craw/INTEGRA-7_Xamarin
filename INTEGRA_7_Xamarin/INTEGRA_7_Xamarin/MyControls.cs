@@ -136,7 +136,7 @@ namespace INTEGRA_7_Xamarin
 
             CBLabel.BackgroundColor = UIHandler.colorSettings.Background;
             CBLabel.TextColor = UIHandler.colorSettings.Text;
-            this.Children.Add(new GridRow(0, new View[] { CBLabel/*, Switch*/ }, null, true).Row);
+            this.Children.Add(new GridRow(0, new View[] { CBLabel, CBSwitch }, null, true).Row);
         }
 
 
