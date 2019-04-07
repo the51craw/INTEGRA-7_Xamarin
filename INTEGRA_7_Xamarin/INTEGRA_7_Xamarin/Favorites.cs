@@ -107,7 +107,7 @@ namespace INTEGRA_7_Xamarin
             Favorites_CurrentlyInFavoriteList = new List<FavoriteTone>();
 
             Favorites_edNewFolderName = new Editor();
-            Favorites_edNewFolderName.BackgroundColor = colorSettings.ControlBackground;
+            Favorites_edNewFolderName.BackgroundColor = colorSettings.Background;
             Favorites_edNewFolderName.VerticalOptions = LayoutOptions.FillAndExpand;
 
             gNewFolder = new Grid();
@@ -120,7 +120,7 @@ namespace INTEGRA_7_Xamarin
             Favorites_tbHelp = new TextBlock();
             Favorites_tbHelp.HorizontalTextAlignment = TextAlignment.Center;
             Favorites_tbHelp.VerticalTextAlignment = TextAlignment.Center;
-            Favorites_tbHelp.BackgroundColor = colorSettings.ControlBackground;
+            Favorites_tbHelp.BackgroundColor = colorSettings.Background;
 
             //Favorites_btnCopyFavorite = new Button();
             //Favorites_btnCopyFavorite.Text = "Copy";
@@ -275,7 +275,7 @@ namespace INTEGRA_7_Xamarin
 
             Favorites_StackLayout = new StackLayout();
             Favorites_StackLayout.Children.Add((new GridRow(0, new View[] { Favorites_grLeftColumn, Favorites_grMiddleColumn, Favorites_grRightColumn })).Row);
-            Favorites_StackLayout.BackgroundColor = Color.Black;
+            Favorites_StackLayout.BackgroundColor = colorSettings.Background;
             Favorites_UpdateFoldersList();
         }
 
@@ -702,7 +702,7 @@ namespace INTEGRA_7_Xamarin
             }
             else
             {
-                Librarian_btnShowFavorites.BackgroundColor = colorSettings.ControlBackground;
+                Librarian_btnShowFavorites.BackgroundColor = colorSettings.Background;
                 Librarian_btnRemoveFavorite.IsEnabled = false;
             }
             Favorites_StackLayout.IsVisible = false;

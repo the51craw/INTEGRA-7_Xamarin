@@ -9,7 +9,7 @@ Some drum names are wrong.
 
 * When a drum kit is selected on I7 before startup, app fails to fill in key names.
 
-* Changin tone does not set current tone for the editor. Editor always get the tone that was set in I7 at app start?!?
+Changin tone does not set current tone for the editor. Editor always get the tone that was set in I7 at app start?!?
 
 Category is set wrong in Edit. Fixed by changing it after wrong value has been found by this:
     cbEditTone_InstrumentCategorySelector.SelectedIndex = toneCategories.snsToneCategoryNameIndex[superNATURALSynthTone.superNATURALSynthToneCommon.Category];
@@ -87,7 +87,7 @@ Continue on the Studio set editor.
 		* Part is always set to part 2 after initialization, why?
 		* Page selector is not set.
 		Part settings page 1:
-			* Change channel warning dialog lacks some text. Probably wrong thype of dialog (there are two types).
+			* Change channel warning dialog lacks some text. Probably wrong type of dialog (there are two types).
 			* Selecting tone via search box does not update I-7.
 			* All sliders has the int problem.
 		Part settings page 2:
@@ -115,7 +115,10 @@ Save/SaveFile/LoadFile buttons missing
 * Save slot selector is missing
 * Save slot name input field s missing
 
-Delete studio set leaves in a state that causes to try to read a tone without any address (via Timer_Tick).
+* Delete studio set leaves in a state that causes to try to read a tone without any address (via Timer_Tick).
+	Actually, it tried to read the altered set before I-7 was finished. Since I-7 allows this, we get invalid
+	data, and the program crashes. Only way to get around this is with a await Task.Delay(TimeSpan.FromSeconds(8));
+	It actually takes 4 seconds, but just to make sure, we wait twice as long.
 
 * Continue on the Favorites.
 
@@ -137,7 +140,11 @@ When selecting studio set editor after startup, and then return to librarian,
 
 * Maybe add a switch for turning motional surround on/off?
 
-* Debug session is not closed after closing main window!
+Debug session is sometimes not closed after closing main window!
+	This was 'always' until I added a way to avoid initializing MIDI more than
+	once, and get more than one input and/or one output device. Those were
+	not terminated, and the app never stopped running. This also caused
+	Suspend/resume and Suspend/terminate to fail.
 
 * Verification tool reports crashes! (Maybe that has same cause as issue above?)
 
@@ -187,3 +194,5 @@ Add settings:
 		Selection of color schemes.
 
 Changing sub-pages in tone edit creates all controls everytime. Why not keep them in memory?
+
+Motional Surround switch is not initially set as in I-7.

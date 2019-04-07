@@ -898,7 +898,7 @@ namespace INTEGRA_7_Xamarin
             while (row < MAX_ROWS - 1)
             {
                 Grid dummy = new Grid();
-                dummy.BackgroundColor = colorSettings.ControlBackground;
+                dummy.BackgroundColor = colorSettings.Background;
                 ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })).Row);
             }
 

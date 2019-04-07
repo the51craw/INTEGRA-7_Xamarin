@@ -13,14 +13,14 @@ namespace INTEGRA_7_Xamarin
 {
     public class HBTrace
     {
-        Int32 debugLevel = 0; // 0 or greater enables if not given in call
+        Int32 debugLevel = -1; // 0 or greater enables if not given in call
         //StorageFolder localFolder = null;
         //StorageFile sampleFile = null;
 
         public HBTrace(String s, Int32 DebugLevel = 0)
         {
             //localFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
-            Debug.WriteLine(s + " " + DateTime.Now.ToLongTimeString());
+            //Debug.WriteLine(s + " " + DateTime.Now.ToLongTimeString());
         }
 
         public void Trace(String s, Int32 DebugLevel = 0, Double ticks = 0)
@@ -8351,13 +8351,15 @@ private ParameterSets sets;
 
     public class ColorSettings
     {
+
+        public Color White { get; set; }
+        public Color Black { get; set; }
         public Color Border { get; set; }
-        public Color ControlBackground { get; set; }
         public Color Background { get; set; }
         public Color Text { get; set; }
-        public Color LabelBackground { get; set; }
         public Color IsFavorite { get; set; }
         public Color Transparent { get; set; }
+        public Color WhitePianoKeys { get; set; }
         public Color MotionalSurroundPartLabelText { get; set; }
         public Color MotionalSurroundPartLabelFocused { get; set; }
         public Color MotionalSurroundPartLabelUnfocused { get; set; }
@@ -8369,23 +8371,30 @@ private ParameterSets sets;
                 case _colorSettings.DARK:
                     break;
                 case _colorSettings.LIGHT:
+                    White = Color.White;
+                    Black = Color.Black;
                     Border = Color.Black;
-                    ControlBackground = Color.White;
-                    Background = new Color(0.85, 0.85, 0.6);
+                    Background = Color.White;
                     Text = Color.Black;
-                    LabelBackground = Color.White;
                     IsFavorite = Color.LightGreen;
                     Transparent = new Color(0, 0, 0, 0);
+                    WhitePianoKeys = Color.FloralWhite;
                     MotionalSurroundPartLabelText = new Color(1, 1, 0.5, 1);
                     MotionalSurroundPartLabelFocused = new Color(0, 0.5, 0, 0.25);
                     MotionalSurroundPartLabelUnfocused = new Color(0.5, 0.5, 0, 0.25);
                     break;
                 case _colorSettings.TEST:
-                    ControlBackground = Color.Yellow;
-                    Background = Color.Red;
-                    Text = Color.Beige;
-                    LabelBackground = Color.Cyan;
+                    White = Color.White;
+                    Black = Color.Black;
+                    Border = Color.White;
+                    Background = Color.Black;
+                    Text = Color.White;
                     IsFavorite = Color.LightGreen;
+                    Transparent = new Color(0, 0, 0, 0);
+                    WhitePianoKeys = Color.FloralWhite;
+                    MotionalSurroundPartLabelText = new Color(1, 1, 0.5, 1);
+                    MotionalSurroundPartLabelFocused = new Color(0, 0.5, 0, 0.25);
+                    MotionalSurroundPartLabelUnfocused = new Color(0.5, 0.5, 0, 0.25);
                     break;
             }
         }
@@ -8476,7 +8485,7 @@ private ParameterSets sets;
                                 controls[i].SetValue(Button.HorizontalOptionsProperty, LayoutOptions.FillAndExpand);
                                 controls[i].SetValue(Button.VerticalOptionsProperty, LayoutOptions.FillAndExpand);
                                 controls[i].SetValue(Button.BorderWidthProperty, new Thickness(0));
-                                controls[i].SetValue(Button.BackgroundColorProperty, UIHandler.colorSettings.ControlBackground);
+                                controls[i].SetValue(Button.BackgroundColorProperty, UIHandler.colorSettings.Background);
                                 controls[i].SetValue(Button.BorderColorProperty, UIHandler.colorSettings.Border);
                                 controls[i].SetValue(Button.MarginProperty, new Thickness(0, 0, 0, 0));
                                 controls[i].SetValue(Button.TextColorProperty, UIHandler.colorSettings.Text);
@@ -8486,7 +8495,7 @@ private ParameterSets sets;
                             {
                                 controls[i].SetValue(Switch.HorizontalOptionsProperty, LayoutOptions.FillAndExpand);
                                 controls[i].SetValue(Switch.VerticalOptionsProperty, LayoutOptions.FillAndExpand);
-                                controls[i].SetValue(Switch.BackgroundColorProperty, UIHandler.colorSettings.ControlBackground);
+                                controls[i].SetValue(Switch.BackgroundColorProperty, UIHandler.colorSettings.Background);
                                 //controls[i].SetValue(Switch.OnColorProperty, UIHandler.colorSettings.ControlBackground);
                                 controls[i].SetValue(Switch.MarginProperty, new Thickness(0, 0, 0, 0));
                             }
@@ -8494,7 +8503,7 @@ private ParameterSets sets;
                             {
                                 controls[i].SetValue(LabeledSwitch.HorizontalOptionsProperty, LayoutOptions.FillAndExpand);
                                 controls[i].SetValue(LabeledSwitch.VerticalOptionsProperty, LayoutOptions.FillAndExpand);
-                                controls[i].SetValue(LabeledSwitch.BackgroundColorProperty, UIHandler.colorSettings.ControlBackground);
+                                controls[i].SetValue(LabeledSwitch.BackgroundColorProperty, UIHandler.colorSettings.Background);
                                 controls[i].SetValue(LabeledSwitch.MarginProperty, new Thickness(0, 0, 0, 0));
                                 controls[i].SetValue(LabeledSwitch.PaddingProperty, new Thickness(0, 0, 0, 0));
                                 //controls[i].SetValue(LabeledSwitch.TextColorProperty, UIHandler.colorSettings.Text);
@@ -8503,7 +8512,7 @@ private ParameterSets sets;
                             {
                                 controls[i].SetValue(ListView.HorizontalOptionsProperty, LayoutOptions.FillAndExpand);
                                 controls[i].SetValue(ListView.VerticalOptionsProperty, LayoutOptions.FillAndExpand);
-                                controls[i].SetValue(ListView.BackgroundColorProperty, UIHandler.colorSettings.ControlBackground);
+                                controls[i].SetValue(ListView.BackgroundColorProperty, UIHandler.colorSettings.Background);
                                 controls[i].SetValue(ListView.MarginProperty, new Thickness(0, 0, 0, 0));
                                 controls[i].Parent.SetValue(Grid.VerticalOptionsProperty, LayoutOptions.FillAndExpand);
                                 //var cell = new DataTemplate(typeof(TextCell));
@@ -8515,7 +8524,7 @@ private ParameterSets sets;
                             {
                                 controls[i].SetValue(Picker.HorizontalOptionsProperty, LayoutOptions.FillAndExpand);
                                 controls[i].SetValue(Picker.VerticalOptionsProperty, LayoutOptions.FillAndExpand);
-                                controls[i].SetValue(Picker.BackgroundColorProperty, UIHandler.colorSettings.ControlBackground);
+                                controls[i].SetValue(Picker.BackgroundColorProperty, UIHandler.colorSettings.Background);
                                 controls[i].SetValue(Picker.MarginProperty, new Thickness(0, 0, 0, 0));
                                 controls[i].SetValue(Picker.TextColorProperty, UIHandler.colorSettings.Text);
                             }
@@ -8523,7 +8532,7 @@ private ParameterSets sets;
                             {
                                 controls[i].SetValue(LabeledPicker.HorizontalOptionsProperty, LayoutOptions.FillAndExpand);
                                 controls[i].SetValue(LabeledPicker.VerticalOptionsProperty, LayoutOptions.FillAndExpand);
-                                controls[i].SetValue(LabeledPicker.BackgroundColorProperty, UIHandler.colorSettings.ControlBackground);
+                                controls[i].SetValue(LabeledPicker.BackgroundColorProperty, UIHandler.colorSettings.Background);
                                 controls[i].SetValue(LabeledPicker.MarginProperty, new Thickness(0, 0, 0, 0));
                                 //var cell = new DataTemplate(typeof(TextCell));
                                 //cell.SetValue(TextCell.TextColorProperty, UIHandler.colorSettings.Text);
@@ -8563,7 +8572,7 @@ private ParameterSets sets;
                             {
                                 controls[i].SetValue(LabeledText.HorizontalOptionsProperty, LayoutOptions.FillAndExpand);
                                 controls[i].SetValue(LabeledText.VerticalOptionsProperty, LayoutOptions.FillAndExpand);
-                                controls[i].SetValue(LabeledText.BackgroundColorProperty, UIHandler.colorSettings.ControlBackground);
+                                controls[i].SetValue(LabeledText.BackgroundColorProperty, UIHandler.colorSettings.Background);
                                 controls[i].SetValue(LabeledText.MarginProperty, new Thickness(0, 0, 0, 0));
                                 controls[i].SetValue(LabeledText.PaddingProperty, new Thickness(0, 0, 0, 0));
                                 //controls[i].SetValue(LabeledText.TextColorProperty, UIHandler.colorSettings.Text);
@@ -8572,7 +8581,7 @@ private ParameterSets sets;
                             {
                                 controls[i].SetValue(TextBox.HorizontalOptionsProperty, LayoutOptions.FillAndExpand);
                                 controls[i].SetValue(TextBox.VerticalOptionsProperty, LayoutOptions.FillAndExpand);
-                                controls[i].SetValue(TextBox.BackgroundColorProperty, UIHandler.colorSettings.ControlBackground);
+                                controls[i].SetValue(TextBox.BackgroundColorProperty, UIHandler.colorSettings.Background);
                                 controls[i].SetValue(TextBox.MarginProperty, new Thickness(0, 0, 0, 0));
                                 //controls[i].SetValue(TextBox.PaddingProperty, new Thickness(0, 0, 0, 0));
                                 controls[i].SetValue(TextBox.TextColorProperty, UIHandler.colorSettings.Text);
@@ -8581,7 +8590,7 @@ private ParameterSets sets;
                             {
                                 controls[i].SetValue(LabeledTextInput.HorizontalOptionsProperty, LayoutOptions.FillAndExpand);
                                 controls[i].SetValue(LabeledTextInput.VerticalOptionsProperty, LayoutOptions.FillAndExpand);
-                                controls[i].SetValue(LabeledTextInput.BackgroundColorProperty, UIHandler.colorSettings.ControlBackground);
+                                controls[i].SetValue(LabeledTextInput.BackgroundColorProperty, UIHandler.colorSettings.Background);
                                 controls[i].SetValue(LabeledTextInput.MarginProperty, new Thickness(0, 0, 0, 0));
                                 controls[i].SetValue(LabeledTextInput.PaddingProperty, new Thickness(0, 0, 0, 0));
                                 //controls[i].SetValue(LabeledTextInput.TextColorProperty, UIHandler.colorSettings.Text);
@@ -8590,7 +8599,7 @@ private ParameterSets sets;
                             {
                                 controls[i].SetValue(Slider.HorizontalOptionsProperty, LayoutOptions.FillAndExpand);
                                 controls[i].SetValue(Slider.VerticalOptionsProperty, LayoutOptions.FillAndExpand);
-                                controls[i].SetValue(Slider.BackgroundColorProperty, UIHandler.colorSettings.ControlBackground);
+                                controls[i].SetValue(Slider.BackgroundColorProperty, UIHandler.colorSettings.Background);
                                 controls[i].SetValue(Slider.MinimumTrackColorProperty, UIHandler.colorSettings.Text);
                                 controls[i].SetValue(Slider.MaximumTrackColorProperty, UIHandler.colorSettings.Text);
                                 controls[i].SetValue(Slider.MarginProperty, new Thickness(0, 0, 0, 0));
@@ -8600,7 +8609,7 @@ private ParameterSets sets;
                             {
                                 controls[i].SetValue(ComboBox.HorizontalOptionsProperty, LayoutOptions.FillAndExpand);
                                 controls[i].SetValue(ComboBox.VerticalOptionsProperty, LayoutOptions.FillAndExpand);
-                                controls[i].SetValue(ComboBox.BackgroundColorProperty, UIHandler.colorSettings.ControlBackground);
+                                controls[i].SetValue(ComboBox.BackgroundColorProperty, UIHandler.colorSettings.Background);
                                 controls[i].SetValue(ComboBox.MarginProperty, new Thickness(0, 0, 0, 0));
                                 controls[i].SetValue(ComboBox.TextColorProperty, UIHandler.colorSettings.Text);
                                 //controls[i].SetValue(ComboBox.PaddingProperty, new Thickness(0, 0, 0, 0));

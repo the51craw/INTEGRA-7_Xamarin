@@ -406,10 +406,13 @@ namespace INTEGRA_7_Xamarin
             // Make the keyboard grid (We cannot use GridRow here due to limitation of byte
             // and we do not need to run a lot of setting we will change here anyway):
             Librarian_gridKeyboard.ColumnDefinitions = new ColumnDefinitionCollection();
+            ColumnDefinition cdHide = new ColumnDefinition(); // Spanning the cover over left key roundings,
             ColumnDefinition cdLength = new ColumnDefinition(); // Spanning first black key size,
             ColumnDefinition cdMargin = new ColumnDefinition(); // Spanning both to get white key size
-            cdLength.Width = new GridLength(2, GridUnitType.Star);
-            cdMargin.Width = new GridLength(1, GridUnitType.Star);
+            cdHide.Width = new GridLength(1, GridUnitType.Star);
+            cdLength.Width = new GridLength(30, GridUnitType.Star);
+            cdMargin.Width = new GridLength(15, GridUnitType.Star);
+            Librarian_gridKeyboard.ColumnDefinitions.Add(cdHide);
             Librarian_gridKeyboard.ColumnDefinitions.Add(cdLength);
             Librarian_gridKeyboard.ColumnDefinitions.Add(cdMargin);
 
@@ -425,15 +428,15 @@ namespace INTEGRA_7_Xamarin
             {
                 Librarian_btnWhiteKeys[i] = new Button();
                 Grid grid = new Grid();
-                grid.BackgroundColor = Color.Black;
+                grid.BackgroundColor = colorSettings.Border;
                 Grid.SetRowSpan(grid, 16);
                 Grid.SetRow(grid, i * 16);
-                Grid.SetColumnSpan(grid, 2);
+                Grid.SetColumnSpan(grid, 3);
                 Grid.SetColumn(grid, 0);
                 grid.Children.Add(Librarian_btnWhiteKeys[i]);
                 Librarian_gridKeyboard.Children.Add(grid);
-                Librarian_btnWhiteKeys[i].BackgroundColor = Color.FloralWhite;
-                Librarian_btnWhiteKeys[i].TextColor = Color.Black;
+                Librarian_btnWhiteKeys[i].BackgroundColor = colorSettings.WhitePianoKeys;
+                Librarian_btnWhiteKeys[i].TextColor = colorSettings.Black;
                 Librarian_btnWhiteKeys[i].Text = "";
                 Librarian_btnWhiteKeys[i].StyleId = i.ToString();
                 Librarian_btnWhiteKeys[i].Pressed += Librarian_btnWhiteKey_Pressed;
@@ -448,6 +451,16 @@ namespace INTEGRA_7_Xamarin
                     Librarian_btnWhiteKeys[i].Margin = new Thickness(2, 0, 2, 2);
                 }
             }
+
+            // Put an unused white key that spans and covers the leftmost rounded
+            // corners of the white keys:
+            Xamarin.Forms.Button cover = new Xamarin.Forms.Button();
+            Grid.SetRowSpan(cover, 22 * 16);
+            Grid.SetColumn(cover, 0);
+            cover.BackgroundColor = colorSettings.Border;
+            Librarian_gridKeyboard.Children.Add(cover);
+            // This broadens the margins, compensate:
+            Librarian_gridKeyboard.Margin = new Thickness(-5, 0, 0, 0);
 
             // Make the black keyboard keys:
             Librarian_btnBlackKeys = new Button[15];
@@ -471,19 +484,19 @@ namespace INTEGRA_7_Xamarin
                 Librarian_btnBlackKeys[i] = new Button();
                 position += numberOfFillers;
                 Grid grid = new Grid();
-                grid.BackgroundColor = Color.Black;
+                grid.BackgroundColor = colorSettings.Background;
                 Grid.SetRowSpan(grid, 10);
                 Grid.SetRow(grid, position);
-                Grid.SetColumnSpan(grid, 1);
+                Grid.SetColumnSpan(grid, 2);
                 Grid.SetColumn(grid, 0);
                 grid.Children.Add(Librarian_btnBlackKeys[i]);
                 Librarian_gridKeyboard.Children.Add(grid);
                 position += 8;
                 Librarian_btnBlackKeys[i].Text = "";
                 Librarian_btnBlackKeys[i].StyleId = i.ToString();
-                Librarian_btnBlackKeys[i].BackgroundColor = Color.Black;
-                Librarian_btnBlackKeys[i].TextColor = Color.White;
-                Librarian_btnBlackKeys[i].Margin = new Thickness(2, 0, 0, 0);
+                Librarian_btnBlackKeys[i].BackgroundColor = colorSettings.Black;
+                Librarian_btnBlackKeys[i].TextColor = colorSettings.WhitePianoKeys;
+                Librarian_btnBlackKeys[i].Margin = new Thickness(-5, 0, 0, 0);
                 Librarian_btnBlackKeys[i].Pressed += Librarian_btnBlackKey_Pressed;
                 Librarian_btnBlackKeys[i].Released += Librarian_btnBlackKey_Released;
                 Librarian_btnBlackKeys[i].BorderWidth = 0;
@@ -688,7 +701,7 @@ namespace INTEGRA_7_Xamarin
             Librarian_StackLayout.Children.Add((new GridRow(0, new View[] { Librarian_gridGroups, Librarian_gridCategories, Librarian_gridTones, Librarian_gridKeyboard },
                 new byte[] { 5, 5, 5, 3 }, false, true)).Row);
             // Make the entire grid background black to show as borders around controls by using margins:
-            Librarian_StackLayout.BackgroundColor = colorSettings.Background;
+            Librarian_StackLayout.BackgroundColor = colorSettings.Border;
             t.Trace("Librarian created ");
         }
 
@@ -2350,7 +2363,7 @@ namespace INTEGRA_7_Xamarin
                             }
                             else
                             {
-                                Librarian_btnShowFavorites.BackgroundColor = colorSettings.ControlBackground;
+                                Librarian_btnShowFavorites.BackgroundColor = colorSettings.Background;
                                 Librarian_btnRemoveFavorite.IsEnabled = false;
                             }
                         }
@@ -2448,7 +2461,7 @@ namespace INTEGRA_7_Xamarin
                 }
                 else
                 {
-                    Librarian_btnShowFavorites.BackgroundColor = colorSettings.ControlBackground;
+                    Librarian_btnShowFavorites.BackgroundColor = colorSettings.Background;
                     Librarian_btnRemoveFavorite.IsEnabled = false;
                 }
                 Librarian_btnAddFavorite.IsEnabled = true;

@@ -186,7 +186,7 @@ namespace INTEGRA_7_Xamarin
         {
             currentPage = CurrentPage.LIBRARIAN;
             MidiState = MIDIState.NOT_INITIALIZED;
-            colorSettings = new ColorSettings(_colorSettings.LIGHT);
+            //colorSettings = new ColorSettings(_colorSettings.LIGHT);
             borderThicknesSettings = new BorderThicknesSettings(2);
             commonState = new CommonState(ref Librarian_btnPlay);
             commonState.Midi = DependencyService.Get<IMidi>();

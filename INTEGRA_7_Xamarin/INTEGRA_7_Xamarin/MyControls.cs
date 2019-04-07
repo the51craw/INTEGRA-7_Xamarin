@@ -90,7 +90,7 @@ namespace INTEGRA_7_Xamarin
             this.Label.Text = text;
             this.Label.Margin = new Thickness(0, 0, 0, 0);
             this.Label.BorderWidth = 0;
-            this.Label.BackgroundColor = UIHandler.colorSettings.LabelBackground;
+            this.Label.BackgroundColor = UIHandler.colorSettings.Background;
             this.Label.BorderWidth = 0;
             this.Children.Add((new GridRow(0, new View[] { this.Label })).Row);
 
@@ -187,14 +187,14 @@ namespace INTEGRA_7_Xamarin
             //this.Label.IsEnabled = false;
             this.Label.Text = LabelText;
             this.Label.Margin = new Thickness(0, 0, 2, 0);
-            this.Label.BackgroundColor = UIHandler.colorSettings.LabelBackground;
+            this.Label.BackgroundColor = UIHandler.colorSettings.Background;
             this.Label.BorderWidth = 0;
             this.text = new Button();
             //this.Text.IsEnabled = false;
             this.text.Text = Text;
             this.Text = Text;
             this.text.Margin = new Thickness(0, 0, 0, 0);
-            this.text.BackgroundColor = UIHandler.colorSettings.LabelBackground;
+            this.text.BackgroundColor = UIHandler.colorSettings.Background;
             this.text.BorderWidth = 0;
             byte[] sizes;
             if (Sizes == null || Sizes.Count() != 2)
@@ -274,7 +274,7 @@ namespace INTEGRA_7_Xamarin
             this.Label.Text = LabelText;
             //this.Label.IsEnabled = false;
             this.Label.Margin = new Thickness(0, 0, 2, 0);
-            this.Label.BackgroundColor = UIHandler.colorSettings.LabelBackground;
+            this.Label.BackgroundColor = UIHandler.colorSettings.Background;
             this.Label.BorderWidth = 0;
             this.Editor = new Editor();
             this.Editor.Text = EditorText;

@@ -5669,7 +5669,7 @@ namespace INTEGRA_7_Xamarin
 
         private void SetStudioSetReverbLevel(Int32 p)
         {
-            tbStudioSetReverbLevel.Text = "Reverb level " + p.ToString();
+            tbStudioSetReverbLevel.Text = "Level " + p.ToString();
             byte[] address = { 0x18, 0x00, 0x06, 0x01 };
             byte[] value = { (byte)p };
             byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, value);
@@ -6807,9 +6807,12 @@ namespace INTEGRA_7_Xamarin
                     length = new byte[] { 0x00, 0x00, 0x00, 0x14 };
                     break;
             }
-            byte[] message = commonState.Midi.SystemExclusiveRQ1Message(address, length);
-            waitingForResponseFromIntegra7 = 500;
-            commonState.Midi.SendSystemExclusive(message); // This will be caught in MidiInPort_MessageReceived
+            if (address != null && length != null)
+            {
+                byte[] message = commonState.Midi.SystemExclusiveRQ1Message(address, length);
+                waitingForResponseFromIntegra7 = 500;
+                commonState.Midi.SendSystemExclusive(message); // This will be caught in MidiInPort_MessageReceived
+            }
         }
 
         private void QueryStudioSetPartMidiPhaselock()
@@ -9212,13 +9215,21 @@ namespace INTEGRA_7_Xamarin
                     commonState.Midi.SendSystemExclusive(bytes);
                     // Save the studio set:
                     address = new byte[] { 0x0f, 0x00, 0x10, 0x00 };
-                    data = new byte[] { 0x55, 0x00, (byte)(cbStudioSetSlot.SelectedIndex + 16), 0x7f };
+                    data = new byte[] { 0x55, 0x00, (byte)(cbStudioSetSlot.SelectedIndex), 0x7f };
                     bytes = commonState.Midi.SystemExclusiveRQ1Message(address, data);
                     waitingForResponseFromIntegra7 = 500;
                     commonState.Midi.SendSystemExclusive(bytes);
 
                     // Remove the new studio set name from the studio set selector:
-                    cbStudioSetSelector.Items[cbStudioSetSlot.SelectedIndex] = "INIT STUDIO";
+                    cbStudioSetSelector.Items[cbStudioSetSlot.SelectedIndex] = (cbStudioSetSlot.SelectedIndex + 1).ToString() + " INIT STUDIO";
+                    if (cbStudioSetSlot.SelectedIndex > 0)
+                    {
+                        cbStudioSetSlot.SelectedIndex = cbStudioSetSlot.SelectedIndex - 1;
+                    }
+                    else
+                    {
+                        cbStudioSetSlot.SelectedIndex = 0;
+                    }
 
                     // Remove the new studio set name from commonState.studioSetNames.
                     commonState.StudioSetNames[cbStudioSetSlot.SelectedIndex] = "INIT STUDIO";
