@@ -1451,6 +1451,7 @@ namespace INTEGRA_7_Xamarin
                     //UpdateLvToneNames();
                     //}
                     PopulateToneNames();
+
                     //Librarian_lvToneNames.SelectedItem = Librarian_ToneNames[0];
                     //PopulateToneData();
                 }
@@ -1900,7 +1901,7 @@ namespace INTEGRA_7_Xamarin
         {
             //Waiting(true, "Please wait while making sensor grid...", MotionalSurround_StackLayout);
             Librarian_StackLayout.IsVisible = false;
-            if (commonState.StudioSetNames == null || commonState.StudioSetNames.Count < 1)
+            if (commonState.StudioSet == null)
             {
                 ShowPleaseWaitPage(WaitingFor.READING_STUDIO_SET, CurrentPage.MOTIONAL_SURROUND, null);
             }

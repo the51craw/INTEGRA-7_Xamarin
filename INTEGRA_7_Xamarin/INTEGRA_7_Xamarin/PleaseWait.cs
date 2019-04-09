@@ -149,6 +149,10 @@ namespace INTEGRA_7_Xamarin
                     }
                     break;
                 case WaitingFor.INTEGRA_7:
+                    if (waitingState == WaitingState.DONE)
+                    {
+                        ContinueToPage();
+                    }
                     divider--;
                     if (divider < 1)
                     {
@@ -171,13 +175,21 @@ namespace INTEGRA_7_Xamarin
                     {
                         EditStudioSet_Timer_Tick();
                     }
-                    else
+                    else if (waitingState == WaitingState.DONE)
                     {
-                        ShowMotionalSurroundPage();
+                        ContinueToPage();
+                        //ShowMotionalSurroundPage();
                     }
                     break;
                 case WaitingFor.READING_STUDIO_SET_NAMES:
-                    PleaseWait_ReadStudioSetNames();
+                    if (waitingState == WaitingState.DONE)
+                    {
+                        ContinueToPage();
+                    }
+                    else
+                    {
+                        PleaseWait_ReadStudioSetNames();
+                    }
                     break;
             }
 
@@ -334,7 +346,8 @@ namespace INTEGRA_7_Xamarin
             else if (MidiState == MIDIState.NO_MIDI_INTERFACE_AVAILABLE)
             {
                 PleaseWait_StackLayout.IsVisible = false;
-                ShowLibrarianPage();
+                waitingState = WaitingState.DONE;
+                currentPage = CurrentPage.LIBRARIAN;
             }
         }
 
@@ -454,7 +467,7 @@ namespace INTEGRA_7_Xamarin
                     studioSetEditor_State = StudioSetEditor_State.DONE;
                     studioSetNamesJustRead = StudioSetNames.READ_BUT_NOT_LISTED;
                     SetStudioSet(commonState.CurrentStudioSet);
-                    ContinueToPage();
+                    waitingState = WaitingState.DONE;
                 }
 
 
@@ -534,7 +547,7 @@ namespace INTEGRA_7_Xamarin
                         ReadStudioSetPartToneName();
                         initDone = true;
                         uiAction = UIAction.NONE;
-                        ContinueToPage();                        
+                        waitingState = WaitingState.DONE;
                         break;
 
                 }
@@ -564,15 +577,21 @@ namespace INTEGRA_7_Xamarin
                     break;
                 case CurrentPage.EDIT_TONE:
                     PleaseWait_StackLayout.IsVisible = false;
-                    Edit_StackLayout.IsVisible = true;
+                    ShowToneEditorPage();
                     break;
                 case CurrentPage.FAVORITES:
+                    currentPage = CurrentPage.FAVORITES;
                     PleaseWait_StackLayout.IsVisible = false;
                     Favorites_StackLayout.IsVisible = true;
                     break;
                 case CurrentPage.LIBRARIAN:
+                    currentPage = CurrentPage.LIBRARIAN;
                     PleaseWait_StackLayout.IsVisible = false;
                     Librarian_StackLayout.IsVisible = true;
+                    if (waitingFor == WaitingFor.READING_STUDIO_SET_NAMES)
+                    {
+                        Librarian_PopulateStudioSetListview();
+                    }
                     break;
                 case CurrentPage.MOTIONAL_SURROUND:
                     PleaseWait_StackLayout.IsVisible = false;
