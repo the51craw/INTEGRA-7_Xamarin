@@ -146,7 +146,7 @@ Debug session is sometimes not closed after closing main window!
 	not terminated, and the app never stopped running. This also caused
 	Suspend/resume and Suspend/terminate to fail.
 
-* Verification tool reports crashes! (Maybe that has same cause as issue above?)
+* Verification tool reports crashes! (Maybe that has same cause as the issue above?)
 
 * Librarian no longer changes sound on I-7!
 
@@ -178,20 +178,22 @@ Debug session is sometimes not closed after closing main window!
 
 * Studio set editor return button must not be enabled before everything is read in!
 
-Same thing with librarian.
+* Same thing with librarian.
 
 * Try to remove the space between that sometime occurs images in Motional surround.
 	They are now overlapping, which means that this must be tested on all platforms!
 
 Changing studio set from librarian does not update what is seen in motional surround and edit studio set.
+	Always read studio set (but not names if already read) when entering motional surround.
+	Always read studio set (but not names if already read) when entering edit studio set.
 
 Finish color settings.
 
-Add settings:
-	Swap surround button with edit buttons and make a setting button to the right of the surround button.
-	Settings:
-		Put combined MSB and LSB in clipboard.
-		Selection of color schemes.
+* Add settings:
+	* Swap surround button with edit buttons and make a setting button to the right of the surround button.
+	* Settings:
+		* Put combined MSB and LSB in clipboard.
+		* Selection of color schemes.
 
 Changing sub-pages in tone edit creates all controls everytime. Why not keep them in memory?
 

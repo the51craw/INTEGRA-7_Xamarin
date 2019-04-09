@@ -282,6 +282,7 @@ namespace INTEGRA_7_Xamarin
         public ToneTypes ToneType { get; set; }
         public SimpleToneTypes SimpleToneType { get; set; }
         public String ToneSource {get;set;}
+        public byte CurrentSoundMode { get; set; }
         public byte CurrentStudioSet { get; set; }
         public byte CurrentPart { get; set; }
         public byte[] PartChannels { get; set; }
@@ -8344,9 +8345,12 @@ private ParameterSets sets;
 
     public enum _colorSettings
     {
-        TEST,
-        DARK,
         LIGHT,
+        SUNNY,
+        ROSE,
+        OCEAN,
+        FOREST,
+        BROWN
     }
 
     public class ColorSettings
@@ -8360,6 +8364,7 @@ private ParameterSets sets;
         public Color IsFavorite { get; set; }
         public Color Transparent { get; set; }
         public Color WhitePianoKeys { get; set; }
+        public Color PianoKeyCover { get; set; }
         public Color MotionalSurroundPartLabelText { get; set; }
         public Color MotionalSurroundPartLabelFocused { get; set; }
         public Color MotionalSurroundPartLabelUnfocused { get; set; }
@@ -8368,7 +8373,33 @@ private ParameterSets sets;
         {
             switch (colorSettings)
             {
-                case _colorSettings.DARK:
+                case _colorSettings.BROWN:
+                    White = Color.LightGoldenrodYellow;
+                    Black = Color.Black;
+                    Border = Color.DarkSalmon;
+                    Background = Color.White;
+                    Text = Color.Black;
+                    IsFavorite = Color.LightGreen;
+                    Transparent = new Color(0, 0, 0, 0);
+                    WhitePianoKeys = Color.FloralWhite;
+                    PianoKeyCover = Color.DarkOrange;
+                    MotionalSurroundPartLabelText = new Color(1, 1, 0.5, 1);
+                    MotionalSurroundPartLabelFocused = new Color(0, 0.5, 0, 0.25);
+                    MotionalSurroundPartLabelUnfocused = new Color(0.5, 0.5, 0, 0.25);
+                    break;
+                case _colorSettings.FOREST:
+                    White = Color.White;
+                    Black = Color.Black;
+                    Border = Color.ForestGreen;
+                    Background = Color.White;
+                    Text = Color.White;
+                    IsFavorite = Color.LightGreen;
+                    Transparent = new Color(0, 0, 0, 0);
+                    WhitePianoKeys = Color.FloralWhite;
+                    PianoKeyCover = Color.DarkOrange;
+                    MotionalSurroundPartLabelText = new Color(1, 1, 0.5, 1);
+                    MotionalSurroundPartLabelFocused = new Color(0, 0.5, 0, 0.25);
+                    MotionalSurroundPartLabelUnfocused = new Color(0.5, 0.5, 0, 0.25);
                     break;
                 case _colorSettings.LIGHT:
                     White = Color.White;
@@ -8379,19 +8410,49 @@ private ParameterSets sets;
                     IsFavorite = Color.LightGreen;
                     Transparent = new Color(0, 0, 0, 0);
                     WhitePianoKeys = Color.FloralWhite;
+                    PianoKeyCover = Color.DarkOrange;
                     MotionalSurroundPartLabelText = new Color(1, 1, 0.5, 1);
                     MotionalSurroundPartLabelFocused = new Color(0, 0.5, 0, 0.25);
                     MotionalSurroundPartLabelUnfocused = new Color(0.5, 0.5, 0, 0.25);
                     break;
-                case _colorSettings.TEST:
+                case _colorSettings.OCEAN:
                     White = Color.White;
                     Black = Color.Black;
-                    Border = Color.White;
-                    Background = Color.Black;
+                    Border = Color.Cyan;
+                    Background = Color.White;
                     Text = Color.White;
                     IsFavorite = Color.LightGreen;
                     Transparent = new Color(0, 0, 0, 0);
                     WhitePianoKeys = Color.FloralWhite;
+                    PianoKeyCover = Color.DarkOrange;
+                    MotionalSurroundPartLabelText = new Color(1, 1, 0.5, 1);
+                    MotionalSurroundPartLabelFocused = new Color(0, 0.5, 0, 0.25);
+                    MotionalSurroundPartLabelUnfocused = new Color(0.5, 0.5, 0, 0.25);
+                    break;
+                case _colorSettings.ROSE:
+                    White = Color.White;
+                    Black = Color.Black;
+                    Border = Color.LightPink;
+                    Background = Color.White;
+                    Text = Color.White;
+                    IsFavorite = Color.LightGreen;
+                    Transparent = new Color(0, 0, 0, 0);
+                    WhitePianoKeys = Color.FloralWhite;
+                    PianoKeyCover = Color.DarkOrange;
+                    MotionalSurroundPartLabelText = new Color(1, 1, 0.5, 1);
+                    MotionalSurroundPartLabelFocused = new Color(0, 0.5, 0, 0.25);
+                    MotionalSurroundPartLabelUnfocused = new Color(0.5, 0.5, 0, 0.25);
+                    break;
+                case _colorSettings.SUNNY:
+                    White = Color.White;
+                    Black = Color.Black;
+                    Border = Color.Yellow;
+                    Background = Color.White;
+                    Text = Color.White;
+                    IsFavorite = Color.LightGreen;
+                    Transparent = new Color(0, 0, 0, 0);
+                    WhitePianoKeys = Color.FloralWhite;
+                    PianoKeyCover = Color.DarkOrange;
                     MotionalSurroundPartLabelText = new Color(1, 1, 0.5, 1);
                     MotionalSurroundPartLabelFocused = new Color(0, 0.5, 0, 0.25);
                     MotionalSurroundPartLabelUnfocused = new Color(0.5, 0.5, 0, 0.25);

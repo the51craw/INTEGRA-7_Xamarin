@@ -68,33 +68,36 @@ namespace INTEGRA_7_Xamarin
                 DrawMotinalSurroundPage();
                 MotionalSurround_StackLayout.MinimumWidthRequest = 1;
                 mainStackLayout.Children.Add(MotionalSurround_StackLayout);
-                MotionalSurround_Init();
+                //MotionalSurround_Init();
                 MotionalSurround_IsCreated = true;
                 PopHandleControlEvents();
                 needsToSetFontSizes = NeedsToSetFontSizes.MOTIONAL_SURROUND;
             }
             MotionalSurround_StackLayout.IsVisible = true;
-            if (commonState.StudioSet.PartMotionalSurround != null
-                && commonState.StudioSet.PartMotionalSurround[0] != null
-                && commonState.StudioSet.PartMotionalSurround[1] != null
-                && commonState.StudioSet.PartMotionalSurround[2] != null
-                && commonState.StudioSet.PartMotionalSurround[3] != null
-                && commonState.StudioSet.PartMotionalSurround[4] != null
-                && commonState.StudioSet.PartMotionalSurround[5] != null
-                && commonState.StudioSet.PartMotionalSurround[6] != null
-                && commonState.StudioSet.PartMotionalSurround[7] != null
-                && commonState.StudioSet.PartMotionalSurround[8] != null
-                && commonState.StudioSet.PartMotionalSurround[9] != null
-                && commonState.StudioSet.PartMotionalSurround[10] != null
-                && commonState.StudioSet.PartMotionalSurround[11] != null
-                && commonState.StudioSet.PartMotionalSurround[12] != null
-                && commonState.StudioSet.PartMotionalSurround[13] != null
-                && commonState.StudioSet.PartMotionalSurround[14] != null
-                && commonState.StudioSet.PartMotionalSurround[15] != null
-                && commonState.StudioSet.MotionalSurround != null)
+            motionalSurroundInitializationState = MotionalSurroundInitializationState.INITIALIZING;
+            //if (commonState.StudioSet.PartMotionalSurround != null
+            //    && commonState.StudioSet.PartMotionalSurround[0] != null
+            //    && commonState.StudioSet.PartMotionalSurround[1] != null
+            //    && commonState.StudioSet.PartMotionalSurround[2] != null
+            //    && commonState.StudioSet.PartMotionalSurround[3] != null
+            //    && commonState.StudioSet.PartMotionalSurround[4] != null
+            //    && commonState.StudioSet.PartMotionalSurround[5] != null
+            //    && commonState.StudioSet.PartMotionalSurround[6] != null
+            //    && commonState.StudioSet.PartMotionalSurround[7] != null
+            //    && commonState.StudioSet.PartMotionalSurround[8] != null
+            //    && commonState.StudioSet.PartMotionalSurround[9] != null
+            //    && commonState.StudioSet.PartMotionalSurround[10] != null
+            //    && commonState.StudioSet.PartMotionalSurround[11] != null
+            //    && commonState.StudioSet.PartMotionalSurround[12] != null
+            //    && commonState.StudioSet.PartMotionalSurround[13] != null
+            //    && commonState.StudioSet.PartMotionalSurround[14] != null
+            //    && commonState.StudioSet.PartMotionalSurround[15] != null
+            //    && commonState.StudioSet.MotionalSurround != null)
             {
                 // Studio set might have been changed, so classes has other data, tell TimerTick to update controls:
-                motionalSurroundInitializationState = MotionalSurroundInitializationState.INITIALIZING;
+                //motionalSurroundInitializationState = MotionalSurroundInitializationState.INITIALIZING;
+                //commonState.StudioSet = new StudioSet();
+                //QueryStudioSetMotionalSurround(); // This will be caught in MotionalSurround_MidiInPort_MessageReceived()
             }
         }
 
@@ -358,51 +361,51 @@ namespace INTEGRA_7_Xamarin
             MotionalSurround_StackLayout.Children.Add(new GridRow(0, new View[] { gArrows, gParts }, new byte[] { 5, 3 }).Row);
         }
 
-        private void MotionalSurround_Init()
-        {
-            if (commonState == null)
-            {
-                // If commonState is not initialized, we have no business here, go back!
-                MotionalSurround_StackLayout.IsVisible = false;
-                ShowLibrarianPage();
-            }
-            else if (commonState.StudioSet == null || commonState.StudioSet.MotionalSurround == null)
-            {
-                // StudioSet set has not been read, thus we have no Motional Surround data. 
-                // Start by creating the studioSet object:
-                commonState.StudioSet = new StudioSet();
+        //private void MotionalSurround_Init()
+        //{
+        //    if (commonState == null)
+        //    {
+        //        // If commonState is not initialized, we have no business here, go back!
+        //        MotionalSurround_StackLayout.IsVisible = false;
+        //        ShowLibrarianPage();
+        //    }
+        //    else if (commonState.StudioSet == null || commonState.StudioSet.MotionalSurround == null)
+        //    {
+        //        // StudioSet set has not been read, thus we have no Motional Surround data. 
+        //        // Start by creating the studioSet object:
+        //        commonState.StudioSet = new StudioSet();
 
-                // Then get the Motional Surround data by borrowing code from Studio set editor:
-                QueryStudioSetMotionalSurround(); // This will be caught in MotionalSurround_MidiInPort_MessageReceived()
-                // After received data we will also ask for the parts in order to get the parts surround positions.
-            }
-            else if (commonState.StudioSet.PartMotionalSurround[0] == null
-                || commonState.StudioSet.PartMotionalSurround[1] == null
-                || commonState.StudioSet.PartMotionalSurround[2] == null
-                || commonState.StudioSet.PartMotionalSurround[3] == null
-                || commonState.StudioSet.PartMotionalSurround[4] == null
-                || commonState.StudioSet.PartMotionalSurround[5] == null
-                || commonState.StudioSet.PartMotionalSurround[6] == null
-                || commonState.StudioSet.PartMotionalSurround[7] == null
-                || commonState.StudioSet.PartMotionalSurround[8] == null
-                || commonState.StudioSet.PartMotionalSurround[9] == null
-                || commonState.StudioSet.PartMotionalSurround[10] == null
-                || commonState.StudioSet.PartMotionalSurround[11] == null
-                || commonState.StudioSet.PartMotionalSurround[12] == null
-                || commonState.StudioSet.PartMotionalSurround[13] == null
-                || commonState.StudioSet.PartMotionalSurround[14] == null
-                || commonState.StudioSet.PartMotionalSurround[15] == null)
-            {
-                // We still do not have the part positions, so get it:
-                for (currentMotionalSurroundPart = 0; currentMotionalSurroundPart < 16; currentMotionalSurroundPart++)
-                {
-                    commonState.StudioSet.PartMotionalSurround[currentMotionalSurroundPart] = new StudioSet_PartMotionalSurround(null);
-                }
-                initDone = false;
-                currentMotionalSurroundPart = 0;
-                QueryStudioSetPart(currentMotionalSurroundPart); // This will be caught in MotionalSurrouns_MidiInPort_MessageReceived()
-            }
-        }
+        //    }
+        //    // Then get the Motional Surround data by borrowing code from Studio set editor:
+        //    QueryStudioSetMotionalSurround(); // This will be caught in MotionalSurround_MidiInPort_MessageReceived()
+        //    // After received data we will also ask for the parts in order to get the parts surround positions.
+        //    //else if (commonState.StudioSet.PartMotionalSurround[0] == null
+        //    //    || commonState.StudioSet.PartMotionalSurround[1] == null
+        //    //    || commonState.StudioSet.PartMotionalSurround[2] == null
+        //    //    || commonState.StudioSet.PartMotionalSurround[3] == null
+        //    //    || commonState.StudioSet.PartMotionalSurround[4] == null
+        //    //    || commonState.StudioSet.PartMotionalSurround[5] == null
+        //    //    || commonState.StudioSet.PartMotionalSurround[6] == null
+        //    //    || commonState.StudioSet.PartMotionalSurround[7] == null
+        //    //    || commonState.StudioSet.PartMotionalSurround[8] == null
+        //    //    || commonState.StudioSet.PartMotionalSurround[9] == null
+        //    //    || commonState.StudioSet.PartMotionalSurround[10] == null
+        //    //    || commonState.StudioSet.PartMotionalSurround[11] == null
+        //    //    || commonState.StudioSet.PartMotionalSurround[12] == null
+        //    //    || commonState.StudioSet.PartMotionalSurround[13] == null
+        //    //    || commonState.StudioSet.PartMotionalSurround[14] == null
+        //    //    || commonState.StudioSet.PartMotionalSurround[15] == null)
+        //    //{
+        //    //    // We still do not have the part positions, so get it:
+        //    //    for (currentMotionalSurroundPart = 0; currentMotionalSurroundPart < 16; currentMotionalSurroundPart++)
+        //    //    {
+        //    //        commonState.StudioSet.PartMotionalSurround[currentMotionalSurroundPart] = new StudioSet_PartMotionalSurround(null);
+        //    //    }
+        //    //    initDone = false;
+        //    //    currentMotionalSurroundPart = 0;
+        //    //    QueryStudioSetPart(currentMotionalSurroundPart); // This will be caught in MotionalSurrouns_MidiInPort_MessageReceived()
+        //    //}
+        //}
 
         public void MotionalSurround_Timer_Tick()
         {
@@ -456,6 +459,9 @@ namespace INTEGRA_7_Xamarin
                 //msePart[currentMotionalSurroundPart].Switch.IsChecked = 
                 //    commonState.StudioSet.MotionalSurround.MotionalSurroundSwitch;
                 mslPart[currentMotionalSurroundPart].Plot(gArrows.Width, gArrows.Height);
+
+                // Surround switch:
+                cbMotionalSurroundSwitch.IsChecked = commonState.StudioSet.MotionalSurround.MotionalSurroundSwitch;
             }
         }
 
@@ -463,7 +469,7 @@ namespace INTEGRA_7_Xamarin
         {
             if (currentStudioSetEditorMidiRequest == StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_MOTIONAL_SURROUND)
             {
-                ReadMotionalSurround(false); // We borrow this too from the Studio Set Editor
+                ReadMotionalSurround(); // We borrow this too from the Studio Set Editor
                 currentMotionalSurroundPart = 0;
                 QueryStudioSetPart(currentMotionalSurroundPart);
             }

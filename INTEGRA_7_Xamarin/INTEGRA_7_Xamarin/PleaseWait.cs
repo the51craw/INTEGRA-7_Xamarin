@@ -11,8 +11,17 @@ namespace INTEGRA_7_Xamarin
         MIDI,
         INTEGRA_7,
         EDIT,
+        READING_STUDIO_SET,
         READING_STUDIO_SET_NAMES,
         IDLE
+    }
+
+    public enum WaitingState
+    {
+        INITIALIZING,
+        WAITING,
+        PROCESSING,
+        DONE
     }
 
     public enum UIAction
@@ -20,6 +29,7 @@ namespace INTEGRA_7_Xamarin
         NONE,
         PROGRESS,
         GOTO_LIBRARIAN,
+        GOTO_MOTIONAL_SURROUND,
         GOTO_EDIT_STUDIO_SET
     }
 
@@ -28,11 +38,13 @@ namespace INTEGRA_7_Xamarin
         //public ProgressBar ProgressBar { get; set; }
 
         private WaitingFor waitingFor;
+        private WaitingState waitingState;
         private CurrentPage continueTo;
         private Int32 waitCount;
         private Int32 studioSetNumber;
         private Object deviceSpecifics;
         private UIAction uiAction;
+        private Double progressStep;
 
         /// <summary>
         /// Call to show a wait page with a progress bar
@@ -53,6 +65,7 @@ namespace INTEGRA_7_Xamarin
             }
             PleaseWait_StackLayout.IsVisible = true;
             this.waitingFor = waitingFor;
+            waitingState = WaitingState.INITIALIZING;
             uiAction = UIAction.NONE;
             PleaseWait_Init();
             //this.o = o;
@@ -72,6 +85,10 @@ namespace INTEGRA_7_Xamarin
                     break;
                 case WaitingFor.EDIT:
                     tbPleaseWait.Text = "Please wait while initiating editor form...";
+                    break;
+                case WaitingFor.READING_STUDIO_SET:
+                    tbPleaseWait.Text = "Please wait while reading studio set.";
+                    pb_WaitingProgress.Progress = 0;
                     break;
                 case WaitingFor.READING_STUDIO_SET_NAMES:
                     if (continueTo == CurrentPage.EDIT_STUDIO_SET)
@@ -145,8 +162,21 @@ namespace INTEGRA_7_Xamarin
                 case WaitingFor.EDIT:
                     PleaseWait_InitializeEditorForm();
                     break;
+                case WaitingFor.READING_STUDIO_SET:
+                    if (waitingState == WaitingState.INITIALIZING)
+                    {
+                        PleaseWait_ReadStudioSet();
+                    }
+                    else if (waitingState == WaitingState.PROCESSING)
+                    {
+                        EditStudioSet_Timer_Tick();
+                    }
+                    else
+                    {
+                        ShowMotionalSurroundPage();
+                    }
+                    break;
                 case WaitingFor.READING_STUDIO_SET_NAMES:
-                    waitingFor = WaitingFor.IDLE;
                     PleaseWait_ReadStudioSetNames();
                     break;
             }
@@ -154,7 +184,8 @@ namespace INTEGRA_7_Xamarin
             switch (uiAction)
             {
                 case UIAction.PROGRESS:
-                    pb_WaitingProgress.Progress += 1F / 64F;
+                    pb_WaitingProgress.Progress += progressStep; // 1F / 64F;
+                    uiAction = UIAction.NONE;
                     break;
                 case UIAction.GOTO_LIBRARIAN:
                     PleaseWait_StackLayout.IsVisible = false;
@@ -162,6 +193,11 @@ namespace INTEGRA_7_Xamarin
                     currentPage = CurrentPage.LIBRARIAN;
                     studioSetNamesJustRead = StudioSetNames.READ_BUT_NOT_LISTED;
                     initDone = true;
+                    break;
+                case UIAction.GOTO_MOTIONAL_SURROUND:
+                    PleaseWait_StackLayout.IsVisible = false;
+                    MotionalSurround_StackLayout.IsVisible = true;
+                    currentPage = CurrentPage.MOTIONAL_SURROUND;
                     break;
                 case UIAction.GOTO_EDIT_STUDIO_SET:
                     PleaseWait_StackLayout.IsVisible = false;
@@ -184,7 +220,7 @@ namespace INTEGRA_7_Xamarin
             else if (MidiState == MIDIState.NOT_INITIALIZED)
             {
                 waitCount--;
-                pb_WaitingProgress.Progress = pb_WaitingProgress.Progress + ((1 - pb_WaitingProgress.Progress) / 100);
+                pb_WaitingProgress.Progress += ((1 - pb_WaitingProgress.Progress) / 10000);
                 if (waitCount > 10)
                 {
                     // Try to find I-7 via USB interface:
@@ -203,7 +239,7 @@ namespace INTEGRA_7_Xamarin
                         commonState.Midi.Init(mainPage, "INTEGRA-7", 0, 0);
                         MidiState = MIDIState.INITIALIZING;
                     }
-                    pb_WaitingProgress.Progress = pb_WaitingProgress.Progress + ((1 - pb_WaitingProgress.Progress) / 100);
+                    pb_WaitingProgress.Progress += ((1 - pb_WaitingProgress.Progress) / 10000);
                     if (commonState.Midi.MidiIsReady())
                     {
                         pb_WaitingProgress.Progress = 1;
@@ -225,7 +261,7 @@ namespace INTEGRA_7_Xamarin
                             {
                                 MidiState = MIDIState. INITIALIZED;
                             }
-                            pb_WaitingProgress.Progress = pb_WaitingProgress.Progress + ((1 - pb_WaitingProgress.Progress) / 100);
+                            pb_WaitingProgress.Progress += ((1 - pb_WaitingProgress.Progress) / 10000);
                         }
                         else
                         {
@@ -244,7 +280,7 @@ namespace INTEGRA_7_Xamarin
                             {
                                 mainPage.SaveLocalValue("MidiDevice", MidiInterfaceName);
                                 commonState.Midi.Init(mainPage, MidiInterfaceName, 0, 0);
-                                pb_WaitingProgress.Progress = pb_WaitingProgress.Progress + ((1 - pb_WaitingProgress.Progress) / 100);
+                                pb_WaitingProgress.Progress += ((1 - pb_WaitingProgress.Progress) / 10000);
                                 if (commonState.Midi.MidiIsReady())
                                 {
                                     MidiState = MIDIState.INITIALIZED;
@@ -286,7 +322,7 @@ namespace INTEGRA_7_Xamarin
 
             else if (MidiState == MIDIState.WAITING_FOR_I7)
             {
-                pb_WaitingProgress.Progress = pb_WaitingProgress.Progress + ((1 - pb_WaitingProgress.Progress) / 100);
+                pb_WaitingProgress.Progress += ((1 - pb_WaitingProgress.Progress) / 10000);
             }
 
             else if (MidiState == MIDIState.INITIALIZED)
@@ -332,6 +368,26 @@ namespace INTEGRA_7_Xamarin
         }
 
         /// <summary>
+        /// We need to read the studio set for one of two reasons:
+        /// 1) We wish to enter Motional Surround and need to synchronize
+        ///     data with actual data from the I-7
+        /// 2) We wish to enter Studio Set Editor and need to synchronize
+        ///     data with actual data from the I-7
+        /// </summary>
+        private void PleaseWait_ReadStudioSet()
+        {
+            progressStep = 1.0F / 22.0F;
+            if (waitingState == WaitingState.INITIALIZING)
+            {
+                waitingState = WaitingState.PROCESSING;
+                pb_WaitingProgress.Progress = 0;
+                initDone = false;
+                commonState.StudioSet = new StudioSet();
+                QueryCurrentStudioSetNumber(false);
+            }
+        }
+
+        /// <summary>
         /// We need to read the studio set names for one of two reasons:
         /// 1) Studio sets has been selected in Librarian_lvGroups and
         ///     we should list groups in the Librarian
@@ -346,9 +402,21 @@ namespace INTEGRA_7_Xamarin
         /// </summary>
         private void PleaseWait_ReadStudioSetNames()
         {
-            queryType = QueryType.STUDIO_SET_NAMES;
-            ShowStudioSetEditorPage();
-            pb_WaitingProgress.Progress = 0;
+            progressStep = 1.0F / 63.0F;
+            if (waitingState == WaitingState.INITIALIZING)
+            {
+                waitingState = WaitingState.PROCESSING;
+                pb_WaitingProgress.Progress = 0;
+                initDone = false;
+                commonState.StudioSetNames = new List<String>();
+                studioSetNumberTemp = 0;
+                ScanForStudioSetNames();
+            }
+
+
+            //queryType = QueryType.STUDIO_SET_NAMES;
+            //ShowStudioSetEditorPage();
+            //pb_WaitingProgress.Progress = 0;
         }
 
         /// <summary>
@@ -362,27 +430,154 @@ namespace INTEGRA_7_Xamarin
                 // Got response from the I-7, just set the integra_7Ready flag:
                 integra_7Ready = true;
             }
-            else if (queryType == QueryType.STUDIO_SET_NAMES)
+            else if (waitingFor == WaitingFor.READING_STUDIO_SET_NAMES
+                && waitingState == WaitingState.PROCESSING)
             {
                 uiAction = UIAction.PROGRESS;
-                EditStudioSet_MidiInPort_MessageReceived();
-
-                if (studioSetEditor_State == StudioSetEditor_State.DONE)
+                String text = "";
+                for (Int32 i = 0x0b; i < rawData.Length - 2; i++)
                 {
-                    // Studio set names has been read. Go to the Librarian
-                    // or the studio set editor depending on what is in 
-                    // the enumertor continueTo:
-                    if (continueTo == CurrentPage.LIBRARIAN)
-                    {
-                        uiAction = UIAction.GOTO_LIBRARIAN;
-                    }
-                    else if (continueTo == CurrentPage.EDIT_STUDIO_SET)
-                    {
-                        // PleaseWait has had the control so far, so take
-                        // it and let Studio set editor be visible.
-                        uiAction = UIAction.GOTO_EDIT_STUDIO_SET;
-                    }
+                    text += (char)rawData[i];
                 }
+                commonState.StudioSetNames.Add(text);
+                studioSetNumberTemp++;
+
+                // Query next studio set if this was not last one:
+                if (studioSetNumberTemp < 64)
+                {
+                    // Ask for it:
+                    ScanForStudioSetNames(); // Answer will be caught here.
+                }
+                else
+                {
+                    // All titles received, set a status that will be caught in Timer_Tick:
+                    studioSetEditor_State = StudioSetEditor_State.DONE;
+                    studioSetNamesJustRead = StudioSetNames.READ_BUT_NOT_LISTED;
+                    SetStudioSet(commonState.CurrentStudioSet);
+                    ContinueToPage();
+                }
+
+
+                // StudioSetEditor_currentStudioSetEditorMidiRequest.GET_CURRENT_STUDIO_SET_NUMBER_AND_SCAN
+
+                //uiAction = UIAction.PROGRESS;
+                //EditStudioSet_MidiInPort_MessageReceived();
+
+                //if (studioSetEditor_State == StudioSetEditor_State.DONE)
+                //{
+                //    // Studio set names has been read. Go to the Librarian
+                //    // or the studio set editor depending on what is in 
+                //    // the enumertor continueTo:
+                //    if (continueTo == CurrentPage.LIBRARIAN)
+                //    {
+                //        uiAction = UIAction.GOTO_LIBRARIAN;
+                //    }
+                //    else if (continueTo == CurrentPage.EDIT_STUDIO_SET)
+                //    {
+                //        // PleaseWait has had the control so far, so take
+                //        // it and let Studio set editor be visible.
+                //        uiAction = UIAction.GOTO_EDIT_STUDIO_SET;
+                //    }
+                //}
+            }
+            else if (waitingFor == WaitingFor.READING_STUDIO_SET
+                && waitingState == WaitingState.PROCESSING)
+            {
+                //EditStudioSet_MidiInPort_MessageReceived();
+                uiAction = UIAction.PROGRESS;
+                switch (currentStudioSetEditorMidiRequest)
+                {
+                    case StudioSetEditor_currentStudioSetEditorMidiRequest.GET_CURRENT_STUDIO_SET_NUMBER:
+                        commonState.CurrentSoundMode = rawData[11];
+                        commonState.CurrentStudioSet = rawData[17];
+                        studioSetNumberTemp = 0;
+                        QuerySystemCommon();
+                        break;
+                    case StudioSetEditor_currentStudioSetEditorMidiRequest.SYSTEM_COMMON:
+                        ReadSystemCommon();
+                        QueryStudioSetCommon();
+                        break;
+                    case StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_COMMON:
+                        ReadSelectedStudioSet();
+                        QueryStudioSetChorus();
+                        break;
+                    case StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_CHORUS:
+                        ReadStudioSetChorus();
+                        QueryStudioSetReverb();
+                        break;
+                    case StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_REVERB:
+                        ReadStudioSetReverb();
+                        QueryStudioSetMotionalSurround();
+                        break;
+                    case StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_MOTIONAL_SURROUND:
+                        ReadMotionalSurround();
+                        QueryStudioSetMasterEQ();
+                        break;
+                    case StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_MASTER_EQ:
+                        ReadStudioSetMasterEQ();
+                        studioSetEditor_PartToRead = 0;
+                        QueryStudioSetPart(studioSetEditor_PartToRead);
+                        break;
+                    case StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_PART:
+                        ReadStudioSetPart(studioSetEditor_PartToRead);
+                        studioSetEditor_PartToRead++;
+                        if (studioSetEditor_PartToRead < 16)
+                        {
+                            QueryStudioSetPart(studioSetEditor_PartToRead);
+                        }
+                        else
+                        {
+                            QueryStudioSetPartToneName();
+                        }
+                        break;
+                    case StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_PART_TONE_NAME:
+                        ReadStudioSetPartToneName();
+                        initDone = true;
+                        uiAction = UIAction.NONE;
+                        ContinueToPage();                        
+                        break;
+
+                }
+                
+            }
+        }
+
+        private void ContinueToPage()
+        {
+            switch (continueTo)
+            {
+                case CurrentPage.EDIT_STUDIO_SET:
+                    // If we are going to the studio set editor, it might be that
+                    // also studio set names must be read:
+                    if (commonState.StudioSetNames == null || commonState.StudioSetNames.Count < 1)
+                    {
+                        waitingFor = WaitingFor.READING_STUDIO_SET_NAMES;
+                        waitingState = WaitingState.INITIALIZING;
+                        tbPleaseWait.Text = "Please wait while scanning Studio set names and initiating studio set editor form...";
+                        PleaseWait_ReadStudioSetNames();
+                    }
+                    else
+                    {
+                        PleaseWait_StackLayout.IsVisible = false;
+                        ShowStudioSetEditorPage();
+                    }
+                    break;
+                case CurrentPage.EDIT_TONE:
+                    PleaseWait_StackLayout.IsVisible = false;
+                    Edit_StackLayout.IsVisible = true;
+                    break;
+                case CurrentPage.FAVORITES:
+                    PleaseWait_StackLayout.IsVisible = false;
+                    Favorites_StackLayout.IsVisible = true;
+                    break;
+                case CurrentPage.LIBRARIAN:
+                    PleaseWait_StackLayout.IsVisible = false;
+                    Librarian_StackLayout.IsVisible = true;
+                    break;
+                case CurrentPage.MOTIONAL_SURROUND:
+                    PleaseWait_StackLayout.IsVisible = false;
+                    ShowMotionalSurroundPage();
+                    break;
             }
         }
 

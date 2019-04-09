@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Plugin.Clipboard;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -74,6 +75,7 @@ namespace INTEGRA_7_Xamarin
         LabeledText Librarian_ltPatchMSB;
         LabeledText Librarian_ltPatchLSB;
         LabeledText Librarian_ltProgramNumber;
+        TouchableImage imgSettings;
         Button Librarian_btnEditTone;
         Button Librarian_btnEditStudioSet;
         Button Librarian_btnResetVolume;
@@ -85,7 +87,7 @@ namespace INTEGRA_7_Xamarin
         Button Librarian_btnResetHangingNotes;
         Button Librarian_btnPlus12keys;
         Button Librarian_btnMinus12keys;
-        MyLabel Librarian_lblKeys;
+        Button Librarian_btnKeys;
         Boolean usingSearchResults = false;
         Int32 rowHeight;
         byte listingHeight;
@@ -97,9 +99,9 @@ namespace INTEGRA_7_Xamarin
         Button[] Librarian_btnWhiteKeys;
         Button[] Librarian_btnBlackKeys;
 
-        private void Init2()
+        private void Librarian_Init()
         {
-            t.Trace("private void Init2()");
+            t.Trace("private void Librarian_Init()");
             try
             {
                 // ToDo: Is this really needed? It is taken care of in OnNavigatedTo, or...
@@ -236,14 +238,14 @@ namespace INTEGRA_7_Xamarin
                 {
                     transpose = ((Int32)mainPage.LoadLocalValue("Transpose"));
                     lowKey = transpose + 36;
-                    Librarian_lblKeys.Text = "Keys " + lowKey.ToString() + " - " + (lowKey + 60).ToString();
+                    //Librarian_btnKeys.Text = "Keys " + lowKey.ToString() + " - " + (lowKey + 36).ToString();
                 }
                 catch
                 {
                     transpose = 0;
                     mainPage.SaveLocalValue("Transpose", 0);
                     lowKey = transpose + 36;
-                    Librarian_lblKeys.Text = "Keys " + lowKey.ToString() + " - " + (lowKey + 60).ToString();
+                    //Librarian_btnKeys.Text = "Keys " + lowKey.ToString() + " - " + (lowKey + 36).ToString();
                 }
             }
             else
@@ -251,7 +253,7 @@ namespace INTEGRA_7_Xamarin
                 transpose = 0;
                 mainPage.SaveLocalValue("Transpose", 0);
                 lowKey = transpose + 36;
-                Librarian_lblKeys.Text = "Keys " + lowKey.ToString() + " - " + (lowKey + 60).ToString();
+                //Librarian_btnKeys.Text = "Keys " + lowKey.ToString() + " - " + (lowKey + 36).ToString();
             }
             if (mainPage.LoadLocalValue("PutBankInClipboard") != null)
             {
@@ -269,6 +271,43 @@ namespace INTEGRA_7_Xamarin
             {
                 mainPage.SaveLocalValue("PutBankInClipboard", false);
                 putBankInClipboard = false;
+            }
+            if (mainPage.LoadLocalValue("ColorSettings") != null)
+            {
+                try
+                {
+                    switch ((String)mainPage.LoadLocalValue("ColorSettings"))
+                    {
+                        case "BROWN":
+                            colorSettings = new ColorSettings(_colorSettings.BROWN);
+                            break;
+                        case "FOREST":
+                            colorSettings = new ColorSettings(_colorSettings.FOREST);
+                            break;
+                        case "LIGHT":
+                            colorSettings = new ColorSettings(_colorSettings.LIGHT);
+                            break;
+                        case "OCEAN":
+                            colorSettings = new ColorSettings(_colorSettings.OCEAN);
+                            break;
+                        case "ROSE":
+                            colorSettings = new ColorSettings(_colorSettings.ROSE);
+                            break;
+                        case "SUNNY":
+                            colorSettings = new ColorSettings(_colorSettings.SUNNY);
+                            break;
+                    }
+                }
+                catch
+                {
+                    mainPage.SaveLocalValue("ColorSettings", _colorSettings.LIGHT.ToString());
+                    colorSettings = new ColorSettings(_colorSettings.LIGHT);
+                }
+            }
+            else
+            {
+                mainPage.SaveLocalValue("ColorSettings", _colorSettings.LIGHT.ToString());
+                colorSettings = new ColorSettings(_colorSettings.LIGHT);
             }
         }
 
@@ -409,7 +448,7 @@ namespace INTEGRA_7_Xamarin
             ColumnDefinition cdHide = new ColumnDefinition(); // Spanning the cover over left key roundings,
             ColumnDefinition cdLength = new ColumnDefinition(); // Spanning first black key size,
             ColumnDefinition cdMargin = new ColumnDefinition(); // Spanning both to get white key size
-            cdHide.Width = new GridLength(1, GridUnitType.Star);
+            cdHide.Width = new GridLength(9, GridUnitType.Absolute);
             cdLength.Width = new GridLength(30, GridUnitType.Star);
             cdMargin.Width = new GridLength(15, GridUnitType.Star);
             Librarian_gridKeyboard.ColumnDefinitions.Add(cdHide);
@@ -428,6 +467,7 @@ namespace INTEGRA_7_Xamarin
             {
                 Librarian_btnWhiteKeys[i] = new Button();
                 Grid grid = new Grid();
+                grid.Margin = new Thickness(0);
                 grid.BackgroundColor = colorSettings.Border;
                 Grid.SetRowSpan(grid, 16);
                 Grid.SetRow(grid, i * 16);
@@ -444,23 +484,13 @@ namespace INTEGRA_7_Xamarin
                 Librarian_btnWhiteKeys[i].BorderWidth = 0;
                 if (i == 0)
                 {
-                    Librarian_btnWhiteKeys[i].Margin = new Thickness(2);
+                    Librarian_btnWhiteKeys[i].Margin = new Thickness(2, 2, 2, 2);
                 }
                 else
                 {
                     Librarian_btnWhiteKeys[i].Margin = new Thickness(2, 0, 2, 2);
                 }
             }
-
-            // Put an unused white key that spans and covers the leftmost rounded
-            // corners of the white keys:
-            Xamarin.Forms.Button cover = new Xamarin.Forms.Button();
-            Grid.SetRowSpan(cover, 22 * 16);
-            Grid.SetColumn(cover, 0);
-            cover.BackgroundColor = colorSettings.Border;
-            Librarian_gridKeyboard.Children.Add(cover);
-            // This broadens the margins, compensate:
-            Librarian_gridKeyboard.Margin = new Thickness(-5, 0, 0, 0);
 
             // Make the black keyboard keys:
             Librarian_btnBlackKeys = new Button[15];
@@ -484,6 +514,7 @@ namespace INTEGRA_7_Xamarin
                 Librarian_btnBlackKeys[i] = new Button();
                 position += numberOfFillers;
                 Grid grid = new Grid();
+                grid.Margin = new Thickness(2, 0, 0, 0);
                 grid.BackgroundColor = colorSettings.Background;
                 Grid.SetRowSpan(grid, 10);
                 Grid.SetRow(grid, position);
@@ -496,11 +527,19 @@ namespace INTEGRA_7_Xamarin
                 Librarian_btnBlackKeys[i].StyleId = i.ToString();
                 Librarian_btnBlackKeys[i].BackgroundColor = colorSettings.Black;
                 Librarian_btnBlackKeys[i].TextColor = colorSettings.WhitePianoKeys;
-                Librarian_btnBlackKeys[i].Margin = new Thickness(-5, 0, 0, 0);
+                Librarian_btnBlackKeys[i].Margin = new Thickness(2, 0, 0, 0);
                 Librarian_btnBlackKeys[i].Pressed += Librarian_btnBlackKey_Pressed;
                 Librarian_btnBlackKeys[i].Released += Librarian_btnBlackKey_Released;
                 Librarian_btnBlackKeys[i].BorderWidth = 0;
             }
+
+            // Put an unused white key that spans and covers the leftmost rounded
+            // corners of the white keys:
+            Xamarin.Forms.Button cover = new Xamarin.Forms.Button();
+            Grid.SetRowSpan(cover, 22 * 16);
+            Grid.SetColumn(cover, 0);
+            cover.BackgroundColor = colorSettings.PianoKeyCover;
+            Librarian_gridKeyboard.Children.Add(cover);
 
             // Add the buttons
             Librarian_btnEditTone = new Button();
@@ -516,6 +555,8 @@ namespace INTEGRA_7_Xamarin
             Librarian_btnMotionalSurround = new Button();
             //Librarian_btnMotionalSurround.BorderColor = Color.Black;
             //Librarian_btnMotionalSurround.BorderWidth = 1;
+            imgSettings = new TouchableImage(Settings_Tapped, "Settings.png", 0);
+            imgSettings.Aspect = Aspect.AspectFill;
             Librarian_btnAddFavorite = new Button();
             //Librarian_btnAddFavorite.BorderColor = Color.Black;
             //Librarian_btnAddFavorite.BorderWidth = 1;
@@ -537,7 +578,7 @@ namespace INTEGRA_7_Xamarin
             Librarian_btnMinus12keys = new Button();
             //Librarian_btnMinus12keys.BorderColor = Color.Black;
             //Librarian_btnMinus12keys.BorderWidth = 1;
-            Librarian_lblKeys = new MyLabel();
+            Librarian_btnKeys = new Button();
             //Librarian_btnEditTone.BorderColor = Color.Black;
             //Librarian_btnEditTone.BorderWidth = 1;
 
@@ -588,6 +629,7 @@ namespace INTEGRA_7_Xamarin
             Librarian_btnPlay.Clicked += Librarian_btnPlay_Clicked;
             Librarian_btnShowFavorites.Clicked += Librarian_btnFavorites_Clicked;
             Librarian_btnResetHangingNotes.Clicked += Librarian_btnResetHangingNotes_Clicked;
+            Librarian_btnKeys.Clicked += Librarian_btnKeys_Clicked;
             Librarian_btnPlus12keys.Clicked += Librarian_btnPlus12keys_Clicked;
             Librarian_btnMinus12keys.Clicked += Librarian_btnMinus12keys_Clicked;
 
@@ -602,7 +644,7 @@ namespace INTEGRA_7_Xamarin
             listingHeight = 16;
 
             // Assemble column 0:
-            Librarian_gridGroups.Children.Add((new GridRow(0, new View[] { Librarian_lblGroups } )).Row);
+            Librarian_gridGroups.Children.Add((new GridRow(0, new View[] { Librarian_lblGroups })).Row);
             Librarian_gridGroups.Children.Add((new GridRow(1, new View[] { Librarian_lvGroups }, null, false, false, listingHeight)).Row);
             //Librarian_gridGroups.RowDefinitions = new RowDefinitionCollection();
             //Librarian_gridGroups.RowDefinitions.Add(new RowDefinition());
@@ -612,11 +654,11 @@ namespace INTEGRA_7_Xamarin
             //Librarian_gridGroups.RowDefinitions.Add(new RowDefinition());
             //Librarian_gridGroups.RowDefinitions.Add(new RowDefinition());
             //Librarian_gridGroups.RowDefinitions.Add(new RowDefinition());
-            Librarian_gridGroups.Children.Add((new GridRow((byte)(listingHeight + 1), new View[] { Librarian_midiOutputChannel } )).Row);
-            Librarian_gridGroups.Children.Add((new GridRow((byte)(listingHeight + 2), new View[] { Librarian_tbSearch } )).Row);
-            Librarian_gridGroups.Children.Add((new GridRow((byte)(listingHeight + 3), new View[] { Librarian_ltToneName } )).Row);
-            Librarian_gridGroups.Children.Add((new GridRow((byte)(listingHeight + 4), new View[] { Librarian_ltType } )).Row);
-            Librarian_gridGroups.Children.Add((new GridRow((byte)(listingHeight + 5), new View[] { Librarian_ltToneNumber } )).Row);
+            Librarian_gridGroups.Children.Add((new GridRow((byte)(listingHeight + 1), new View[] { Librarian_midiOutputChannel })).Row);
+            Librarian_gridGroups.Children.Add((new GridRow((byte)(listingHeight + 2), new View[] { Librarian_tbSearch })).Row);
+            Librarian_gridGroups.Children.Add((new GridRow((byte)(listingHeight + 3), new View[] { Librarian_ltToneName })).Row);
+            Librarian_gridGroups.Children.Add((new GridRow((byte)(listingHeight + 4), new View[] { Librarian_ltType })).Row);
+            Librarian_gridGroups.Children.Add((new GridRow((byte)(listingHeight + 5), new View[] { Librarian_ltToneNumber })).Row);
             //Librarian_gridGroups.RowDefinitions[0].Height = new GridLength(rowHeight, GridUnitType.Star);
             //Librarian_gridGroups.RowDefinitions[1].Height = new GridLength(listingHeight, GridUnitType.Star);
             //Librarian_gridGroups.RowDefinitions[2].Height = new GridLength(rowHeight, GridUnitType.Star);
@@ -626,7 +668,7 @@ namespace INTEGRA_7_Xamarin
             //Librarian_gridGroups.RowDefinitions[6].Height = new GridLength(rowHeight, GridUnitType.Star);
 
             // Assemble column 1:
-            Librarian_gridCategories.Children.Add((new GridRow(0, new View[] { Librarian_lblCategories } )).Row);
+            Librarian_gridCategories.Children.Add((new GridRow(0, new View[] { Librarian_lblCategories })).Row);
             Librarian_gridCategories.Children.Add((new GridRow(1, new View[] { Librarian_lvCategories }, null, false, false, listingHeight)).Row);
             //Librarian_gridCategories.Children.Add((new GridRow(0, new View[] { Librarian_lblStudioSets } )).Row);
             //Librarian_gridCategories.Children.Add((new GridRow(1, new View[] { Librarian_lvStudioSets }, null, false, false, listingHeight)).Row);
@@ -638,11 +680,11 @@ namespace INTEGRA_7_Xamarin
             //Librarian_gridCategories.RowDefinitions.Add(new RowDefinition());
             //Librarian_gridCategories.RowDefinitions.Add(new RowDefinition());
             //Librarian_gridCategories.RowDefinitions.Add(new RowDefinition());
-            Librarian_gridCategories.Children.Add((new GridRow((byte)(listingHeight + 1), new View[] { Librarian_ltBankAddress } )).Row);
-            Librarian_gridCategories.Children.Add((new GridRow((byte)(listingHeight + 2), new View[] { Librarian_ltPatchMSB } )).Row);
-            Librarian_gridCategories.Children.Add((new GridRow((byte)(listingHeight + 3), new View[] { Librarian_ltPatchLSB } )).Row);
-            Librarian_gridCategories.Children.Add((new GridRow((byte)(listingHeight + 4), new View[] { Librarian_ltProgramNumber } )).Row);
-            Librarian_gridCategories.Children.Add((new GridRow((byte)(listingHeight + 5), new View[] { Librarian_btnPlay } )).Row);
+            Librarian_gridCategories.Children.Add((new GridRow((byte)(listingHeight + 1), new View[] { Librarian_ltBankAddress })).Row);
+            Librarian_gridCategories.Children.Add((new GridRow((byte)(listingHeight + 2), new View[] { Librarian_ltPatchMSB })).Row);
+            Librarian_gridCategories.Children.Add((new GridRow((byte)(listingHeight + 3), new View[] { Librarian_ltPatchLSB })).Row);
+            Librarian_gridCategories.Children.Add((new GridRow((byte)(listingHeight + 4), new View[] { Librarian_ltProgramNumber })).Row);
+            Librarian_gridCategories.Children.Add((new GridRow((byte)(listingHeight + 5), new View[] { Librarian_btnPlay })).Row);
             //Librarian_gridCategories.RowDefinitions[0].Height = new GridLength(rowHeight, GridUnitType.Star);
             //Librarian_gridCategories.RowDefinitions[1].Height = new GridLength(listingHeight, GridUnitType.Star);
             //Librarian_gridCategories.RowDefinitions[2].Height = new GridLength(rowHeight, GridUnitType.Star);
@@ -663,16 +705,17 @@ namespace INTEGRA_7_Xamarin
             //Librarian_gridTones.RowDefinitions.Add(new RowDefinition());
             //Librarian_gridTones.RowDefinitions.Add(new RowDefinition());
             //Librarian_gridTones.RowDefinitions.Add(new RowDefinition());
-            Librarian_gridTones.Children.Add((new GridRow((byte)(listingHeight + 1), 
-                new View[] { Librarian_btnEditTone, Librarian_btnEditStudioSet }, new byte[] { 1, 2 })).Row);
+            Librarian_gridTones.Children.Add((new GridRow((byte)(listingHeight + 1),
+                new View[] { Librarian_btnMotionalSurround, imgSettings }, new byte[] { 9, 1 })).Row);
             Librarian_gridTones.Children.Add((new GridRow((byte)(listingHeight + 2), 
-                new View[] { Librarian_btnMotionalSurround } )).Row);
-            Librarian_gridTones.Children.Add((new GridRow((byte)(listingHeight + 3), 
                 new View[] { Librarian_btnShowFavorites, Librarian_btnAddFavorite, Librarian_btnRemoveFavorite }, new byte[] { 1, 1, 1 } )).Row);
+            Librarian_gridTones.Children.Add((new GridRow((byte)(listingHeight + 3),
+                new View[] { Librarian_btnEditTone, Librarian_btnEditStudioSet }, new byte[] { 1, 2 })).Row);
             Librarian_gridTones.Children.Add((new GridRow((byte)(listingHeight + 4), 
                 new View[] { Librarian_btnResetHangingNotes, Librarian_btnResetVolume }, new byte[] { 2, 1 } )).Row);
             Librarian_gridTones.Children.Add((new GridRow((byte)(listingHeight + 5), 
-                new View[] { Librarian_lblKeys, Librarian_btnMinus12keys, Librarian_btnPlus12keys }, new byte[] { 3, 1, 1 } )).Row);
+                new View[] { Librarian_btnKeys, Librarian_btnMinus12keys, Librarian_btnPlus12keys }, new byte[] { 3, 1, 1 } )).Row);
+            Librarian_btnKeys.Margin = new Thickness(0);
             //Librarian_gridTones.RowDefinitions[0].Height = new GridLength(rowHeight, GridUnitType.Star);
             //Librarian_gridTones.RowDefinitions[1].Height = new GridLength(listingHeight, GridUnitType.Star);
             //Librarian_gridTones.RowDefinitions[2].Height = new GridLength(rowHeight, GridUnitType.Star);
@@ -701,6 +744,10 @@ namespace INTEGRA_7_Xamarin
             Librarian_StackLayout.Children.Add((new GridRow(0, new View[] { Librarian_gridGroups, Librarian_gridCategories, Librarian_gridTones, Librarian_gridKeyboard },
                 new byte[] { 5, 5, 5, 3 }, false, true)).Row);
             // Make the entire grid background black to show as borders around controls by using margins:
+            Librarian_gridGroups.Margin = new Thickness(0);
+            Librarian_gridCategories.Margin = new Thickness(-6, 0, 0, 0);
+            Librarian_gridTones.Margin = new Thickness(-6, 0, 0, 0);
+            Librarian_gridKeyboard.Margin = new Thickness(-6, 0, 0, 0);
             Librarian_StackLayout.BackgroundColor = colorSettings.Border;
             t.Trace("Librarian created ");
         }
@@ -1367,8 +1414,6 @@ namespace INTEGRA_7_Xamarin
                         // Note that consequent queries will be sent from MidiInPort_MessageReceived and Timer_Tick.
                         Librarian_StackLayout.IsVisible = false;
                         ShowPleaseWaitPage(WaitingFor.READING_STUDIO_SET_NAMES, CurrentPage.LIBRARIAN, null);
-                        //commonState.StudioSetNames = new List<String>();
-                        //QueryCurrentStudioSetNumber();
                     }
                     else
                     {
@@ -1620,7 +1665,7 @@ namespace INTEGRA_7_Xamarin
                                     commonState.Player.WasPlaying = true;
                                 }
                             }
-                            Librarian_lvGroups.SelectedItem = commonState.CurrentTone.Group;
+                            //Librarian_lvGroups.SelectedItem = commonState.CurrentTone.Group;
                         }
                     }
                 }
@@ -1770,11 +1815,17 @@ namespace INTEGRA_7_Xamarin
             }
         }
 
+        private void Librarian_btnKeys_Clicked(object sender, EventArgs e)
+        {
+            lowKey = 36;
+            ShowKeyNumbering();
+        }
+
         private void ShowKeyNumbering()
         {
             if (lowKey + 3 * 12 > 127)
             {
-                Librarian_lblKeys.Text = "Keys " + (lowKey + 1).ToString() + " - 128";
+                Librarian_btnKeys.Text = "Keys " + (lowKey).ToString() + " - 128";
                 Librarian_btnWhiteKeys[0].IsVisible = false;
                 Librarian_btnWhiteKeys[1].IsVisible = false;
                 Librarian_btnWhiteKeys[2].IsVisible = false;
@@ -1785,7 +1836,7 @@ namespace INTEGRA_7_Xamarin
             }
             else
             {
-                Librarian_lblKeys.Text = "Keys " + (lowKey + 1).ToString() + " - " + (lowKey + 37).ToString();
+                Librarian_btnKeys.Text = "Keys " + (lowKey).ToString() + " - " + (lowKey + 36).ToString();
                 Librarian_btnWhiteKeys[0].IsVisible = true;
                 Librarian_btnWhiteKeys[1].IsVisible = true;
                 Librarian_btnWhiteKeys[2].IsVisible = true;
@@ -1807,32 +1858,34 @@ namespace INTEGRA_7_Xamarin
 
         private void Librarian_btnEditStudioSet_Clicked(object sender, EventArgs e)
         {
-            //mainStackLayout.Children.RemoveAt(0);
             Librarian_StackLayout.IsVisible = false;
             if (EditStudioSet_IsCreated)
             {
+                // If studio set editor is created, studio set and studio set must already
+                // have been read, and it is only to go there:
                 currentPage = CurrentPage.EDIT_STUDIO_SET;
-                QueryCurrentStudioSetNumber(false);
+                //QueryCurrentStudioSetNumber(false);
                 StudioSetEditor_StackLayout.IsVisible = true;
+            }
+            else if (commonState.StudioSet == null)
+            {
+                // If studio set has not been read, we must first read that.
+                // Let PleaseWait do it, and also check if studio set names are read:
+                ShowPleaseWaitPage(WaitingFor.READING_STUDIO_SET, CurrentPage.EDIT_STUDIO_SET, null);
+            }
+            else if (commonState.StudioSetNames == null || commonState.StudioSetNames.Count() < 1)
+            {
+                // Get a list of all studio set names. Start by storing the current studio set number.
+                // Note that consequent queries will be sent from MidiInPort_MessageReceived and Timer_Tick.
+                Librarian_StackLayout.IsVisible = false;
+                ShowPleaseWaitPage(WaitingFor.READING_STUDIO_SET_NAMES, CurrentPage.EDIT_STUDIO_SET, null);
             }
             else
             {
-                if (commonState.StudioSetNames == null || commonState.StudioSetNames.Count() < 1)
-                {
-                    // Get a list of all studio set names. Start by storing the current studio set number.
-                    // Note that consequent queries will be sent from MidiInPort_MessageReceived and Timer_Tick.
-                    Librarian_StackLayout.IsVisible = false;
-                    mainPage.uIHandler.ShowPleaseWaitPage(WaitingFor.READING_STUDIO_SET_NAMES, CurrentPage.EDIT_STUDIO_SET, null);
-                }
-                else
-                {
-                    // Studio set names are read, but studio set page is not created:
-                    Librarian_StackLayout.IsVisible = false;
-                    ShowStudioSetEditorPage();
-                }
+                // Studio set and studio set names are read, but studio set page is not created:
+                Librarian_StackLayout.IsVisible = false;
+                ShowStudioSetEditorPage();
             }
-            //Waiting(true, "Please wait while scanning Studio set names and initiating form...", Librarian_StackLayout);
-            //ShowStudioSetEditorPage();
         }
 
         private void Librarian_btnResetVolume_Clicked(object sender, EventArgs e)
@@ -1847,7 +1900,86 @@ namespace INTEGRA_7_Xamarin
         {
             //Waiting(true, "Please wait while making sensor grid...", MotionalSurround_StackLayout);
             Librarian_StackLayout.IsVisible = false;
-            ShowMotionalSurroundPage();
+            if (commonState.StudioSetNames == null || commonState.StudioSetNames.Count < 1)
+            {
+                ShowPleaseWaitPage(WaitingFor.READING_STUDIO_SET, CurrentPage.MOTIONAL_SURROUND, null);
+            }
+            else
+            {
+                ShowMotionalSurroundPage();
+            }
+            //ShowMotionalSurroundPage();
+        }
+
+        private async void Settings_Tapped(object sender, EventArgs e)
+        {
+            Boolean rebootNeeded = false;
+            String response = await mainPage.DisplayActionSheet(
+                "INTEGRA-7 Librarian and Editor",
+                "Cancel",
+                null, new String[] {
+                    "Always put bank number in clipboard",
+                    "Do not put bank number in clipboard",
+                    "Light colors",
+                    "Forrest colors",
+                    "Ocean colors",
+                    "Rose colors",
+                    "Sunny colors",
+                    "Brown colors"
+            });
+
+            if (response == "Always put bank number in clipboard")
+            {
+                mainPage.SaveLocalValue("PutBankInClipboard", true);
+                putBankInClipboard = true;
+            }
+            else if (response == "Do not put bank number in clipboard")
+            {
+                mainPage.SaveLocalValue("PutBankInClipboard", false);
+                putBankInClipboard = false;
+            }
+            else if (response == "Light colors")
+            {
+                mainPage.SaveLocalValue("ColorSettings", "LIGHT");
+                colorSettings = new ColorSettings(_colorSettings.LIGHT);
+                rebootNeeded = true;
+            }
+            else if (response == "Forrest colors")
+            {
+                mainPage.SaveLocalValue("ColorSettings", "FOREST");
+                colorSettings = new ColorSettings(_colorSettings.FOREST);
+                rebootNeeded = true;
+            }
+            else if (response == "Ocean colors")
+            {
+                mainPage.SaveLocalValue("ColorSettings", "OCEAN");
+                colorSettings = new ColorSettings(_colorSettings.OCEAN);
+                rebootNeeded = true;
+            }
+            else if (response == "Rose colors")
+            {
+                mainPage.SaveLocalValue("ColorSettings", "ROSE");
+                colorSettings = new ColorSettings(_colorSettings.ROSE);
+                rebootNeeded = true;
+            }
+            else if (response == "Sunny colors")
+            {
+                mainPage.SaveLocalValue("ColorSettings", "SUNNY");
+                colorSettings = new ColorSettings(_colorSettings.SUNNY);
+                rebootNeeded = true;
+            }
+            else if (response == "Brown colors")
+            {
+                mainPage.SaveLocalValue("ColorSettings", "BROWN");
+                colorSettings = new ColorSettings(_colorSettings.BROWN);
+                rebootNeeded = true;
+            }
+
+            if (rebootNeeded)
+            {
+                await mainPage.DisplayAlert("INTEGRA-7 Librarian and Editor", 
+                    "The new colors will show when you restart the app!", "Got it");
+            }
         }
 
         private void Librarian_btnFavorites_Clicked(object sender, EventArgs e)
@@ -2208,7 +2340,7 @@ namespace INTEGRA_7_Xamarin
                 mainStackLayout.Children.Add(Favorites_StackLayout);
                 Favorites_StackLayout.IsVisible = false;
                 Favorites_IsCreated = true;
-                Init2();
+                Librarian_Init();
                 Favorites_UpdateFoldersList();
                 needsToSetFontSizes = NeedsToSetFontSizes.FAVORITES;
             }
@@ -2453,6 +2585,14 @@ namespace INTEGRA_7_Xamarin
                 Librarian_ltPatchLSB.Text = tone[5];
                 Librarian_ltProgramNumber.Text = tone[7];
                 //commonState.Midi.ProgramChange(commonState.Midi.GetMidiOutPortChannel(), tone[4], tone[5], tone[7]);
+                if (putBankInClipboard)
+                {
+                    CrossClipboard.Current.SetText(Librarian_ltBankAddress.Text);
+                }
+                if (updateIntegra7)
+                {
+                    commonState.Midi.ProgramChange(commonState.CurrentPart, tone[4], tone[5], tone[7]);
+                }
                 UpdateDrumNames();
                 if (IsFavorite())
                 {

@@ -59,6 +59,15 @@ namespace INTEGRA_7_Xamarin
             PartMidi = new StudioSet_PartMidi[16];
             PartMotionalSurround = new StudioSet_PartMotionalSurround[16];
             PartEQ = new StudioSet_PartEQ[16];
+            //for (byte i = 0; i < 16; i++)
+            //{
+            //    PartMainSettings[i] = new StudioSet_PartMainSettings(null);
+            //    PartKeyboard[i] = new StudioSet_PartKeyboard(null);
+            //    PartScaleTune[i] = new StudioSet_PartScaleTune(null);
+            //    PartMidi[i] = new StudioSet_PartMidi(null);
+            //    PartMotionalSurround[i] = new StudioSet_PartMotionalSurround(null);
+            //    PartEQ[i] = new StudioSet_PartEQ(null);
+            //}
         }
 
         public static String[] NoteString = new String[] {

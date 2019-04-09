@@ -66,6 +66,7 @@ namespace INTEGRA_7_Xamarin
             SND_KEY_NAME,
             CURRENT_SELECTED_STUDIO_SET,
             CURRENT_SELECTED_TONE,
+            CURRENT_SELECTED_TONE_TYPE,
             READ_TONE_FROM_I7,
             GET_CURRENT_STUDIO_SET_NUMBER_AND_SCAN,
             GET_CURRENT_STUDIO_SET_NUMBER,
@@ -143,6 +144,7 @@ namespace INTEGRA_7_Xamarin
         public static Boolean StopTimer = false;
         public static Int32 minimumHeightRequest = 14;
         private NeedsToSetFontSizes needsToSetFontSizes = NeedsToSetFontSizes.NONE;
+        private Boolean needsToUpdateControls = false;
 
         MainPage mainPage;
         public StackLayout mainStackLayout { get; set; }
@@ -189,6 +191,7 @@ namespace INTEGRA_7_Xamarin
             //colorSettings = new ColorSettings(_colorSettings.LIGHT);
             borderThicknesSettings = new BorderThicknesSettings(2);
             commonState = new CommonState(ref Librarian_btnPlay);
+            ReadSettings();
             commonState.Midi = DependencyService.Get<IMidi>();
             myFileIO = DependencyService.Get<IMyFileIO>();
             rawData = new byte[0];
