@@ -507,32 +507,32 @@ namespace INTEGRA_7_Xamarin
                         QuerySystemCommon();
                         break;
                     case StudioSetEditor_currentStudioSetEditorMidiRequest.SYSTEM_COMMON:
-                        ReadSystemCommon();
+                        ReadSystemCommon(false);
                         QueryStudioSetCommon();
                         break;
                     case StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_COMMON:
-                        ReadSelectedStudioSet();
+                        ReadSelectedStudioSet(false);
                         QueryStudioSetChorus();
                         break;
                     case StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_CHORUS:
-                        ReadStudioSetChorus();
+                        ReadStudioSetChorus(false);
                         QueryStudioSetReverb();
                         break;
                     case StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_REVERB:
-                        ReadStudioSetReverb();
+                        ReadStudioSetReverb(false);
                         QueryStudioSetMotionalSurround();
                         break;
                     case StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_MOTIONAL_SURROUND:
-                        ReadMotionalSurround();
+                        ReadMotionalSurround(false);
                         QueryStudioSetMasterEQ();
                         break;
                     case StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_MASTER_EQ:
-                        ReadStudioSetMasterEQ();
+                        ReadStudioSetMasterEQ(false);
                         studioSetEditor_PartToRead = 0;
                         QueryStudioSetPart(studioSetEditor_PartToRead);
                         break;
                     case StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_PART:
-                        ReadStudioSetPart(studioSetEditor_PartToRead);
+                        ReadStudioSetPart(studioSetEditor_PartToRead, false);
                         studioSetEditor_PartToRead++;
                         if (studioSetEditor_PartToRead < 16)
                         {
@@ -544,7 +544,7 @@ namespace INTEGRA_7_Xamarin
                         }
                         break;
                     case StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_PART_TONE_NAME:
-                        ReadStudioSetPartToneName();
+                        ReadStudioSetPartToneName(false);
                         initDone = true;
                         uiAction = UIAction.NONE;
                         waitingState = WaitingState.DONE;

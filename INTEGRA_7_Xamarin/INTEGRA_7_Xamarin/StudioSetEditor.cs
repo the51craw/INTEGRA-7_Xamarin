@@ -7574,7 +7574,7 @@ namespace INTEGRA_7_Xamarin
                     {
                         pCMSynthTone = new PCMSynthTone(Data);
                     }
-                    if (EditStudioSet_IsCreated)
+                    if (EditStudioSet_IsCreated && Update)
                     {
                         StudioSetCurrentToneName.Text = commonState.ToneSource + " PCMS: " + pCMSynthTone.pCMSynthToneCommon.Name;
                     }
@@ -7585,7 +7585,7 @@ namespace INTEGRA_7_Xamarin
                     {
                         pCMDrumKit = new PCMDrumKit(Data);
                     }
-                    if (EditStudioSet_IsCreated)
+                    if (EditStudioSet_IsCreated && Update)
                     {
                         StudioSetCurrentToneName.Text = commonState.ToneSource + " PCMD: " + pCMDrumKit.pCMDrumKitCommon.Name;
                     }
@@ -7596,7 +7596,7 @@ namespace INTEGRA_7_Xamarin
                     {
                         superNATURALAcousticTone = new SuperNATURALAcousticTone(Data);
                     }
-                    if (EditStudioSet_IsCreated)
+                    if (EditStudioSet_IsCreated && Update)
                     {
                         StudioSetCurrentToneName.Text = commonState.ToneSource + " SN-A: " + superNATURALAcousticTone.superNATURALAcousticToneCommon.Name;
                     }
@@ -7607,7 +7607,7 @@ namespace INTEGRA_7_Xamarin
                     {
                         superNATURALSynthTone = new SuperNATURALSynthTone(Data);
                     }
-                    if (EditStudioSet_IsCreated)
+                    if (EditStudioSet_IsCreated && Update)
                     {
                         StudioSetCurrentToneName.Text = commonState.ToneSource + " SN-S: " + superNATURALSynthTone.superNATURALSynthToneCommon.Name;
                     }
@@ -7618,7 +7618,7 @@ namespace INTEGRA_7_Xamarin
                     {
                         superNATURALDrumKit = new SuperNATURALDrumKit(Data);
                     }
-                    if (EditStudioSet_IsCreated)
+                    if (EditStudioSet_IsCreated && Update)
                     {
                         StudioSetCurrentToneName.Text = commonState.ToneSource + " SN-D: " + superNATURALDrumKit.superNATURALDrumKitCommon.Name;
                     }

@@ -1901,8 +1901,9 @@ namespace INTEGRA_7_Xamarin
         {
             //Waiting(true, "Please wait while making sensor grid...", MotionalSurround_StackLayout);
             Librarian_StackLayout.IsVisible = false;
-            if (commonState.StudioSet == null)
+            if (commonState.StudioSet == null || currentStudioSet != commonState.CurrentStudioSet)
             {
+                currentStudioSet = commonState.CurrentStudioSet;
                 ShowPleaseWaitPage(WaitingFor.READING_STUDIO_SET, CurrentPage.MOTIONAL_SURROUND, null);
             }
             else
