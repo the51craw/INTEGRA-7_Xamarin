@@ -246,7 +246,13 @@ namespace INTEGRA_7_Xamarin
             Favorites_grRightColumn = new Grid();
             RowDefinitionCollection Favorites_rdcRight = new RowDefinitionCollection();
 
-            for (Int32 i = 0; i < 10; i++)
+            Int32 rows = 10;
+            if (appType == _appType.MacOS)
+            {
+                rows = 8;
+            }
+
+            for (Int32 i = 0; i < rows; i++)
             {
                 Favorites_rdcRight.Add(new RowDefinition());
                 if (i == 3)
@@ -267,9 +273,16 @@ namespace INTEGRA_7_Xamarin
             Favorites_grRightColumn.Children.Add(new GridRow(5, new View[] { Favorites_btnDeleteFavorite }).Row);
             Favorites_grRightColumn.Children.Add(new GridRow(6, new View[] { Favorites_btnSelectFavorite }).Row);
             Favorites_grRightColumn.Children.Add(new GridRow(7, new View[] { Favorites_btnPlay }).Row);
-            Favorites_grRightColumn.Children.Add(new GridRow(8, new View[] { Favorites_btnBackup }).Row);
-            Favorites_grRightColumn.Children.Add(new GridRow(9, new View[] { Favorites_btnRestore }).Row);
-            Favorites_grRightColumn.Children.Add(new GridRow(10, new View[] { Favorites_btnReturn }).Row);
+            if (appType == _appType.MacOS)
+            {
+                Favorites_grRightColumn.Children.Add(new GridRow(8, new View[] { Favorites_btnReturn }).Row);
+            }
+            else
+            {
+                Favorites_grRightColumn.Children.Add(new GridRow(8, new View[] { Favorites_btnBackup }).Row);
+                Favorites_grRightColumn.Children.Add(new GridRow(9, new View[] { Favorites_btnRestore }).Row);
+                Favorites_grRightColumn.Children.Add(new GridRow(10, new View[] { Favorites_btnReturn }).Row);
+            }
 
             // Assemble FavoritesStackLayout --------------------------------------------------------------
 
@@ -610,13 +623,17 @@ namespace INTEGRA_7_Xamarin
                         byte[] data = fileData.DataArray;
                         await Task.Run(() =>
                         {
-                            MemoryStream memoryStream = new MemoryStream(data);
-                            memoryStream.Position = 0;
-                            DataContractSerializer dataContractSerializer = new DataContractSerializer(typeof(FavoritesList));
-                            XmlReader xmlReader = XmlReader.Create(memoryStream);
-                            XmlDictionaryReader xmlDictionaryReader = XmlDictionaryReader.CreateDictionaryReader(xmlReader);
-                            commonState.FavoritesList = (FavoritesList)dataContractSerializer.ReadObject(xmlDictionaryReader);
-                            xmlReader.Dispose();
+                            try
+                            {
+                                MemoryStream memoryStream = new MemoryStream(data);
+                                memoryStream.Position = 0;
+                                DataContractSerializer dataContractSerializer = new DataContractSerializer(typeof(FavoritesList));
+                                XmlReader xmlReader = XmlReader.Create(memoryStream);
+                                XmlDictionaryReader xmlDictionaryReader = XmlDictionaryReader.CreateDictionaryReader(xmlReader);
+                                commonState.FavoritesList = (FavoritesList)dataContractSerializer.ReadObject(xmlDictionaryReader);
+                                xmlReader.Dispose();
+                            }
+                            catch { }
                         });
                         Favorites_UpdateFoldersList();
                         UpdateFavoritesListFromCommonstate((String)Favorites_lvFolderList.SelectedItem);

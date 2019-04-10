@@ -152,42 +152,48 @@ namespace INTEGRA_7_Xamarin.UWP
 
         public async void Init(String deviceName)
         {
-            DeviceInformationCollection midiOutputDevices = await DeviceInformation.FindAllAsync(MidiOutPort.GetDeviceSelector());
-            DeviceInformationCollection midiInputDevices = await DeviceInformation.FindAllAsync(MidiInPort.GetDeviceSelector());
-            DeviceInformation midiOutDevInfo = null;
-            DeviceInformation midiInDevInfo = null;
-
             // If the user has connected the I-7 via 5-pin connections, we cannot identify it. Therefore, we fill out
             // the selectors and let the user selects the correct one. We set the selector to first line.
             // If the user has connected the I-7 via USB, we will still populate the selectors, and we will
             // have the name in there, so we can select it.
-
-            foreach (DeviceInformation device in midiOutputDevices)
+            if (midiOutPort == null)
             {
-                if (device.Name.Contains(deviceName))
+                DeviceInformationCollection midiOutputDevices = await DeviceInformation.FindAllAsync(MidiOutPort.GetDeviceSelector());
+                DeviceInformation midiOutDevInfo = null;
+
+                foreach (DeviceInformation device in midiOutputDevices)
                 {
-                    midiOutDevInfo = device;
-                    break;
+                    if (device.Name.Contains(deviceName))
+                    {
+                        midiOutDevInfo = device;
+                        break;
+                    }
+                }
+
+                if (midiOutDevInfo != null)
+                {
+                    midiOutPort = (MidiOutPort)await MidiOutPort.FromIdAsync(midiOutDevInfo.Id);
                 }
             }
 
-            if (midiOutDevInfo != null)
+            if (midiInPort == null)
             {
-                midiOutPort = (MidiOutPort)await MidiOutPort.FromIdAsync(midiOutDevInfo.Id);
-            }
+                DeviceInformationCollection midiInputDevices = await DeviceInformation.FindAllAsync(MidiInPort.GetDeviceSelector());
+                DeviceInformation midiInDevInfo = null;
 
-            foreach (DeviceInformation device in midiInputDevices)
-            {
-                if (device.Name.Contains(deviceName))
+                foreach (DeviceInformation device in midiInputDevices)
                 {
-                    midiInDevInfo = device;
-                    break;
+                    if (device.Name.Contains(deviceName))
+                    {
+                        midiInDevInfo = device;
+                        break;
+                    }
                 }
-            }
 
-            if (midiInDevInfo != null)
-            {
-                midiInPort = await MidiInPort.FromIdAsync(midiInDevInfo.Id);
+                if (midiInDevInfo != null)
+                {
+                    midiInPort = (MidiInPort)await MidiInPort.FromIdAsync(midiInDevInfo.Id);
+                }
             }
 
             if (midiOutPort == null)
@@ -197,15 +203,11 @@ namespace INTEGRA_7_Xamarin.UWP
 
             if (midiInPort == null)
             {
-                System.Diagnostics.Debug.WriteLine("Unable to create MidiInPort from output device");
+                System.Diagnostics.Debug.WriteLine("Unable to create MidiInPort from input device");
             }
             else
             {
                 midiInPort.MessageReceived += MidiInPort_MessageReceived;
-                //timer = new DispatcherTimer();
-                //timer.Interval = TimeSpan.FromMilliseconds(1);
-                //timer.Tick += Timer_Tick;
-                //timer.Start();
                 StartTimer();
             }
         }

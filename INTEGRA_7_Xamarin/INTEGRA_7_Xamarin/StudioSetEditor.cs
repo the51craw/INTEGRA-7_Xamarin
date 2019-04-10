@@ -2380,16 +2380,16 @@ namespace INTEGRA_7_Xamarin
 
         private void UpdateAllControls()
         {
-            ReadSystemCommon(false);
-            ReadSelectedStudioSet(false);
-            ReadStudioSetChorus(false);
-            ReadStudioSetReverb(false);
-            ReadMotionalSurround(false);
-            ReadStudioSetMasterEQ(false);
-            ReadStudioSetPart(0, false);
-            ReadStudioSetPartToneName(false);
-            ReadStudioSetPartMidiPhaseLock(false);
-            ReadStudioSetPartEQ(0, false);
+            ReadSystemCommon(true);
+            ReadSelectedStudioSet(true);
+            ReadStudioSetChorus(true);
+            ReadStudioSetReverb(true);
+            ReadMotionalSurround(true);
+            ReadStudioSetMasterEQ(true);
+            ReadStudioSetPart(0, true);
+            ReadStudioSetPartToneName(true);
+            ReadStudioSetPartMidiPhaseLock(true);
+            ReadStudioSetPartEQ(0, true);
             PopulateCbStudioSetPartSettings1Group();
             PopulateCbStudioSetPartSettings1Category();
             PopulateCbStudioSetPartSettings1Program();
@@ -6926,17 +6926,17 @@ namespace INTEGRA_7_Xamarin
             commonState.Midi.SendSystemExclusive(bytes); // This will be caught in MidiInPort_MessageReceived
         }
 
-        private void ReadSystemCommon(Boolean Update = true)
+        private void ReadSystemCommon(Boolean UpdateControls = true)
         {
             t.Trace("private void ReadSystemCommon()");
             try
             {
                 // Unpack system common parameters and update controls:
-                if (Update)
+                if (!UpdateControls)
                 {
-                    commonState.StudioSet.SystemCommon = new StudioSet_SystemCommon(new ReceivedData(rawData));
+                     commonState.StudioSet.SystemCommon = new StudioSet_SystemCommon(new ReceivedData(rawData));
                 }
-                if (EditStudioSet_IsCreated)
+                if (EditStudioSet_IsCreated && UpdateControls)
                 {
                     PushHandleControlEvents();
                     slSystemCommonMasterTune.Value = commonState.StudioSet.SystemCommon.MasterTune;
@@ -6969,15 +6969,15 @@ namespace INTEGRA_7_Xamarin
             }
         }
 
-        private void ReadSelectedStudioSet(Boolean Update = true)
+        private void ReadSelectedStudioSet(Boolean UpdateControls = true)
         {
             t.Trace("private void ReadSelectedStudioSet()");
             // Unpack studio set common and update controls:
-            if (Update)
+            if (!UpdateControls)
             {
                 commonState.StudioSet.Common = new StudioSet_Common(new ReceivedData(rawData));
             }
-            if (EditStudioSet_IsCreated)
+            if (EditStudioSet_IsCreated && UpdateControls)
             {
                 PushHandleControlEvents();
                 //cbStudioSetSelector.SelectedItem = commonState.StudioSet.Common.Name;
@@ -7018,11 +7018,11 @@ namespace INTEGRA_7_Xamarin
                 slExtPartChorusSend.Value = commonState.StudioSet.Common.ExternalPartChorusSendLevel;
                 slExtPartReverbSend.Value = commonState.StudioSet.Common.ExternalPartReverbSendLevel;
                 cbExtPartMute.IsChecked = commonState.StudioSet.Common.ExternalPartMute;
+                PopHandleControlEvents();
             }
-            PopHandleControlEvents();
         }
 
-        private void ReadStudioSetChorus(Boolean Update = true)
+        private void ReadStudioSetChorus(Boolean UpdateControls = true)
         {
             t.Trace("private void ReadStudioSetChorus()");
 
@@ -7035,42 +7035,42 @@ namespace INTEGRA_7_Xamarin
             ////cbStudioSetChorusType.SelectedIndex = -1;
             ////cbStudioSetChorusType.SelectedIndex = commonState.studioSet.CommonChorus.Type;
             ////ReadStudioSetChorus(commonState.studioSet.CommonChorus.Type);
-            ReadStudioSetChorus(rawData[11], Update);
+            ReadStudioSetChorus(rawData[11], UpdateControls);
         }
 
-        private void UpdateStudioSetChorusOffControls(Boolean Update = true)
+        private void UpdateStudioSetChorusOffControls(Boolean UpdateControls = true)
         {
-            UpdateStudioSetChorusControls(0, Update);
+            UpdateStudioSetChorusControls(0, UpdateControls);
         }
 
-        private void UpdateStudioSetChorusChorusControls(Boolean Update = true)
+        private void UpdateStudioSetChorusChorusControls(Boolean UpdateControls = true)
         {
-            UpdateStudioSetChorusControls(3, Update);
+            UpdateStudioSetChorusControls(3, UpdateControls);
         }
 
-        private void UpdateStudioSetChorusDelayControls(Boolean Update = true)
+        private void UpdateStudioSetChorusDelayControls(Boolean UpdateControls = true)
         {
-            UpdateStudioSetChorusControls(3, Update);
+            UpdateStudioSetChorusControls(3, UpdateControls);
         }
 
-        private void UpdateStudioSetChorusGM2ChorusControls(Boolean Update = true)
+        private void UpdateStudioSetChorusGM2ChorusControls(Boolean UpdateControls = true)
         {
-            UpdateStudioSetChorusControls(3, Update);
+            UpdateStudioSetChorusControls(3, UpdateControls);
         }
 
-        private void ReadStudioSetChorus(byte Selection, Boolean Update = true)
+        private void ReadStudioSetChorus(byte Selection, Boolean UpdateControls = true)
         {
             t.Trace("private void ReadStudioSetChorus (" + "byte" + Selection + ", " + ")");
-            if (Update)
+            if (!UpdateControls)
             {
                 commonState.StudioSet.CommonChorus = new StudioSet_CommonChorus(new ReceivedData(rawData));
             }
-            UpdateStudioSetChorusControls(rawData[11]);
+            UpdateStudioSetChorusControls(rawData[11], UpdateControls);
         }
 
-        private void UpdateStudioSetChorusControls(byte Selection, Boolean Update = true)
+        private void UpdateStudioSetChorusControls(byte Selection, Boolean UpdateControls = true)
         {
-            if (EditStudioSet_IsCreated)
+            if (EditStudioSet_IsCreated && UpdateControls)
             {
                 PushHandleControlEvents();
                 cbStudioSetChorusType.SelectedIndex = Selection;
@@ -7209,24 +7209,24 @@ namespace INTEGRA_7_Xamarin
             }
         }
 
-        private void ReadStudioSetReverb(Boolean Update = true)
+        private void ReadStudioSetReverb(Boolean UpdateControls = true)
         {
             t.Trace("private void ReadStudioSetReverb()");
             //commonState.studioSet.CommonReverb = new StudioSet_CommonReverb(new ReceivedData(rawData));
             //cbStudioSetReverbType.SelectedIndex = -1;
             //cbStudioSetReverbType.SelectedIndex = commonState.studioSet.CommonReverb.Type;
             //ReadStudioSetReverb(commonState.studioSet.CommonReverb.Type);
-            ReadStudioSetReverb(rawData[11], Update);
+            ReadStudioSetReverb(rawData[11], UpdateControls);
         }
 
-        private void ReadStudioSetReverb(byte Selection, Boolean Update = true)
+        private void ReadStudioSetReverb(byte Selection, Boolean UpdateControls = true)
         {
             t.Trace("private void ReadStudioSetReverb (" + "byte" + Selection + ", " + ")");
-            if (Update)
+            if (!UpdateControls)
             {
                 commonState.StudioSet.CommonReverb = new StudioSet_CommonReverb(new ReceivedData(rawData));
             }
-            if (EditStudioSet_IsCreated)
+            if (EditStudioSet_IsCreated && UpdateControls)
             {
                 PushHandleControlEvents();
                 cbStudioSetReverbType.SelectedIndex = Selection;
@@ -7336,14 +7336,14 @@ namespace INTEGRA_7_Xamarin
             }
         }
 
-        private void ReadMotionalSurround(Boolean Update = true)
+        private void ReadMotionalSurround(Boolean UpdateControls = true)
         {
             t.Trace("private void ReadMotionalSurround()");
-            if (Update)
+            if (!UpdateControls)
             {
                 commonState.StudioSet.MotionalSurround = new StudioSet_MotionalSurround(new ReceivedData(rawData));
             }
-            if (EditStudioSet_IsCreated)
+            if (EditStudioSet_IsCreated && UpdateControls)
             {
                 PushHandleControlEvents();
                 cbStudioSetMotionalSurround.IsChecked = commonState.StudioSet.MotionalSurround.MotionalSurroundSwitch;
@@ -7373,14 +7373,14 @@ namespace INTEGRA_7_Xamarin
             }
         }
 
-        private void ReadStudioSetMasterEQ(Boolean Update = true)
+        private void ReadStudioSetMasterEQ(Boolean UpdateControls = true)
         {
             t.Trace("private void ReadStudioSetMasterEQ()");
-            if (Update)
+            if (!UpdateControls)
             {
                 commonState.StudioSet.MasterEQ = new StudioSet_MasterEQ(new ReceivedData(rawData));
             }
-            if (EditStudioSet_IsCreated)
+            if (EditStudioSet_IsCreated && UpdateControls)
             {
                 PushHandleControlEvents();
                 cbStudioSetMasterEqLowFreq.SelectedIndex = commonState.StudioSet.MasterEQ.EQHighFreq;
@@ -7397,7 +7397,7 @@ namespace INTEGRA_7_Xamarin
             }
         }
 
-        private void ReadStudioSetPart(Int32 partToRead = -1, Boolean Update = true)
+        private void ReadStudioSetPart(Int32 partToRead = -1, Boolean UpdateControls = true)
         {
             if (partToRead == -1)
             {
@@ -7412,7 +7412,7 @@ namespace INTEGRA_7_Xamarin
             }
             t.Trace("private void ReadStudioSetPart()");
             // This is a bit different since the read rawData is split into several classes.
-            if (Update)
+            if (!UpdateControls)
             {
                 ReceivedData Data = new ReceivedData(rawData);
                 commonState.StudioSet.PartMainSettings[(byte)partToRead] = new StudioSet_PartMainSettings(Data);
@@ -7424,7 +7424,7 @@ namespace INTEGRA_7_Xamarin
             }
             // Since this code is also called from the Motional surround editor, the controls below might not be
             // created. It's ok, since in that case we do not need them:
-            if (EditStudioSet_IsCreated)
+            if (EditStudioSet_IsCreated && UpdateControls)
             {
                 PushHandleControlEvents();
                 // Part settings 1 page
@@ -7562,63 +7562,66 @@ namespace INTEGRA_7_Xamarin
             }
         }
 
-        private void ReadStudioSetPartToneName(Boolean Update = true)
+        private void ReadStudioSetPartToneName(Boolean UpdateControls = true)
         {
             t.Trace("private void ReadStudioSetPartToneName()");
-            ReceivedData Data = new ReceivedData(rawData);
+            //if (!UpdateControls)
+            //{
+            //    ReceivedData Data = new ReceivedData(rawData);
+            //}
             PushHandleControlEvents();
             switch (commonState.SimpleToneType)
             {
                 case CommonState.SimpleToneTypes.PCM_SYNTH_TONE:
-                    if (Update)
+                    if (!UpdateControls)
                     {
-                        pCMSynthTone = new PCMSynthTone(Data);
+                        pCMSynthTone = new PCMSynthTone(new ReceivedData(rawData));
                     }
-                    if (EditStudioSet_IsCreated && Update)
+                    if (EditStudioSet_IsCreated && UpdateControls)
                     {
                         StudioSetCurrentToneName.Text = commonState.ToneSource + " PCMS: " + pCMSynthTone.pCMSynthToneCommon.Name;
                     }
                     commonState.CurrentTone.Name = pCMSynthTone.pCMSynthToneCommon.Name;
                     break;
                 case CommonState.SimpleToneTypes.PCM_DRUM_KIT:
-                    if (Update)
+                    if (!UpdateControls)
                     {
-                        pCMDrumKit = new PCMDrumKit(Data);
+                        pCMDrumKit = new PCMDrumKit(new ReceivedData(rawData));
                     }
-                    if (EditStudioSet_IsCreated && Update)
+                    if (EditStudioSet_IsCreated && UpdateControls)
                     {
                         StudioSetCurrentToneName.Text = commonState.ToneSource + " PCMD: " + pCMDrumKit.pCMDrumKitCommon.Name;
                     }
                     commonState.CurrentTone.Name = pCMDrumKit.pCMDrumKitCommon.Name;
                     break;
                 case CommonState.SimpleToneTypes.SUPERNATURAL_ACOUSTIC_TONE:
-                    if (Update)
+                    if (!UpdateControls)
                     {
-                        superNATURALAcousticTone = new SuperNATURALAcousticTone(Data);
+                        superNATURALAcousticTone = new SuperNATURALAcousticTone(new ReceivedData(rawData));
                     }
-                    if (EditStudioSet_IsCreated && Update)
+                    if (EditStudioSet_IsCreated && UpdateControls)
                     {
                         StudioSetCurrentToneName.Text = commonState.ToneSource + " SN-A: " + superNATURALAcousticTone.superNATURALAcousticToneCommon.Name;
                     }
                     commonState.CurrentTone.Name = superNATURALAcousticTone.superNATURALAcousticToneCommon.Name;
                     break;
                 case CommonState.SimpleToneTypes.SUPERNATURAL_SYNTH_TONE:
-                    if (Update)
+                    if (!UpdateControls)
                     {
-                        superNATURALSynthTone = new SuperNATURALSynthTone(Data);
+                        superNATURALSynthTone = new SuperNATURALSynthTone(new ReceivedData(rawData));
                     }
-                    if (EditStudioSet_IsCreated && Update)
+                    if (EditStudioSet_IsCreated && UpdateControls)
                     {
                         StudioSetCurrentToneName.Text = commonState.ToneSource + " SN-S: " + superNATURALSynthTone.superNATURALSynthToneCommon.Name;
                     }
                     commonState.CurrentTone.Name = superNATURALSynthTone.superNATURALSynthToneCommon.Name;
                     break;
                 case CommonState.SimpleToneTypes.SUPERNATURAL_DRUM_KIT:
-                    if (Update)
+                    if (!UpdateControls)
                     {
-                        superNATURALDrumKit = new SuperNATURALDrumKit(Data);
+                        superNATURALDrumKit = new SuperNATURALDrumKit(new ReceivedData(rawData));
                     }
-                    if (EditStudioSet_IsCreated && Update)
+                    if (EditStudioSet_IsCreated && UpdateControls)
                     {
                         StudioSetCurrentToneName.Text = commonState.ToneSource + " SN-D: " + superNATURALDrumKit.superNATURALDrumKitCommon.Name;
                     }
@@ -7628,15 +7631,15 @@ namespace INTEGRA_7_Xamarin
             PopHandleControlEvents();
         }
 
-        private void ReadStudioSetPartMidiPhaseLock(Boolean Update = true)
+        private void ReadStudioSetPartMidiPhaseLock(Boolean UpdateControls = true)
         {
             t.Trace("private void ReadStudioSetPartMidiPhaseLock()");
             // This is a bit special since we have put part MIDI together with MIDI switches (which must first have been read above!).
-            if (Update)
+            if (!UpdateControls)
             {
                 ReceivedData Data = new ReceivedData(rawData);
             }
-            if (EditStudioSet_IsCreated)
+            if (EditStudioSet_IsCreated && UpdateControls)
             {
                 PushHandleControlEvents();
                 cbStudioSetPartMidiPhaseLock.IsChecked = commonState.StudioSet.PartMidi[cbStudioSetPartSelector.SelectedIndex].PhaseLock;
@@ -7644,12 +7647,12 @@ namespace INTEGRA_7_Xamarin
             }
         }
 
-        private void ReadStudioSetPartEQ(Int32 partToRead = -1, Boolean Update = true)
+        private void ReadStudioSetPartEQ(Int32 partToRead = -1, Boolean UpdateControls = true)
         {
             t.Trace("private void ReadStudioSetPartEQ()");
             if (partToRead == -1)
             {
-                if (EditStudioSet_IsCreated)
+                if (EditStudioSet_IsCreated && UpdateControls)
                 {
                     partToRead = cbStudioSetPartSelector.SelectedIndex;
                 }
@@ -7658,11 +7661,11 @@ namespace INTEGRA_7_Xamarin
                     partToRead = 0;
                 }
             }
-            if (Update)
+            if (!UpdateControls)
             {
                 commonState.StudioSet.PartEQ[partToRead] = new StudioSet_PartEQ(new ReceivedData(rawData));
             }
-            if (EditStudioSet_IsCreated)
+            if (EditStudioSet_IsCreated && UpdateControls)
             {
                 PushHandleControlEvents();
                 cbStudioSetPartEQSwitch.IsChecked = commonState.StudioSet.PartEQ[(byte)partToRead].EqSwitch;
