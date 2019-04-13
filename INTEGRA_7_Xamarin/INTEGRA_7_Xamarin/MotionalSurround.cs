@@ -440,13 +440,23 @@ namespace INTEGRA_7_Xamarin
                         .PartMainSettings[currentMotionalSurroundPart].ToneBankSelectMSB,
                         commonState.StudioSet.PartMainSettings[currentMotionalSurroundPart].ToneBankSelectLSB,
                         commonState.StudioSet.PartMainSettings[currentMotionalSurroundPart].ToneProgramNumber);
-                    mslPart[currentMotionalSurroundPart].Text = 
-                        commonState.ToneList.Tones[index][3];
-                    msePart[currentMotionalSurroundPart].Editor.Text = 
-                        mslPart[currentMotionalSurroundPart].Text;
-                    //msePart[currentMotionalSurroundPart].Switch.IsChecked = 
-                    //    commonState.StudioSet.PartMotionalSurround[currentMotionalSurroundPart].MotionalSurroundSwitch;
-                    mslPart[currentMotionalSurroundPart].Plot(gArrows.Width, gArrows.Height);
+                    if (index < commonState.ToneList.Tones.Count)
+                    {
+                        mslPart[currentMotionalSurroundPart].Text =
+                            commonState.ToneList.Tones[index][3];
+                        msePart[currentMotionalSurroundPart].Editor.Text =
+                            mslPart[currentMotionalSurroundPart].Text;
+                        mslPart[currentMotionalSurroundPart].Plot(gArrows.Width, gArrows.Height);
+                    }
+                    else
+                    {
+                        mainPage.DisplayAlert("INTEGRA-7 Librarian and Editor",
+                            "It seems like you have selected a Studio Set with a User Tone in part " +
+                            (currentMotionalSurroundPart + 1).ToString() + " that has " +
+                            "not been read in from your INTEGRA-7. Click on 'Load user tones' in the Librarian. " +
+                            "Also make sure you do not have any 'INIT TONE' or 'INIT DRUM SET' in the current Studio Set",
+                            "Ok");
+                    }
                 }
                 mslPart[currentMotionalSurroundPart].Horizontal = 
                     commonState.StudioSet.MotionalSurround.ExtPartLR;

@@ -540,6 +540,7 @@ namespace INTEGRA_7_Xamarin
                         }
                         else
                         {
+                            studioSetEditor_PartToRead = commonState.CurrentPart;
                             QueryStudioSetPartToneName();
                         }
                         break;

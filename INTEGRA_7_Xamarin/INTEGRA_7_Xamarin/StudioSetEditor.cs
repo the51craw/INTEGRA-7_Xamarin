@@ -38,6 +38,8 @@ namespace INTEGRA_7_Xamarin
             STUDIO_SET_PART_TONE_NAME,
             STUDIO_SET_PART_MIDI_PHASELOCK,
             STUDIO_SET_PART_EQ,
+            STUDIO_SET_SAVE,
+            STUDIO_SET_DELETE,
         }
 
         enum StudioSetEditor_State
@@ -68,6 +70,8 @@ namespace INTEGRA_7_Xamarin
             QUERYING_STUDIO_SET_PART_TONE_NAME,
             QUERYING_STUDIO_SET_PART_MIDI_PHASELOCK,
             QUERYING_STUDIO_SET_PART_EQ,
+            STUDIO_SET_DELETING,
+            STUDIO_SET_DELETED,
             DONE,
         }
         StudioSetEditor_currentStudioSetEditorMidiRequest currentStudioSetEditorMidiRequest = StudioSetEditor_currentStudioSetEditorMidiRequest.NONE;
@@ -2290,9 +2294,9 @@ namespace INTEGRA_7_Xamarin
             Grid grid_StudioSet_Column0_Container = new Grid();
             Grid grid_StudioSet_Column1_Container = new Grid();
             Grid grid_StudioSet_Column2_Container = new Grid();
-            grid_StudioSet_Column0_Container.BackgroundColor = colorSettings.Border;
-            grid_StudioSet_Column1_Container.BackgroundColor = colorSettings.Border;
-            grid_StudioSet_Column2_Container.BackgroundColor = colorSettings.Border;
+            grid_StudioSet_Column0_Container.BackgroundColor = colorSettings.FrameBorder;
+            grid_StudioSet_Column1_Container.BackgroundColor = colorSettings.FrameBorder;
+            grid_StudioSet_Column2_Container.BackgroundColor = colorSettings.FrameBorder;
             grid_StudioSet_Column0.BackgroundColor = colorSettings.Background;
             grid_StudioSet_Column1.BackgroundColor = colorSettings.Background;
             grid_StudioSet_Column2.BackgroundColor = colorSettings.Background;
@@ -2386,10 +2390,10 @@ namespace INTEGRA_7_Xamarin
             ReadStudioSetReverb(true);
             ReadMotionalSurround(true);
             ReadStudioSetMasterEQ(true);
-            ReadStudioSetPart(0, true);
-            ReadStudioSetPartToneName(true);
-            ReadStudioSetPartMidiPhaseLock(true);
-            ReadStudioSetPartEQ(0, true);
+            ReadStudioSetPart(commonState.CurrentPart, true, false);
+            ReadStudioSetPartToneName(true, false);
+            ReadStudioSetPartMidiPhaseLock(true, false);
+            ReadStudioSetPartEQ(commonState.CurrentPart, true, false);
             PopulateCbStudioSetPartSettings1Group();
             PopulateCbStudioSetPartSettings1Category();
             PopulateCbStudioSetPartSettings1Program();
@@ -3504,6 +3508,11 @@ namespace INTEGRA_7_Xamarin
                     //PopulateStudioSetSelector();
                     //PopulateComboBoxes();
                 }
+                else if (studioSetEditor_State == StudioSetEditor_State.DONE && currentStudioSetEditorMidiRequest == StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_DELETE)
+                {
+                    cbStudioSetSelector_SelectionChanged(null, null);
+                    studioSetEditor_State = StudioSetEditor_State.NONE;
+                }
                 else if (studioSetEditor_State == StudioSetEditor_State.DONE
                     && currentStudioSetEditorMidiRequest == StudioSetEditor_currentStudioSetEditorMidiRequest.NONE)
                 {
@@ -3572,6 +3581,19 @@ namespace INTEGRA_7_Xamarin
                         currentPage = continueTo;
                     }
                 }
+                else if (studioSetEditor_State == StudioSetEditor_State.STUDIO_SET_DELETING
+                    && currentStudioSetEditorMidiRequest == 
+                    StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_DELETE)
+                {
+                    studioSetEditor_State = StudioSetEditor_State.STUDIO_SET_DELETED;
+                }
+                else if (studioSetEditor_State == StudioSetEditor_State.STUDIO_SET_DELETED
+                    && currentStudioSetEditorMidiRequest ==
+                    StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_DELETE)
+                {
+                    // Make Timer_Tick() hanle it in the UI thread:
+                    studioSetEditor_State = StudioSetEditor_State.DONE;
+                }
                 else
                 {
                     // Tell Timer_Tick that System Common has been read:
@@ -3592,6 +3614,9 @@ namespace INTEGRA_7_Xamarin
                 t.Trace("private void cbStudioSetSelector_SelectionChanged (" + "object" + sender + ", " + "EventArgs" + e + ", " + ")");
                 if (handleControlEvents && studioSetEditor_State != StudioSetEditor_State.INIT && cbStudioSetSelector.SelectedIndex > -1)
                 {
+                    // When selecting studio set, also set the studio set slot selector:
+                    cbStudioSetSlot.SelectedIndex = cbStudioSetSelector.SelectedIndex;
+
                     commonState.CurrentStudioSet = (byte)cbStudioSetSelector.SelectedIndex;
                     SetStudioSet(commonState.CurrentStudioSet);
 
@@ -6840,14 +6865,30 @@ namespace INTEGRA_7_Xamarin
             currentStudioSetEditorMidiRequest = StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_PART_TONE_NAME;
 
             // Set tone on INTEGRA-7:
-            Int32 part = 0;
+            Int32 part = studioSetEditor_PartToRead;
             if (EditStudioSet_IsCreated)
             {
                 part = cbStudioSetPartSelector.SelectedIndex;
             }
-            byte msb = commonState.StudioSet.PartMainSettings[part].ToneBankSelectMSB;
-            byte lsb = commonState.StudioSet.PartMainSettings[part].ToneBankSelectLSB;
-            byte pc = commonState.StudioSet.PartMainSettings[part].ToneProgramNumber;
+            byte msb = 0x59;
+            byte lsb = 0x40;
+            byte pc = 0x00;
+            try
+            {
+                msb = commonState.StudioSet.PartMainSettings[part].ToneBankSelectMSB;
+                lsb = commonState.StudioSet.PartMainSettings[part].ToneBankSelectLSB;
+                pc = commonState.StudioSet.PartMainSettings[part].ToneProgramNumber;
+            }
+            catch
+            {
+                try
+                {
+                    msb = commonState.CurrentTone.BankMSB;
+                    lsb = commonState.CurrentTone.BankLSB;
+                    pc = commonState.CurrentTone.Program;
+                }
+                catch { }
+            }
 
             commonState.GetToneType(msb, lsb, pc);
             byte[] length = null;
@@ -7397,22 +7438,23 @@ namespace INTEGRA_7_Xamarin
             }
         }
 
-        private void ReadStudioSetPart(Int32 partToRead = -1, Boolean UpdateControls = true)
+        private void ReadStudioSetPart(Int32 partToRead = -1, Boolean UpdateControls = true, Boolean updateData = true)
         {
             if (partToRead == -1)
             {
                 if (EditStudioSet_IsCreated)
                 {
                     partToRead = cbStudioSetPartSelector.SelectedIndex;
+                    commonState.CurrentPart = (byte)partToRead;
                 }
                 else
                 {
-                    partToRead = 0;
+                    partToRead = commonState.CurrentPart;
                 }
             }
             t.Trace("private void ReadStudioSetPart()");
             // This is a bit different since the read rawData is split into several classes.
-            if (!UpdateControls)
+            if (updateData)
             {
                 ReceivedData Data = new ReceivedData(rawData);
                 commonState.StudioSet.PartMainSettings[(byte)partToRead] = new StudioSet_PartMainSettings(Data);
@@ -7422,14 +7464,16 @@ namespace INTEGRA_7_Xamarin
                 commonState.StudioSet.PartEQ[(byte)partToRead] = new StudioSet_PartEQ(Data);
                 commonState.StudioSet.PartMotionalSurround[(byte)partToRead] = new StudioSet_PartMotionalSurround(Data);
             }
+
             // Since this code is also called from the Motional surround editor, the controls below might not be
             // created. It's ok, since in that case we do not need them:
             if (EditStudioSet_IsCreated && UpdateControls)
             {
                 PushHandleControlEvents();
                 // Part settings 1 page
-                if (cbStudioSetPartSelector.SelectedIndex > -1 && cbStudioSetPartSelector.SelectedIndex == partToRead)
+                //if (cbStudioSetPartSelector.SelectedIndex > -1 && cbStudioSetPartSelector.SelectedIndex == partToRead)
                 {
+                    cbStudioSetPartSelector.SelectedIndex = partToRead;
                     cbStudioSetPartSettings1ReceiveChannel.SelectedIndex = commonState.StudioSet.PartMainSettings[(byte)partToRead].ReceiveChannel;
                     cbStudioSetPartSettings1Receive.IsChecked = commonState.StudioSet.PartMainSettings[(byte)partToRead].ReceiveSwitch;
                     // These will be set after part is read (and the slider is now a ComboBox)
@@ -7562,7 +7606,7 @@ namespace INTEGRA_7_Xamarin
             }
         }
 
-        private void ReadStudioSetPartToneName(Boolean UpdateControls = true)
+        private void ReadStudioSetPartToneName(Boolean UpdateControls = true, Boolean updateData = true)
         {
             t.Trace("private void ReadStudioSetPartToneName()");
             //if (!UpdateControls)
@@ -7573,7 +7617,7 @@ namespace INTEGRA_7_Xamarin
             switch (commonState.SimpleToneType)
             {
                 case CommonState.SimpleToneTypes.PCM_SYNTH_TONE:
-                    if (!UpdateControls)
+                    if (updateData)
                     {
                         pCMSynthTone = new PCMSynthTone(new ReceivedData(rawData));
                     }
@@ -7584,7 +7628,7 @@ namespace INTEGRA_7_Xamarin
                     commonState.CurrentTone.Name = pCMSynthTone.pCMSynthToneCommon.Name;
                     break;
                 case CommonState.SimpleToneTypes.PCM_DRUM_KIT:
-                    if (!UpdateControls)
+                    if (updateData)
                     {
                         pCMDrumKit = new PCMDrumKit(new ReceivedData(rawData));
                     }
@@ -7595,7 +7639,7 @@ namespace INTEGRA_7_Xamarin
                     commonState.CurrentTone.Name = pCMDrumKit.pCMDrumKitCommon.Name;
                     break;
                 case CommonState.SimpleToneTypes.SUPERNATURAL_ACOUSTIC_TONE:
-                    if (!UpdateControls)
+                    if (updateData)
                     {
                         superNATURALAcousticTone = new SuperNATURALAcousticTone(new ReceivedData(rawData));
                     }
@@ -7606,7 +7650,7 @@ namespace INTEGRA_7_Xamarin
                     commonState.CurrentTone.Name = superNATURALAcousticTone.superNATURALAcousticToneCommon.Name;
                     break;
                 case CommonState.SimpleToneTypes.SUPERNATURAL_SYNTH_TONE:
-                    if (!UpdateControls)
+                    if (updateData)
                     {
                         superNATURALSynthTone = new SuperNATURALSynthTone(new ReceivedData(rawData));
                     }
@@ -7617,7 +7661,7 @@ namespace INTEGRA_7_Xamarin
                     commonState.CurrentTone.Name = superNATURALSynthTone.superNATURALSynthToneCommon.Name;
                     break;
                 case CommonState.SimpleToneTypes.SUPERNATURAL_DRUM_KIT:
-                    if (!UpdateControls)
+                    if (updateData)
                     {
                         superNATURALDrumKit = new SuperNATURALDrumKit(new ReceivedData(rawData));
                     }
@@ -7631,11 +7675,11 @@ namespace INTEGRA_7_Xamarin
             PopHandleControlEvents();
         }
 
-        private void ReadStudioSetPartMidiPhaseLock(Boolean UpdateControls = true)
+        private void ReadStudioSetPartMidiPhaseLock(Boolean UpdateControls = true, Boolean updateData = true)
         {
             t.Trace("private void ReadStudioSetPartMidiPhaseLock()");
             // This is a bit special since we have put part MIDI together with MIDI switches (which must first have been read above!).
-            if (!UpdateControls)
+            if (updateData)
             {
                 ReceivedData Data = new ReceivedData(rawData);
             }
@@ -7647,7 +7691,7 @@ namespace INTEGRA_7_Xamarin
             }
         }
 
-        private void ReadStudioSetPartEQ(Int32 partToRead = -1, Boolean UpdateControls = true)
+        private void ReadStudioSetPartEQ(Int32 partToRead = -1, Boolean UpdateControls = true, Boolean updateData = true)
         {
             t.Trace("private void ReadStudioSetPartEQ()");
             if (partToRead == -1)
@@ -7658,10 +7702,10 @@ namespace INTEGRA_7_Xamarin
                 }
                 else
                 {
-                    partToRead = 0;
+                    partToRead = commonState.CurrentPart;
                 }
             }
-            if (!UpdateControls)
+            if (updateData)
             {
                 commonState.StudioSet.PartEQ[partToRead] = new StudioSet_PartEQ(new ReceivedData(rawData));
             }
@@ -7688,7 +7732,7 @@ namespace INTEGRA_7_Xamarin
         {
             if (cbStudioSetPartSettings1Program.SelectedIndex < 0)
             {
-                cbStudioSetPartSettings1Program.SelectedIndex = 0;
+                cbStudioSetPartSettings1Program.SelectedItem = commonState.CurrentTone.Name;
             }
             // Update StudioSetCurrentToneName:
             StudioSetCurrentToneName.Text = (String)cbStudioSetPartSettings1Program.SelectedItem;
@@ -9280,6 +9324,7 @@ namespace INTEGRA_7_Xamarin
 
         private async void btnStudioSetSave_Click(object sender, EventArgs e)
         {
+            String name = "";
             if (tbStudioSetName.Text.Length > 0)
             {
                 if (tbStudioSetName.Text.StartsWith("INIT STUDIO"))
@@ -9294,32 +9339,30 @@ namespace INTEGRA_7_Xamarin
                 else
                 {
                     Boolean write = true;
+                    name = tbStudioSetName.Text;
+                    while (name.Length < 16)
+                    {
+                        name = name + " ";
+                    }
                     if (!((String)cbStudioSetSlot.SelectedItem).StartsWith("INIT STUDIO"))
                     {
-                        //MessageDialog warning = new MessageDialog("This slot contains another Studio Set. Are you sure you want to overwrite it?");
-                        //warning.Title = "Note!";
-                        //warning.Commands.Add(new UICommand { Label = "Yes", Id = 0 });
-                        //warning.Commands.Add(new UICommand { Label = "No", Id = 1 });
-                        //var response = await warning.ShowAsync();
-                        //if ((Int32)response.Id == 1)
-                        //{
-                        //    write = false;
-                        //}
-                        String response = await mainPage.DisplayActionSheet("This slot contains another Studio Set. Are you sure you want to overwrite it?",
-                            null, null, new String[] { "Yes,", "No" });
-                        if (response == "No")
+                        Boolean response = await mainPage.DisplayAlert("INTEGRA-7 Librarian and Editor", 
+                            "This slot contains another Studio Set. Are you sure you want to overwrite it?",
+                            "Yes,", "No" );
+                        if (!response)
                         {
                             write = false;
                         }
                     }
+                    if (commonState.StudioSetNames.Contains(name))
+                    {
+                        await mainPage.DisplayAlert("INTEGRA-7 Librarian and Editor", 
+                            "This name is already in use. You must use a unique name.", "Ok");
+                        write = false;
+                    }
                     if (write)
                     {
                         // Store the new Studio Set name:
-                        String name = tbStudioSetName.Text;
-                        while (name.Length < 16)
-                        {
-                            name = name + " ";
-                        }
                         byte[] address = { 0x18, 0x00, 0x00, 0x00 };
                         byte[] data = Encoding.UTF8.GetBytes(name);
                         byte[] bytes = commonState.Midi.SystemExclusiveDT1Message(address, data);
@@ -9328,21 +9371,29 @@ namespace INTEGRA_7_Xamarin
                         // Save all partials:
 
                         // Make INTEGRA-7 save the Studio Set:
+                        currentStudioSetEditorMidiRequest = StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_SAVE;
                         address = new byte[] { 0x0f, 0x00, 0x10, 0x00 };
                         data = new byte[] { 0x55, 0x00, (byte)(cbStudioSetSlot.SelectedIndex), 0x7f };
                         bytes = commonState.Midi.SystemExclusiveRQ1Message(address, data);
                         waitingForResponseFromIntegra7 = 500;
                         commonState.Midi.SendSystemExclusive(bytes);
 
-                        // Add the new studio set name to the studio set selector:
-                        cbStudioSetSelector.Items[cbStudioSetSlot.SelectedIndex] = cbStudioSetSlot.SelectedIndex.ToString() + " " + tbStudioSetName.Text;
+                        // Update selectors and studio set name:
+                        PushHandleControlEvents();
+                        Int32 slotIndex = cbStudioSetSlot.SelectedIndex;
+
+                        // Add the new studio set name to the studio set selectors:
+                        cbStudioSetSelector.Items[slotIndex] = 
+                            (cbStudioSetSlot.SelectedIndex + 1).ToString() + " " + tbStudioSetName.Text;
+                        cbStudioSetSlot.Items[slotIndex] = tbStudioSetName.Text;
 
                         // Add the new studio set name to commonState.studioSetNames.
-                        commonState.StudioSetNames[cbStudioSetSlot.SelectedIndex] = tbStudioSetName.Text;
+                        // (The list contains trailing spaces up to 12 chars, just like the I-7)
+                        commonState.StudioSetNames[slotIndex] = name;
 
-                        // Select the new studio set:
-                        PushHandleControlEvents();
-                        cbStudioSetSelector.SelectedIndex = cbStudioSetSlot.SelectedIndex;
+                        // Set selectors back:
+                        cbStudioSetSelector.SelectedIndex = slotIndex;
+                        cbStudioSetSlot.SelectedIndex = slotIndex;
                         PopHandleControlEvents();
                     }
                 }
@@ -9357,24 +9408,22 @@ namespace INTEGRA_7_Xamarin
                 Boolean write = true;
                 if (!((String)cbStudioSetSlot.SelectedItem).StartsWith("INIT STUDIO"))
                 {
-                    //MessageDialog warning = new MessageDialog("Are you sure wyou want to delete this Studio Set?");
-                    //warning.Title = "Note!";
-                    //warning.Commands.Add(new UICommand { Label = "Yes", Id = 0 });
-                    //warning.Commands.Add(new UICommand { Label = "No", Id = 1 });
-                    //var response = await warning.ShowAsync();
-                    //if ((Int32)response.Id == 1)
-                    //{
-                    //    write = false;
-                    //}
-                    String response = await mainPage.DisplayActionSheet("Are you sure you want to delete this Studio Set?",
-                        null, null, new String[] { "Yes,", "No" });
-                    if (response == "Yes")
+                    Boolean response = await mainPage.DisplayAlert("INTEGRA-7 Librarian and Editor", 
+                        "Are you sure you want to delete this Studio Set?",
+                        "Yes,", "No");
+                    if (!response)
                     {
                         write = false;
                     }
                 }
                 if (write)
                 {
+                    // INIT STUDIO always contains Full Grand 1 in all parts:
+                    for (byte part = 0; part < 16; part++)
+                    {
+                        commonState.Midi.ProgramChange(part, 0x59, 0x40, 0x01);
+                    }
+
                     // Change the name:
                     byte[] address = { 0x18, 0x00, 0x00, 0x00 };
                     byte[] data = Encoding.UTF8.GetBytes("INIT STUDIO     ");
@@ -9382,6 +9431,8 @@ namespace INTEGRA_7_Xamarin
                     waitingForResponseFromIntegra7 = 500;
                     commonState.Midi.SendSystemExclusive(bytes);
                     // InitializeComponent the studio set:
+                    studioSetEditor_State = StudioSetEditor_State.STUDIO_SET_DELETING;
+                    currentStudioSetEditorMidiRequest = StudioSetEditor_currentStudioSetEditorMidiRequest.STUDIO_SET_DELETE;
                     address = new byte[] { 0x0f, 0x00, (byte)(cbStudioSetSlot.SelectedIndex), 0x00 };
                     data = new byte[] { 0x7f, 0x7f, 0x00, 0x00 };
                     bytes = commonState.Midi.SystemExclusiveRQ1Message(address, data);
@@ -9394,22 +9445,28 @@ namespace INTEGRA_7_Xamarin
                     waitingForResponseFromIntegra7 = 500;
                     commonState.Midi.SendSystemExclusive(bytes);
 
+                    // Update selectors and studio set name:
+                    PushHandleControlEvents();
+                    Int32 slotIndex = cbStudioSetSlot.SelectedIndex;
+
                     // Remove the new studio set name from the studio set selector:
-                    cbStudioSetSelector.Items[cbStudioSetSlot.SelectedIndex] = (cbStudioSetSlot.SelectedIndex + 1).ToString() + " INIT STUDIO";
-                    if (cbStudioSetSlot.SelectedIndex > 0)
-                    {
-                        cbStudioSetSlot.SelectedIndex = cbStudioSetSlot.SelectedIndex - 1;
-                    }
-                    else
-                    {
-                        cbStudioSetSlot.SelectedIndex = 0;
-                    }
+                    cbStudioSetSelector.Items[slotIndex] =
+                        (slotIndex + 1).ToString() + " INIT STUDIO";
+
+                    // Remove the new studio set name from the studio set selector:
+                    cbStudioSetSlot.Items[slotIndex] = "INIT STUDIO";
 
                     // Remove the new studio set name from commonState.studioSetNames.
-                    commonState.StudioSetNames[cbStudioSetSlot.SelectedIndex] = "INIT STUDIO";
+                    commonState.StudioSetNames[slotIndex] = "INIT STUDIO";
 
-                    // Now, get the freshly initiated part:
-                    QueryStudioSetPart();
+                    // Set selectors back:
+                    cbStudioSetSelector.SelectedIndex = slotIndex;
+                    cbStudioSetSlot.SelectedIndex = slotIndex;
+                    PopHandleControlEvents();
+
+                    // Now, get the freshly initiated part but wait for I-7 to finish updates (about 4 seconds):
+                    //await Task.Delay(TimeSpan.FromSeconds(8));
+                    //cbStudioSetSelector_SelectionChanged(null, null);
                 }
             }
         }

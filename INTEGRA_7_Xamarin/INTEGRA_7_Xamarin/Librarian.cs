@@ -173,10 +173,6 @@ namespace INTEGRA_7_Xamarin
             //cbChannel.SelectedIndex = commonState.CurrentPart;
             EnableOrDisableEditButton();
 
-            // Part 16 has probably used to get user tone names, but has been restored.
-            // Therefore, the studio set has been changed (tone at part 16 changed but restored).
-            // In order to turn the change state off, just select the studio set:
-            //SetStudioSet(new byte[] { 0x55, 0x00, commonState.CurrentStudioSet });
             waitingForMidiResponse = true;
             QuerySelectedStudioSet();
         }
@@ -368,6 +364,7 @@ namespace INTEGRA_7_Xamarin
             Librarian_lvGroups = new ListView();
             Librarian_ocGroups = new ObservableCollection<String>();
             Librarian_lvGroups.ItemsSource = Librarian_ocGroups;
+            Librarian_lvGroups.ItemTemplate = colorSettings.ListViewTextColor;
 
             // Make a listview lvCategories for column 1:
             Librarian_lblCategories = new Button();
@@ -468,15 +465,15 @@ namespace INTEGRA_7_Xamarin
                 Librarian_btnWhiteKeys[i] = new Button();
                 Grid grid = new Grid();
                 grid.Margin = new Thickness(0);
-                grid.BackgroundColor = colorSettings.Border;
+                grid.BackgroundColor = colorSettings.FrameBorder;
                 Grid.SetRowSpan(grid, 16);
                 Grid.SetRow(grid, i * 16);
                 Grid.SetColumnSpan(grid, 3);
                 Grid.SetColumn(grid, 0);
                 grid.Children.Add(Librarian_btnWhiteKeys[i]);
                 Librarian_gridKeyboard.Children.Add(grid);
-                Librarian_btnWhiteKeys[i].BackgroundColor = colorSettings.WhitePianoKeys;
-                Librarian_btnWhiteKeys[i].TextColor = colorSettings.Black;
+                Librarian_btnWhiteKeys[i].BackgroundColor = colorSettings.WhitePianoKey;
+                Librarian_btnWhiteKeys[i].TextColor = colorSettings.BlackPianoKey;
                 Librarian_btnWhiteKeys[i].Text = "";
                 Librarian_btnWhiteKeys[i].StyleId = i.ToString();
                 Librarian_btnWhiteKeys[i].Pressed += Librarian_btnWhiteKey_Pressed;
@@ -525,8 +522,8 @@ namespace INTEGRA_7_Xamarin
                 position += 8;
                 Librarian_btnBlackKeys[i].Text = "";
                 Librarian_btnBlackKeys[i].StyleId = i.ToString();
-                Librarian_btnBlackKeys[i].BackgroundColor = colorSettings.Black;
-                Librarian_btnBlackKeys[i].TextColor = colorSettings.WhitePianoKeys;
+                Librarian_btnBlackKeys[i].BackgroundColor = colorSettings.BlackPianoKey;
+                Librarian_btnBlackKeys[i].TextColor = colorSettings.WhitePianoKey;
                 Librarian_btnBlackKeys[i].Margin = new Thickness(2, 0, 0, 0);
                 Librarian_btnBlackKeys[i].Pressed += Librarian_btnBlackKey_Pressed;
                 Librarian_btnBlackKeys[i].Released += Librarian_btnBlackKey_Released;
@@ -729,10 +726,10 @@ namespace INTEGRA_7_Xamarin
             Librarian_StackLayout = new StackLayout();
             Librarian_StackLayout.HorizontalOptions = LayoutOptions.FillAndExpand;
             Librarian_StackLayout.VerticalOptions = LayoutOptions.FillAndExpand;
-            Librarian_gridGroups.BackgroundColor = colorSettings.Border;
-            Librarian_gridCategories.BackgroundColor = colorSettings.Border;
-            Librarian_gridTones.BackgroundColor = colorSettings.Border;
-            Librarian_gridKeyboard.BackgroundColor = colorSettings.Border;
+            Librarian_gridGroups.BackgroundColor = colorSettings.FrameBorder;
+            Librarian_gridCategories.BackgroundColor = colorSettings.FrameBorder;
+            Librarian_gridTones.BackgroundColor = colorSettings.FrameBorder;
+            Librarian_gridKeyboard.BackgroundColor = colorSettings.FrameBorder;
             //Librarian_gridGroups.ColumnSpacing = 2;
             //Librarian_gridCategories.ColumnSpacing = 2;
             //Librarian_gridTones.ColumnSpacing = 2;
@@ -748,7 +745,7 @@ namespace INTEGRA_7_Xamarin
             Librarian_gridCategories.Margin = new Thickness(-6, 0, 0, 0);
             Librarian_gridTones.Margin = new Thickness(-6, 0, 0, 0);
             Librarian_gridKeyboard.Margin = new Thickness(-6, 0, 0, 0);
-            Librarian_StackLayout.BackgroundColor = colorSettings.Border;
+            Librarian_StackLayout.BackgroundColor = colorSettings.FrameBorder;
             t.Trace("Librarian created ");
         }
 
@@ -832,6 +829,19 @@ namespace INTEGRA_7_Xamarin
             {
                 updateToneName = false;
                 PushHandleControlEvents();
+                if (commonState.CurrentTone == null)
+                {
+                    mainPage.DisplayAlert("INTEGRA-7 Librarian and Editor",
+                         "It seems like you have selected a Studio Set with " + 
+                         "some User Tone that has not been read in from your INTEGRA-7. " +
+                         "Click on 'Load user tones' in the Librarian.",
+                         "Ok");
+                    // We must have something in current tone:
+                    commonState.CurrentTone = new Tone(-1, -1, -1, "SuperNATURAL Acoustic Tone", "Ac.Piano", "Full Grand 1");
+                    commonState.CurrentTone.BankMSB = 0x59;
+                    commonState.CurrentTone.BankLSB = 0x40;
+                    commonState.CurrentTone.Program = 0x00;
+                }
                 try // In case I7 holds a user sound, which are not loaded into app, surround this with a try:
                 {
                     Librarian_lvGroups.SelectedItem = commonState.CurrentTone.Group;
@@ -1332,6 +1342,10 @@ namespace INTEGRA_7_Xamarin
                                         {
                                             userToneNumbers[i] = 0;
                                         }
+                                        // Part 16 has been used to get user tone names.
+                                        // Therefore, the studio set has been changed (tone at part 16 changed but restored).
+                                        // In order to turn the change state off and restore it, just select the studio set:
+                                        SetStudioSet(commonState.CurrentStudioSet);
                                         QuerySelectedStudioSet();
                                         break;
                                     }
@@ -1428,9 +1442,12 @@ namespace INTEGRA_7_Xamarin
                     commonState.CurrentTone.Group = (String)Librarian_lvGroups.SelectedItem;
                     PushHandleControlEvents();
                     PopulateCategories();
-                    Librarian_lvCategories.SelectedItem = Librarian_ocCategories[0];
-                    commonState.CurrentTone.Category = Librarian_ocCategories[0];
-                    PopulateToneNames();
+                    if (Librarian_ocCategories.Count > 0)
+                    {
+                        Librarian_lvCategories.SelectedItem = Librarian_ocCategories[0];
+                        commonState.CurrentTone.Category = Librarian_ocCategories[0];
+                        PopulateToneNames();
+                    }
                     PopHandleControlEvents();
                 }
             }
@@ -1860,6 +1877,12 @@ namespace INTEGRA_7_Xamarin
         private void Librarian_btnEditStudioSet_Clicked(object sender, EventArgs e)
         {
             Librarian_StackLayout.IsVisible = false;
+
+            // Studio set editor starts assuming we use part 1, and if some other
+            // part has been selected in the Librarian, it will try obtaining 
+            // data from possibly wrong class. Therefore, first read in the tone
+            // in part 1:
+
             if (EditStudioSet_IsCreated)
             {
                 // If studio set editor is created, studio set and studio set must already
@@ -1901,15 +1924,15 @@ namespace INTEGRA_7_Xamarin
         {
             //Waiting(true, "Please wait while making sensor grid...", MotionalSurround_StackLayout);
             Librarian_StackLayout.IsVisible = false;
-            if (commonState.StudioSet == null || currentStudioSet != commonState.CurrentStudioSet)
-            {
-                currentStudioSet = commonState.CurrentStudioSet;
-                ShowPleaseWaitPage(WaitingFor.READING_STUDIO_SET, CurrentPage.MOTIONAL_SURROUND, null);
-            }
-            else
-            {
-                ShowMotionalSurroundPage();
-            }
+            //if (commonState.StudioSet == null || currentStudioSet != commonState.CurrentStudioSet)
+            //{
+            currentStudioSet = commonState.CurrentStudioSet;
+            ShowPleaseWaitPage(WaitingFor.READING_STUDIO_SET, CurrentPage.MOTIONAL_SURROUND, null);
+            //}
+            //else
+            //{
+            //    ShowMotionalSurroundPage();
+            //}
             //ShowMotionalSurroundPage();
         }
 
