@@ -274,23 +274,14 @@ namespace INTEGRA_7_Xamarin
                 {
                     switch ((String)mainPage.LoadLocalValue("ColorSettings"))
                     {
-                        case "BROWN":
-                            colorSettings = new ColorSettings(_colorSettings.BROWN);
-                            break;
-                        case "FOREST":
-                            colorSettings = new ColorSettings(_colorSettings.FOREST);
-                            break;
                         case "LIGHT":
                             colorSettings = new ColorSettings(_colorSettings.LIGHT);
                             break;
-                        case "OCEAN":
-                            colorSettings = new ColorSettings(_colorSettings.OCEAN);
+                        case "DARK":
+                            colorSettings = new ColorSettings(_colorSettings.DARK);
                             break;
-                        case "ROSE":
-                            colorSettings = new ColorSettings(_colorSettings.ROSE);
-                            break;
-                        case "SUNNY":
-                            colorSettings = new ColorSettings(_colorSettings.SUNNY);
+                        case "USER":
+                            colorSettings = new ColorSettings(_colorSettings.USER);
                             break;
                     }
                 }
@@ -638,70 +629,29 @@ namespace INTEGRA_7_Xamarin
                 rowHeight = 2;
             }
 
-            listingHeight = 16;
+            listingHeight = 12;
 
             // Assemble column 0:
             Librarian_gridGroups.Children.Add((new GridRow(0, new View[] { Librarian_lblGroups })).Row);
             Librarian_gridGroups.Children.Add((new GridRow(1, new View[] { Librarian_lvGroups }, null, false, false, listingHeight)).Row);
-            //Librarian_gridGroups.RowDefinitions = new RowDefinitionCollection();
-            //Librarian_gridGroups.RowDefinitions.Add(new RowDefinition());
-            //Librarian_gridGroups.RowDefinitions.Add(new RowDefinition());
-            //Librarian_gridGroups.RowDefinitions.Add(new RowDefinition());
-            //Librarian_gridGroups.RowDefinitions.Add(new RowDefinition());
-            //Librarian_gridGroups.RowDefinitions.Add(new RowDefinition());
-            //Librarian_gridGroups.RowDefinitions.Add(new RowDefinition());
-            //Librarian_gridGroups.RowDefinitions.Add(new RowDefinition());
             Librarian_gridGroups.Children.Add((new GridRow((byte)(listingHeight + 1), new View[] { Librarian_midiOutputChannel })).Row);
             Librarian_gridGroups.Children.Add((new GridRow((byte)(listingHeight + 2), new View[] { Librarian_tbSearch })).Row);
             Librarian_gridGroups.Children.Add((new GridRow((byte)(listingHeight + 3), new View[] { Librarian_ltToneName })).Row);
             Librarian_gridGroups.Children.Add((new GridRow((byte)(listingHeight + 4), new View[] { Librarian_ltType })).Row);
             Librarian_gridGroups.Children.Add((new GridRow((byte)(listingHeight + 5), new View[] { Librarian_ltToneNumber })).Row);
-            //Librarian_gridGroups.RowDefinitions[0].Height = new GridLength(rowHeight, GridUnitType.Star);
-            //Librarian_gridGroups.RowDefinitions[1].Height = new GridLength(listingHeight, GridUnitType.Star);
-            //Librarian_gridGroups.RowDefinitions[2].Height = new GridLength(rowHeight, GridUnitType.Star);
-            //Librarian_gridGroups.RowDefinitions[3].Height = new GridLength(rowHeight, GridUnitType.Star);
-            //Librarian_gridGroups.RowDefinitions[4].Height = new GridLength(rowHeight, GridUnitType.Star);
-            //Librarian_gridGroups.RowDefinitions[5].Height = new GridLength(rowHeight, GridUnitType.Star);
-            //Librarian_gridGroups.RowDefinitions[6].Height = new GridLength(rowHeight, GridUnitType.Star);
 
             // Assemble column 1:
             Librarian_gridCategories.Children.Add((new GridRow(0, new View[] { Librarian_lblCategories })).Row);
             Librarian_gridCategories.Children.Add((new GridRow(1, new View[] { Librarian_lvCategories }, null, false, false, listingHeight)).Row);
-            //Librarian_gridCategories.Children.Add((new GridRow(0, new View[] { Librarian_lblStudioSets } )).Row);
-            //Librarian_gridCategories.Children.Add((new GridRow(1, new View[] { Librarian_lvStudioSets }, null, false, false, listingHeight)).Row);
-            //Librarian_gridCategories.RowDefinitions = new RowDefinitionCollection();
-            //Librarian_gridCategories.RowDefinitions.Add(new RowDefinition());
-            //Librarian_gridCategories.RowDefinitions.Add(new RowDefinition());
-            //Librarian_gridCategories.RowDefinitions.Add(new RowDefinition());
-            //Librarian_gridCategories.RowDefinitions.Add(new RowDefinition());
-            //Librarian_gridCategories.RowDefinitions.Add(new RowDefinition());
-            //Librarian_gridCategories.RowDefinitions.Add(new RowDefinition());
-            //Librarian_gridCategories.RowDefinitions.Add(new RowDefinition());
             Librarian_gridCategories.Children.Add((new GridRow((byte)(listingHeight + 1), new View[] { Librarian_ltBankAddress })).Row);
             Librarian_gridCategories.Children.Add((new GridRow((byte)(listingHeight + 2), new View[] { Librarian_ltPatchMSB })).Row);
             Librarian_gridCategories.Children.Add((new GridRow((byte)(listingHeight + 3), new View[] { Librarian_ltPatchLSB })).Row);
             Librarian_gridCategories.Children.Add((new GridRow((byte)(listingHeight + 4), new View[] { Librarian_ltProgramNumber })).Row);
             Librarian_gridCategories.Children.Add((new GridRow((byte)(listingHeight + 5), new View[] { Librarian_btnPlay })).Row);
-            //Librarian_gridCategories.RowDefinitions[0].Height = new GridLength(rowHeight, GridUnitType.Star);
-            //Librarian_gridCategories.RowDefinitions[1].Height = new GridLength(listingHeight, GridUnitType.Star);
-            //Librarian_gridCategories.RowDefinitions[2].Height = new GridLength(rowHeight, GridUnitType.Star);
-            //Librarian_gridCategories.RowDefinitions[3].Height = new GridLength(rowHeight, GridUnitType.Star);
-            //Librarian_gridCategories.RowDefinitions[4].Height = new GridLength(rowHeight, GridUnitType.Star);
-            //Librarian_gridCategories.RowDefinitions[5].Height = new GridLength(rowHeight, GridUnitType.Star);
-            //Librarian_gridCategories.RowDefinitions[6].Height = new GridLength(rowHeight, GridUnitType.Star);
 
             // Assemble column 2:
             Librarian_gridTones.Children.Add((new GridRow(0, new View[] { Librarian_filterPresetAndUser })).Row);
             Librarian_gridTones.Children.Add((new GridRow(1, new View[] { Librarian_lvToneNames }, null, false, false, listingHeight)).Row);
-            //Librarian_gridTones.Children.Add((new GridRow(2, new View[] { Librarian_lvSearchResult }, null, false, false)).Row);
-            //Librarian_gridTones.RowDefinitions = new RowDefinitionCollection();
-            //Librarian_gridTones.RowDefinitions.Add(new RowDefinition());
-            //Librarian_gridTones.RowDefinitions.Add(new RowDefinition());
-            //Librarian_gridTones.RowDefinitions.Add(new RowDefinition());
-            //Librarian_gridTones.RowDefinitions.Add(new RowDefinition());
-            //Librarian_gridTones.RowDefinitions.Add(new RowDefinition());
-            //Librarian_gridTones.RowDefinitions.Add(new RowDefinition());
-            //Librarian_gridTones.RowDefinitions.Add(new RowDefinition());
             Librarian_gridTones.Children.Add((new GridRow((byte)(listingHeight + 1),
                 new View[] { Librarian_btnMotionalSurround, imgSettings }, new byte[] { 9, 1 })).Row);
             Librarian_gridTones.Children.Add((new GridRow((byte)(listingHeight + 2), 
@@ -713,13 +663,6 @@ namespace INTEGRA_7_Xamarin
             Librarian_gridTones.Children.Add((new GridRow((byte)(listingHeight + 5), 
                 new View[] { Librarian_btnKeys, Librarian_btnMinus12keys, Librarian_btnPlus12keys }, new byte[] { 3, 1, 1 } )).Row);
             Librarian_btnKeys.Margin = new Thickness(0);
-            //Librarian_gridTones.RowDefinitions[0].Height = new GridLength(rowHeight, GridUnitType.Star);
-            //Librarian_gridTones.RowDefinitions[1].Height = new GridLength(listingHeight, GridUnitType.Star);
-            //Librarian_gridTones.RowDefinitions[2].Height = new GridLength(rowHeight, GridUnitType.Star);
-            //Librarian_gridTones.RowDefinitions[3].Height = new GridLength(rowHeight, GridUnitType.Star);
-            //Librarian_gridTones.RowDefinitions[4].Height = new GridLength(rowHeight, GridUnitType.Star);
-            //Librarian_gridTones.RowDefinitions[5].Height = new GridLength(rowHeight, GridUnitType.Star);
-            //Librarian_gridTones.RowDefinitions[6].Height = new GridLength(rowHeight, GridUnitType.Star);
 
             // Assemble LibrarianStackLayout --------------------------------------------------------------
 
@@ -730,16 +673,9 @@ namespace INTEGRA_7_Xamarin
             Librarian_gridCategories.BackgroundColor = colorSettings.FrameBorder;
             Librarian_gridTones.BackgroundColor = colorSettings.FrameBorder;
             Librarian_gridKeyboard.BackgroundColor = colorSettings.FrameBorder;
-            //Librarian_gridGroups.ColumnSpacing = 2;
-            //Librarian_gridCategories.ColumnSpacing = 2;
-            //Librarian_gridTones.ColumnSpacing = 2;
-            //Librarian_gridKeyboard.ColumnSpacing = 1;
-            //Librarian_gridGroups.RowSpacing = 2;
-            //Librarian_gridCategories.RowSpacing = 2;
-            //Librarian_gridTones.RowSpacing = 2;
-            //Librarian_gridKeyboard.RowSpacing = 1;
             Librarian_StackLayout.Children.Add((new GridRow(0, new View[] { Librarian_gridGroups, Librarian_gridCategories, Librarian_gridTones, Librarian_gridKeyboard },
                 new byte[] { 5, 5, 5, 3 }, false, true)).Row);
+
             // Make the entire grid background black to show as borders around controls by using margins:
             Librarian_gridGroups.Margin = new Thickness(0);
             Librarian_gridCategories.Margin = new Thickness(-6, 0, 0, 0);
@@ -1938,73 +1874,75 @@ namespace INTEGRA_7_Xamarin
 
         private async void Settings_Tapped(object sender, EventArgs e)
         {
-            Boolean rebootNeeded = false;
-            String response = await mainPage.DisplayActionSheet(
-                "INTEGRA-7 Librarian and Editor",
-                "Cancel",
-                null, new String[] {
-                    "Always put bank number in clipboard",
-                    "Do not put bank number in clipboard",
-                    "Light colors",
-                    "Forrest colors",
-                    "Ocean colors",
-                    "Rose colors",
-                    "Sunny colors",
-                    "Brown colors"
-            });
+            Librarian_StackLayout.IsVisible = false;
+            ShowSettingsPage();
+            //Boolean rebootNeeded = false;
+            //String response = await mainPage.DisplayActionSheet(
+            //    "INTEGRA-7 Librarian and Editor",
+            //    "Cancel",
+            //    null, new String[] {
+            //        "Always put bank number in clipboard",
+            //        "Do not put bank number in clipboard",
+            //        "Light colors",
+            //        "Forrest colors",
+            //        "Ocean colors",
+            //        "Rose colors",
+            //        "Sunny colors",
+            //        "Brown colors"
+            //});
 
-            if (response == "Always put bank number in clipboard")
-            {
-                mainPage.SaveLocalValue("PutBankInClipboard", true);
-                putBankInClipboard = true;
-            }
-            else if (response == "Do not put bank number in clipboard")
-            {
-                mainPage.SaveLocalValue("PutBankInClipboard", false);
-                putBankInClipboard = false;
-            }
-            else if (response == "Light colors")
-            {
-                mainPage.SaveLocalValue("ColorSettings", "LIGHT");
-                colorSettings = new ColorSettings(_colorSettings.LIGHT);
-                rebootNeeded = true;
-            }
-            else if (response == "Forrest colors")
-            {
-                mainPage.SaveLocalValue("ColorSettings", "FOREST");
-                colorSettings = new ColorSettings(_colorSettings.FOREST);
-                rebootNeeded = true;
-            }
-            else if (response == "Ocean colors")
-            {
-                mainPage.SaveLocalValue("ColorSettings", "OCEAN");
-                colorSettings = new ColorSettings(_colorSettings.OCEAN);
-                rebootNeeded = true;
-            }
-            else if (response == "Rose colors")
-            {
-                mainPage.SaveLocalValue("ColorSettings", "ROSE");
-                colorSettings = new ColorSettings(_colorSettings.ROSE);
-                rebootNeeded = true;
-            }
-            else if (response == "Sunny colors")
-            {
-                mainPage.SaveLocalValue("ColorSettings", "SUNNY");
-                colorSettings = new ColorSettings(_colorSettings.SUNNY);
-                rebootNeeded = true;
-            }
-            else if (response == "Brown colors")
-            {
-                mainPage.SaveLocalValue("ColorSettings", "BROWN");
-                colorSettings = new ColorSettings(_colorSettings.BROWN);
-                rebootNeeded = true;
-            }
+            //if (response == "Always put bank number in clipboard")
+            //{
+            //    mainPage.SaveLocalValue("PutBankInClipboard", true);
+            //    putBankInClipboard = true;
+            //}
+            //else if (response == "Do not put bank number in clipboard")
+            //{
+            //    mainPage.SaveLocalValue("PutBankInClipboard", false);
+            //    putBankInClipboard = false;
+            //}
+            //else if (response == "Light colors")
+            //{
+            //    mainPage.SaveLocalValue("ColorSettings", "LIGHT");
+            //    colorSettings = new ColorSettings(_colorSettings.LIGHT);
+            //    rebootNeeded = true;
+            //}
+            //else if (response == "Forrest colors")
+            //{
+            //    mainPage.SaveLocalValue("ColorSettings", "FOREST");
+            //    colorSettings = new ColorSettings(_colorSettings.FOREST);
+            //    rebootNeeded = true;
+            //}
+            //else if (response == "Ocean colors")
+            //{
+            //    mainPage.SaveLocalValue("ColorSettings", "OCEAN");
+            //    colorSettings = new ColorSettings(_colorSettings.OCEAN);
+            //    rebootNeeded = true;
+            //}
+            //else if (response == "Rose colors")
+            //{
+            //    mainPage.SaveLocalValue("ColorSettings", "ROSE");
+            //    colorSettings = new ColorSettings(_colorSettings.ROSE);
+            //    rebootNeeded = true;
+            //}
+            //else if (response == "Sunny colors")
+            //{
+            //    mainPage.SaveLocalValue("ColorSettings", "SUNNY");
+            //    colorSettings = new ColorSettings(_colorSettings.SUNNY);
+            //    rebootNeeded = true;
+            //}
+            //else if (response == "Brown colors")
+            //{
+            //    mainPage.SaveLocalValue("ColorSettings", "BROWN");
+            //    colorSettings = new ColorSettings(_colorSettings.BROWN);
+            //    rebootNeeded = true;
+            //}
 
-            if (rebootNeeded)
-            {
-                await mainPage.DisplayAlert("INTEGRA-7 Librarian and Editor", 
-                    "The new colors will show when you restart the app!", "Got it");
-            }
+            //if (rebootNeeded)
+            //{
+            //    await mainPage.DisplayAlert("INTEGRA-7 Librarian and Editor", 
+            //        "The new colors will show when you restart the app!", "Got it");
+            //}
         }
 
         private void Librarian_btnFavorites_Clicked(object sender, EventArgs e)

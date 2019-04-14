@@ -38,6 +38,7 @@ namespace INTEGRA_7_Xamarin
             FAVORITES,
             EDIT_TONE,
             EDIT_STUDIO_SET,
+            SETTINGS,
         }
 
         public enum MIDIState
@@ -80,27 +81,20 @@ namespace INTEGRA_7_Xamarin
             FAVORITES,
             EDIT,
             EDIT_STUDIO_SET,
-            MOTIONAL_SURROUND
+            MOTIONAL_SURROUND,
+            SETTINGS,
         }
 
-        //public object MainPage_Device { get; set; }
         Boolean scanAll = false;
         UInt16 emptySlots = 10;
 
         SuperNATURALDrumKitInstrumentList superNATURALDrumKitInstrumentList = new SuperNATURALDrumKitInstrumentList();
         Boolean showCurrentToneReadFromI7 = false;
 
-        //ApplicationDataContainer localSettings = null;
         public CommonState commonState = null;
-        //public IMyFileIO myFileIO = null;
         public System.Collections.Generic.List<System.Collections.Generic.List<String>> Lists = null;
-        //private Boolean AutoUpdateChildLists = true;
-        //private Int32 currentGroupIndex = -1;
-        //private Int32 currentCategoryIndex = -1;
-        //private Int32 currentToneNameIndex = -1;
         private byte currentNote = 255; // > 127 when note is off
         public static String[] lines;
-        // private DrumKeyAssignLists drumKeyAssignLists = null; Moved to commonState
         private Int32 transpose = 0;
         private byte[] notes = { 36, 40, 43, 48 };
         private byte[] drumNotes = { 36, 38, 42, 45, 43, 41,
@@ -112,33 +106,19 @@ namespace INTEGRA_7_Xamarin
             88, 89, 91, 93, 95, 96 };
         private Boolean initDone = false;
         private Boolean scanning = false;
-        //private DispatcherTimer timer = null;
-        private Boolean followOutputPort = false;
-        private Boolean followingOutputPort = false;
-        private Boolean waitingForInputPortChange = false;
-        private String outputPortId;
-        private Int32 savedInputPort = -1;
-        private Int32 testingInputPortId;
         private byte msb;
         private byte lsb;
         private byte pc;
         private byte key;
-        //String toneName;
-        //String category;
         byte toneCategory;
         Int32 userToneIndex;
         Boolean integra_7Ready = false;
         Boolean waitingForMidiResponse = false;
-        //byte integra_7ReadyCounter = 100;
-        //SolidColorBrush green = null;
-        //SolidColorBrush gray = null;
-        //Boolean initMidi = false;
         UInt16[] userToneNumbers;
         public QueryType queryType { get; set; }
         Boolean updateToneName = false;
         ToneCategories toneCategories = new ToneCategories();
         Hex2Midi hex2Midi = new Hex2Midi();
-        //SuperNATURALDrumKitInstrumentList superNATURALDrumKitInstrumentList = new SuperNATURALDrumKitInstrumentList();
         public byte[] rawData;
         Double lastfontSize = 15;
         public static Boolean StopTimer = false;
@@ -156,31 +136,27 @@ namespace INTEGRA_7_Xamarin
         public StackLayout StudioSetEditor_StackLayout = null;
         public StackLayout Favorites_StackLayout = null;
         public StackLayout MotionalSurround_StackLayout = null;
+        public StackLayout Settings_StackLayout = null;
         public Boolean Edit_IsCreated = false;
         public Boolean EditStudioSet_IsCreated = false;
         public Boolean MotionalSurround_IsCreated = false;
         public Boolean Favorites_IsCreated = false;
+        public Boolean Settings_IsCreated = false;
         public MIDIState MidiState { get; set; }
         public IMyFileIO myFileIO { get; set; }
 
 
         public static _appType appType;
-        //public static ColorSettings colorSettings { get; set; }
         public static ColorSettings colorSettings = new ColorSettings(_colorSettings.LIGHT);
-        //public static BorderThicknesSettings borderThicknesSettings { get; set; }
         public static BorderThicknesSettings borderThicknesSettings = new BorderThicknesSettings(2);
         CurrentPage currentPage;
         Int32 divider = 1; // Used to make timer slower by skipping ticks
-
-        // Edit tone controls:
-        //...
 
         // Constructor
         public UIHandler(StackLayout mainStackLayout, INTEGRA_7_Xamarin.MainPage mainPage)
         {
             this.mainStackLayout = mainStackLayout;
             this.mainPage = mainPage;
-            //MainPage_Device = mainPage.MainPage_Device;
             Init();
         }
 
@@ -188,14 +164,12 @@ namespace INTEGRA_7_Xamarin
         {
             currentPage = CurrentPage.LIBRARIAN;
             MidiState = MIDIState.NOT_INITIALIZED;
-            //colorSettings = new ColorSettings(_colorSettings.LIGHT);
             borderThicknesSettings = new BorderThicknesSettings(2);
             commonState = new CommonState(ref Librarian_btnPlay);
             ReadSettings();
             commonState.Midi = DependencyService.Get<IMidi>();
             myFileIO = DependencyService.Get<IMyFileIO>();
             rawData = new byte[0];
-            //IDeviceDependent deviceDependent;
             userToneNumbers = new UInt16[128];
             for (byte i = 0; i < 128; i++)
             {
@@ -240,6 +214,9 @@ namespace INTEGRA_7_Xamarin
                         case CurrentPage.MOTIONAL_SURROUND:
                             MotionalSurround_Timer_Tick();
                             break;
+                        case CurrentPage.SETTINGS:
+                            Settings_Timer_Tick();
+                            break;
                     }
 
                     switch (needsToSetFontSizes)
@@ -264,17 +241,16 @@ namespace INTEGRA_7_Xamarin
                             needsToSetFontSizes = NeedsToSetFontSizes.NONE;
                             SetFontSizes(MotionalSurround_StackLayout);
                             break;
+                        case NeedsToSetFontSizes.SETTINGS:
+                            needsToSetFontSizes = NeedsToSetFontSizes.NONE;
+                            SetFontSizes(Settings_StackLayout);
+                            break;
                     }
 
                     return true;
                 });
             });
         }
-
-        //public static void KillTimer()
-        //{
-        //    StopTimer = true;
-        //}
 
         /// <summary>
         /// Device-specific classes fills out rawData and then calls MidiInPort_MessageRecceived().
@@ -302,7 +278,6 @@ namespace INTEGRA_7_Xamarin
 						MotionalSurround_MidiInPort_MessageReceived();
                         break;
                 }
-                //rawData = new byte[0];
             }
         }
 
@@ -362,6 +337,10 @@ namespace INTEGRA_7_Xamarin
                         {
                             mslPart[i - 1].Plot(gArrows.Width, gArrows.Height);
                         }
+                        break;
+                    case CurrentPage.SETTINGS:
+                        needsToSetFontSizes = NeedsToSetFontSizes.NONE;
+                        stackLayout = Settings_StackLayout;
                         break;
                 }
             }
@@ -432,18 +411,6 @@ namespace INTEGRA_7_Xamarin
                 ((TouchableImage)view).WidthRequest = ((Grid)((TouchableImage)view).Parent).Width;
                 ((TouchableImage)view).HeightRequest = ((Grid)((TouchableImage)view).Parent).Height;
             }
-            //else if (view.GetType() == typeof(ListView))
-            //{
-            //    ((ListView)view).SetValue(C ItemTemplate.f SetValue(Font.Default, size);
-            //}
-            //else if (view.GetType() == typeof(ComboBox))
-            //{
-            //    foreach (ComboBoxItem cbi in ((ComboBox)view).Items)
-            //    {
-            //        ((String)cbi.Content).
-            //    }
-            //    ((ComboBox)view).SetValue(C ItemTemplate.f SetValue(Font.Default, size);
-            //}
             else if (view.GetType() == typeof(StackLayout))
             {
                 foreach (View subView in ((StackLayout)view).Children)
@@ -467,29 +434,8 @@ namespace INTEGRA_7_Xamarin
         private void SetStudioSet(byte number)
         {
             t.Trace("private void SetStudioSet (" + "byte[]" + number + ", " + ")");
-            //commonState.CurrentStudioSet = number;
             commonState.Midi.ProgramChange((byte)15, (byte)85, (byte)0, (byte)(number + 1));
         }
-
-        //public void DrawPleaseWaitPage()
-        //{
-        //    /*
-        //    <Grid x:Name="PleaseWaitWhileScanning" Visibility="Collapsed">
-        //        <ProgressBar Name="Progress" Margin="10,25,10,0" IsIndeterminate="true" Foreground="Green" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-        //        <TextBlock Name="txtScanning"  HorizontalAlignment="Center" VerticalAlignment="Center" />
-        //    </Grid>
-        //    */
-        //    grid_PleaseWait = new Grid();
-        //    pb_WaitingProgress = new ProgressBar();
-        //    pb_WaitingProgress.IsEnabled = true;
-        //    tbPleaseWait = new TextBlock();
-        //    tbPleaseWait.Text = "Please wait while scanning Studio set names and initiating form...";
-        //    PleaseWait_StackLayout = new StackLayout();
-        //    grid_PleaseWait.Children.Add(new GridRow(0, new View[] { tbPleaseWait }).Row);
-        //    grid_PleaseWait.Children.Add(new GridRow(1, new View[] { pb_WaitingProgress }).Row);
-        //    PleaseWait_StackLayout.Children.Add(new GridRow(0, new View[] { grid_PleaseWait }).Row);
-        //    PleaseWait_StackLayout.IsVisible = false;
-        //}
 
         // TODO: Think about this, Tablets and phones normally do not have a cursor, 
         // but can have when mouse is connected via OTG! Still has no waitcursor.
