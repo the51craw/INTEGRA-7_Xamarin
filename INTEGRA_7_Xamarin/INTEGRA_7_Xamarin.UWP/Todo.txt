@@ -197,4 +197,18 @@ Finish color settings.
 
 Changing sub-pages in tone edit creates all controls everytime. Why not keep them in memory?
 
-Motional Surround switch is not initially set as in I-7.
+* Motional Surround switch is not initially set as in I-7.
+
+Remove padding from buttons.
+
+Edit uses text input as labels, can that be replaced with labels?
+
+Help column in Edit uses too much vertical space with two images,
+	Example, edit a SN-S tone and select Unison Size. 
+	Maybe it is just that one that is wrong in help declaration?
+
+Replace settings image with a button. (Because colours cannot change.)
+
+Recognize piano keys in Settings to set correct colors.
+
+Save color preferences.

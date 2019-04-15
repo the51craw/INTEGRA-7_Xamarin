@@ -160,6 +160,29 @@ namespace INTEGRA_7_Xamarin
         }
     }
 
+    public class PianoKey : Xamarin.Forms.Button
+    {
+        public String Content { get { return Text; } set { Text = value; } }
+        public Boolean WhiteKey { get; set; }
+
+        public PianoKey(Boolean KeyColor)
+        {
+            this.WhiteKey = KeyColor;
+            this.BorderWidth = 0;
+            this.CornerRadius = 6;
+        }
+    }
+
+    public class Grid : Xamarin.Forms.Grid 
+    {
+        public byte IsPianoGrid { get; set; }
+
+        public Grid(byte IsPianoGrid = 0)
+        {
+            this.IsPianoGrid = IsPianoGrid;
+        }
+    }
+
     public class LabeledText : Grid
     {
         //public Grid TheGrid { get; set; }
@@ -245,84 +268,87 @@ namespace INTEGRA_7_Xamarin
                     this.Children.Add((new GridRow(1, new View[] { this.Label }, sizes, true)).Row);
                 }
             }
+            this.Children[0].Margin = new Thickness(0)
+;            text.Margin = new Thickness(0);
+            Label.Margin = new Thickness(0);
         }
     }
 
-    public class LabeledTextInput : Grid
-    {
-        //public Grid TheGrid { get; set; }
-        public _orientation Orientation { get; set; }
-        public _labelPosition LabelPosition { get; set; }
-        public Button Label { get; set; }
-        public Editor Editor { get; set; }
+    //public class LabeledTextInput : Grid
+    //{
+    //    //public Grid TheGrid { get; set; }
+    //    public _orientation Orientation { get; set; }
+    //    public _labelPosition LabelPosition { get; set; }
+    //    public Button Label { get; set; }
+    //    public Editor Editor { get; set; }
 
-        public LabeledTextInput(String LabelText, byte[] Sizes = null)
-        {
-            labeledTextInput(LabelText, "", _orientation.HORIZONTAL, _labelPosition.BEFORE, Sizes);
-        }
+    //    public LabeledTextInput(String LabelText, byte[] Sizes = null)
+    //    {
+    //        labeledTextInput(LabelText, "", _orientation.HORIZONTAL, _labelPosition.BEFORE, Sizes);
+    //    }
 
-        public LabeledTextInput(String LabelText, String EditorText = "", _orientation Orientation = _orientation.HORIZONTAL, _labelPosition LabelPosition = _labelPosition.BEFORE, byte[] Sizes = null)
-        {
-            labeledTextInput(LabelText, EditorText, Orientation, LabelPosition, Sizes);
-        }
+    //    public LabeledTextInput(String LabelText, String EditorText = "", _orientation Orientation = _orientation.HORIZONTAL, _labelPosition LabelPosition = _labelPosition.BEFORE, byte[] Sizes = null)
+    //    {
+    //        labeledTextInput(LabelText, EditorText, Orientation, LabelPosition, Sizes);
+    //    }
 
-        private void labeledTextInput(String LabelText, String EditorText = "", _orientation Orientation = _orientation.HORIZONTAL, _labelPosition LabelPosition = _labelPosition.BEFORE, byte[] Sizes = null)
-        {
-            this.Orientation = Orientation;
-            this.LabelPosition = LabelPosition;
-            this.Label = new Button();
-            this.Label.Text = LabelText;
-            //this.Label.IsEnabled = false;
-            this.Label.Margin = new Thickness(0, 0, 2, 0);
-            this.Label.BackgroundColor = UIHandler.colorSettings.Background;
-            this.Label.BorderWidth = 0;
-            this.Editor = new Editor();
-            this.Editor.Text = EditorText;
-            byte[] sizes;
-            if (Sizes == null || Sizes.Count() != 2)
-            {
-                sizes = new byte[] { 1, 1 };
-            }
-            else
-            {
-                sizes = Sizes;
-            }
+    //    private void labeledTextInput(String LabelText, String EditorText = "", _orientation Orientation = _orientation.HORIZONTAL, _labelPosition LabelPosition = _labelPosition.BEFORE, byte[] Sizes = null)
+    //    {
+    //        this.Orientation = Orientation;
+    //        this.LabelPosition = LabelPosition;
+    //        this.Label = new Button();
+    //        this.Label.Text = LabelText;
+    //        //this.Label.IsEnabled = false;
+    //        //this.Label.Margin = new Thickness(0, 0, 2, 0);
+    //        //this.Label.BackgroundColor = UIHandler.colorSettings.Background;
+    //        //this.Label.BorderWidth = 0;
+    //        this.Editor = new Editor();
+    //        this.Editor.Text = EditorText;
+    //        byte[] sizes;
+    //        if (Sizes == null || Sizes.Count() != 2)
+    //        {
+    //            sizes = new byte[] { 1, 1 };
+    //        }
+    //        else
+    //        {
+    //            sizes = Sizes;
+    //        }
 
-            this.Editor.VerticalOptions = LayoutOptions.FillAndExpand;
-            this.Label.VerticalOptions = LayoutOptions.FillAndExpand;
-            if (Orientation == _orientation.HORIZONTAL)
-            {
+    //        //this.Editor.VerticalOptions = LayoutOptions.FillAndExpand;
+    //        //this.Label.VerticalOptions = LayoutOptions.FillAndExpand;
+    //        if (Orientation == _orientation.HORIZONTAL)
+    //        {
 
-                if (LabelPosition == _labelPosition.BEFORE)
-                {
-                    this.Label.HorizontalOptions = LayoutOptions.End;
-                    this.Children.Add((new GridRow(0, new View[] { this.Label, this.Editor }, sizes, true)).Row);
-                }
-                else
-                {
-                    this.Editor.HorizontalOptions = LayoutOptions.Start;
-                    this.Children.Add((new GridRow(0, new View[] { this.Editor, this.Label }, sizes, true)).Row);
-                }
-            }
-            else
-            {
-                if (LabelPosition == _labelPosition.BEFORE)
-                {
-                    this.Label.HorizontalOptions = LayoutOptions.Start;
-                    this.Editor.HorizontalOptions = LayoutOptions.End;
-                    this.Children.Add((new GridRow(0, new View[] { this.Label }, null,  true)).Row);
-                    this.Children.Add((new GridRow(1, new View[] { this.Editor }, null, true)).Row);
-                }
-                else
-                {
-                    this.Label.HorizontalOptions = LayoutOptions.End;
-                    this.Editor.HorizontalOptions = LayoutOptions.Start;
-                    this.Children.Add((new GridRow(0, new View[] { this.Editor }, null, true)).Row);
-                    this.Children.Add((new GridRow(1, new View[] { this.Label }, null, true)).Row);
-                }
-            }
-        }
-    }
+    //            if (LabelPosition == _labelPosition.BEFORE)
+    //            {
+    //                this.Label.HorizontalOptions = LayoutOptions.End;
+    //                this.Children.Add((new GridRow(0, new View[] { this.Label, this.Editor }, sizes, false)).Row);
+    //            }
+    //            else
+    //            {
+    //                this.Editor.HorizontalOptions = LayoutOptions.Start;
+    //                this.Children.Add((new GridRow(0, new View[] { this.Editor, this.Label }, sizes, false)).Row);
+    //            }
+    //        }
+    //        else
+    //        {
+    //            if (LabelPosition == _labelPosition.BEFORE)
+    //            {
+    //                this.Label.HorizontalOptions = LayoutOptions.Start;
+    //                this.Editor.HorizontalOptions = LayoutOptions.End;
+    //                this.Children.Add((new GridRow(0, new View[] { this.Label }, null, false)).Row);
+    //                this.Children.Add((new GridRow(1, new View[] { this.Editor }, null, false)).Row);
+    //            }
+    //            else
+    //            {
+    //                this.Label.HorizontalOptions = LayoutOptions.End;
+    //                this.Editor.HorizontalOptions = LayoutOptions.Start;
+    //                this.Children.Add((new GridRow(0, new View[] { this.Editor }, null, false)).Row);
+    //                this.Children.Add((new GridRow(1, new View[] { this.Label }, null, false)).Row);
+    //            }
+    //        }
+    //    }
+    //}
 
     public class LabeledPicker : Grid
     {
@@ -467,12 +493,12 @@ namespace INTEGRA_7_Xamarin
                 if (LabelPosition == _labelPosition.BEFORE)
                 {
                     LSLabel.HorizontalOptions = LayoutOptions.End;
-                    Children.Add((new GridRow(0, new View[] { LSLabel, this.LSSwitch }, sizes, true)).Row);
+                    Children.Add((new GridRow(0, new View[] { LSLabel, this.LSSwitch }, sizes, false)).Row);
                 }
                 else
                 {
                     this.LSSwitch.HorizontalOptions = LayoutOptions.Start;
-                    Children.Add((new GridRow(0, new View[] { this.LSSwitch, LSLabel }, sizes, true)).Row);
+                    Children.Add((new GridRow(0, new View[] { this.LSSwitch, LSLabel }, sizes, false)).Row);
                 }
                 this.LSLabel.VerticalOptions = LayoutOptions.Center;
                 this.LSSwitch.VerticalOptions = LayoutOptions.Center;
@@ -483,18 +509,21 @@ namespace INTEGRA_7_Xamarin
                 {
                     LSLabel.HorizontalOptions = LayoutOptions.Start;
                     this.LSSwitch.HorizontalOptions = LayoutOptions.End;
-                    Children.Add((new GridRow(0, new View[] { LSLabel }, null, true)).Row);
-                    Children.Add((new GridRow(1, new View[] { this.LSSwitch }, null, true)).Row);
+                    Children.Add((new GridRow(0, new View[] { LSLabel }, null, false)).Row);
+                    Children.Add((new GridRow(1, new View[] { this.LSSwitch }, null, false)).Row);
                 }
                 else
                 {
                     LSLabel.HorizontalOptions = LayoutOptions.End;
                     this.LSSwitch.HorizontalOptions = LayoutOptions.Start;
-                    Children.Add((new GridRow(0, new View[] { this.LSSwitch }, null, true)).Row);
-                    Children.Add((new GridRow(1, new View[] { LSLabel }, null, true)).Row);
+                    Children.Add((new GridRow(0, new View[] { this.LSSwitch }, null, false)).Row);
+                    Children.Add((new GridRow(1, new View[] { LSLabel }, null, false)).Row);
                 }
                 LSLabel.HorizontalOptions = LayoutOptions.Center;
+                LSLabel.Margin = new Thickness(0);
                 this.LSSwitch.HorizontalOptions = LayoutOptions.Center;
+                LSSwitch.Margin = new Thickness(0);
+                this.Margin = new Thickness(0);
             }
             //this.Switch.IsToggled = IsSelected;
         }

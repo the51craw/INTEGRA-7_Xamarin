@@ -71,6 +71,7 @@ namespace INTEGRA_7_Xamarin
             Settings_SetSliders();
             Settings_Color_Changed(null, null);
             Settings_updateColors = false;
+            Settings_StackLayout.IsVisible = true;
         }
 
         public void DrawSettingsPage()
@@ -332,45 +333,20 @@ namespace INTEGRA_7_Xamarin
 
         private void Settings_pColorSelector_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Settings_updateColors = true;
             switch (Settings_pColorSelector.SelectedIndex)
             {
                 case 0:
-                    colorSettings.ControlBorder = Color.Black;
-                    colorSettings.FrameBorder = Color.Black;
-                    colorSettings.Background = Color.White;
-                    colorSettings.Text = Color.Black;
-                    colorSettings.IsFavorite = Color.LightGreen;
-                    colorSettings.Transparent = new Color(0, 0, 0, 0);
-                    colorSettings.WhitePianoKey = Color.FloralWhite;
-                    colorSettings.BlackPianoKey = Color.Black;
-                    colorSettings.WhitePianoKeyText = Color.Black;
-                    colorSettings.BlackPianoKeyText = Color.FloralWhite;
-                    colorSettings.PianoKeyCover = Color.DarkGreen;
-                    colorSettings.MotionalSurroundPartLabelText = new Color(1, 1, 0.5, 1);
-                    colorSettings.MotionalSurroundPartLabelFocused = new Color(0, 0.5, 0, 0.25);
-                    colorSettings.MotionalSurroundPartLabelUnfocused = new Color(0.5, 0.5, 0, 0.25);
+                    colorSettings = new ColorSettings(_colorSettings.LIGHT);
                     break;
                 case 1:
-                    colorSettings.ControlBorder = new Color(0.35, 0.1, 0, 1);
-                    colorSettings.FrameBorder = new Color(0.35, 0.1, 0, 1);
-                    colorSettings.Background = new Color(1, 1, 0.95, 1);
-                    colorSettings.Text = new Color(0.35, 0.1, 0, 1);
-                    colorSettings.ListViewTextColor.SetValue(TextCell.TextColorProperty, new Color(0.5, 0.1, 0, 1));
-                    colorSettings.IsFavorite = Color.LightGreen;
-                    colorSettings.Transparent = new Color(0, 0, 0, 0);
-                    colorSettings.WhitePianoKey = Color.FloralWhite;
-                    colorSettings.BlackPianoKey = new Color(0.35, 0.1, 0, 1);
-                    colorSettings.WhitePianoKeyText = new Color(0.35, 0.1, 0, 1);
-                    colorSettings.BlackPianoKeyText = Color.FloralWhite;
-                    colorSettings.PianoKeyCover = Color.DarkOrange;
-                    colorSettings.MotionalSurroundPartLabelText = new Color(1, 1, 0.5, 1);
-                    colorSettings.MotionalSurroundPartLabelFocused = new Color(0, 0.5, 0, 0.25);
-                    colorSettings.MotionalSurroundPartLabelUnfocused = new Color(0.5, 0.5, 0, 0.25);
+                    colorSettings = new ColorSettings(_colorSettings.DARK);
                     break;
                 case 2:
+                    colorSettings = new ColorSettings(_colorSettings.USER);
                     break;
             }
+            Settings_GetColors();
+            Settings_Color_Changed(null, null);
         }
 
         private void Settings_ColorTypeSelector_SelectedIndexChanged(object sender, EventArgs e)
@@ -545,10 +521,7 @@ namespace INTEGRA_7_Xamarin
 
         private void SetStackLayoutColors(StackLayout stackLayout)
         {
-            //for (Int32 i = 0; i < stackLayout.Children.Count; i++)
-            //{
-            //    SetControlColors(stackLayout.Children[i].child);
-            //}
+            colorSettings.ListViewTextColor.SetValue(TextCell.TextColorProperty, colorSettings.Text);
             foreach (Object child in stackLayout.Children)
             {
                 SetControlColors(child);
@@ -564,10 +537,38 @@ namespace INTEGRA_7_Xamarin
                 ((Button)control).TextColor = colorSettings.Text;
                 ((Button)control).BackgroundColor = colorSettings.Background;
             }
+            else if (type == typeof(PianoKey))
+            {
+                if ((Boolean)((PianoKey)control).WhiteKey)
+                {
+                    ((PianoKey)control).TextColor = colorSettings.WhitePianoKeyText;
+                    ((PianoKey)control).BackgroundColor = colorSettings.WhitePianoKey;
+                }
+                else
+                {
+                    ((PianoKey)control).TextColor = colorSettings.BlackPianoKeyText;
+                    ((PianoKey)control).BackgroundColor = colorSettings.BlackPianoKey;
+                }
+            }
             else if (type == typeof(Label))
             {
                 ((Label)control).TextColor = colorSettings.Text;
                 ((Label)control).BackgroundColor = colorSettings.Background;
+            }
+            else if (type == typeof(LabeledText))
+            {
+                //((LabeledText)control).TextColor = colorSettings.Text;
+                ((LabeledText)control).BackgroundColor = colorSettings.Background;
+                if (((LabeledText)control).Children.Count > 0)
+                {
+                    for (Int32 i = 0; i < ((LabeledText)control).Children.Count; i++)
+                    {
+                        foreach (Object child in ((LabeledText)control).Children)
+                        {
+                            SetControlColors(child);
+                        }
+                    }
+                }
             }
             else if (type == typeof(Switch))
             {
@@ -584,12 +585,24 @@ namespace INTEGRA_7_Xamarin
             }
             else if (type == typeof(ListView))
             {
-                //((ListView)control).TextColor = colorSettings.Text;
+                String temp = (String)((ListView)control).SelectedItem;
+                ((ListView)control).ItemTemplate = colorSettings.ListViewTextColor;
                 ((ListView)control).BackgroundColor = colorSettings.Background;
+                ((ListView)control).SelectedItem = temp;
             }
             else if (type == typeof(Slider))
             {
                 ((Slider)control).BackgroundColor = colorSettings.Background;
+            }
+            else if (type == typeof(Picker))
+            {
+                ((Picker)control).TextColor = colorSettings.Text;
+                ((Picker)control).BackgroundColor = colorSettings.Background;
+            }
+            else if (type == typeof(Editor))
+            {
+                ((Editor)control).TextColor = colorSettings.Text;
+                ((Editor)control).BackgroundColor = colorSettings.Background;
             }
             //else if (type == typeof(View))
             //{
@@ -601,7 +614,18 @@ namespace INTEGRA_7_Xamarin
             //}
             else if (type == typeof(Grid))
             {
-                ((View)control).BackgroundColor = colorSettings.FrameBorder;
+                if (((Grid)control).IsPianoGrid == 1)
+                {
+                    ((View)control).BackgroundColor = colorSettings.BlackPianoKey;
+                }
+                else if (((Grid)control).IsPianoGrid == 2)
+                {
+                    ((View)control).BackgroundColor = colorSettings.WhitePianoKey;
+                }
+                else
+                {
+                    ((View)control).BackgroundColor = colorSettings.FrameBorder;
+                }
                 if (((Grid)control).Children.Count > 0)
                 {
                     for (Int32 i = 0; i < ((Grid)control).Children.Count; i++)
@@ -612,7 +636,6 @@ namespace INTEGRA_7_Xamarin
                         }
                     }
                 }
-
                 foreach (Object child in ((Grid)control).Children)
                 {
                     SetControlColors(child);

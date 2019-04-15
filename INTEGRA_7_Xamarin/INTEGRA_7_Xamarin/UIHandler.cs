@@ -391,11 +391,11 @@ namespace INTEGRA_7_Xamarin
                 ((LabeledText)view).Label.FontSize = size;
                 ((LabeledText)view).text.FontSize = size;
             }
-            else if (view.GetType() == typeof(LabeledTextInput))
-            {
-                ((LabeledTextInput)view).Label.FontSize = size;
-                ((LabeledTextInput)view).Editor.FontSize = size;
-            }
+            //else if (view.GetType() == typeof(LabeledTextInput))
+            //{
+            //    ((LabeledTextInput)view).Label.FontSize = size;
+            //    ((LabeledTextInput)view).Editor.FontSize = size;
+            //}
             else if (view.GetType() == typeof(TextBlock))
             {
                 ((TextBlock)view).FontSize = size;
