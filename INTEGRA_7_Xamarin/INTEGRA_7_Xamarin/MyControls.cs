@@ -32,13 +32,7 @@ namespace INTEGRA_7_Xamarin
     }
 
     // Mapping controls for compatibility with Xamarin:
-    public class TextBlock : Label
-    {
-        //public TextBlock()
-        //{
-        //    //this.IsEnabled = false;
-        //}
-    }
+    public class TextBlock : Label { }
 
     // My conveniance controls:
     public enum _orientation
@@ -86,7 +80,6 @@ namespace INTEGRA_7_Xamarin
         private void myLabel(String text)
         {
             this.Label = new Button();
-            //this.btn.IsEnabled = false;
             this.Label.Text = text;
             this.Label.Margin = new Thickness(0, 0, 0, 0);
             this.Label.BorderWidth = 0;
@@ -108,15 +101,12 @@ namespace INTEGRA_7_Xamarin
 
     public class CheckBox : Xamarin.Forms.Grid
     {
-        //public new Boolean IsEnabled { get { return _switch.IsEnabled; } set { _switch.IsEnabled = value; } }
         public Boolean IsChecked { get { return CBSwitch.IsToggled; } set { CBSwitch.IsToggled = value; } }
-        //public Boolean Toggled { get { return Switch.IsToggled; } set { Switch.IsToggled = value; } }
         public String Name { get; set; }
         public Object Tag { get; set; }
         public String Content { get { return CBLabel.Text; } set { CBLabel.Text = value; } }
 
         public Switch CBSwitch { get; set; }
-        //public Grid Grid = new Grid();
         public Label CBLabel { get; set; }
 
         public CheckBox()
@@ -125,11 +115,7 @@ namespace INTEGRA_7_Xamarin
             CBSwitch = new Switch();
             CBLabel = new Label();
             CBSwitch.VerticalOptions = LayoutOptions.FillAndExpand;
-            //Switch.BackgroundColor = new Color(255, 255, 255, 255);
-            //Switch.OnColor = new Color(255, 255, 255, 255);
-            //Switch.WidthRequest = 1;
             CBSwitch.MinimumWidthRequest = 100;
-            //Switch.HeightRequest = 1;
             CBSwitch.MinimumHeightRequest = 14;
             CBLabel.WidthRequest = 1;
             CBLabel.HeightRequest = 1;
@@ -138,14 +124,6 @@ namespace INTEGRA_7_Xamarin
             CBLabel.TextColor = UIHandler.colorSettings.Text;
             this.Children.Add(new GridRow(0, new View[] { CBLabel, CBSwitch }, null, true).Row);
         }
-
-
-        //public static implicit operator Grid(CheckBox rhs)
-        //{
-        //    Grid grid = new Grid();
-        //    grid.Children.Add(new GridRow(0, new View[] { rhs.Label, rhs }).Row);
-        //    return grid;
-        //}
     }
 
     public class Button : Xamarin.Forms.Button
@@ -285,82 +263,6 @@ namespace INTEGRA_7_Xamarin
         }
     }
 
-    //public class LabeledTextInput : Grid
-    //{
-    //    //public Grid TheGrid { get; set; }
-    //    public _orientation Orientation { get; set; }
-    //    public _labelPosition LabelPosition { get; set; }
-    //    public Button Label { get; set; }
-    //    public Editor Editor { get; set; }
-
-    //    public LabeledTextInput(String LabelText, byte[] Sizes = null)
-    //    {
-    //        labeledTextInput(LabelText, "", _orientation.HORIZONTAL, _labelPosition.BEFORE, Sizes);
-    //    }
-
-    //    public LabeledTextInput(String LabelText, String EditorText = "", _orientation Orientation = _orientation.HORIZONTAL, _labelPosition LabelPosition = _labelPosition.BEFORE, byte[] Sizes = null)
-    //    {
-    //        labeledTextInput(LabelText, EditorText, Orientation, LabelPosition, Sizes);
-    //    }
-
-    //    private void labeledTextInput(String LabelText, String EditorText = "", _orientation Orientation = _orientation.HORIZONTAL, _labelPosition LabelPosition = _labelPosition.BEFORE, byte[] Sizes = null)
-    //    {
-    //        this.Orientation = Orientation;
-    //        this.LabelPosition = LabelPosition;
-    //        this.Label = new Button();
-    //        this.Label.Text = LabelText;
-    //        //this.Label.IsEnabled = false;
-    //        //this.Label.Margin = new Thickness(0, 0, 2, 0);
-    //        //this.Label.BackgroundColor = UIHandler.colorSettings.Background;
-    //        //this.Label.BorderWidth = 0;
-    //        this.Editor = new Editor();
-    //        this.Editor.Text = EditorText;
-    //        byte[] sizes;
-    //        if (Sizes == null || Sizes.Count() != 2)
-    //        {
-    //            sizes = new byte[] { 1, 1 };
-    //        }
-    //        else
-    //        {
-    //            sizes = Sizes;
-    //        }
-
-    //        //this.Editor.VerticalOptions = LayoutOptions.FillAndExpand;
-    //        //this.Label.VerticalOptions = LayoutOptions.FillAndExpand;
-    //        if (Orientation == _orientation.HORIZONTAL)
-    //        {
-
-    //            if (LabelPosition == _labelPosition.BEFORE)
-    //            {
-    //                this.Label.HorizontalOptions = LayoutOptions.End;
-    //                this.Children.Add((new GridRow(0, new View[] { this.Label, this.Editor }, sizes, false)).Row);
-    //            }
-    //            else
-    //            {
-    //                this.Editor.HorizontalOptions = LayoutOptions.Start;
-    //                this.Children.Add((new GridRow(0, new View[] { this.Editor, this.Label }, sizes, false)).Row);
-    //            }
-    //        }
-    //        else
-    //        {
-    //            if (LabelPosition == _labelPosition.BEFORE)
-    //            {
-    //                this.Label.HorizontalOptions = LayoutOptions.Start;
-    //                this.Editor.HorizontalOptions = LayoutOptions.End;
-    //                this.Children.Add((new GridRow(0, new View[] { this.Label }, null, false)).Row);
-    //                this.Children.Add((new GridRow(1, new View[] { this.Editor }, null, false)).Row);
-    //            }
-    //            else
-    //            {
-    //                this.Label.HorizontalOptions = LayoutOptions.End;
-    //                this.Editor.HorizontalOptions = LayoutOptions.Start;
-    //                this.Children.Add((new GridRow(0, new View[] { this.Editor }, null, false)).Row);
-    //                this.Children.Add((new GridRow(1, new View[] { this.Label }, null, false)).Row);
-    //            }
-    //        }
-    //    }
-    //}
-
     public class LabeledPicker : Grid
     {
         //public Grid TheGrid { get; set; }
@@ -379,12 +281,16 @@ namespace INTEGRA_7_Xamarin
             labeledPicker(LabelText, Picker, 0, _orientation.HORIZONTAL, _labelPosition.BEFORE, Sizes);
         }
 
-        public LabeledPicker(String LabelText, Picker Picker = null, Int32 SelectedIndex = 0, _orientation Orientation = _orientation.HORIZONTAL, _labelPosition LabelPosition = _labelPosition.BEFORE, byte[] Sizes = null)
+        public LabeledPicker(String LabelText, Picker Picker = null, 
+            Int32 SelectedIndex = 0, _orientation Orientation = _orientation.HORIZONTAL, 
+            _labelPosition LabelPosition = _labelPosition.BEFORE, byte[] Sizes = null)
         {
             labeledPicker(LabelText, Picker, SelectedIndex, Orientation, LabelPosition, Sizes);
         }
 
-        private void labeledPicker(String LabelText, Picker Picker = null, Int32 SelectedIndex = 0, _orientation Orientation = _orientation.HORIZONTAL, _labelPosition LabelPosition = _labelPosition.BEFORE, byte[] Sizes = null)
+        private void labeledPicker(String LabelText, Picker Picker = null, 
+            Int32 SelectedIndex = 0, _orientation Orientation = 
+            _orientation.HORIZONTAL, _labelPosition LabelPosition = _labelPosition.BEFORE, byte[] Sizes = null)
         {
             this.Orientation = Orientation;
             this.LabelPosition = LabelPosition;
@@ -463,12 +369,16 @@ namespace INTEGRA_7_Xamarin
             labeledSwitch(LabelText, Switch, false, _orientation.HORIZONTAL, _labelPosition.BEFORE, Sizes);
         }
 
-        public LabeledSwitch(String LabelText, Switch Switch = null, Boolean IsSelected = false, _orientation Orientation = _orientation.HORIZONTAL, _labelPosition LabelPosition = _labelPosition.BEFORE, byte[] Sizes = null)
+        public LabeledSwitch(String LabelText, Switch Switch = null, 
+            Boolean IsSelected = false, _orientation Orientation = _orientation.HORIZONTAL, 
+            _labelPosition LabelPosition = _labelPosition.BEFORE, byte[] Sizes = null)
         {
             labeledSwitch(LabelText, Switch, IsSelected, Orientation, LabelPosition, Sizes);
         }
 
-        private void labeledSwitch(String LabelText, Switch Switch = null, Boolean IsSelected = false, _orientation Orientation = _orientation.HORIZONTAL, _labelPosition LabelPosition = _labelPosition.BEFORE, byte[] Sizes = null)
+        private void labeledSwitch(String LabelText, Switch Switch = null, 
+            Boolean IsSelected = false, _orientation Orientation = _orientation.HORIZONTAL, 
+            _labelPosition LabelPosition = _labelPosition.BEFORE, byte[] Sizes = null)
         {
             this.Orientation = Orientation;
             this.LabelPosition = LabelPosition;
@@ -669,20 +579,6 @@ public class MotionalSurroundPartLabel : Button
             HeightRequest = 30;
             IsVisible = true;
         }
-
-        //private void MotionalSurroundPartLabel_Focused(object sender, FocusEventArgs e)
-        //{
-        //    TextColor = Color.Black;
-        //    BackgroundColor = UIHandler.colorSettings.MotionalSurroundPartLabelUnfocused;
-        //    IsEnabled = true;
-        //}
-
-        //private void MotionalSurroundPartLabel_Unfocused(object sender, FocusEventArgs e)
-        //{
-        //    TextColor = Color.Black;
-        //    BackgroundColor = UIHandler.colorSettings.MotionalSurroundPartLabelFocused;
-        //    IsEnabled = false;
-        //}
 
         public void Step(Int32 direction, Double width, Double height)
         {

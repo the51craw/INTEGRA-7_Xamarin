@@ -8351,109 +8351,22 @@ private ParameterSets sets;
         USER,
     }
 
-    //public class XmlColor
-    //{
-    //    public XmlColor(Color val) { color = val; }
-    //    public Color color = Color.Red;
-
-    //    //public XmlColor() { }
-    //    public Double R { get; set; }
-    //    public Double G { get; set; }
-    //    public Double B { get; set; }
-    //    public Double A { get; set; }
-
-
-    //    //public Color ToColor()
-    //    //{
-    //    //    return color;
-    //    //}
-
-    //    //public void FromColor(Color color)
-    //    //{
-    //    //    this.color = color;
-    //    //}
-
-    //    public static implicit operator Color(XmlColor xmlColor)
-    //    {
-    //        return new Color(xmlColor.R, xmlColor.G, xmlColor.B, xmlColor.A);
-    //    }
-
-    //    public static implicit operator XmlColor(Color color)
-    //    {
-    //        return new XmlColor(color);
-    //    }
-
-    //    [XmlAttribute]
-    //    public string Web
-    //    {
-    //        //get { return ColorTranslator.ToHtml(color_); }
-    //        get {
-    //            return
-    //              color.R.ToString() + "," + color.G.ToString() + "," +
-    //              color.B.ToString() + "," + color.A.ToString() + "," +
-    //              color.Hue.ToString() + "," + color.Luminosity.ToString() +
-    //              "," + color.Saturation.ToString(); }
-    //        set
-    //        {
-    //            try
-    //            {
-    //                String[] parts = ((String)value).Split(',');
-    //                color = Color.FromRgba(Double.Parse(parts[0]), Double.Parse(parts[1]), Double.Parse(parts[2]), Double.Parse(parts[3]));
-    //            }
-    //            catch (Exception)
-    //            {
-    //                color = Color.Red;
-    //            }
-    //        }
-    //    }
-
-    //    //[XmlAttribute]
-    //    //public byte Alpha
-    //    //{
-    //    //    get { return color_.A; }
-    //    //    set
-    //    //    {
-    //    //        if (value != color_.A) // avoid hammering named color if no alpha change
-    //    //            color_ = Color.FromRgba(value, color_);
-    //    //    }
-    //    //}
-
-    //    //public bool ShouldSerializeAlpha() { return Alpha < 0xFF; }
-    //}
-
-    //[DataContract]
-    //[KnownType(typeof(Color))]
     public class ColorSettings
     {
-        //[XmlElement(typeof(XmlColor))]
         public Color ControlBorder { get; set; }
-        //[XmlElement(typeof(XmlColor))]
         public Color FrameBorder { get; set; }
-        //[XmlElement(typeof(XmlColor))]
         public Color Background { get; set; }
-        //[XmlElement(typeof(XmlColor))]
         public Color Text { get; set; }
-        //[XmlElement(typeof(XmlColor))]
         public Color IsFavorite { get; set; }
-        //[XmlElement(typeof(XmlColor))]
         public Color Transparent { get; set; }
-        //[XmlElement(typeof(XmlColor))]
         public Color WhitePianoKey { get; set; }
-        //[XmlElement(typeof(XmlColor))]
         public Color BlackPianoKey { get; set; }
-        //[XmlElement(typeof(XmlColor))]
         public Color WhitePianoKeyText { get; set; }
-        //[XmlElement(typeof(XmlColor))]
         public Color BlackPianoKeyText { get; set; }
-        //[XmlElement(typeof(XmlColor))]
         public Color PianoKeyCover { get; set; }
-        //[XmlElement(typeof(XmlColor))]
         public Color MotionalSurroundPartLabelText { get; set; }
-        //[XmlElement(typeof(XmlColor))]
         public Color MotionalSurroundPartLabelFocused { get; set; }
-        //[XmlElement(typeof(XmlColor))]
         public Color MotionalSurroundPartLabelUnfocused { get; set; }
-        //[IgnoreDataMember]
         public DataTemplate ListViewTextColor { get; set; }
 
         public ColorSettings(_colorSettings colorSettings)

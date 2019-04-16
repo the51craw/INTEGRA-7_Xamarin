@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
 using Xamarin.Forms;
 
 namespace INTEGRA_7_Xamarin
@@ -55,11 +49,7 @@ namespace INTEGRA_7_Xamarin
         private PianoKey Settings_btnWhitePianoKey;
         private PianoKey Settings_btnBlackPianoKey;
 
-        //private ColorElements ColorElements;
-        //private Boolean Settings_updateColors;
-
         private ColorSettings Settings_UserColorSettings;
-        //private Color[] Settings_Color;
         public Int32 CurrentColorScheme { get; set; }
 
         public void ShowSettingsPage()
@@ -291,74 +281,6 @@ namespace INTEGRA_7_Xamarin
         private void Settings_btnSave_Clicked(object sender, EventArgs e)
         {
             colorSettings = Settings_UserColorSettings;
-            //colorSettings.ControlBorder = new Color(
-            //    Settings_Color[0].R,
-            //    Settings_Color[0].G,
-            //    Settings_Color[0].B,
-            //    Settings_Color[0].A);
-            //colorSettings.FrameBorder = new Color(
-            //    Settings_Color[1].R,
-            //    Settings_Color[1].G,
-            //    Settings_Color[1].B,
-            //    Settings_Color[1].A);
-            //colorSettings.Background = new Color(
-            //    Settings_Color[2].R,
-            //    Settings_Color[2].G,
-            //    Settings_Color[2].B,
-            //    Settings_Color[2].A);
-            //colorSettings.Text = new Color(
-            //    Settings_Color[3].R,
-            //    Settings_Color[3].G,
-            //    Settings_Color[3].B,
-            //    Settings_Color[3].A);
-            //colorSettings.IsFavorite = new Color(
-            //    Settings_Color[4].R,
-            //    Settings_Color[4].G,
-            //    Settings_Color[4].B,
-            //    Settings_Color[4].A);
-            //colorSettings.WhitePianoKey = new Color(
-            //    Settings_Color[5].R,
-            //    Settings_Color[5].G,
-            //    Settings_Color[5].B,
-            //    Settings_Color[5].A);
-            //colorSettings.BlackPianoKey = new Color(
-            //    Settings_Color[6].R,
-            //    Settings_Color[6].G,
-            //    Settings_Color[6].B,
-            //    Settings_Color[6].A);
-            //colorSettings.WhitePianoKeyText = new Color(
-            //    Settings_Color[7].R,
-            //    Settings_Color[7].G,
-            //    Settings_Color[7].B,
-            //    Settings_Color[7].A);
-            //colorSettings.BlackPianoKeyText = new Color(
-            //    Settings_Color[8].R,
-            //    Settings_Color[8].G,
-            //    Settings_Color[8].B,
-            //    Settings_Color[8].A);
-            //colorSettings.PianoKeyCover = new Color(
-            //    Settings_Color[9].R,
-            //    Settings_Color[9].G,
-            //    Settings_Color[9].B,
-            //    Settings_Color[9].A);
-            //colorSettings.MotionalSurroundPartLabelText = new Color(
-            //    Settings_Color[10].R,
-            //    Settings_Color[10].G,
-            //    Settings_Color[10].B,
-            //    Settings_Color[10].A);
-            //colorSettings.MotionalSurroundPartLabelFocused = new Color(
-            //    Settings_Color[11].R,
-            //    Settings_Color[11].G,
-            //    Settings_Color[11].B,
-            //    Settings_Color[11].A);
-            //colorSettings.MotionalSurroundPartLabelUnfocused = new Color(
-            //    Settings_Color[12].R,
-            //    Settings_Color[12].G,
-            //    Settings_Color[12].B,
-            //    Settings_Color[12].A);
-            //Color temp = (Color)colorSettings.ListViewTextColor.Values[TextCell.TextColorProperty];
-            //Settings_Color[13] = new Color(temp.R, temp.G, temp.B, temp.A);
-
             Settings_SaveUserColorSettings();
         }
 
@@ -373,11 +295,11 @@ namespace INTEGRA_7_Xamarin
             {
                 Settings_UserColorSettings = new ColorSettings(_colorSettings.DARK);
             }
-            else if (result == "Custom Colors")
+            else if (result == "Custom colors")
             {
-                Settings_UserColorSettings = new ColorSettings(_colorSettings.USER);
+                Settings_UserColorSettings = new ColorSettings(colorSettings);
             }
-
+            Settings_SetSliders();
             SetStackLayoutColors(Settings_StackLayout, Settings_UserColorSettings);
         }
 
@@ -458,23 +380,6 @@ namespace INTEGRA_7_Xamarin
 
         private void Settings_ReadColorSettings()
         {
-            //if (mainPage.LoadLocalValue("ColorSettings") != null)
-            //{
-            //    try
-            //    {
-            //        colorSettings = (ColorSettings)mainPage.LoadLocalValue("ColorSettings");
-            //    }
-            //    catch
-            //    {
-            //        colorSettings = new ColorSettings(_colorSettings.LIGHT);
-            //        mainPage.SaveLocalValue("ColorSettings", colorSettings);
-            //    }
-            //}
-            //else
-            //{
-            //    colorSettings = new ColorSettings(_colorSettings.LIGHT);
-            //    mainPage.SaveLocalValue("ColorSettings", colorSettings);
-            //}
             if (mainPage.LoadLocalValue("UserColorSettings") != null)
             {
                 try
@@ -546,34 +451,49 @@ namespace INTEGRA_7_Xamarin
             ColorSettings userColorSetting = new ColorSettings(_colorSettings.USER);
             Int32 i = 0;
             String[] color = colors[i++].Split(',');
-            userColorSetting.ControlBorder = new Color(Double.Parse(color[0]), Double.Parse(color[1]), Double.Parse(color[2]), Double.Parse(color[3]));
+            userColorSetting.ControlBorder = new Color(
+                Double.Parse(color[0]), Double.Parse(color[1]), Double.Parse(color[2]), Double.Parse(color[3]));
             color = colors[i++].Split(',');
-            userColorSetting.FrameBorder = new Color(Double.Parse(color[0]), Double.Parse(color[1]), Double.Parse(color[2]), Double.Parse(color[3]));
+            userColorSetting.FrameBorder = new Color(
+                Double.Parse(color[0]), Double.Parse(color[1]), Double.Parse(color[2]), Double.Parse(color[3]));
             color = colors[i++].Split(',');
-            userColorSetting.Background = new Color(Double.Parse(color[0]), Double.Parse(color[1]), Double.Parse(color[2]), Double.Parse(color[3]));
+            userColorSetting.Background = new Color(
+                Double.Parse(color[0]), Double.Parse(color[1]), Double.Parse(color[2]), Double.Parse(color[3]));
             color = colors[i++].Split(',');
-            userColorSetting.Text = new Color(Double.Parse(color[0]), Double.Parse(color[1]), Double.Parse(color[2]), Double.Parse(color[3]));
+            userColorSetting.Text = new Color(
+                Double.Parse(color[0]), Double.Parse(color[1]), Double.Parse(color[2]), Double.Parse(color[3]));
             color = colors[i++].Split(',');
-            userColorSetting.IsFavorite = new Color(Double.Parse(color[0]), Double.Parse(color[1]), Double.Parse(color[2]), Double.Parse(color[3]));
+            userColorSetting.IsFavorite = new Color(
+                Double.Parse(color[0]), Double.Parse(color[1]), Double.Parse(color[2]), Double.Parse(color[3]));
             color = colors[i++].Split(',');
-            userColorSetting.Transparent = new Color(Double.Parse(color[0]), Double.Parse(color[1]), Double.Parse(color[2]), Double.Parse(color[3]));
+            userColorSetting.Transparent = new Color(
+                Double.Parse(color[0]), Double.Parse(color[1]), Double.Parse(color[2]), Double.Parse(color[3]));
             color = colors[i++].Split(',');
-            userColorSetting.WhitePianoKey = new Color(Double.Parse(color[0]), Double.Parse(color[1]), Double.Parse(color[2]), Double.Parse(color[3]));
+            userColorSetting.WhitePianoKey = new Color(
+                Double.Parse(color[0]), Double.Parse(color[1]), Double.Parse(color[2]), Double.Parse(color[3]));
             color = colors[i++].Split(',');
-            userColorSetting.BlackPianoKey = new Color(Double.Parse(color[0]), Double.Parse(color[1]), Double.Parse(color[2]), Double.Parse(color[3]));
+            userColorSetting.BlackPianoKey = new Color(
+                Double.Parse(color[0]), Double.Parse(color[1]), Double.Parse(color[2]), Double.Parse(color[3]));
             color = colors[i++].Split(',');
-            userColorSetting.WhitePianoKeyText = new Color(Double.Parse(color[0]), Double.Parse(color[1]), Double.Parse(color[2]), Double.Parse(color[3]));
+            userColorSetting.WhitePianoKeyText = new Color(
+                Double.Parse(color[0]), Double.Parse(color[1]), Double.Parse(color[2]), Double.Parse(color[3]));
             color = colors[i++].Split(',');
-            userColorSetting.BlackPianoKeyText = new Color(Double.Parse(color[0]), Double.Parse(color[1]), Double.Parse(color[2]), Double.Parse(color[3]));
+            userColorSetting.BlackPianoKeyText = new Color(
+                Double.Parse(color[0]), Double.Parse(color[1]), Double.Parse(color[2]), Double.Parse(color[3]));
             color = colors[i++].Split(',');
-            userColorSetting.PianoKeyCover = new Color(Double.Parse(color[0]), Double.Parse(color[1]), Double.Parse(color[2]), Double.Parse(color[3]));
+            userColorSetting.PianoKeyCover = new Color(
+                Double.Parse(color[0]), Double.Parse(color[1]), Double.Parse(color[2]), Double.Parse(color[3]));
             color = colors[i++].Split(',');
-            userColorSetting.MotionalSurroundPartLabelText = new Color(Double.Parse(color[0]), Double.Parse(color[1]), Double.Parse(color[2]), Double.Parse(color[3]));
+            userColorSetting.MotionalSurroundPartLabelText = new Color(
+                Double.Parse(color[0]), Double.Parse(color[1]), Double.Parse(color[2]), Double.Parse(color[3]));
             color = colors[i++].Split(',');
-            userColorSetting.MotionalSurroundPartLabelFocused = new Color(Double.Parse(color[0]), Double.Parse(color[1]), Double.Parse(color[2]), Double.Parse(color[3]));
+            userColorSetting.MotionalSurroundPartLabelFocused = new Color(
+                Double.Parse(color[0]), Double.Parse(color[1]), Double.Parse(color[2]), Double.Parse(color[3]));
             color = colors[i++].Split(',');
-            userColorSetting.MotionalSurroundPartLabelUnfocused = new Color(Double.Parse(color[0]), Double.Parse(color[1]), Double.Parse(color[2]), Double.Parse(color[3]));
-            userColorSetting.ListViewTextColor.SetValue(TextCell.TextColorProperty, userColorSetting.Text);
+            userColorSetting.MotionalSurroundPartLabelUnfocused = new Color(
+                Double.Parse(color[0]), Double.Parse(color[1]), Double.Parse(color[2]), Double.Parse(color[3]));
+            userColorSetting.ListViewTextColor.SetValue(
+                TextCell.TextColorProperty, userColorSetting.Text);
             return userColorSetting;
         }
 
@@ -635,255 +555,12 @@ namespace INTEGRA_7_Xamarin
                 }
                 SetStackLayoutColors(Settings_StackLayout, Settings_UserColorSettings);
                 PopHandleControlEvents();
-                //Settings_updateColors = true; ;
-
-                //switch (Settings_pColorSchemeSelector.SelectedIndex)
-                //{
-                //    case 0:
-                //        Settings_UserColorSettings.ControlBorder = new Color(
-                //            Settings_slRed.Value,
-                //            Settings_slGreen.Value,
-                //            Settings_slBlue.Value,
-                //            Settings_slAlpha.Value);
-                //        break;
-                //    case 1:
-                //        Settings_UserColorSettings.FrameBorder = new Color(
-                //            Settings_slRed.Value,
-                //            Settings_slGreen.Value,
-                //            Settings_slBlue.Value,
-                //            Settings_slAlpha.Value);
-                //        break;
-                //    case 2:
-                //        Settings_UserColorSettings.Background = new Color(
-                //            Settings_slRed.Value,
-                //            Settings_slGreen.Value,
-                //            Settings_slBlue.Value,
-                //            Settings_slAlpha.Value);
-                //        break;
-                //    case 3:
-                //        Settings_UserColorSettings.Text = new Color(
-                //            Settings_slRed.Value,
-                //            Settings_slGreen.Value,
-                //            Settings_slBlue.Value,
-                //            Settings_slAlpha.Value);
-                //        break;
-                //    case 4:
-                //        Settings_UserColorSettings.IsFavorite = new Color(
-                //            Settings_slRed.Value,
-                //            Settings_slGreen.Value,
-                //            Settings_slBlue.Value,
-                //            Settings_slAlpha.Value);
-                //        break;
-                //    case 5:
-                //        Settings_UserColorSettings.WhitePianoKey = new Color(
-                //            Settings_slRed.Value,
-                //            Settings_slGreen.Value,
-                //            Settings_slBlue.Value,
-                //            Settings_slAlpha.Value);
-                //        break;
-                //    case 6:
-                //        Settings_UserColorSettings.BlackPianoKey = new Color(
-                //            Settings_slRed.Value,
-                //            Settings_slGreen.Value,
-                //            Settings_slBlue.Value,
-                //            Settings_slAlpha.Value);
-                //        break;
-                //    case 7:
-                //        Settings_UserColorSettings.WhitePianoKeyText = new Color(
-                //            Settings_slRed.Value,
-                //            Settings_slGreen.Value,
-                //            Settings_slBlue.Value,
-                //            Settings_slAlpha.Value);
-                //        break;
-                //    case 8:
-                //        Settings_UserColorSettings.BlackPianoKeyText = new Color(
-                //            Settings_slRed.Value,
-                //            Settings_slGreen.Value,
-                //            Settings_slBlue.Value,
-                //            Settings_slAlpha.Value);
-                //        break;
-                //    case 9:
-                //        Settings_UserColorSettings.PianoKeyCover = new Color(
-                //            Settings_slRed.Value,
-                //            Settings_slGreen.Value,
-                //            Settings_slBlue.Value,
-                //            Settings_slAlpha.Value);
-                //        break;
-                //    case 10:
-                //        Settings_UserColorSettings.MotionalSurroundPartLabelText = new Color(
-                //            Settings_slRed.Value,
-                //            Settings_slGreen.Value,
-                //            Settings_slBlue.Value,
-                //            Settings_slAlpha.Value);
-                //        break;
-                //    case 11:
-                //        Settings_UserColorSettings.MotionalSurroundPartLabelFocused = new Color(
-                //            Settings_slRed.Value,
-                //            Settings_slGreen.Value,
-                //            Settings_slBlue.Value,
-                //            Settings_slAlpha.Value);
-                //        break;
-                //    case 12:
-                //        Settings_UserColorSettings.MotionalSurroundPartLabelUnfocused = new Color(
-                //            Settings_slRed.Value,
-                //            Settings_slGreen.Value,
-                //            Settings_slBlue.Value,
-                //            Settings_slAlpha.Value);
-                //        break;
-                //    //case 13:
-                //    //    Settings_UserColorSettings.ListViewTextColor = new Color(
-                //    //        Settings_slRed.Value,
-                //    //        Settings_slGreen.Value,
-                //    //        Settings_slBlue.Value,
-                //    //        Settings_slAlpha.Value);
-                //    //    break;
-                //}
-                //Settings_Color[Settings_pColorSchemeSelector.SelectedIndex] = new Color(
-                //    Settings_slRed.Value,
-                //    Settings_slGreen.Value,
-                //    Settings_slBlue.Value,
-                //    Settings_slAlpha.Value);
-
-                ////Settings_StackLayout.BackgroundColor = Settings_Color[ColorElements.FRAME_BORDER];
-
-                //Settings_sSwitch.BackgroundColor = Settings_Color[ColorElements.BACKGROUND];
-                //Settings_sSwitch.OnColor = Settings_Color[ColorElements.TEXT];
-
-                //Settings_btnButton.BorderColor = Settings_Color[ColorElements.CONTROL_BORDER];
-                //Settings_btnButton.BackgroundColor = Settings_Color[ColorElements.BACKGROUND];
-                //Settings_btnButton.TextColor = Settings_Color[ColorElements.TEXT];
-
-                //Settings_btnFavorites.BackgroundColor = Settings_Color[ColorElements.IS_FAVORITE];
-                //Settings_btnFavorites.TextColor = Settings_Color[ColorElements.TEXT];
-
-                //Settings_slSlider.BackgroundColor = Settings_Color[ColorElements.BACKGROUND];
-                ////Settings_slSlider.Opacity = Settings_Color[ColorElements.TRANSPARENT].A;
-
-                //Settings_pPicker.BackgroundColor = Settings_Color[ColorElements.BACKGROUND];
-                //Settings_pPicker.TextColor = Settings_Color[ColorElements.TEXT];
-
-                //Settings_lvListView.BackgroundColor = Settings_Color[ColorElements.BACKGROUND];
-                //Settings_ListsTextColor.SetValue(TextCell.TextColorProperty, Settings_Color[ColorElements.TEXT]);
-
-                //Settings_btnWhitePianoKey.BackgroundColor = Settings_Color[ColorElements.WHITE_PIANO_KEY];
-                //Settings_btnWhitePianoKey.TextColor = Settings_Color[ColorElements.WHITE_PIANO_KEY_TEXT];
-
-                //Settings_btnBlackPianoKey.BackgroundColor = Settings_Color[ColorElements.BLACK_PIANO_KEY];
-                //Settings_btnBlackPianoKey.TextColor = Settings_Color[ColorElements.BLACK_PIANO_KEY_TEXT];
-
-                //Settings_lblLabel.BackgroundColor = Settings_Color[ColorElements.BACKGROUND];
-                //Settings_lblLabel.TextColor = Settings_Color[ColorElements.TEXT];
-
-                //Settings_gridSamples.BackgroundColor = Settings_Color[ColorElements.FRAME_BORDER];
-                //Settings_gridMain.BackgroundColor = Settings_Color[ColorElements.FRAME_BORDER];
-                //Settings_gridTopLeft.BackgroundColor = Settings_Color[ColorElements.BACKGROUND];
-                //Settings_gridTopRight.BackgroundColor = Settings_Color[ColorElements.BACKGROUND];
-                //Settings_gridBottomLeft.BackgroundColor = Settings_Color[ColorElements.BACKGROUND];
-                //Settings_gridBottomRight.BackgroundColor = Settings_Color[ColorElements.BACKGROUND];
-                //Settings_gridLeftFiller.BackgroundColor = Settings_Color[ColorElements.BACKGROUND];
-                //Settings_gridRightFiller.BackgroundColor = Settings_Color[ColorElements.BACKGROUND];
-                //Settings_gridControls.BackgroundColor = Settings_Color[ColorElements.BACKGROUND];
-                //Settings_gridSamples.BackgroundColor = Settings_Color[ColorElements.BACKGROUND];
-
-                //Settings_lsBankNumberToClipboard.LSLabel.BackgroundColor = Settings_Color[ColorElements.BACKGROUND];
-                //Settings_lsBankNumberToClipboard.LSLabel.TextColor = Settings_Color[ColorElements.TEXT];
-                //Settings_lsBankNumberToClipboard.LSSwitch.BackgroundColor = Settings_Color[ColorElements.BACKGROUND];
-
-                //Settings_lblColorSelector.BackgroundColor = Settings_Color[ColorElements.BACKGROUND];
-                //Settings_lblColorSelector.TextColor = Settings_Color[ColorElements.TEXT];
-
-                //Settings_pColorSelector.BackgroundColor = Settings_Color[ColorElements.BACKGROUND];
-                //Settings_lblColorTypeSelector.BackgroundColor = Settings_Color[ColorElements.BACKGROUND];
-                //Settings_lblColorTypeSelector.TextColor = Settings_Color[ColorElements.TEXT];
-                //Settings_pColorSchemeSelector.BackgroundColor = Settings_Color[ColorElements.BACKGROUND];
-
-                //Settings_slRed.BackgroundColor = Settings_Color[ColorElements.BACKGROUND];
-                //Settings_slGreen.BackgroundColor = Settings_Color[ColorElements.BACKGROUND];
-                //Settings_slBlue.BackgroundColor = Settings_Color[ColorElements.BACKGROUND];
-                //Settings_slAlpha.BackgroundColor = Settings_Color[ColorElements.BACKGROUND];
-
-                //Settings_lblRed.BackgroundColor = Settings_Color[ColorElements.BACKGROUND];
-                //Settings_lblGreen.BackgroundColor = Settings_Color[ColorElements.BACKGROUND];
-                //Settings_lblBlue.BackgroundColor = Settings_Color[ColorElements.BACKGROUND];
-                //Settings_lblAlpha.BackgroundColor = Settings_Color[ColorElements.BACKGROUND];
-
-                //Settings_lblRed.TextColor = Settings_Color[ColorElements.TEXT];
-                //Settings_lblGreen.TextColor = Settings_Color[ColorElements.TEXT];
-                //Settings_lblBlue.TextColor = Settings_Color[ColorElements.TEXT];
-                //Settings_lblAlpha.TextColor = Settings_Color[ColorElements.TEXT];
             }
         }
 
         private void Settings_GetColors()
         {
             Settings_UserColorSettings = new ColorSettings(_colorSettings.USER);
-            //Settings_Color[0] = new Color(
-            //    colorSettings.ControlBorder.R,
-            //    colorSettings.ControlBorder.G,
-            //    colorSettings.ControlBorder.B,
-            //    colorSettings.ControlBorder.A);
-            //Settings_Color[1] = new Color(
-            //    colorSettings.FrameBorder.R,
-            //    colorSettings.FrameBorder.G,
-            //    colorSettings.FrameBorder.B,
-            //    colorSettings.FrameBorder.A);
-            //Settings_Color[2] = new Color(
-            //    colorSettings.Background.R,
-            //    colorSettings.Background.G,
-            //    colorSettings.Background.B,
-            //    colorSettings.Background.A);
-            //Settings_Color[3] = new Color(
-            //    colorSettings.Text.R,
-            //    colorSettings.Text.G,
-            //    colorSettings.Text.B,
-            //    colorSettings.Text.A);
-            //Settings_Color[4] = new Color(
-            //    colorSettings.IsFavorite.R,
-            //    colorSettings.IsFavorite.G,
-            //    colorSettings.IsFavorite.B,
-            //    colorSettings.IsFavorite.A);
-            //Settings_Color[5] = new Color(
-            //    colorSettings.WhitePianoKey.R,
-            //    colorSettings.WhitePianoKey.G,
-            //    colorSettings.WhitePianoKey.B,
-            //    colorSettings.WhitePianoKey.A);
-            //Settings_Color[6] = new Color(
-            //    colorSettings.BlackPianoKey.R,
-            //    colorSettings.BlackPianoKey.G,
-            //    colorSettings.BlackPianoKey.B,
-            //    colorSettings.BlackPianoKey.A);
-            //Settings_Color[7] = new Color(
-            //    colorSettings.WhitePianoKeyText.R,
-            //    colorSettings.WhitePianoKeyText.G,
-            //    colorSettings.WhitePianoKeyText.B,
-            //    colorSettings.WhitePianoKeyText.A);
-            //Settings_Color[8] = new Color(
-            //    colorSettings.BlackPianoKeyText.R,
-            //    colorSettings.BlackPianoKeyText.G,
-            //    colorSettings.BlackPianoKeyText.B,
-            //    colorSettings.BlackPianoKeyText.A);
-            //Settings_Color[9] = new Color(
-            //    colorSettings.PianoKeyCover.R,
-            //    colorSettings.PianoKeyCover.G,
-            //    colorSettings.PianoKeyCover.B,
-            //    colorSettings.PianoKeyCover.A);
-            //Settings_Color[10] = new Color(
-            //    colorSettings.MotionalSurroundPartLabelText.R,
-            //    colorSettings.MotionalSurroundPartLabelText.G,
-            //    colorSettings.MotionalSurroundPartLabelText.B,
-            //    colorSettings.MotionalSurroundPartLabelText.A);
-            //Settings_Color[11] = new Color(
-            //    colorSettings.MotionalSurroundPartLabelFocused.R,
-            //    colorSettings.MotionalSurroundPartLabelFocused.G,
-            //    colorSettings.MotionalSurroundPartLabelFocused.B,
-            //    colorSettings.MotionalSurroundPartLabelFocused.A);
-            //Settings_Color[12] = new Color(
-            //    colorSettings.MotionalSurroundPartLabelUnfocused.R,
-            //    colorSettings.MotionalSurroundPartLabelUnfocused.G,
-            //    colorSettings.MotionalSurroundPartLabelUnfocused.B,
-            //    colorSettings.MotionalSurroundPartLabelUnfocused.A);
-            //Color temp = (Color)colorSettings.ListViewTextColor.Values[TextCell.TextColorProperty];
-            //Settings_Color[13] = new Color(temp.R, temp.G, temp.B, temp.A);
         }
 
         private void Settings_SetSliders()
@@ -1021,11 +698,9 @@ namespace INTEGRA_7_Xamarin
             }
             else if (type == typeof(LabeledSwitch))
             {
-                //((Switch)control).OnColor = settings.Text;
                 ((LabeledSwitch)control).LSLabel.BackgroundColor = settings.Background;
                 ((LabeledSwitch)control).LSSwitch.BackgroundColor = settings.Background;
                 ((LabeledSwitch)control).LSLabel.TextColor = settings.Text;
-                //((LabeledSwitch)control).LSSwitch.BackgroundColor = settings.Background;
             }
             else if (type == typeof(ListView))
             {
@@ -1048,14 +723,6 @@ namespace INTEGRA_7_Xamarin
                 ((Editor)control).TextColor = settings.Text;
                 ((Editor)control).BackgroundColor = settings.Background;
             }
-            //else if (type == typeof(View))
-            //{
-            //    ((View)control).BackgroundColor = settings.FrameBorder;
-            //    foreach (Object child in ((Grid)control).Children)
-            //    {
-            //        SetControlColors(control);
-            //    }
-            //}
             else if (type == typeof(Grid))
             {
                 if (((Grid)control).IsPianoGrid == 1)
@@ -1105,11 +772,6 @@ namespace INTEGRA_7_Xamarin
                 1 - Settings_UserColorSettings.Background.G,
                 1 - Settings_UserColorSettings.Background.B, 1);
 
-            //Settings_UserColorSettings.ListViewTextColor = new Color(
-            //    1 - Settings_UserColorSettings.Background.R,
-            //    1 - Settings_UserColorSettings.Background.G,
-            //    1 - Settings_UserColorSettings.Background.B, 1);
-
             Settings_UserColorSettings.ControlBorder = new Color(
                 (Double)random.Next(101) / (Double)100,
                 (Double)random.Next(101) / (Double)100,
@@ -1146,22 +808,4 @@ namespace INTEGRA_7_Xamarin
                 (Double)random.Next(101) / (Double)100, 1);
         }
     }
-
-    //public class ColorElements
-    //{
-    //    public const Int32 CONTROL_BORDER = 0;
-    //    public const Int32 FRAME_BORDER = 1;
-    //    public const Int32 BACKGROUND = 2;
-    //    public const Int32 TEXT = 3;
-    //    public const Int32 IS_FAVORITE = 4;
-    //    public const Int32 WHITE_PIANO_KEY = 5;
-    //    public const Int32 BLACK_PIANO_KEY = 6;
-    //    public const Int32 WHITE_PIANO_KEY_TEXT = 7;
-    //    public const Int32 BLACK_PIANO_KEY_TEXT = 8;
-    //    public const Int32 PIANO_KEY_COVER = 9;
-    //    public const Int32 MOTIONAL_SURROUND_PART_LABEL_TEXT = 10;
-    //    public const Int32 MOTIONAL_SURROUND_PART_LABEL_FOCUSED = 11;
-    //    public const Int32 MOTIONAL_SURROUND_PART_LABEL_UNFOCUSED = 12;
-    //    public const Int32 LISTINGS_TEXT = 13;
-    //}
 }
