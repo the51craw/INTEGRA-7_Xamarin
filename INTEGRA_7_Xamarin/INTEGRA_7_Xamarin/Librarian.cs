@@ -141,7 +141,7 @@ namespace INTEGRA_7_Xamarin
                 //    }
                 //}
 
-                ReadSettings();
+                //ReadSettings(); // Already done in UIHandler
 
                 // Populate lvGroups:
                 foreach (List<String> tone in commonState.ToneList.Tones)
@@ -270,34 +270,36 @@ namespace INTEGRA_7_Xamarin
                 mainPage.SaveLocalValue("PutBankInClipboard", false);
                 putBankInClipboard = false;
             }
-            if (mainPage.LoadLocalValue("ColorSettings") != null)
-            {
-                try
-                {
-                    switch ((String)mainPage.LoadLocalValue("ColorSettings"))
-                    {
-                        case "LIGHT":
-                            colorSettings = new ColorSettings(_colorSettings.LIGHT);
-                            break;
-                        case "DARK":
-                            colorSettings = new ColorSettings(_colorSettings.DARK);
-                            break;
-                        case "USER":
-                            colorSettings = new ColorSettings(_colorSettings.USER);
-                            break;
-                    }
-                }
-                catch
-                {
-                    mainPage.SaveLocalValue("ColorSettings", _colorSettings.LIGHT.ToString());
-                    colorSettings = new ColorSettings(_colorSettings.LIGHT);
-                }
-            }
-            else
-            {
-                mainPage.SaveLocalValue("ColorSettings", _colorSettings.LIGHT.ToString());
-                colorSettings = new ColorSettings(_colorSettings.LIGHT);
-            }
+            //if (mainPage.LoadLocalValue("ColorSettings") != null)
+            //{
+            //    try
+            //    {
+            //        switch ((String)mainPage.LoadLocalValue("ColorSettings"))
+            //        {
+            //            case "LIGHT":
+            //                colorSettings = new ColorSettings(_colorSettings.LIGHT);
+            //                break;
+            //            case "DARK":
+            //                colorSettings = new ColorSettings(_colorSettings.DARK);
+            //                break;
+            //            case "USER":
+            //                colorSettings = new ColorSettings(_colorSettings.USER);
+            //                break;
+            //        }
+            //    }
+            //    catch
+            //    {
+            //        mainPage.SaveLocalValue("ColorSettings", _colorSettings.LIGHT.ToString());
+            //        colorSettings = new ColorSettings(_colorSettings.LIGHT);
+            //    }
+            //}
+            //else
+            //{
+            //    mainPage.SaveLocalValue("ColorSettings", _colorSettings.LIGHT.ToString());
+            //    colorSettings = new ColorSettings(_colorSettings.LIGHT);
+            //}
+
+            Settings_ReadColorSettings();
         }
 
         //private void SaveSettings()

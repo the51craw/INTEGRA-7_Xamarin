@@ -207,8 +207,8 @@ Help column in Edit uses too much vertical space with two images,
 	Example, edit a SN-S tone and select Unison Size. 
 	Maybe it is just that one that is wrong in help declaration?
 
-Replace settings image with a button. (Because colours cannot change.)
+* Replace settings image with a button. (Because colours cannot change.)
 
-Recognize piano keys in Settings to set correct colors.
+* Recognize piano keys in Settings to set correct colors.
 
 Save color preferences.

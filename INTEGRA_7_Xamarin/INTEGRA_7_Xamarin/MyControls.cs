@@ -173,6 +173,17 @@ namespace INTEGRA_7_Xamarin
         }
     }
 
+    public class FavoritesButton : Xamarin.Forms.Button
+    {
+        public String Content { get { return Text; } set { Text = value; } }
+
+        public FavoritesButton()
+        {
+            this.BorderWidth = 0;
+            this.CornerRadius = 6;
+        }
+    }
+
     public class Grid : Xamarin.Forms.Grid 
     {
         public byte IsPianoGrid { get; set; }
@@ -486,22 +497,24 @@ namespace INTEGRA_7_Xamarin
 
             this.LSSwitch.VerticalOptions = LayoutOptions.FillAndExpand;
             this.LSLabel.VerticalOptions = LayoutOptions.FillAndExpand;
+            this.LSSwitch.HorizontalOptions = LayoutOptions.FillAndExpand;
+            this.LSLabel.HorizontalOptions = LayoutOptions.FillAndExpand;
 
             if (Orientation == _orientation.HORIZONTAL)
             {
 
                 if (LabelPosition == _labelPosition.BEFORE)
                 {
-                    LSLabel.HorizontalOptions = LayoutOptions.End;
+                    //LSLabel.HorizontalOptions = LayoutOptions.End;
                     Children.Add((new GridRow(0, new View[] { LSLabel, this.LSSwitch }, sizes, false)).Row);
                 }
                 else
                 {
-                    this.LSSwitch.HorizontalOptions = LayoutOptions.Start;
+                    //this.LSSwitch.HorizontalOptions = LayoutOptions.Start;
                     Children.Add((new GridRow(0, new View[] { this.LSSwitch, LSLabel }, sizes, false)).Row);
                 }
-                this.LSLabel.VerticalOptions = LayoutOptions.Center;
-                this.LSSwitch.VerticalOptions = LayoutOptions.Center;
+                //this.LSLabel.VerticalOptions = LayoutOptions.Center;
+                //this.LSSwitch.VerticalOptions = LayoutOptions.Center;
             }
             else
             {
@@ -566,13 +579,13 @@ namespace INTEGRA_7_Xamarin
             if (!lockIt)
             {
                 Double value = (Double)GetValue(ValueProperty);
-                if (value > currentValue)
+                if (value > currentValue + StepFrequency)
                 {
                     currentValue += StepFrequency;
                     lockIt = true;
                     SetValue(ValueProperty, currentValue);
                 }
-                else if (value < currentValue)
+                else if (value < currentValue - StepFrequency)
                 {
                     currentValue -= StepFrequency;
                     lockIt = true;

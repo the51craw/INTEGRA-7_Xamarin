@@ -167,6 +167,7 @@ namespace INTEGRA_7_Xamarin
             borderThicknesSettings = new BorderThicknesSettings(2);
             commonState = new CommonState(ref Librarian_btnPlay);
             ReadSettings();
+            //colorSettings = new ColorSettings((_colorSettings)CurrentColorScheme);
             commonState.Midi = DependencyService.Get<IMidi>();
             myFileIO = DependencyService.Get<IMyFileIO>();
             rawData = new byte[0];
