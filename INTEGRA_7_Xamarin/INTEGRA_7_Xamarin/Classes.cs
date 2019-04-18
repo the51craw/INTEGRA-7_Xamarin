@@ -8462,7 +8462,34 @@ private ParameterSets sets;
         public Grid Row { get; set; }
         public Grid[] Columns { get; set; }
 
-        public GridRow(byte row, View[] controls = null, byte[] columnWiths = null, Boolean KeepAlignment = false, Boolean AddMargins = false, Int32 rowspan = 1)
+        public static void CreateRow(Grid grid, byte row, View[] controls, byte[] columnWidths = null, byte rowspan = 1)
+        {
+            if (columnWidths == null || columnWidths.Length != controls.Length)
+            {
+                columnWidths = new byte[controls.Length];
+                for (byte i = 0; i < controls.Length; i++)
+                {
+                    columnWidths[i] = 1;
+                }
+            }
+
+            grid.ColumnDefinitions = new ColumnDefinitionCollection();
+
+            for (byte i = 0; i < controls.Length; i++)
+            {
+                Grid.SetRow(controls[i], row);
+                Grid.SetRowSpan(controls[i], rowspan);
+                grid.ColumnDefinitions.Add(new ColumnDefinition());
+                grid.ColumnDefinitions[i].Width = new GridLength(columnWidths[i], GridUnitType.Star);
+            }
+
+            for (byte i = 0; i < controls.Length; i++)
+            {
+                grid.Children.Add(controls[i]);
+            }
+        }
+
+        public GridRow(byte row, View[] controls = null, byte[] columnWidths = null, Boolean KeepAlignment = false, Boolean AddMargins = false, Int32 rowspan = 1)
         {
             t.Trace("public GridRow ()");
             try
@@ -8503,13 +8530,13 @@ private ParameterSets sets;
                         }
                         columnDefinitions[i] = new ColumnDefinition();
                         Row.ColumnDefinitions.Add(columnDefinitions[i]);
-                        if (columnWiths == null || columnWiths.Length < i - 1)
+                        if (columnWidths == null || columnWidths.Length < i - 1)
                         {
                             columnDefinitions[i].Width = new GridLength(1, GridUnitType.Star);
                         }
                         else
                         {
-                            columnDefinitions[i].Width = new GridLength(columnWiths[i], GridUnitType.Star);
+                            columnDefinitions[i].Width = new GridLength(columnWidths[i], GridUnitType.Star);
                         }
                         controls[i].SetValue(Grid.MinimumHeightRequestProperty, UIHandler.minimumHeightRequest);
                         controls[i].SetValue(Grid.MinimumWidthRequestProperty, 1);

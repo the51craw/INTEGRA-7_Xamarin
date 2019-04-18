@@ -299,7 +299,7 @@ namespace INTEGRA_7_Xamarin
             //    colorSettings = new ColorSettings(_colorSettings.LIGHT);
             //}
 
-            Settings_ReadColorSettings();
+            //Settings_ReadColorSettings();
         }
 
         //private void SaveSettings()
@@ -531,9 +531,10 @@ namespace INTEGRA_7_Xamarin
 
             // Put an unused white key that spans and covers the leftmost rounded
             // corners of the white keys:
-            Xamarin.Forms.Button cover = new Xamarin.Forms.Button();
+            Button cover = new Button();
             Grid.SetRowSpan(cover, 22 * 16);
             Grid.SetColumn(cover, 0);
+            cover.Tag = "PianoKeyCover";
             cover.BackgroundColor = colorSettings.PianoKeyCover;
             Librarian_gridKeyboard.Children.Add(cover);
 
@@ -564,7 +565,7 @@ namespace INTEGRA_7_Xamarin
             Librarian_btnResetHangingNotes.Text = "Reset";
             Librarian_btnPlus12keys.Text = "+12";
             Librarian_btnMinus12keys.Text = "-12";
-            ShowKeyNumbering();
+            //ShowKeyNumbering();
 
             // Add handlers -------------------------------------------------------------------------------
 
@@ -635,9 +636,19 @@ namespace INTEGRA_7_Xamarin
                 0, new View[] { Librarian_filterPresetAndUser })).Row);
             Librarian_gridTones.Children.Add((new GridRow(
                 1, new View[] { Librarian_lvToneNames }, null, false, false, listingHeight)).Row);
+
+
+
+            // Temporary removed settings to get project going
+            //Librarian_gridTones.Children.Add((new GridRow(
+            //    (byte)(listingHeight + 1),
+            //    new View[] { Librarian_btnMotionalSurround, Librarian_btnSettings }, new byte[] { 2, 1 })).Row);
             Librarian_gridTones.Children.Add((new GridRow(
                 (byte)(listingHeight + 1),
-                new View[] { Librarian_btnMotionalSurround, Librarian_btnSettings }, new byte[] { 2, 1 })).Row);
+                new View[] { Librarian_btnMotionalSurround } )).Row);
+
+
+
             Librarian_gridTones.Children.Add((new GridRow(
                 (byte)(listingHeight + 2),
                 new View[] { Librarian_btnShowFavorites, Librarian_btnAddFavorite, Librarian_btnRemoveFavorite }, new byte[] { 1, 1, 1 })).Row);
@@ -1711,7 +1722,8 @@ namespace INTEGRA_7_Xamarin
                 // have been read, and it is only to go there:
                 currentPage = CurrentPage.EDIT_STUDIO_SET;
                 //QueryCurrentStudioSetNumber(false);
-                StudioSetEditor_StackLayout.IsVisible = true;
+                ShowStudioSetEditorPage();
+                //StudioSetEditor_StackLayout.IsVisible = true;
             }
             else if (commonState.StudioSet == null)
             {

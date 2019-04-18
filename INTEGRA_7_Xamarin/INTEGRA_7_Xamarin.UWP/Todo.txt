@@ -207,8 +207,18 @@ Help column in Edit uses too much vertical space with two images,
 	Example, edit a SN-S tone and select Unison Size. 
 	Maybe it is just that one that is wrong in help declaration?
 
-* Replace settings image with a button. (Because colours cannot change.)
+* Replace settings image with a button. (Because image colors cannot be customized.)
 
 * Recognize piano keys in Settings to set correct colors.
 
-Save color preferences.
+* Save color preferences.
+
+Add Motional surround labels in Settings page.
+
+Change logo images to higher resolution.
+
+Colorsettings does not work if more than one View is added to the same GridRow!
+
+I will now pause colorsettings and temporarily remove the settings button since
+	this seems to be rather complex and holds the project that is almost
+	ready for beta test and test on other platforms.

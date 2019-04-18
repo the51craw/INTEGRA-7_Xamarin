@@ -256,6 +256,7 @@ namespace INTEGRA_7_Xamarin
             cbEditTone_ParameterPages.SelectedIndex = currentParameterPageIndex;
             cbEditTone_InstrumentCategorySelector.SelectedIndex =
                 toneCategories.pcmToneCategoryNameIndex[pCMSynthTone.pCMSynthToneCommon2.ToneCategory];
+            //SetStackLayoutColors(Edit_StackLayout);
             Waiting(false, "", Edit_StackLayout);
         }
 
@@ -348,6 +349,7 @@ namespace INTEGRA_7_Xamarin
                     AddPCMDrumKitSaveControls();
                     break;
             }
+            //SetStackLayoutColors(Edit_StackLayout);
             Waiting(false, "", Edit_StackLayout);
         }
 
@@ -377,6 +379,7 @@ namespace INTEGRA_7_Xamarin
                     AddSuperNaturalAcousticToneSaveControls();
                     break;
             }
+            //SetStackLayoutColors(Edit_StackLayout);
             Waiting(false, "", Edit_StackLayout);
         }
 
@@ -423,6 +426,7 @@ namespace INTEGRA_7_Xamarin
                     AddSuperNaturalSynthToneSaveControls();
                     break;
             }
+            //SetStackLayoutColors(Edit_StackLayout);
             Waiting(false, "", Edit_StackLayout);
         }
 
@@ -461,6 +465,7 @@ namespace INTEGRA_7_Xamarin
                     AddSuperNaturalDrumKitSaveControls();
                     break;
             }
+            //SetStackLayoutColors(Edit_StackLayout);
             Waiting(false, "", Edit_StackLayout);
         }
 
@@ -5783,10 +5788,9 @@ namespace INTEGRA_7_Xamarin
             {
                 if (cbEditTone_SuperNATURALAcousticTone_Instrument_Bank.Items.Count() > 5)
                 {
-                    currentHandleControlEvents = handleControlEvents;
                     PushHandleControlEvents();
                     cbEditTone_SuperNATURALAcousticTone_Instrument_Bank.SelectedItem = bankName;
-                    handleControlEvents = currentHandleControlEvents;
+                    PopHandleControlEvents();
                 }
             }
             catch { }
@@ -5816,10 +5820,9 @@ namespace INTEGRA_7_Xamarin
             // Put in rows
             ControlsGrid.Children.Add((new GridRow(0, new View[] {  cbEditTone_SuperNATURALAcousticTone_Instrument_Bank,
                 cbEditTone_SuperNATURALAcousticTone_Instrument_InstNumber })).Row);
-            currentHandleControlEvents = handleControlEvents;
             PushHandleControlEvents();
             cbEditTone_SuperNATURALAcousticTone_Instrument_InstNumber.SelectedIndex = index;
-            handleControlEvents = currentHandleControlEvents;
+            PopHandleControlEvents();
 
             // Add instrument parameters:
             AddSupernaturalAcousticToneInstrumentParametersControls();
@@ -10203,7 +10206,6 @@ namespace INTEGRA_7_Xamarin
 
         private void SetSaveSlotToFirstFreeOrSameName()
         {
-            currentHandleControlEvents = handleControlEvents;
             PushHandleControlEvents();
             cbEditTone_SaveTone_SlotNumber.SelectedIndex = 0;
             while (((String)cbEditTone_SaveTone_SlotNumber.SelectedItem).Remove(0, 5) != "INIT TONE"
@@ -10226,7 +10228,7 @@ namespace INTEGRA_7_Xamarin
             {
                 btnEditTone_SaveTone.IsEnabled = true;
             }
-            handleControlEvents = currentHandleControlEvents;
+            PopHandleControlEvents();
         }
 
         private void PopulatePCMSynthToneWaveLists(Int32 listNumber) // 0 = INT, 1 - 12 = SRX_01 - SRX_12

@@ -400,7 +400,8 @@ namespace INTEGRA_7_Xamarin
                         }
                         break;
                 }
-                handleControlEvents = currentHandleControlEvents;
+                //SetStackLayoutColors(Edit_StackLayout);
+                PopHandleControlEvents();
             }
         }
 
@@ -4293,7 +4294,7 @@ namespace INTEGRA_7_Xamarin
                                         }
                                     }
                                 }
-                                handleControlEvents = currentHandleControlEvents;
+                                PopHandleControlEvents();
                                 if (cbEditTone_SuperNATURALAcousticTone_Instrument_InstNumber.Items.Count > index)
                                 {
                                     cbEditTone_SuperNATURALAcousticTone_Instrument_InstNumber.SelectedIndex = index;
@@ -6204,7 +6205,7 @@ namespace INTEGRA_7_Xamarin
             {
                 cbEditTone_superNATURALDrumKit_Druminstrument_Variation.Items.Add("Variation: Off");
             }
-            handleControlEvents = currentHandleControlEvents;
+            PopHandleControlEvents();
         }
 
         private void DrumKit_WaveOn(byte side)

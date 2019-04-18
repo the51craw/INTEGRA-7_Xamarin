@@ -55,7 +55,7 @@ namespace INTEGRA_7_Xamarin.UWP
             MainPage_Portable.MainPage_Device = this;
 
             // Create UI (function is in mainPage.uIHandler):
-            MainPage_Portable.uIHandler.DrawLibrarianPage();
+            //MainPage_Portable.uIHandler.DrawLibrarianPage();
 
             MainPage_Portable.uIHandler.ShowPleaseWaitPage(WaitingFor.MIDI, UIHandler.CurrentPage.LIBRARIAN, null);
 

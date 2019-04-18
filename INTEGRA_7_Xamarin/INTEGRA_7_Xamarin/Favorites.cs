@@ -290,6 +290,8 @@ namespace INTEGRA_7_Xamarin
             Favorites_StackLayout.Children.Add((new GridRow(0, new View[] { Favorites_grLeftColumn, Favorites_grMiddleColumn, Favorites_grRightColumn })).Row);
             Favorites_StackLayout.BackgroundColor = colorSettings.Background;
             Favorites_UpdateFoldersList();
+
+            SetStackLayoutColors(Favorites_StackLayout);
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////

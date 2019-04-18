@@ -319,15 +319,15 @@ namespace INTEGRA_7_Xamarin
                 }
                 if (StudioSetEditor_StackLayout != null)
                 {
-                    SetStackLayoutColors(StudioSetEditor_StackLayout);
+                    //SetStackLayoutColors(StudioSetEditor_StackLayout);
                 }
                 if (Edit_StackLayout != null)
                 {
-                    SetStackLayoutColors(Edit_StackLayout);
+                    //SetStackLayoutColors(Edit_StackLayout);
                 }
                 if (MotionalSurround_StackLayout != null)
                 {
-                    SetStackLayoutColors(MotionalSurround_StackLayout);
+                    //SetStackLayoutColors(MotionalSurround_StackLayout);
                 }
             }
             Settings_StackLayout.IsVisible = false;
@@ -638,6 +638,7 @@ namespace INTEGRA_7_Xamarin
                 settings = colorSettings;
             }
             settings.ListViewTextColor.SetValue(TextCell.TextColorProperty, colorSettings.Text);
+            stackLayout.BackgroundColor = colorSettings.FrameBorder;
             foreach (Object child in stackLayout.Children)
             {
                 SetControlColors(child, settings);
@@ -650,8 +651,20 @@ namespace INTEGRA_7_Xamarin
 
             if (type == typeof(Button))
             {
-                ((Button)control).TextColor = settings.Text;
-                ((Button)control).BackgroundColor = settings.Background;
+                if (((String)((Button)control).Tag) == "PianoKeyCover")
+                {
+                    ((Button)control).BackgroundColor = settings.PianoKeyCover;
+                }
+                else
+                {
+                    ((Button)control).TextColor = settings.Text;
+                    ((Button)control).BackgroundColor = settings.Background;
+                }
+            }
+            else if (type == typeof(Xamarin.Forms.Button))
+            {
+                ((Xamarin.Forms.Button)control).TextColor = settings.Text;
+                ((Xamarin.Forms.Button)control).BackgroundColor = settings.Background;
             }
             else if (type == typeof(PianoKey))
             {
@@ -696,6 +709,13 @@ namespace INTEGRA_7_Xamarin
                 ((Switch)control).OnColor = settings.Text;
                 ((Switch)control).BackgroundColor = settings.Background;
             }
+            else if (type == typeof(CheckBox)) // This is actually INTEGRA_7_Xamarin.CheckBox
+            {
+                ((CheckBox)control).BackgroundColor = settings.Background;
+                ((CheckBox)control).CBLabel.BackgroundColor = settings.Background;
+                ((CheckBox)control).CBLabel.TextColor = settings.Text;
+                ((CheckBox)control).CBSwitch.BackgroundColor = settings.Background;
+            }
             else if (type == typeof(LabeledSwitch))
             {
                 ((LabeledSwitch)control).LSLabel.BackgroundColor = settings.Background;
@@ -718,10 +738,43 @@ namespace INTEGRA_7_Xamarin
                 ((Picker)control).TextColor = settings.Text;
                 ((Picker)control).BackgroundColor = settings.Background;
             }
+            else if (type == typeof(ComboBox))
+            {
+                ((ComboBox)control).TextColor = settings.Text;
+                ((ComboBox)control).BackgroundColor = settings.Background;
+            }
             else if (type == typeof(Editor))
             {
                 ((Editor)control).TextColor = settings.Text;
                 ((Editor)control).BackgroundColor = settings.Background;
+            }
+            else if (type == typeof(TextBox))
+            {
+                ((TextBox)control).TextColor = settings.Text;
+                ((TextBox)control).BackgroundColor = settings.Background;
+            }
+            else if (type == typeof(TextBlock))
+            {
+                ((TextBlock)control).TextColor = settings.Text;
+                ((TextBlock)control).BackgroundColor = settings.Background;
+            }
+            else if (type == typeof(MotionalSurroundPartLabel))
+            {
+                ((MotionalSurroundPartLabel)control).TextColor = settings.Text;
+                ((MotionalSurroundPartLabel)control).BackgroundColor = settings.Background;
+            }
+            else if (type == typeof(MotionalSurroundPartEditor))
+            {
+                //((MotionalSurroundPartEditor)control).TextColor = settings.Text;
+                ((MotionalSurroundPartEditor)control).BackgroundColor = settings.Background;
+            }
+            else if (type == typeof(Image))
+            {
+                ((Image)control).BackgroundColor = settings.Background;
+            }
+            else if (type == typeof(TouchableImage))
+            {
+                ((TouchableImage)control).BackgroundColor = settings.Background;
             }
             else if (type == typeof(Grid))
             {
@@ -735,7 +788,7 @@ namespace INTEGRA_7_Xamarin
                 }
                 else
                 {
-                    ((View)control).BackgroundColor = settings.FrameBorder;
+                    ((View)control).BackgroundColor = settings.Transparent;
                 }
                 if (((Grid)control).Children.Count > 0)
                 {
@@ -751,6 +804,28 @@ namespace INTEGRA_7_Xamarin
                 {
                     SetControlColors(child, settings);
                 }
+            }
+            else if (type == typeof(GridRow))
+            {
+                ((Grid)((GridRow)control).Row).BackgroundColor = settings.FrameBorder;
+                //if (((Grid)((GridRow)control).Row).Children.Count > 0)
+                //{
+                //    for (Int32 i = 0; i < ((Grid)((GridRow)control).Row).Children.Count; i++)
+                //    {
+                //        if (((Grid)((GridRow)control).Row).Children[i].GetType() == typeof(Slider))
+                //        {
+                //            ((Grid)((GridRow)control).Row).BackgroundColor = settings.Background;
+                //        }
+                //    }
+                //}
+                foreach (Object child in ((Grid)((GridRow)control).Row).Children)
+                {
+                    SetControlColors(child, settings);
+                }
+            }
+            else
+            {
+                throw new Exception("Missing type in SetControlColors(): " + type.ToString());
             }
         }
 

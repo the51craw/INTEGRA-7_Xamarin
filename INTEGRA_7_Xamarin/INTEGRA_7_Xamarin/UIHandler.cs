@@ -165,11 +165,14 @@ namespace INTEGRA_7_Xamarin
             currentPage = CurrentPage.LIBRARIAN;
             MidiState = MIDIState.NOT_INITIALIZED;
             borderThicknesSettings = new BorderThicknesSettings(2);
+            DrawLibrarianPage();
             commonState = new CommonState(ref Librarian_btnPlay);
-            ReadSettings();
+            ShowKeyNumbering();
+            //ReadSettings();
             //colorSettings = new ColorSettings((_colorSettings)CurrentColorScheme);
             commonState.Midi = DependencyService.Get<IMidi>();
             myFileIO = DependencyService.Get<IMyFileIO>();
+            ReadSettings();
             rawData = new byte[0];
             userToneNumbers = new UInt16[128];
             for (byte i = 0; i < 128; i++)
