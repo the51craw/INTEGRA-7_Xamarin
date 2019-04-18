@@ -1,4 +1,5 @@
-﻿using Plugin.Clipboard;
+// File: F:\Users\hbe_000\Projects\INTEGRA_7_Xamarin\INTEGRA_7_Xamarin\INTEGRA_7_Xamarin\Librarian.cs
+using Plugin.Clipboard;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -600,67 +601,41 @@ namespace INTEGRA_7_Xamarin
             listingHeight = 12;
 
             // Assemble column 0:
-            Librarian_gridGroups.Children.Add((new GridRow(
-                0, new View[] { Librarian_lblGroups })));
-            Librarian_gridGroups.Children.Add((new GridRow(
-                1, new View[] { Librarian_lvGroups }, null, false, false, listingHeight)));
-            Librarian_gridGroups.Children.Add((new GridRow(
-                (byte)(listingHeight + 1), new View[] { Librarian_midiOutputChannel })));
-            Librarian_gridGroups.Children.Add((new GridRow(
-                (byte)(listingHeight + 2), new View[] { Librarian_btnSearch, Librarian_tbSearch }, new byte[] { 1, 2 })));
-            Librarian_gridGroups.Children.Add((new GridRow(
-                (byte)(listingHeight + 3), new View[] { Librarian_ltToneName })));
-            Librarian_gridGroups.Children.Add((new GridRow(
-                (byte)(listingHeight + 4), new View[] { Librarian_ltType })));
-            Librarian_gridGroups.Children.Add((new GridRow(
-                (byte)(listingHeight + 5), new View[] { Librarian_ltToneNumber })));
+            GridRow.CreateRow(Librarian_gridGroups, 0, new View[] { Librarian_lblGroups });
+            GridRow.CreateRow(Librarian_gridGroups, 1, new View[] { Librarian_lvGroups }, null, listingHeight);
+            GridRow.CreateRow(Librarian_gridGroups, (byte)(listingHeight + 1), new View[] { Librarian_midiOutputChannel });
+            GridRow.CreateRow(Librarian_gridGroups, (byte)(listingHeight + 2), new View[] { Librarian_btnSearch, Librarian_tbSearch }, new byte[] { 1, 2 });
+            GridRow.CreateRow(Librarian_gridGroups, (byte)(listingHeight + 3), new View[] { Librarian_ltToneName });
+            GridRow.CreateRow(Librarian_gridGroups, (byte)(listingHeight + 4), new View[] { Librarian_ltType });
+            GridRow.CreateRow(Librarian_gridGroups, (byte)(listingHeight + 5), new View[] { Librarian_ltToneNumber });
 
             // Assemble column 1:
-            Librarian_gridCategories.Children.Add((new GridRow(
-                0, new View[] { Librarian_lblCategories })));
-            Librarian_gridCategories.Children.Add((new GridRow(
-                1, new View[] { Librarian_lvCategories }, null, false, false, listingHeight)));
-            Librarian_gridCategories.Children.Add((new GridRow(
-                (byte)(listingHeight + 1), new View[] { Librarian_ltBankAddress })));
-            Librarian_gridCategories.Children.Add((new GridRow(
-                (byte)(listingHeight + 2), new View[] { Librarian_ltPatchMSB })));
-            Librarian_gridCategories.Children.Add((new GridRow(
-                (byte)(listingHeight + 3), new View[] { Librarian_ltPatchLSB })));
-            Librarian_gridCategories.Children.Add((new GridRow(
-                (byte)(listingHeight + 4), new View[] { Librarian_ltProgramNumber })));
-            Librarian_gridCategories.Children.Add((new GridRow(
-                (byte)(listingHeight + 5), new View[] { Librarian_btnPlay })));
+            GridRow.CreateRow(Librarian_gridCategories, 0, new View[] { Librarian_lblCategories });
+            GridRow.CreateRow(Librarian_gridCategories, 1, new View[] { Librarian_lvCategories }, null, listingHeight);
+            GridRow.CreateRow(Librarian_gridCategories, (byte)(listingHeight + 1), new View[] { Librarian_ltBankAddress });
+            GridRow.CreateRow(Librarian_gridCategories, (byte)(listingHeight + 2), new View[] { Librarian_ltPatchMSB });
+            GridRow.CreateRow(Librarian_gridCategories, (byte)(listingHeight + 3), new View[] { Librarian_ltPatchLSB });
+            GridRow.CreateRow(Librarian_gridCategories, (byte)(listingHeight + 4), new View[] { Librarian_ltProgramNumber });
+            GridRow.CreateRow(Librarian_gridCategories, (byte)(listingHeight + 5), new View[] { Librarian_btnPlay });
 
             // Assemble column 2:
-            Librarian_gridTones.Children.Add((new GridRow(
-                0, new View[] { Librarian_filterPresetAndUser })));
-            Librarian_gridTones.Children.Add((new GridRow(
-                1, new View[] { Librarian_lvToneNames }, null, false, false, listingHeight)));
+            GridRow.CreateRow(Librarian_gridTones, 0, new View[] { Librarian_filterPresetAndUser });
+            GridRow.CreateRow(Librarian_gridTones, 1, new View[] { Librarian_lvToneNames }, null, listingHeight);
 
 
 
             // Temporary removed settings to get project going
-            Librarian_gridTones.Children.Add((new GridRow(
-                (byte)(listingHeight + 1),
-                new View[] { Librarian_btnMotionalSurround, Librarian_btnSettings }, new byte[] { 2, 1 })));
             //Librarian_gridTones.Children.Add((new GridRow(
             //    (byte)(listingHeight + 1),
-            //    new View[] { Librarian_btnMotionalSurround } )));
+            //    new View[] { Librarian_btnMotionalSurround, Librarian_btnSettings }, new byte[] { 2, 1 })).Row);
+            GridRow.CreateRow(Librarian_gridTones, (byte)(listingHeight + 1), new View[] { Librarian_btnMotionalSurround });
 
 
 
-            Librarian_gridTones.Children.Add((new GridRow(
-                (byte)(listingHeight + 2),
-                new View[] { Librarian_btnShowFavorites, Librarian_btnAddFavorite, Librarian_btnRemoveFavorite }, new byte[] { 1, 1, 1 })));
-            Librarian_gridTones.Children.Add((new GridRow(
-                (byte)(listingHeight + 3),
-                new View[] { Librarian_btnEditTone, Librarian_btnEditStudioSet }, new byte[] { 1, 2 })));
-            Librarian_gridTones.Children.Add((new GridRow(
-                (byte)(listingHeight + 4),
-                new View[] { Librarian_btnResetHangingNotes, Librarian_btnResetVolume }, new byte[] { 2, 1 })));
-            Librarian_gridTones.Children.Add((new GridRow(
-                (byte)(listingHeight + 5),
-                new View[] { Librarian_btnKeys, Librarian_btnMinus12keys, Librarian_btnPlus12keys }, new byte[] { 3, 1, 1 })));
+            GridRow.CreateRow(Librarian_gridTones, (byte)(listingHeight + 2), new View[] { Librarian_btnShowFavorites, Librarian_btnAddFavorite, Librarian_btnRemoveFavorite }, new byte[] { 1, 1, 1 });
+            GridRow.CreateRow(Librarian_gridTones, (byte)(listingHeight + 3), new View[] { Librarian_btnEditTone, Librarian_btnEditStudioSet }, new byte[] { 1, 2 });
+            GridRow.CreateRow(Librarian_gridTones, (byte)(listingHeight + 4), new View[] { Librarian_btnResetHangingNotes, Librarian_btnResetVolume }, new byte[] { 2, 1 });
+            GridRow.CreateRow(Librarian_gridTones, (byte)(listingHeight + 5), new View[] { Librarian_btnKeys, Librarian_btnMinus12keys, Librarian_btnPlus12keys }, new byte[] { 3, 1, 1 });
             Librarian_btnKeys.Margin = new Thickness(0);
 
             // Assemble LibrarianStackLayout --------------------------------------------------------------
@@ -675,7 +650,7 @@ namespace INTEGRA_7_Xamarin
             Librarian_StackLayout.Children.Add((new GridRow(
                 0, new View[]
                 { Librarian_gridGroups, Librarian_gridCategories, Librarian_gridTones, Librarian_gridKeyboard },
-                new byte[] { 5, 5, 5, 3 }, false, true)));
+                new byte[] { 5, 5, 5, 3 }, false, true)).Row);
 
             // Make the entire grid background black to show as borders around controls by using margins:
             Librarian_gridGroups.Margin = new Thickness(0);

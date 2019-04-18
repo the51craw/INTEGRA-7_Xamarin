@@ -222,3 +222,8 @@ Colorsettings does not work if more than one View is added to the same GridRow!
 I will now pause colorsettings and temporarily remove the settings button since
 	this seems to be rather complex and holds the project that is almost
 	ready for beta test and test on other platforms.
+
+Thought I had fixed the color problem, but no. Anyway, reintroduced color
+	settings but do not use them for the editors.
+
+Restore custom edit colors restores some old colors.

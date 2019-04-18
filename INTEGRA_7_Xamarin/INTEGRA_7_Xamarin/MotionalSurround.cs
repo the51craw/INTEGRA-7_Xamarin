@@ -340,7 +340,7 @@ namespace INTEGRA_7_Xamarin
                 msePart[i].Switch.LSSwitch.Toggled += msePart_Toggled;
                 msePart[i].Switch.LSSwitch.IsToggled = true;
                 msePart[i].Editor.TextChanged += msePartEditor_TextChanged;
-                gParts.Children.Add(new GridRow((byte)i, new View[] { msePart[i] }).Row);
+                GridRow.CreateRow(gParts, (byte)i, new View[] { msePart[i] });
             }
 
             cbMotionalSurroundSwitch = new CheckBox();
@@ -355,10 +355,10 @@ namespace INTEGRA_7_Xamarin
             btnMotionalSurroundReturn.Text = "Return to Librarian";
             btnMotionalSurroundReturn.Clicked += BtnMotionalSurroundReturn_Clicked;
 
-            gParts.Children.Add(new GridRow(17, new View[] { cbMotionalSurroundSwitch, btnMotionalSurroundReturn }).Row);
+            gParts.Children.Add(new GridRow(17, new View[] { cbMotionalSurroundSwitch, btnMotionalSurroundReturn }));
 
             MotionalSurround_StackLayout = new StackLayout();
-            MotionalSurround_StackLayout.Children.Add(new GridRow(0, new View[] { gArrows, gParts }, new byte[] { 5, 3 }).Row);
+            MotionalSurround_StackLayout.Children.Add(new GridRow(0, new View[] { gArrows, gParts }, new byte[] { 5, 3 }));
         }
 
         //private void MotionalSurround_Init()

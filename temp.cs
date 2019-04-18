@@ -1,4 +1,5 @@
-﻿using System;
+// File: F:\Users\hbe_000\Projects\INTEGRA_7_Xamarin\INTEGRA_7_Xamarin\INTEGRA_7_Xamarin\Settings.cs
+using System;
 using System.Collections.ObjectModel;
 using Xamarin.Forms;
 
@@ -208,56 +209,34 @@ namespace INTEGRA_7_Xamarin
                 Settings_gridSamples.RowDefinitions.Add(new RowDefinition());
             }
 
-            Settings_gridControls.Children.Add(new GridRow(0, new View[] 
-                { Settings_gridTopLeft }, null, false, false, 5));
+      GridRow.CreateRow(Settings_gridControls, 0, new View[] { Settings_gridTopLeft }, null, 5);
             byte rowOffset = 5;
-            Settings_gridControls.Children.Add(new GridRow(rowOffset++, new View[] 
-                { Settings_lsBankNumberToClipboard }));
-            Settings_gridControls.Children.Add(new GridRow(rowOffset++, new View[] 
-                { Settings_lblColorTypeSelector, Settings_pColorSchemeSelector }));
-            Settings_gridControls.Children.Add(new GridRow(rowOffset++, new View[] 
-                { Settings_lblColorSchemeSelector, Settings_pColorTypeSelector }));
-            Settings_gridControls.Children.Add(new GridRow(rowOffset++, new View[] 
-                { Settings_lblRed, Settings_slRed }, new byte[] { 1, 10 }));
-            Settings_gridControls.Children.Add(new GridRow(rowOffset++, new View[] 
-                { Settings_lblGreen, Settings_slGreen }, new byte[] { 1, 10 }));
-            Settings_gridControls.Children.Add(new GridRow(rowOffset++, new View[] 
-                { Settings_lblBlue, Settings_slBlue }, new byte[] { 1, 10 }));
-            Settings_gridControls.Children.Add(new GridRow(rowOffset++, new View[] 
-                { Settings_lblAlpha, Settings_slAlpha }, new byte[] { 1, 10 }));
-            Settings_gridControls.Children.Add(new GridRow(rowOffset++, new View[] 
-                { Settings_btnSave, Settings_btnRestore, Settings_btnRandomColors,
-                Settings_btnReturn }, new byte[] { 1, 1, 1, 1 }));
+      GridRow.CreateRow(Settings_gridControls, rowOffset++, new View[] { Settings_lsBankNumberToClipboard });
+      GridRow.CreateRow(Settings_gridControls, rowOffset++, new View[] { Settings_lblColorTypeSelector, Settings_pColorSchemeSelector });
+      GridRow.CreateRow(Settings_gridControls, rowOffset++, new View[] { Settings_lblColorSchemeSelector, Settings_pColorTypeSelector });
+      GridRow.CreateRow(Settings_gridControls, rowOffset++, new View[] { Settings_lblRed, Settings_slRed }, new byte[] { 1, 10});
+      GridRow.CreateRow(Settings_gridControls, rowOffset++, new View[] { Settings_lblGreen, Settings_slGreen }, new byte[] { 1, 10});
+      GridRow.CreateRow(Settings_gridControls, rowOffset++, new View[] { Settings_lblBlue, Settings_slBlue }, new byte[] { 1, 10});
+      GridRow.CreateRow(Settings_gridControls, rowOffset++, new View[] { Settings_lblAlpha, Settings_slAlpha }, new byte[] { 1, 10});
+      GridRow.CreateRow(Settings_gridControls, rowOffset++, new View[] { Settings_btnSave, Settings_btnRestore, Settings_btnRandomColors, Settings_btnReturn }, new byte[] { 1, 1, 1, 1});
 
-            Settings_gridControls.Children.Add(new GridRow(rowOffset++, new View[] 
-                { Settings_gridBottomLeft }, null, false, false, 6));
+      GridRow.CreateRow(Settings_gridControls, rowOffset++, new View[] { Settings_gridBottomLeft }, null, 6);
 
-            Settings_gridSamples.Children.Add(new GridRow(0, new View[] 
-                { Settings_gridTopRight }, null, false, false, 5));
+      GridRow.CreateRow(Settings_gridSamples, 0, new View[] { Settings_gridTopRight }, null, 5);
 
             rowOffset = 5;
-            Settings_gridSamples.Children.Add(new GridRow(rowOffset++, new View[] 
-                { Settings_lblLabel, Settings_sSwitch, Settings_btnButton }));
-            Settings_gridSamples.Children.Add(new GridRow(rowOffset++, new View[] 
-                { Settings_lblSlider, Settings_slSlider }, new byte[] { 1, 2 }));
-            Settings_gridSamples.Children.Add(new GridRow(rowOffset++, new View[] 
-                { Settings_lvListView }, null, false, false, 3));
+      GridRow.CreateRow(Settings_gridSamples, rowOffset++, new View[] { Settings_lblLabel, Settings_sSwitch, Settings_btnButton });
+      GridRow.CreateRow(Settings_gridSamples, rowOffset++, new View[] { Settings_lblSlider, Settings_slSlider }, new byte[] { 1, 2});
+      GridRow.CreateRow(Settings_gridSamples, rowOffset++, new View[] { Settings_lvListView }, null, 3);
             rowOffset++;
             rowOffset++;
-            Settings_gridSamples.Children.Add(new GridRow(rowOffset++, new View[] 
-                { Settings_pPicker }));
-            Settings_gridSamples.Children.Add(new GridRow(rowOffset++, new View[] 
-                { Settings_btnWhitePianoKey, Settings_btnBlackPianoKey }));
-            Settings_gridSamples.Children.Add(new GridRow(rowOffset++, new View[] 
-                { Settings_btnFavorites }));
+      GridRow.CreateRow(Settings_gridSamples, rowOffset++, new View[] { Settings_pPicker });
+      GridRow.CreateRow(Settings_gridSamples, rowOffset++, new View[] { Settings_btnWhitePianoKey, Settings_btnBlackPianoKey });
+      GridRow.CreateRow(Settings_gridSamples, rowOffset++, new View[] { Settings_btnFavorites });
 
-            Settings_gridSamples.Children.Add(new GridRow(rowOffset++, new View[] 
-            { Settings_gridBottomRight }, null, false, false, 6));
+      GridRow.CreateRow(Settings_gridSamples, rowOffset++, new View[] { Settings_gridBottomRight }, null, 6);
 
-            Settings_gridMain.Children.Add(new GridRow(0, new View[]
-                { Settings_gridLeftFiller, Settings_gridControls,
-                    Settings_gridSamples, Settings_gridRightFiller },
-                new byte[] { 2, 4, 2, 2 }, false, false, 1));
+      GridRow.CreateRow(Settings_gridMain, 0, new View[] { Settings_gridLeftFiller, Settings_gridControls, Settings_gridSamples, Settings_gridRightFiller }, new byte[] { 2, 4, 2, 2});
 
             Settings_slRed.IsEnabled = false;
             Settings_slGreen.IsEnabled = false;
@@ -327,7 +306,7 @@ namespace INTEGRA_7_Xamarin
                 }
                 if (MotionalSurround_StackLayout != null)
                 {
-                    SetStackLayoutColors(MotionalSurround_StackLayout);
+                    //SetStackLayoutColors(MotionalSurround_StackLayout);
                 }
             }
             Settings_StackLayout.IsVisible = false;
@@ -807,18 +786,18 @@ namespace INTEGRA_7_Xamarin
             }
             else if (type == typeof(GridRow))
             {
-                ((Grid)((GridRow)control)).BackgroundColor = settings.FrameBorder;
-                //if (((Grid)((GridRow)control)).Children.Count > 0)
+                ((Grid)((GridRow)control).Row).BackgroundColor = settings.FrameBorder;
+                //if (((Grid)((GridRow)control).Row).Children.Count > 0)
                 //{
-                //    for (Int32 i = 0; i < ((Grid)((GridRow)control)).Children.Count; i++)
+                //    for (Int32 i = 0; i < ((Grid)((GridRow)control).Row).Children.Count; i++)
                 //    {
-                //        if (((Grid)((GridRow)control)).Children[i].GetType() == typeof(Slider))
+                //        if (((Grid)((GridRow)control).Row).Children[i].GetType() == typeof(Slider))
                 //        {
-                //            ((Grid)((GridRow)control)).BackgroundColor = settings.Background;
+                //            ((Grid)((GridRow)control).Row).BackgroundColor = settings.Background;
                 //        }
                 //    }
                 //}
-                foreach (Object child in ((Grid)((GridRow)control)).Children)
+                foreach (Object child in ((Grid)((GridRow)control).Row).Children)
                 {
                     SetControlColors(child, settings);
                 }

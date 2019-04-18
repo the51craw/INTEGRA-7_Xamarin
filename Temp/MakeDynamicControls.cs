@@ -1,4 +1,5 @@
-﻿using System;
+// File: F:\Users\hbe_000\Projects\INTEGRA_7_Xamarin\INTEGRA_7_Xamarin\INTEGRA_7_Xamarin\MakeDynamicControls.cs
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -726,30 +727,30 @@ namespace INTEGRA_7_Xamarin
             slEditTone_PCMSynthTone_PortamentoTime.Maximum = 127;
 
             // Put Phrase number and octave shift on line 0:
-            ControlsGrid.Children.Add((new GridRow(0, new View[] { cbEditTone_PCMSynthTone_PhraseNumber, cbEditTone_PCMSynthTone_PhraseOctaveShift })));
+            GridRow.CreateRow(ControlsGrid, 0, new View[] { cbEditTone_PCMSynthTone_PhraseNumber, cbEditTone_PCMSynthTone_PhraseOctaveShift });
             // Put Level with label on line 1:
-            ControlsGrid.Children.Add((new GridRow(1, new View[] { tbEditTone_PCMSynthTone_ToneLevel, slEditTone_PCMSynthTone_ToneLevel }, new byte[] { 1, 2 })));
+            GridRow.CreateRow(ControlsGrid, 1, new View[] { tbEditTone_PCMSynthTone_ToneLevel, slEditTone_PCMSynthTone_ToneLevel }, new byte[] { 1, 2 });
 
-            ControlsGrid.Children.Add((new GridRow(2, new View[] { tbEditTone_PCMSynthTone_TonePan, slEditTone_PCMSynthTone_TonePan }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(3, new View[] { cbEditTone_PCMSynthTone_TonePriority, cbEditTone_PCMSynthTone_OctaveShift, cbEditTone_PCMSynthTone_StretchTuneDepth }, new byte[] { 1, 1, 1 })));
-            ControlsGrid.Children.Add((new GridRow(4, new View[] { tbEditTone_PCMSynthTone_CoarseTune, slEditTone_PCMSynthTone_CoarseTune }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(5, new View[] { tbEditTone_PCMSynthTone_FineTune, slEditTone_PCMSynthTone_FineTune }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(6, new View[] { tbEditTone_PCMSynthTone_AnalogFeel, slEditTone_PCMSynthTone_AnalogFeel }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(7, new View[] { tbEditTone_PCMSynthTone_CutoffOffset, slEditTone_PCMSynthTone_CutoffOffset }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(8, new View[] { tbEditTone_PCMSynthTone_ResonanceOffset, slEditTone_PCMSynthTone_ResonanceOffset }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(9, new View[] { tbEditTone_PCMSynthTone_AttackTimeOffset, slEditTone_PCMSynthTone_AttackTimeOffset }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(10, new View[] { tbEditTone_PCMSynthTone_ReleaseTimeOffset, slEditTone_PCMSynthTone_ReleaseTimeOffset }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(11, new View[] { tbEditTone_PCMSynthTone_VelocitySenseOffset, slEditTone_PCMSynthTone_VelocitySenseOffset }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(12, new View[] { cbEditTone_PCMSynthTone_MonoPoly, cbEditTone_PCMSynthTone_Legato, cbEditTone_PCMSynthTone_LegatoTrigger }, new byte[] { 1, 1, 1 })));
-            ControlsGrid.Children.Add((new GridRow(13, new View[] { cbEditTone_PCMSynthTone_Portamento, cbEditTone_PCMSynthTone_PortamentoMode, cbEditTone_PCMSynthTone_PortamentoType, cbEditTone_PCMSynthTone_PortamentoStart }, new byte[] { 1, 1, 1, 1 })));
-            ControlsGrid.Children.Add((new GridRow(14, new View[] { tbEditTone_PCMSynthTone_PortamentoTime, slEditTone_PCMSynthTone_PortamentoTime }, new byte[] { 1, 2 })));
+            GridRow.CreateRow(ControlsGrid, 2, new View[] { tbEditTone_PCMSynthTone_TonePan, slEditTone_PCMSynthTone_TonePan }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 3, new View[] { cbEditTone_PCMSynthTone_TonePriority, cbEditTone_PCMSynthTone_OctaveShift, cbEditTone_PCMSynthTone_StretchTuneDepth }, new byte[] { 1, 1, 1 });
+            GridRow.CreateRow(ControlsGrid, 4, new View[] { tbEditTone_PCMSynthTone_CoarseTune, slEditTone_PCMSynthTone_CoarseTune }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 5, new View[] { tbEditTone_PCMSynthTone_FineTune, slEditTone_PCMSynthTone_FineTune }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 6, new View[] { tbEditTone_PCMSynthTone_AnalogFeel, slEditTone_PCMSynthTone_AnalogFeel }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 7, new View[] { tbEditTone_PCMSynthTone_CutoffOffset, slEditTone_PCMSynthTone_CutoffOffset }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 8, new View[] { tbEditTone_PCMSynthTone_ResonanceOffset, slEditTone_PCMSynthTone_ResonanceOffset }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 9, new View[] { tbEditTone_PCMSynthTone_AttackTimeOffset, slEditTone_PCMSynthTone_AttackTimeOffset }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 10, new View[] { tbEditTone_PCMSynthTone_ReleaseTimeOffset, slEditTone_PCMSynthTone_ReleaseTimeOffset }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 11, new View[] { tbEditTone_PCMSynthTone_VelocitySenseOffset, slEditTone_PCMSynthTone_VelocitySenseOffset }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 12, new View[] { cbEditTone_PCMSynthTone_MonoPoly, cbEditTone_PCMSynthTone_Legato, cbEditTone_PCMSynthTone_LegatoTrigger }, new byte[] { 1, 1, 1 });
+            GridRow.CreateRow(ControlsGrid, 13, new View[] { cbEditTone_PCMSynthTone_Portamento, cbEditTone_PCMSynthTone_PortamentoMode, cbEditTone_PCMSynthTone_PortamentoType, cbEditTone_PCMSynthTone_PortamentoStart }, new byte[] { 1, 1, 1, 1 });
+            GridRow.CreateRow(ControlsGrid, 14, new View[] { tbEditTone_PCMSynthTone_PortamentoTime, slEditTone_PCMSynthTone_PortamentoTime }, new byte[] { 1, 2 });
 
             byte row = 15;
             while (row < MAX_ROWS)
             {
                 Grid dummy = new Grid();
                 dummy.BackgroundColor = colorSettings.Background;
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { dummy });
             }
 
             // Finally, set selected values (must be done after the controls has been given their parents):
@@ -926,23 +927,21 @@ namespace INTEGRA_7_Xamarin
             slEditTone_PCMSynthTone_Wave_PartialDelayTime.Maximum = 149;
 
             // Insert controls in rows:
-            ControlsGrid.Children.Add((new GridRow(0, new View[] {
-                cbEditTone_PCMSynthTone_Wave_PMTPartial1Switch, cbEditTone_PCMSynthTone_Wave_PMTPartial2Switch,
-                cbEditTone_PCMSynthTone_Wave_PMTPartial3Switch, cbEditTone_PCMSynthTone_Wave_PMTPartial4Switch})));
-            ControlsGrid.Children.Add((new GridRow(1, new View[] { cbEditTone_PCMSynthTone_WaveGroupType, cbEditTone_PCMSynthTone_WaveGain }, new byte[] { 1, 1 })));
-            ControlsGrid.Children.Add((new GridRow(2, new View[] { tbEditTone_Wave_WaveNumberL, cbEditTone_PCMSynthTone_Wave_WaveNumberL }, new byte[] { 1, 1 })));
-            ControlsGrid.Children.Add((new GridRow(3, new View[] { tbEditTone_Wave_WaveNumberR, cbEditTone_PCMSynthTone_Wave_WaveNumberR }, new byte[] { 1, 1 })));
-            ControlsGrid.Children.Add((new GridRow(4, new View[] { cbEditTone_PCMSynthTone_Wave_WaveTempoSync, cbEditTone_PCMSynthTone_Wave_WaveFXMSwitch, cbEditTone_PCMSynthTone_FXMColor })));
-            ControlsGrid.Children.Add((new GridRow(5, new View[] { tbEditTone_pCMSynthTone_Wave_WaveFXMDepth, slEditTone_pCMSynthTone_Wave_WaveFXMDepth }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(6, new View[] { cbEditTone_PCMSynthTone_Wave_PartialDelayMode })));
-            ControlsGrid.Children.Add((new GridRow(7, new View[] { tbEditTone_PCMSynthTone_Wave_PartialDelayTime, slEditTone_PCMSynthTone_Wave_PartialDelayTime }, new byte[] { 1, 2 })));
+            GridRow.CreateRow(ControlsGrid, 0, new View[] { cbEditTone_PCMSynthTone_Wave_PMTPartial1Switch, cbEditTone_PCMSynthTone_Wave_PMTPartial2Switch, cbEditTone_PCMSynthTone_Wave_PMTPartial3Switch, cbEditTone_PCMSynthTone_Wave_PMTPartial4Switch });
+            GridRow.CreateRow(ControlsGrid, 1, new View[] { cbEditTone_PCMSynthTone_WaveGroupType, cbEditTone_PCMSynthTone_WaveGain }, new byte[] { 1, 1 });
+            GridRow.CreateRow(ControlsGrid, 2, new View[] { tbEditTone_Wave_WaveNumberL, cbEditTone_PCMSynthTone_Wave_WaveNumberL }, new byte[] { 1, 1 });
+            GridRow.CreateRow(ControlsGrid, 3, new View[] { tbEditTone_Wave_WaveNumberR, cbEditTone_PCMSynthTone_Wave_WaveNumberR }, new byte[] { 1, 1 });
+            GridRow.CreateRow(ControlsGrid, 4, new View[] { cbEditTone_PCMSynthTone_Wave_WaveTempoSync, cbEditTone_PCMSynthTone_Wave_WaveFXMSwitch, cbEditTone_PCMSynthTone_FXMColor });
+            GridRow.CreateRow(ControlsGrid, 5, new View[] { tbEditTone_pCMSynthTone_Wave_WaveFXMDepth, slEditTone_pCMSynthTone_Wave_WaveFXMDepth }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 6, new View[] { cbEditTone_PCMSynthTone_Wave_PartialDelayMode });
+            GridRow.CreateRow(ControlsGrid, 7, new View[] { tbEditTone_PCMSynthTone_Wave_PartialDelayTime, slEditTone_PCMSynthTone_Wave_PartialDelayTime }, new byte[] { 1, 2 });
 
             byte row = 8;
             while (row < MAX_ROWS)
             {
                 Grid dummy = new Grid();
                 dummy.BackgroundColor = colorSettings.Background;
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { dummy });
             }
 
             // Set values:
@@ -1191,26 +1190,25 @@ namespace INTEGRA_7_Xamarin
             slEditTone_PCMSynthTone_PMT_PMTVelocityFadeWidthLower.Maximum = 127;
 
             // Put controls on form
-            ControlsGrid.Children.Add((new GridRow(0, new View[] { cbEditTone_PCMSynthTone_Wave_PMTPartial1Switch, cbEditTone_PCMSynthTone_Wave_PMTPartial2Switch,
-                cbEditTone_PCMSynthTone_Wave_PMTPartial3Switch, cbEditTone_PCMSynthTone_Wave_PMTPartial4Switch})));
-            ControlsGrid.Children.Add((new GridRow(1, new View[] { cbEditTone_PCMSynthTone_Partial, cbEditTone_PCMSynthTone_PMT_PMTVelocityControl, cbEditTone_PCMSynthTone_PMT_PMTControlSwitch }, new byte[] { 2, 4, 3 })));
-            ControlsGrid.Children.Add((new GridRow(2, new View[] { cbEditTone_PCMSynthTone_PMT_StructureType1_2, cbEditTone_PCMSynthTone_PMT_Booster1_2, }, new byte[] { 2, 1 })));
-            ControlsGrid.Children.Add((new GridRow(3, new View[] { cbEditTone_PCMSynthTone_PMT_StructureType3_4, cbEditTone_PCMSynthTone_PMT_Booster3_4 }, new byte[] { 2, 1 })));
-            ControlsGrid.Children.Add((new GridRow(4, new View[] { tbEditTone_PCMSynthTone_PMT_PMTKeyboardFadeWidthUpper, slEditTone_PCMSynthTone_PMT_PMTKeyboardFadeWidthUpper }, new byte[] { 1, 1 })));
-            ControlsGrid.Children.Add((new GridRow(5, new View[] { tbEditTone_PCMSynthTone_PMT_PMTKeyboardRangeUpper, slEditTone_PCMSynthTone_PMT_PMTKeyboardRangeUpper }, new byte[] { 1, 1 })));
-            ControlsGrid.Children.Add((new GridRow(6, new View[] { tbEditTone_PCMSynthTone_PMT_PMTKeyboardRangeLower, slEditTone_PCMSynthTone_PMT_PMTKeyboardRangeLower }, new byte[] { 1, 1 })));
-            ControlsGrid.Children.Add((new GridRow(7, new View[] { tbEditTone_PCMSynthTone_PMT_PMTKeyboardFadeWidthLower, slEditTone_PCMSynthTone_PMT_PMTKeyboardFadeWidthLower }, new byte[] { 1, 1 })));
-            ControlsGrid.Children.Add((new GridRow(8, new View[] { tbEditTone_PCMSynthTone_PMT_PMTVelocityFadeWidthUpper, slEditTone_PCMSynthTone_PMT_PMTVelocityFadeWidthUpper })));
-            ControlsGrid.Children.Add((new GridRow(9, new View[] { tbEditTone_PCMSynthTone_PMT_PMTVelocityRangeUpper, slEditTone_PCMSynthTone_PMT_PMTVelocityRangeUpper })));
-            ControlsGrid.Children.Add((new GridRow(10, new View[] { tbEditTone_PCMSynthTone_PMT_PMTVelocityRangeLower, slEditTone_PCMSynthTone_PMT_PMTVelocityRangeLower })));
-            ControlsGrid.Children.Add((new GridRow(11, new View[] { tbEditTone_PCMSynthTone_PMT_PMTVelocityFadeWidthLower, slEditTone_PCMSynthTone_PMT_PMTVelocityFadeWidthLower })));
+            GridRow.CreateRow(ControlsGrid, 0, new View[] { cbEditTone_PCMSynthTone_Wave_PMTPartial1Switch, cbEditTone_PCMSynthTone_Wave_PMTPartial2Switch, cbEditTone_PCMSynthTone_Wave_PMTPartial3Switch, cbEditTone_PCMSynthTone_Wave_PMTPartial4Switch });
+            GridRow.CreateRow(ControlsGrid, 1, new View[] { cbEditTone_PCMSynthTone_Partial, cbEditTone_PCMSynthTone_PMT_PMTVelocityControl, cbEditTone_PCMSynthTone_PMT_PMTControlSwitch }, new byte[] { 2, 4, 3 });
+            GridRow.CreateRow(ControlsGrid, 2, new View[] { cbEditTone_PCMSynthTone_PMT_StructureType1_2, cbEditTone_PCMSynthTone_PMT_Booster1_2, }, new byte[] { 2, 1 });
+            GridRow.CreateRow(ControlsGrid, 3, new View[] { cbEditTone_PCMSynthTone_PMT_StructureType3_4, cbEditTone_PCMSynthTone_PMT_Booster3_4 }, new byte[] { 2, 1 });
+            GridRow.CreateRow(ControlsGrid, 4, new View[] { tbEditTone_PCMSynthTone_PMT_PMTKeyboardFadeWidthUpper, slEditTone_PCMSynthTone_PMT_PMTKeyboardFadeWidthUpper }, new byte[] { 1, 1 });
+            GridRow.CreateRow(ControlsGrid, 5, new View[] { tbEditTone_PCMSynthTone_PMT_PMTKeyboardRangeUpper, slEditTone_PCMSynthTone_PMT_PMTKeyboardRangeUpper }, new byte[] { 1, 1 });
+            GridRow.CreateRow(ControlsGrid, 6, new View[] { tbEditTone_PCMSynthTone_PMT_PMTKeyboardRangeLower, slEditTone_PCMSynthTone_PMT_PMTKeyboardRangeLower }, new byte[] { 1, 1 });
+            GridRow.CreateRow(ControlsGrid, 7, new View[] { tbEditTone_PCMSynthTone_PMT_PMTKeyboardFadeWidthLower, slEditTone_PCMSynthTone_PMT_PMTKeyboardFadeWidthLower }, new byte[] { 1, 1 });
+            GridRow.CreateRow(ControlsGrid, 8, new View[] { tbEditTone_PCMSynthTone_PMT_PMTVelocityFadeWidthUpper, slEditTone_PCMSynthTone_PMT_PMTVelocityFadeWidthUpper });
+            GridRow.CreateRow(ControlsGrid, 9, new View[] { tbEditTone_PCMSynthTone_PMT_PMTVelocityRangeUpper, slEditTone_PCMSynthTone_PMT_PMTVelocityRangeUpper });
+            GridRow.CreateRow(ControlsGrid, 10, new View[] { tbEditTone_PCMSynthTone_PMT_PMTVelocityRangeLower, slEditTone_PCMSynthTone_PMT_PMTVelocityRangeLower });
+            GridRow.CreateRow(ControlsGrid, 11, new View[] { tbEditTone_PCMSynthTone_PMT_PMTVelocityFadeWidthLower, slEditTone_PCMSynthTone_PMT_PMTVelocityFadeWidthLower });
 
             byte row = 12;
             while (row < MAX_ROWS)
             {
                 Grid dummy = new Grid();
                 dummy.BackgroundColor = colorSettings.Background;
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { dummy });
             }
 
             // Set controls values
@@ -1376,21 +1374,20 @@ namespace INTEGRA_7_Xamarin
             slEditTone_PCMSynthTone_Pitch_PitchBendRangeDown.Maximum = 0;
 
             // Put controls in rows 
-            ControlsGrid.Children.Add((new GridRow(0, new View[] {  cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch
-                , cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch})));
-            ControlsGrid.Children.Add((new GridRow(1, new View[] { tbEditTone_PCMSynthTone_Pitch_PartialCoarseTune, slEditTone_PCMSynthTone_Pitch_PartialCoarseTune }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(2, new View[] { tbEditTone_PCMSynthTone_Pitch_PartialFineTune, slEditTone_PCMSynthTone_Pitch_PartialFineTune }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(3, new View[] { cbEditTone_PCMSynthTone_Pitch_PartialRandomPitchDepth })));
-            ControlsGrid.Children.Add((new GridRow(4, new View[] { tbEditTone_PCMSynthTone_Pitch_WavePitchKeyfollow, slEditTone_PCMSynthTone_Pitch_WavePitchKeyfollow }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(5, new View[] { tbEditTone_PCMSynthTone_Pitch_PitchBendRangeUp, slEditTone_PCMSynthTone_Pitch_PitchBendRangeUp }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(6, new View[] { tbEditTone_PCMSynthTone_Pitch_PitchBendRangeDown, slEditTone_PCMSynthTone_Pitch_PitchBendRangeDown }, new byte[] { 1, 2 })));
+            GridRow.CreateRow(ControlsGrid, 0, new View[] { cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch });
+            GridRow.CreateRow(ControlsGrid, 1, new View[] { tbEditTone_PCMSynthTone_Pitch_PartialCoarseTune, slEditTone_PCMSynthTone_Pitch_PartialCoarseTune }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 2, new View[] { tbEditTone_PCMSynthTone_Pitch_PartialFineTune, slEditTone_PCMSynthTone_Pitch_PartialFineTune }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 3, new View[] { cbEditTone_PCMSynthTone_Pitch_PartialRandomPitchDepth });
+            GridRow.CreateRow(ControlsGrid, 4, new View[] { tbEditTone_PCMSynthTone_Pitch_WavePitchKeyfollow, slEditTone_PCMSynthTone_Pitch_WavePitchKeyfollow }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 5, new View[] { tbEditTone_PCMSynthTone_Pitch_PitchBendRangeUp, slEditTone_PCMSynthTone_Pitch_PitchBendRangeUp }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 6, new View[] { tbEditTone_PCMSynthTone_Pitch_PitchBendRangeDown, slEditTone_PCMSynthTone_Pitch_PitchBendRangeDown }, new byte[] { 1, 2 });
 
             byte row = 7;
             while (row < MAX_ROWS)
             {
                 Grid dummy = new Grid();
                 dummy.BackgroundColor = colorSettings.Background;
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { dummy });
             }
 
             // Set control values
@@ -1536,20 +1533,19 @@ namespace INTEGRA_7_Xamarin
             }
 
             // Put controls in rows 
-            ControlsGrid.Children.Add((new GridRow(0, new View[] {  cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch
-                , cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch})));
-            ControlsGrid.Children.Add((new GridRow(1, new View[] { tbEditTone_PCMSynthTone_Pitchenvelope_PitchEnvDepth, slEditTone_PCMSynthTone_Pitchenvelope_PitchEnvDepth }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(2, new View[] { tbEditTone_PCMSynthTone_Pitchenvelope_PitchEnvVelocitySens, slEditTone_PCMSynthTone_Pitchenvelope_PitchEnvVelocitySens }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(3, new View[] { tbEditTone_PCMSynthTone_Pitchenvelope_PitchEnvTime1VelocitySens, slEditTone_PCMSynthTone_Pitchenvelope_PitchEnvTime1VelocitySens }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(4, new View[] { tbEditTone_PCMSynthTone_Pitchenvelope_PitchEnvTime4VelocitySens, slEditTone_PCMSynthTone_Pitchenvelope_PitchEnvTime4VelocitySens }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(5, new View[] { tbEditTone_PCMSynthTone_Pitchenvelope_PitchEnvTimeKeyfollow, slEditTone_PCMSynthTone_Pitchenvelope_PitchEnvTimeKeyfollow }, new byte[] { 1, 2 })));
+            GridRow.CreateRow(ControlsGrid, 0, new View[] { cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch });
+            GridRow.CreateRow(ControlsGrid, 1, new View[] { tbEditTone_PCMSynthTone_Pitchenvelope_PitchEnvDepth, slEditTone_PCMSynthTone_Pitchenvelope_PitchEnvDepth }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 2, new View[] { tbEditTone_PCMSynthTone_Pitchenvelope_PitchEnvVelocitySens, slEditTone_PCMSynthTone_Pitchenvelope_PitchEnvVelocitySens }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 3, new View[] { tbEditTone_PCMSynthTone_Pitchenvelope_PitchEnvTime1VelocitySens, slEditTone_PCMSynthTone_Pitchenvelope_PitchEnvTime1VelocitySens }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 4, new View[] { tbEditTone_PCMSynthTone_Pitchenvelope_PitchEnvTime4VelocitySens, slEditTone_PCMSynthTone_Pitchenvelope_PitchEnvTime4VelocitySens }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 5, new View[] { tbEditTone_PCMSynthTone_Pitchenvelope_PitchEnvTimeKeyfollow, slEditTone_PCMSynthTone_Pitchenvelope_PitchEnvTimeKeyfollow }, new byte[] { 1, 2 });
             for (byte i = 0; i < 4; i++)
             {
-                ControlsGrid.Children.Add((new GridRow((byte)(6 + i), new View[] { tbEditTone_PCMSynthTone_Pitchenvelope_PitchEnvTime[i], slEditTone_PCMSynthTone_Pitchenvelope_PitchEnvTime[i] }, new byte[] { 1, 2 })));
+                GridRow.CreateRow(ControlsGrid, (byte)(6 + i), new View[] { tbEditTone_PCMSynthTone_Pitchenvelope_PitchEnvTime[i], slEditTone_PCMSynthTone_Pitchenvelope_PitchEnvTime[i] }, new byte[] { 1, 2 });
             }
             for (byte i = 0; i < 5; i++)
             {
-                ControlsGrid.Children.Add((new GridRow((byte)(10 + i), new View[] { tbEditTone_PCMSynthTone_Pitchenvelope_PitchEnvLevel[i], slEditTone_PCMSynthTone_Pitchenvelope_PitchEnvLevel[i] }, new byte[] { 1, 2 })));
+                GridRow.CreateRow(ControlsGrid, (byte)(10 + i), new View[] { tbEditTone_PCMSynthTone_Pitchenvelope_PitchEnvLevel[i], slEditTone_PCMSynthTone_Pitchenvelope_PitchEnvLevel[i] }, new byte[] { 1, 2 });
             }
 
             byte row = 14;
@@ -1557,7 +1553,7 @@ namespace INTEGRA_7_Xamarin
             {
                 Grid dummy = new Grid();
                 dummy.BackgroundColor = colorSettings.Background;
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { dummy });
             }
 
             // Set control values
@@ -1711,22 +1707,21 @@ namespace INTEGRA_7_Xamarin
             slEditTone_PCMSynthTone_TVF_TVFResonanceVelocitySens.Maximum = 63;
 
             // Put controls in rows 
-            ControlsGrid.Children.Add((new GridRow(0, new View[] { cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch
-                , cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch})));
-            ControlsGrid.Children.Add((new GridRow(1, new View[] { cbEditTone_PCMSynthTone_TVF_TVFFilterType })));
-            ControlsGrid.Children.Add((new GridRow(2, new View[] { tbEditTone_PCMSynthTone_TVF_TVFCutoffFrequency, slEditTone_PCMSynthTone_TVF_TVFCutoffFrequency }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(3, new View[] { tbEditTone_PCMSynthTone_TVF_TVFResonance, slEditTone_PCMSynthTone_TVF_TVFResonance }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(4, new View[] { tbEditTone_PCMSynthTone_TVF_TVFCutoffKeyfollow, slEditTone_PCMSynthTone_TVF_TVFCutoffKeyfollow }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(5, new View[] { cbEditTone_PCMSynthTone_TVF_TVFCutoffVelocityCurve })));
-            ControlsGrid.Children.Add((new GridRow(6, new View[] { tbEditTone_PCMSynthTone_TVF_TVFCutoffVelocitySens, slEditTone_PCMSynthTone_TVF_TVFCutoffVelocitySens }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(7, new View[] { tbEditTone_PCMSynthTone_TVF_TVFResonanceVelocitySens, slEditTone_PCMSynthTone_TVF_TVFResonanceVelocitySens }, new byte[] { 1, 2 })));
+            GridRow.CreateRow(ControlsGrid, 0, new View[] { cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch });
+            GridRow.CreateRow(ControlsGrid, 1, new View[] { cbEditTone_PCMSynthTone_TVF_TVFFilterType });
+            GridRow.CreateRow(ControlsGrid, 2, new View[] { tbEditTone_PCMSynthTone_TVF_TVFCutoffFrequency, slEditTone_PCMSynthTone_TVF_TVFCutoffFrequency }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 3, new View[] { tbEditTone_PCMSynthTone_TVF_TVFResonance, slEditTone_PCMSynthTone_TVF_TVFResonance }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 4, new View[] { tbEditTone_PCMSynthTone_TVF_TVFCutoffKeyfollow, slEditTone_PCMSynthTone_TVF_TVFCutoffKeyfollow }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 5, new View[] { cbEditTone_PCMSynthTone_TVF_TVFCutoffVelocityCurve });
+            GridRow.CreateRow(ControlsGrid, 6, new View[] { tbEditTone_PCMSynthTone_TVF_TVFCutoffVelocitySens, slEditTone_PCMSynthTone_TVF_TVFCutoffVelocitySens }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 7, new View[] { tbEditTone_PCMSynthTone_TVF_TVFResonanceVelocitySens, slEditTone_PCMSynthTone_TVF_TVFResonanceVelocitySens }, new byte[] { 1, 2 });
 
             byte row = 8;
             while (row < MAX_ROWS)
             {
                 Grid dummy = new Grid();
                 dummy.BackgroundColor = colorSettings.Background;
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { dummy });
             }
 
             // Set control values
@@ -1889,20 +1884,19 @@ namespace INTEGRA_7_Xamarin
             }
 
             // Put in rows
-            ControlsGrid.Children.Add((new GridRow(0, new View[] {  cbEditTone_PCMSynthTone_TVFEnvelope_TVFEnvVelocityCurve, cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch
-                , cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch}, new byte[] { 1, 2, 1, 1, 1, 1 })));
-            ControlsGrid.Children.Add((new GridRow(1, new View[] { tbEditTone_PCMSynthTone_TVFEnvelope_TVFEnvDepth, slEditTone_PCMSynthTone_TVFEnvelope_TVFEnvDepth }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(2, new View[] { tbEditTone_PCMSynthTone_TVFEnvelope_TVFEnvVelocitySens, slEditTone_PCMSynthTone_TVFEnvelope_TVFEnvVelocitySens }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(3, new View[] { tbEditTone_PCMSynthTone_TVFEnvelope_TVFEnvTime1VelocitySens, slEditTone_PCMSynthTone_TVFEnvelope_TVFEnvTime1VelocitySens }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(4, new View[] { tbEditTone_PCMSynthTone_TVFEnvelope_TVFEnvTime4VelocitySens, slEditTone_PCMSynthTone_TVFEnvelope_TVFEnvTime4VelocitySens }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(5, new View[] { tbEditTone_PCMSynthTone_TVFEnvelope_TVFEnvTimeKeyfollow, slEditTone_PCMSynthTone_TVFEnvelope_TVFEnvTimeKeyfollow }, new byte[] { 1, 2 })));
+            GridRow.CreateRow(ControlsGrid, 0, new View[] { cbEditTone_PCMSynthTone_TVFEnvelope_TVFEnvVelocityCurve, cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch }, new byte[] { 1, 2, 1, 1, 1, 1 });
+            GridRow.CreateRow(ControlsGrid, 1, new View[] { tbEditTone_PCMSynthTone_TVFEnvelope_TVFEnvDepth, slEditTone_PCMSynthTone_TVFEnvelope_TVFEnvDepth }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 2, new View[] { tbEditTone_PCMSynthTone_TVFEnvelope_TVFEnvVelocitySens, slEditTone_PCMSynthTone_TVFEnvelope_TVFEnvVelocitySens }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 3, new View[] { tbEditTone_PCMSynthTone_TVFEnvelope_TVFEnvTime1VelocitySens, slEditTone_PCMSynthTone_TVFEnvelope_TVFEnvTime1VelocitySens }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 4, new View[] { tbEditTone_PCMSynthTone_TVFEnvelope_TVFEnvTime4VelocitySens, slEditTone_PCMSynthTone_TVFEnvelope_TVFEnvTime4VelocitySens }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 5, new View[] { tbEditTone_PCMSynthTone_TVFEnvelope_TVFEnvTimeKeyfollow, slEditTone_PCMSynthTone_TVFEnvelope_TVFEnvTimeKeyfollow }, new byte[] { 1, 2 });
             for (byte i = 0; i < 4; i++)
             {
-                ControlsGrid.Children.Add((new GridRow((byte)(6 + i), new View[] { tbEditTone_PCMSynthTone_TVFEnvelope_TVFEnvTime[i], slEditTone_PCMSynthTone_TVFEnvelope_TVFEnvTime[i] }, new byte[] { 1, 2 })));
+                GridRow.CreateRow(ControlsGrid, (byte)(6 + i), new View[] { tbEditTone_PCMSynthTone_TVFEnvelope_TVFEnvTime[i], slEditTone_PCMSynthTone_TVFEnvelope_TVFEnvTime[i] }, new byte[] { 1, 2 });
             }
             for (byte i = 0; i < 5; i++)
             {
-                ControlsGrid.Children.Add((new GridRow((byte)(10 + i), new View[] { tbEditTone_PCMSynthTone_TVFEnvelope_TVFEnvLevel[i], slEditTone_PCMSynthTone_TVFEnvelope_TVFEnvLevel[i] }, new byte[] { 1, 2 })));
+                GridRow.CreateRow(ControlsGrid, (byte)(10 + i), new View[] { tbEditTone_PCMSynthTone_TVFEnvelope_TVFEnvLevel[i], slEditTone_PCMSynthTone_TVFEnvelope_TVFEnvLevel[i] }, new byte[] { 1, 2 });
             }
 
             byte row = 14;
@@ -1910,7 +1904,7 @@ namespace INTEGRA_7_Xamarin
             {
                 Grid dummy = new Grid();
                 dummy.BackgroundColor = colorSettings.Background;
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { dummy });
             }
 
             // Set values
@@ -2088,25 +2082,24 @@ namespace INTEGRA_7_Xamarin
             slEditTone_PCMSynthTone_TVA_PartialAlternatePanDepth.Maximum = 63;
 
             // Put in rows
-            ControlsGrid.Children.Add((new GridRow(0, new View[] {  cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch,
-                cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch}, new byte[] { 1, 1, 1, 1, 1 })));
-            ControlsGrid.Children.Add((new GridRow(1, new View[] { tbEditTone_PCMSynthTone_TVA_PartialOutputLevel, slEditTone_PCMSynthTone_TVA_PartialOutputLevel }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(2, new View[] { cbEditTone_PCMSynthTone_TVA_TVALevelVelocityCurve })));
-            ControlsGrid.Children.Add((new GridRow(3, new View[] { tbEditTone_PCMSynthTone_TVA_TVALevelVelocitySens, slEditTone_PCMSynthTone_TVA_TVALevelVelocitySens }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(4, new View[] { tbEditTone_PCMSynthTone_TVA_BiasLevel, slEditTone_PCMSynthTone_TVA_BiasLevel }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(5, new View[] { tbEditTone_PCMSynthTone_TVA_BiasPosition, slEditTone_PCMSynthTone_TVA_BiasPosition }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(6, new View[] { cbEditTone_PCMSynthTone_TVA_BiasDirection })));
-            ControlsGrid.Children.Add((new GridRow(7, new View[] { tbEditTone_PCMSynthTone_TVA_PartialPan, slEditTone_PCMSynthTone_TVA_PartialPan }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(8, new View[] { tbEditTone_PCMSynthTone_TVA_PartialPanKeyfollow, slEditTone_PCMSynthTone_TVA_PartialPanKeyfollow }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(9, new View[] { tbEditTone_PCMSynthTone_TVA_PartialRandomPanDepth, slEditTone_PCMSynthTone_TVA_PartialRandomPanDepth }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(10, new View[] { tbEditTone_PCMSynthTone_TVA_PartialAlternatePanDepth, slEditTone_PCMSynthTone_TVA_PartialAlternatePanDepth }, new byte[] { 1, 2 })));
+            GridRow.CreateRow(ControlsGrid, 0, new View[] { cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch }, new byte[] { 1, 1, 1, 1, 1 });
+            GridRow.CreateRow(ControlsGrid, 1, new View[] { tbEditTone_PCMSynthTone_TVA_PartialOutputLevel, slEditTone_PCMSynthTone_TVA_PartialOutputLevel }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 2, new View[] { cbEditTone_PCMSynthTone_TVA_TVALevelVelocityCurve });
+            GridRow.CreateRow(ControlsGrid, 3, new View[] { tbEditTone_PCMSynthTone_TVA_TVALevelVelocitySens, slEditTone_PCMSynthTone_TVA_TVALevelVelocitySens }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 4, new View[] { tbEditTone_PCMSynthTone_TVA_BiasLevel, slEditTone_PCMSynthTone_TVA_BiasLevel }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 5, new View[] { tbEditTone_PCMSynthTone_TVA_BiasPosition, slEditTone_PCMSynthTone_TVA_BiasPosition }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 6, new View[] { cbEditTone_PCMSynthTone_TVA_BiasDirection });
+            GridRow.CreateRow(ControlsGrid, 7, new View[] { tbEditTone_PCMSynthTone_TVA_PartialPan, slEditTone_PCMSynthTone_TVA_PartialPan }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 8, new View[] { tbEditTone_PCMSynthTone_TVA_PartialPanKeyfollow, slEditTone_PCMSynthTone_TVA_PartialPanKeyfollow }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 9, new View[] { tbEditTone_PCMSynthTone_TVA_PartialRandomPanDepth, slEditTone_PCMSynthTone_TVA_PartialRandomPanDepth }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 10, new View[] { tbEditTone_PCMSynthTone_TVA_PartialAlternatePanDepth, slEditTone_PCMSynthTone_TVA_PartialAlternatePanDepth }, new byte[] { 1, 2 });
 
             byte row = 11;
             while (row < MAX_ROWS)
             {
                 Grid dummy = new Grid();
                 dummy.BackgroundColor = colorSettings.Background;
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { dummy });
             }
 
             // Set values
@@ -2256,18 +2249,17 @@ namespace INTEGRA_7_Xamarin
             }
 
             // Put in rows
-            ControlsGrid.Children.Add((new GridRow(0, new View[] {  cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch,
-            cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch}, new byte[] { 1, 1, 1, 1, 1 })));
-            ControlsGrid.Children.Add((new GridRow(1, new View[] { tbEditTone_PCMSynthTone_TVAEnvelope_TVAEnvTime1VelocitySens, slEditTone_PCMSynthTone_TVAEnvelope_TVAEnvTime1VelocitySens }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(2, new View[] { tbEditTone_PCMSynthTone_TVAEnvelope_TVAEnvTime4VelocitySens, slEditTone_PCMSynthTone_TVAEnvelope_TVAEnvTime4VelocitySens }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(3, new View[] { tbEditTone_PCMSynthTone_TVAEnvelope_TVAEnvTimeKeyfollow, slEditTone_PCMSynthTone_TVAEnvelope_TVAEnvTimeKeyfollow }, new byte[] { 1, 2 })));
+            GridRow.CreateRow(ControlsGrid, 0, new View[] { cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch }, new byte[] { 1, 1, 1, 1, 1 });
+            GridRow.CreateRow(ControlsGrid, 1, new View[] { tbEditTone_PCMSynthTone_TVAEnvelope_TVAEnvTime1VelocitySens, slEditTone_PCMSynthTone_TVAEnvelope_TVAEnvTime1VelocitySens }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 2, new View[] { tbEditTone_PCMSynthTone_TVAEnvelope_TVAEnvTime4VelocitySens, slEditTone_PCMSynthTone_TVAEnvelope_TVAEnvTime4VelocitySens }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 3, new View[] { tbEditTone_PCMSynthTone_TVAEnvelope_TVAEnvTimeKeyfollow, slEditTone_PCMSynthTone_TVAEnvelope_TVAEnvTimeKeyfollow }, new byte[] { 1, 2 });
             for (byte i = 0; i < 4; i++)
             {
-                ControlsGrid.Children.Add((new GridRow((byte)(4 + i), new View[] { tbEditTone_PCMSynthTone_TVAEnvelope_TVAEnvTime[i], slEditTone_PCMSynthTone_TVAEnvelope_TVAEnvTime[i] }, new byte[] { 1, 2 })));
+                GridRow.CreateRow(ControlsGrid, (byte)(4 + i), new View[] { tbEditTone_PCMSynthTone_TVAEnvelope_TVAEnvTime[i], slEditTone_PCMSynthTone_TVAEnvelope_TVAEnvTime[i] }, new byte[] { 1, 2 });
             }
             for (byte i = 0; i < 3; i++)
             {
-                ControlsGrid.Children.Add((new GridRow((byte)(8 + i), new View[] { tbEditTone_PCMSynthTone_TVAEnvelope_TVAEnvLevel[i], slEditTone_PCMSynthTone_TVAEnvelope_TVAEnvLevel[i] }, new byte[] { 1, 2 })));
+                GridRow.CreateRow(ControlsGrid, (byte)(8 + i), new View[] { tbEditTone_PCMSynthTone_TVAEnvelope_TVAEnvLevel[i], slEditTone_PCMSynthTone_TVAEnvelope_TVAEnvLevel[i] }, new byte[] { 1, 2 });
             }
 
             byte row = 11;
@@ -2275,7 +2267,7 @@ namespace INTEGRA_7_Xamarin
             {
                 Grid dummy = new Grid();
                 dummy.BackgroundColor = colorSettings.Background;
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { dummy });
             }
 
             // Set values
@@ -2371,18 +2363,17 @@ namespace INTEGRA_7_Xamarin
             slEditTone_PCMSynthTone_Output_PartialReverbSendLevel.Maximum = 127;
 
             // Put in rows
-            ControlsGrid.Children.Add((new GridRow(0, new View[] {  cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch,
-                cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch}, new byte[] { 1, 1, 1, 1, 1 })));
-            ControlsGrid.Children.Add((new GridRow(1, new View[] { tbEditTone_PCMSynthTone_Output_PartialOutputLevel, slEditTone_PCMSynthTone_Output_PartialOutputLevel }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(2, new View[] { tbEditTone_PCMSynthTone_Output_PartialChorusSendLevel, slEditTone_PCMSynthTone_Output_PartialChorusSendLevel }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(3, new View[] { tbEditTone_PCMSynthTone_Output_PartialReverbSendLevel, slEditTone_PCMSynthTone_Output_PartialReverbSendLevel }, new byte[] { 1, 2 })));
+            GridRow.CreateRow(ControlsGrid, 0, new View[] { cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch }, new byte[] { 1, 1, 1, 1, 1 });
+            GridRow.CreateRow(ControlsGrid, 1, new View[] { tbEditTone_PCMSynthTone_Output_PartialOutputLevel, slEditTone_PCMSynthTone_Output_PartialOutputLevel }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 2, new View[] { tbEditTone_PCMSynthTone_Output_PartialChorusSendLevel, slEditTone_PCMSynthTone_Output_PartialChorusSendLevel }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 3, new View[] { tbEditTone_PCMSynthTone_Output_PartialReverbSendLevel, slEditTone_PCMSynthTone_Output_PartialReverbSendLevel }, new byte[] { 1, 2 });
 
             byte row = 4;
             while (row < MAX_ROWS)
             {
                 Grid dummy = new Grid();
                 dummy.BackgroundColor = colorSettings.Background;
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { dummy });
             }
 
             // Set values
@@ -2580,28 +2571,27 @@ namespace INTEGRA_7_Xamarin
             slEditTone_PCMSynthTone_LFO1_LFOPanDepth.Maximum = 127;
 
             // Put in rows
-            ControlsGrid.Children.Add((new GridRow(0, new View[] {  cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch,
-                cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch}, new byte[] { 1, 1, 1, 1, 1 })));
-            ControlsGrid.Children.Add((new GridRow(1, new View[] { cbEditTone_PCMSynthTone_LFO1_LFO1Waveform })));
-            ControlsGrid.Children.Add((new GridRow(2, new View[] { tbEditTone_PCMSynthTone_LFO1_LFORate, slEditTone_PCMSynthTone_LFO1_LFORate }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(3, new View[] { tbEditTone_PCMSynthTone_LFO1_LFORateDetune, slEditTone_PCMSynthTone_LFO1_LFORateDetune }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(4, new View[] { cbEditTone_PCMSynthTone_LFO1_LFOOffset })));
-            ControlsGrid.Children.Add((new GridRow(5, new View[] { tbEditTone_PCMSynthTone_LFO1_LFODelayTime, slEditTone_PCMSynthTone_LFO1_LFODelayTime }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(6, new View[] { tbEditTone_PCMSynthTone_LFO1_LFODelayTimeKeyfollow, slEditTone_PCMSynthTone_LFO1_LFODelayTimeKeyfollow }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(7, new View[] { cbEditTone_PCMSynthTone_LFO1_LFOFadeMode })));
-            ControlsGrid.Children.Add((new GridRow(8, new View[] { tbEditTone_PCMSynthTone_LFO1_LFOFadeTime, slEditTone_PCMSynthTone_LFO1_LFOFadeTime }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(9, new View[] { cbEditTone_PCMSynthTone_LFO1_LFOKeyTrigger })));
-            ControlsGrid.Children.Add((new GridRow(10, new View[] { tbEditTone_PCMSynthTone_LFO1_LFOPitchDepth, slEditTone_PCMSynthTone_LFO1_LFOPitchDepth }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(11, new View[] { tbEditTone_PCMSynthTone_LFO1_LFOTVFDepth, slEditTone_PCMSynthTone_LFO1_LFOTVFDepth }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(12, new View[] { tbEditTone_PCMSynthTone_LFO1_LFOTVADepth, slEditTone_PCMSynthTone_LFO1_LFOTVADepth }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(13, new View[] { tbEditTone_PCMSynthTone_LFO1_LFOPanDepth, slEditTone_PCMSynthTone_LFO1_LFOPanDepth }, new byte[] { 1, 2 })));
+            GridRow.CreateRow(ControlsGrid, 0, new View[] { cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch }, new byte[] { 1, 1, 1, 1, 1 });
+            GridRow.CreateRow(ControlsGrid, 1, new View[] { cbEditTone_PCMSynthTone_LFO1_LFO1Waveform });
+            GridRow.CreateRow(ControlsGrid, 2, new View[] { tbEditTone_PCMSynthTone_LFO1_LFORate, slEditTone_PCMSynthTone_LFO1_LFORate }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 3, new View[] { tbEditTone_PCMSynthTone_LFO1_LFORateDetune, slEditTone_PCMSynthTone_LFO1_LFORateDetune }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 4, new View[] { cbEditTone_PCMSynthTone_LFO1_LFOOffset });
+            GridRow.CreateRow(ControlsGrid, 5, new View[] { tbEditTone_PCMSynthTone_LFO1_LFODelayTime, slEditTone_PCMSynthTone_LFO1_LFODelayTime }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 6, new View[] { tbEditTone_PCMSynthTone_LFO1_LFODelayTimeKeyfollow, slEditTone_PCMSynthTone_LFO1_LFODelayTimeKeyfollow }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 7, new View[] { cbEditTone_PCMSynthTone_LFO1_LFOFadeMode });
+            GridRow.CreateRow(ControlsGrid, 8, new View[] { tbEditTone_PCMSynthTone_LFO1_LFOFadeTime, slEditTone_PCMSynthTone_LFO1_LFOFadeTime }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 9, new View[] { cbEditTone_PCMSynthTone_LFO1_LFOKeyTrigger });
+            GridRow.CreateRow(ControlsGrid, 10, new View[] { tbEditTone_PCMSynthTone_LFO1_LFOPitchDepth, slEditTone_PCMSynthTone_LFO1_LFOPitchDepth }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 11, new View[] { tbEditTone_PCMSynthTone_LFO1_LFOTVFDepth, slEditTone_PCMSynthTone_LFO1_LFOTVFDepth }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 12, new View[] { tbEditTone_PCMSynthTone_LFO1_LFOTVADepth, slEditTone_PCMSynthTone_LFO1_LFOTVADepth }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 13, new View[] { tbEditTone_PCMSynthTone_LFO1_LFOPanDepth, slEditTone_PCMSynthTone_LFO1_LFOPanDepth }, new byte[] { 1, 2 });
 
             byte row = 14;
             while (row < MAX_ROWS)
             {
                 Grid dummy = new Grid();
                 dummy.BackgroundColor = colorSettings.Background;
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { dummy });
             }
 
             // Set values
@@ -2819,28 +2809,27 @@ namespace INTEGRA_7_Xamarin
             slEditTone_PCMSynthTone_LFO2_LFOPanDepth.Maximum = 127;
 
             // Put in rows
-            ControlsGrid.Children.Add((new GridRow(0, new View[] {  cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch,
-                cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch}, new byte[] { 1, 1, 1, 1, 1 })));
-            ControlsGrid.Children.Add((new GridRow(1, new View[] { cbEditTone_PCMSynthTone_LFO2_LFO2Waveform })));
-            ControlsGrid.Children.Add((new GridRow(2, new View[] { tbEditTone_PCMSynthTone_LFO2_LFORate, slEditTone_PCMSynthTone_LFO2_LFORate }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(3, new View[] { tbEditTone_PCMSynthTone_LFO2_LFORateDetune, slEditTone_PCMSynthTone_LFO2_LFORateDetune }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(4, new View[] { cbEditTone_PCMSynthTone_LFO2_LFOOffset })));
-            ControlsGrid.Children.Add((new GridRow(5, new View[] { tbEditTone_PCMSynthTone_LFO2_LFODelayTime, slEditTone_PCMSynthTone_LFO2_LFODelayTime }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(6, new View[] { tbEditTone_PCMSynthTone_LFO2_LFODelayTimeKeyfollow, slEditTone_PCMSynthTone_LFO2_LFODelayTimeKeyfollow }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(7, new View[] { cbEditTone_PCMSynthTone_LFO2_LFOFadeMode })));
-            ControlsGrid.Children.Add((new GridRow(8, new View[] { tbEditTone_PCMSynthTone_LFO2_LFOFadeTime, slEditTone_PCMSynthTone_LFO2_LFOFadeTime }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(9, new View[] { cbEditTone_PCMSynthTone_LFO2_LFOKeyTrigger })));
-            ControlsGrid.Children.Add((new GridRow(10, new View[] { tbEditTone_PCMSynthTone_LFO2_LFOPitchDepth, slEditTone_PCMSynthTone_LFO2_LFOPitchDepth }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(11, new View[] { tbEditTone_PCMSynthTone_LFO2_LFOTVFDepth, slEditTone_PCMSynthTone_LFO2_LFOTVFDepth }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(12, new View[] { tbEditTone_PCMSynthTone_LFO2_LFOTVADepth, slEditTone_PCMSynthTone_LFO2_LFOTVADepth }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(13, new View[] { tbEditTone_PCMSynthTone_LFO2_LFOPanDepth, slEditTone_PCMSynthTone_LFO2_LFOPanDepth }, new byte[] { 1, 2 })));
+            GridRow.CreateRow(ControlsGrid, 0, new View[] { cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch }, new byte[] { 1, 1, 1, 1, 1 });
+            GridRow.CreateRow(ControlsGrid, 1, new View[] { cbEditTone_PCMSynthTone_LFO2_LFO2Waveform });
+            GridRow.CreateRow(ControlsGrid, 2, new View[] { tbEditTone_PCMSynthTone_LFO2_LFORate, slEditTone_PCMSynthTone_LFO2_LFORate }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 3, new View[] { tbEditTone_PCMSynthTone_LFO2_LFORateDetune, slEditTone_PCMSynthTone_LFO2_LFORateDetune }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 4, new View[] { cbEditTone_PCMSynthTone_LFO2_LFOOffset });
+            GridRow.CreateRow(ControlsGrid, 5, new View[] { tbEditTone_PCMSynthTone_LFO2_LFODelayTime, slEditTone_PCMSynthTone_LFO2_LFODelayTime }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 6, new View[] { tbEditTone_PCMSynthTone_LFO2_LFODelayTimeKeyfollow, slEditTone_PCMSynthTone_LFO2_LFODelayTimeKeyfollow }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 7, new View[] { cbEditTone_PCMSynthTone_LFO2_LFOFadeMode });
+            GridRow.CreateRow(ControlsGrid, 8, new View[] { tbEditTone_PCMSynthTone_LFO2_LFOFadeTime, slEditTone_PCMSynthTone_LFO2_LFOFadeTime }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 9, new View[] { cbEditTone_PCMSynthTone_LFO2_LFOKeyTrigger });
+            GridRow.CreateRow(ControlsGrid, 10, new View[] { tbEditTone_PCMSynthTone_LFO2_LFOPitchDepth, slEditTone_PCMSynthTone_LFO2_LFOPitchDepth }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 11, new View[] { tbEditTone_PCMSynthTone_LFO2_LFOTVFDepth, slEditTone_PCMSynthTone_LFO2_LFOTVFDepth }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 12, new View[] { tbEditTone_PCMSynthTone_LFO2_LFOTVADepth, slEditTone_PCMSynthTone_LFO2_LFOTVADepth }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 13, new View[] { tbEditTone_PCMSynthTone_LFO2_LFOPanDepth, slEditTone_PCMSynthTone_LFO2_LFOPanDepth }, new byte[] { 1, 2 });
 
             byte row = 14;
             while (row < MAX_ROWS)
             {
                 Grid dummy = new Grid();
                 dummy.BackgroundColor = colorSettings.Background;
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { dummy });
             }
 
             // Set values
@@ -2941,12 +2930,10 @@ namespace INTEGRA_7_Xamarin
             }
 
             // Put in rows
-            ControlsGrid.Children.Add((new GridRow(0, new View[] {  cbEditTone_PCMSynthTone_StepLFO_LFOStepType, cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch,
-                cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch}, new byte[] { 1, 1, 1, 1, 1, 1 })));
+            GridRow.CreateRow(ControlsGrid, 0, new View[] { cbEditTone_PCMSynthTone_StepLFO_LFOStepType, cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch }, new byte[] { 1, 1, 1, 1, 1, 1 });
             for (byte i = 0; i < 8; i++)
             {
-                ControlsGrid.Children.Add((new GridRow((byte)(1 + i), new View[] {  tbEditTone_PCMSynthTone_StepLFO_LFOStep[i * 2], slEditTone_PCMSynthTone_StepLFO_LFOStep[i * 2],
-                    tbEditTone_PCMSynthTone_StepLFO_LFOStep[i * 2 + 1], slEditTone_PCMSynthTone_StepLFO_LFOStep[i * 2 + 1]}, new byte[] { 1, 2, 1, 2 })));
+                GridRow.CreateRow(ControlsGrid, (byte)(1 + i), new View[] { tbEditTone_PCMSynthTone_StepLFO_LFOStep[i * 2], slEditTone_PCMSynthTone_StepLFO_LFOStep[i * 2], tbEditTone_PCMSynthTone_StepLFO_LFOStep[i * 2 + 1], slEditTone_PCMSynthTone_StepLFO_LFOStep[i * 2 + 1] }, new byte[] { 1, 2, 1, 2 });
             }
 
             // Set values
@@ -3041,20 +3028,19 @@ namespace INTEGRA_7_Xamarin
             cbEditTone_PCMSynthTone_Control_PartialRedamperSwitch.Name = "cbEditTone_PCMSynthTone_PartialRedamperSwitch";
 
             // Put in rows
-            ControlsGrid.Children.Add((new GridRow(0, new View[] {  cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch,
-                cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch}, new byte[] { 1, 1, 1, 1, 1 })));
-            ControlsGrid.Children.Add((new GridRow(1, new View[] { cbEditTone_PCMSynthTone_Control_PartialEnvMode })));
-            ControlsGrid.Children.Add((new GridRow(2, new View[] { cbEditTone_PCMSynthTone_Control_PartialReceiveBender })));
-            ControlsGrid.Children.Add((new GridRow(3, new View[] { cbEditTone_PCMSynthTone_Control_PartialReceiveExpression })));
-            ControlsGrid.Children.Add((new GridRow(4, new View[] { cbEditTone_PCMSynthTone_Control_PartialReceiveHold_1 })));
-            ControlsGrid.Children.Add((new GridRow(5, new View[] { cbEditTone_PCMSynthTone_Control_PartialRedamperSwitch })));
+            GridRow.CreateRow(ControlsGrid, 0, new View[] { cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch }, new byte[] { 1, 1, 1, 1, 1 });
+            GridRow.CreateRow(ControlsGrid, 1, new View[] { cbEditTone_PCMSynthTone_Control_PartialEnvMode });
+            GridRow.CreateRow(ControlsGrid, 2, new View[] { cbEditTone_PCMSynthTone_Control_PartialReceiveBender });
+            GridRow.CreateRow(ControlsGrid, 3, new View[] { cbEditTone_PCMSynthTone_Control_PartialReceiveExpression });
+            GridRow.CreateRow(ControlsGrid, 4, new View[] { cbEditTone_PCMSynthTone_Control_PartialReceiveHold_1 });
+            GridRow.CreateRow(ControlsGrid, 5, new View[] { cbEditTone_PCMSynthTone_Control_PartialRedamperSwitch });
 
             byte row = 6;
             while (row < MAX_ROWS)
             {
                 Grid dummy = new Grid();
                 dummy.BackgroundColor = colorSettings.Background;
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { dummy });
             }
 
             // Set values
@@ -3315,24 +3301,12 @@ namespace INTEGRA_7_Xamarin
             }
 
             // Put in rows
-            ControlsGrid.Children.Add((new GridRow(0, new View[] {  cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch,
-                cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch,
-                cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch }, new byte[] { 1, 1, 1, 1 })));
-            ControlsGrid.Children.Add((new GridRow(1, new View[] {  cbEditTone_PCMSynthTone_MatrixControl_Page,
-                cbEditTone_PCMSynthTone_MatrixControl1_MatrixControlSource[currentMatrixControlPage] })));
+            GridRow.CreateRow(ControlsGrid, 0, new View[] { cbEditTone_PCMSynthTone_Pitch_PitchPartial1Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial2Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial3Switch, cbEditTone_PCMSynthTone_Pitch_PitchPartial4Switch }, new byte[] { 1, 1, 1, 1 });
+            GridRow.CreateRow(ControlsGrid, 1, new View[] { cbEditTone_PCMSynthTone_MatrixControl_Page, cbEditTone_PCMSynthTone_MatrixControl1_MatrixControlSource[currentMatrixControlPage] });
             for (byte i = 0; i < 4; i++)
             {
-                ControlsGrid.Children.Add((new GridRow((byte)(2 + 2 * i), new View[] {
-                    cbEditTone_PCMSynthTone_MatrixControl1_MatrixControlDestination[currentMatrixControlPage][i],
-                    cbEditTone_PCMSynthTone_MatrixControl1_PartialControlSwitch[currentMatrixControlPage][i],
-                    cbEditTone_PCMSynthTone_MatrixControl1_PartialControlSwitch[currentMatrixControlPage][i],
-                    cbEditTone_PCMSynthTone_MatrixControl1_PartialControlSwitch[currentMatrixControlPage][i],
-                    cbEditTone_PCMSynthTone_MatrixControl1_PartialControlSwitch[currentMatrixControlPage][i],
-                }, new byte[] { 2, 1, 1, 1, 1 })));
-                ControlsGrid.Children.Add((new GridRow((byte)(3 + 2 * i), new View[] {
-                    tbEditTone_PCMSynthTone_MatrixControl1_MatrixControlSens[currentMatrixControlPage][i],
-                    slEditTone_PCMSynthTone_MatrixControl1_MatrixControlSens[currentMatrixControlPage][i] },
-                    new byte[] { 1, 2 })));
+                GridRow.CreateRow(ControlsGrid, (byte)(2 + 2 * i), new View[] { cbEditTone_PCMSynthTone_MatrixControl1_MatrixControlDestination[currentMatrixControlPage][i], cbEditTone_PCMSynthTone_MatrixControl1_PartialControlSwitch[currentMatrixControlPage][i], cbEditTone_PCMSynthTone_MatrixControl1_PartialControlSwitch[currentMatrixControlPage][i], cbEditTone_PCMSynthTone_MatrixControl1_PartialControlSwitch[currentMatrixControlPage][i], cbEditTone_PCMSynthTone_MatrixControl1_PartialControlSwitch[currentMatrixControlPage][i], }, new byte[] { 2, 1, 1, 1, 1 });
+                GridRow.CreateRow(ControlsGrid, (byte)(3 + 2 * i), new View[] { tbEditTone_PCMSynthTone_MatrixControl1_MatrixControlSens[currentMatrixControlPage][i], slEditTone_PCMSynthTone_MatrixControl1_MatrixControlSens[currentMatrixControlPage][i] }, new byte[] { 1, 2 });
             }
 
             byte row = 10;
@@ -3340,7 +3314,7 @@ namespace INTEGRA_7_Xamarin
             {
                 Grid dummy = new Grid();
                 dummy.BackgroundColor = colorSettings.Background;
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { dummy });
             }
 
             // Set control values
@@ -3514,9 +3488,9 @@ namespace INTEGRA_7_Xamarin
             // Put in rows
             for (byte i = 0; i < 4; i++)
             {
-                ControlsGrid.Children.Add((new GridRow((byte)(0 + 3 * i), new View[] { cbEditTone_PCMSynthTone_MFXControl_MFXControlSource[i] })));
-                ControlsGrid.Children.Add((new GridRow((byte)(1 + 3 * i), new View[] { cbEditTone_PCMSynthTone_MFXControl_MFXControlAssign[i] })));
-                ControlsGrid.Children.Add((new GridRow((byte)(2 + 3 * i), new View[] { tbEditTone_PCMSynthTone_MFXControl_MFXControlSens[i], slEditTone_PCMSynthTone_MFXControl_MFXControlSens[i] }, new byte[] { 1, 2 })));
+                GridRow.CreateRow(ControlsGrid, (byte)(0 + 3 * i), new View[] { cbEditTone_PCMSynthTone_MFXControl_MFXControlSource[i] });
+                GridRow.CreateRow(ControlsGrid, (byte)(1 + 3 * i), new View[] { cbEditTone_PCMSynthTone_MFXControl_MFXControlAssign[i] });
+                GridRow.CreateRow(ControlsGrid, (byte)(2 + 3 * i), new View[] { tbEditTone_PCMSynthTone_MFXControl_MFXControlSens[i], slEditTone_PCMSynthTone_MFXControl_MFXControlSens[i] }, new byte[] { 1, 2 });
             }
 
             // Set values
@@ -3589,9 +3563,7 @@ namespace INTEGRA_7_Xamarin
             }
 
             // Put in rows
-            ControlsGrid.Children.Add((new GridRow((byte)(0), new View[] {  tbEditTone_SaveTone_Title,
-                tbEditTone_SaveTone_TitleText, cbEditTone_SaveTone_SlotNumber, btnEditTone_SaveTone,
-                btnEditTone_DeleteTone}, new byte[] { 4, 3, 3, 2, 2 })));
+            GridRow.CreateRow(ControlsGrid, (byte)(0), new View[] { tbEditTone_SaveTone_Title, tbEditTone_SaveTone_TitleText, cbEditTone_SaveTone_SlotNumber, btnEditTone_SaveTone, btnEditTone_DeleteTone }, new byte[] { 4, 3, 3, 2, 2 });
 
             // Set values
             tbEditTone_SaveTone_Title.Text = "Name (max 12 chars):";
@@ -3763,23 +3735,18 @@ namespace INTEGRA_7_Xamarin
             cbEditTone_PCMDrumKit_Common_OneShotMode.Content = "One Shot Mode";
             cbEditTone_PCMDrumKit_Common_OneShotMode.Name = "cbEditTone_PCMDrumKit_OneShotMode";
 
-            ControlsGrid.Children.Add((new GridRow(0, new View[] {  cbEditTone_PCMDrumKit_Common_PhraseNumber,
-                cbEditTone_PCMDrumKit_Common_AssignType,  })));
-            ControlsGrid.Children.Add((new GridRow(1, new View[] {  tbEditTone_PCMDrumKit_Common_DrumKitLevel,
-                slEditTone_PCMDrumKit_Common_DrumKitLevel }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(2, new View[] {  cbEditTone_PCMDrumKit_Common_MuteGroup,
-                cbEditTone_PCMDrumKit_Common_PartialEnvMode})));
-            ControlsGrid.Children.Add((new GridRow(3, new View[] {  tbEditTone_PCMDrumKit_Common_PartialPitchBendRange,
-                slEditTone_PCMDrumKit_Common_PartialPitchBendRange }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(4, new View[] {  cbEditTone_PCMDrumKit_Common_PartialReceiveExpression,
-                cbEditTone_PCMDrumKit_Common_PartialReceiveHold_1, cbEditTone_PCMDrumKit_Common_OneShotMode})));
+            GridRow.CreateRow(ControlsGrid, 0, new View[] { cbEditTone_PCMDrumKit_Common_PhraseNumber, cbEditTone_PCMDrumKit_Common_AssignType, });
+            GridRow.CreateRow(ControlsGrid, 1, new View[] { tbEditTone_PCMDrumKit_Common_DrumKitLevel, slEditTone_PCMDrumKit_Common_DrumKitLevel }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 2, new View[] { cbEditTone_PCMDrumKit_Common_MuteGroup, cbEditTone_PCMDrumKit_Common_PartialEnvMode });
+            GridRow.CreateRow(ControlsGrid, 3, new View[] { tbEditTone_PCMDrumKit_Common_PartialPitchBendRange, slEditTone_PCMDrumKit_Common_PartialPitchBendRange }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 4, new View[] { cbEditTone_PCMDrumKit_Common_PartialReceiveExpression, cbEditTone_PCMDrumKit_Common_PartialReceiveHold_1, cbEditTone_PCMDrumKit_Common_OneShotMode });
 
             byte row = 5;
             while (row < MAX_ROWS)
             {
                 Grid dummy = new Grid();
                 dummy.BackgroundColor = colorSettings.Background;
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { dummy });
             }
 
             cbEditTone_PCMDrumKit_Common_PhraseNumber.SelectedIndex = pCMDrumKit.pCMDrumKitCommon2.PhraseNumber;
@@ -3980,30 +3947,27 @@ namespace INTEGRA_7_Xamarin
             cbEditTone_PCMDrumKit_Wave_WMTWaveAlterPanSwitch.Items.Add("Alternate pan: Reverse");
 
             // Put in rows
-            ControlsGrid.Children.Add((new GridRow(0, new View[] {  cbEditTone_PCMDrumKit_Partial1Switch,
-                cbEditTone_PCMDrumKit_Partial2Switch, cbEditTone_PCMDrumKit_Partial3Switch,
-                cbEditTone_PCMDrumKit_Partial4Switch }, new byte[] { 1, 1, 1, 1 })));
-            ControlsGrid.Children.Add((new GridRow(1, new View[] { cbEditTone_PCMDrumKit_Wave_WMTWaveGroupType })));
-            ControlsGrid.Children.Add((new GridRow(2, new View[] { tbEditTone_Wave_WaveNumberL, cbEditTone_PCMDrumKit_Wave_WMTWaveNumberL })));
-            ControlsGrid.Children.Add((new GridRow(3, new View[] { tbEditTone_Wave_WaveNumberR, cbEditTone_PCMDrumKit_Wave_WMTWaveNumberR })));
-            ControlsGrid.Children.Add((new GridRow(4, new View[] { cbEditTone_PCMDrumKit_Wave_WaveGain })));
-            ControlsGrid.Children.Add((new GridRow(5, new View[] {  cbEditTone_PCMDrumKit_Wave_WMTWaveTempoSync,
-                cbEditTone_PCMDrumKit_Wave_WMTWaveFXMSwitch })));
-            ControlsGrid.Children.Add((new GridRow(6, new View[] { cbEditTone_PCMDrumKit_Wave_WMTWaveFXMColor })));
-            ControlsGrid.Children.Add((new GridRow(7, new View[] { tbEditTone_PCMDrumKit_Wave_WMTWaveFXMDepth, slEditTone_PCMDrumKit_Wave_WMTWaveFXMDepth }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(8, new View[] { tbEditTone_PCMDrumKit_Wave_WMTWaveCoarseTune, slEditTone_PCMDrumKit_Wave_WMTWaveCoarseTune }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(9, new View[] { tbEditTone_PCMDrumKit_Wave_WMTWaveFineTune, slEditTone_PCMDrumKit_Wave_WMTWaveFineTune }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(10, new View[] { tbEditTone_PCMDrumKit_Wave_WMTWaveLevel, slEditTone_PCMDrumKit_Wave_WMTWaveLevel }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(11, new View[] { tbEditTone_PCMDrumKit_Wave_WMTWavePan, slEditTone_PCMDrumKit_Wave_WMTWavePan }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(12, new View[] { cbEditTone_PCMDrumKit_Wave_WMTWaveRandomPanSw })));
-            ControlsGrid.Children.Add((new GridRow(13, new View[] { cbEditTone_PCMDrumKit_Wave_WMTWaveAlterPanSwitch })));
+            GridRow.CreateRow(ControlsGrid, 0, new View[] { cbEditTone_PCMDrumKit_Partial1Switch, cbEditTone_PCMDrumKit_Partial2Switch, cbEditTone_PCMDrumKit_Partial3Switch, cbEditTone_PCMDrumKit_Partial4Switch }, new byte[] { 1, 1, 1, 1 });
+            GridRow.CreateRow(ControlsGrid, 1, new View[] { cbEditTone_PCMDrumKit_Wave_WMTWaveGroupType });
+            GridRow.CreateRow(ControlsGrid, 2, new View[] { tbEditTone_Wave_WaveNumberL, cbEditTone_PCMDrumKit_Wave_WMTWaveNumberL });
+            GridRow.CreateRow(ControlsGrid, 3, new View[] { tbEditTone_Wave_WaveNumberR, cbEditTone_PCMDrumKit_Wave_WMTWaveNumberR });
+            GridRow.CreateRow(ControlsGrid, 4, new View[] { cbEditTone_PCMDrumKit_Wave_WaveGain });
+            GridRow.CreateRow(ControlsGrid, 5, new View[] { cbEditTone_PCMDrumKit_Wave_WMTWaveTempoSync, cbEditTone_PCMDrumKit_Wave_WMTWaveFXMSwitch });
+            GridRow.CreateRow(ControlsGrid, 6, new View[] { cbEditTone_PCMDrumKit_Wave_WMTWaveFXMColor });
+            GridRow.CreateRow(ControlsGrid, 7, new View[] { tbEditTone_PCMDrumKit_Wave_WMTWaveFXMDepth, slEditTone_PCMDrumKit_Wave_WMTWaveFXMDepth }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 8, new View[] { tbEditTone_PCMDrumKit_Wave_WMTWaveCoarseTune, slEditTone_PCMDrumKit_Wave_WMTWaveCoarseTune }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 9, new View[] { tbEditTone_PCMDrumKit_Wave_WMTWaveFineTune, slEditTone_PCMDrumKit_Wave_WMTWaveFineTune }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 10, new View[] { tbEditTone_PCMDrumKit_Wave_WMTWaveLevel, slEditTone_PCMDrumKit_Wave_WMTWaveLevel }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 11, new View[] { tbEditTone_PCMDrumKit_Wave_WMTWavePan, slEditTone_PCMDrumKit_Wave_WMTWavePan }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 12, new View[] { cbEditTone_PCMDrumKit_Wave_WMTWaveRandomPanSw });
+            GridRow.CreateRow(ControlsGrid, 13, new View[] { cbEditTone_PCMDrumKit_Wave_WMTWaveAlterPanSwitch });
 
             byte row = 14;
             while (row < MAX_ROWS)
             {
                 Grid dummy = new Grid();
                 dummy.BackgroundColor = colorSettings.Background;
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { dummy });
             }
 
             // Set control values
@@ -4129,22 +4093,19 @@ namespace INTEGRA_7_Xamarin
             slEditTone_PCMDrumKit_WMT_WMTVelocityFadeWidthLower.Maximum = 127;
 
             // Put in rows
-            ControlsGrid.Children.Add((new GridRow(0, new View[] {  cbEditTone_PCMDrumKit_Partial1Switch,
-                cbEditTone_PCMDrumKit_Partial2Switch, cbEditTone_PCMDrumKit_Partial3Switch,
-                cbEditTone_PCMDrumKit_Partial4Switch }, new byte[] { 1, 1, 1, 1 })));
-            ControlsGrid.Children.Add((new GridRow(1, new View[] { cbEditTone_PCMDrumKit_WMT_WMTVelocityControl })));
-            ControlsGrid.Children.Add((new GridRow(2, new View[] {  tbEditTone_PCMDrumKit_WMT_WMTVelocityFadeWidthUpper,
-                slEditTone_PCMDrumKit_WMT_WMTVelocityFadeWidthUpper }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(3, new View[] { tbEditTone_PCMDrumKit_WMT_WMTVelocityRangeUpper, slEditTone_PCMDrumKit_WMT_WMTVelocityRangeUpper }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(4, new View[] { tbEditTone_PCMDrumKit_WMT_WMTVelocityRangeLower, slEditTone_PCMDrumKit_WMT_WMTVelocityRangeLower }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(5, new View[] { tbEditTone_PCMDrumKit_WMT_WMTVelocityFadeWidthLower, slEditTone_PCMDrumKit_WMT_WMTVelocityFadeWidthLower }, new byte[] { 1, 2 })));
+            GridRow.CreateRow(ControlsGrid, 0, new View[] { cbEditTone_PCMDrumKit_Partial1Switch, cbEditTone_PCMDrumKit_Partial2Switch, cbEditTone_PCMDrumKit_Partial3Switch, cbEditTone_PCMDrumKit_Partial4Switch }, new byte[] { 1, 1, 1, 1 });
+            GridRow.CreateRow(ControlsGrid, 1, new View[] { cbEditTone_PCMDrumKit_WMT_WMTVelocityControl });
+            GridRow.CreateRow(ControlsGrid, 2, new View[] { tbEditTone_PCMDrumKit_WMT_WMTVelocityFadeWidthUpper, slEditTone_PCMDrumKit_WMT_WMTVelocityFadeWidthUpper }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 3, new View[] { tbEditTone_PCMDrumKit_WMT_WMTVelocityRangeUpper, slEditTone_PCMDrumKit_WMT_WMTVelocityRangeUpper }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 4, new View[] { tbEditTone_PCMDrumKit_WMT_WMTVelocityRangeLower, slEditTone_PCMDrumKit_WMT_WMTVelocityRangeLower }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 5, new View[] { tbEditTone_PCMDrumKit_WMT_WMTVelocityFadeWidthLower, slEditTone_PCMDrumKit_WMT_WMTVelocityFadeWidthLower }, new byte[] { 1, 2 });
 
             byte row = 6;
             while (row < MAX_ROWS)
             {
                 Grid dummy = new Grid();
                 dummy.BackgroundColor = colorSettings.Background;
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { dummy });
             }
 
             // Set control values
@@ -4225,16 +4186,16 @@ namespace INTEGRA_7_Xamarin
             cbEditTone_PCMDrumKit_Pitch_PartialRandomPitchDepth.Items.Add("1200");
 
             // Put in rows
-            ControlsGrid.Children.Add((new GridRow(0, new View[] { tbEditTone_PCMDrumKit_Pitch_PartialCoarseTune, slEditTone_PCMDrumKit_Pitch_PartialCoarseTune }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(1, new View[] { tbEditTone_PCMDrumKit_Pitch_PartialFineTune, slEditTone_PCMDrumKit_Pitch_PartialFineTune }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(2, new View[] { cbEditTone_PCMDrumKit_Pitch_PartialRandomPitchDepth })));
+            GridRow.CreateRow(ControlsGrid, 0, new View[] { tbEditTone_PCMDrumKit_Pitch_PartialCoarseTune, slEditTone_PCMDrumKit_Pitch_PartialCoarseTune }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 1, new View[] { tbEditTone_PCMDrumKit_Pitch_PartialFineTune, slEditTone_PCMDrumKit_Pitch_PartialFineTune }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 2, new View[] { cbEditTone_PCMDrumKit_Pitch_PartialRandomPitchDepth });
 
             byte row = 3;
             while (row < MAX_ROWS)
             {
                 Grid dummy = new Grid();
                 dummy.BackgroundColor = colorSettings.Background;
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { dummy });
             }
 
             // Set control values
@@ -4321,17 +4282,17 @@ namespace INTEGRA_7_Xamarin
             }
 
             // Put in rows
-            ControlsGrid.Children.Add((new GridRow(0, new View[] { tbEditTone_PCMDrumKit_Pitch_PitchEnvDepth, slEditTone_PCMDrumKit_Pitch_PitchEnvDepth }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(1, new View[] { tbEditTone_PCMDrumKit_Pitch_PitchEnvVelocitySens, slEditTone_PCMDrumKit_Pitch_PitchEnvVelocitySens }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(2, new View[] { tbEditTone_PCMDrumKit_Pitch_PitchEnvTime1VelocitySens, slEditTone_PCMDrumKit_Pitch_PitchEnvTime1VelocitySens }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(3, new View[] { tbEditTone_PCMDrumKit_Pitch_PitchEnvTime4VelocitySens, slEditTone_PCMDrumKit_Pitch_PitchEnvTime4VelocitySens }, new byte[] { 1, 2 })));
+            GridRow.CreateRow(ControlsGrid, 0, new View[] { tbEditTone_PCMDrumKit_Pitch_PitchEnvDepth, slEditTone_PCMDrumKit_Pitch_PitchEnvDepth }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 1, new View[] { tbEditTone_PCMDrumKit_Pitch_PitchEnvVelocitySens, slEditTone_PCMDrumKit_Pitch_PitchEnvVelocitySens }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 2, new View[] { tbEditTone_PCMDrumKit_Pitch_PitchEnvTime1VelocitySens, slEditTone_PCMDrumKit_Pitch_PitchEnvTime1VelocitySens }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 3, new View[] { tbEditTone_PCMDrumKit_Pitch_PitchEnvTime4VelocitySens, slEditTone_PCMDrumKit_Pitch_PitchEnvTime4VelocitySens }, new byte[] { 1, 2 });
             for (byte i = 0; i < 4; i++)
             {
-                ControlsGrid.Children.Add((new GridRow((byte)(4 + i), new View[] { tbEditTone_PCMDrumKit_Pitch_PitchEnvTime[i], slEditTone_PCMDrumKit_Pitch_PitchEnvTime[i] }, new byte[] { 1, 2 })));
+                GridRow.CreateRow(ControlsGrid, (byte)(4 + i), new View[] { tbEditTone_PCMDrumKit_Pitch_PitchEnvTime[i], slEditTone_PCMDrumKit_Pitch_PitchEnvTime[i] }, new byte[] { 1, 2 });
             }
             for (byte i = 0; i < 5; i++)
             {
-                ControlsGrid.Children.Add((new GridRow((byte)(8 + i), new View[] { tbEditTone_PCMDrumKit_Pitch_PitchEnvLevel[i], slEditTone_PCMDrumKit_Pitch_PitchEnvLevel[i] }, new byte[] { 1, 2 })));
+                GridRow.CreateRow(ControlsGrid, (byte)(8 + i), new View[] { tbEditTone_PCMDrumKit_Pitch_PitchEnvLevel[i], slEditTone_PCMDrumKit_Pitch_PitchEnvLevel[i] }, new byte[] { 1, 2 });
             }
 
             byte row = 13;
@@ -4339,7 +4300,7 @@ namespace INTEGRA_7_Xamarin
             {
                 Grid dummy = new Grid();
                 dummy.BackgroundColor = colorSettings.Background;
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { dummy });
             }
 
             // Set control values
@@ -4481,23 +4442,23 @@ namespace INTEGRA_7_Xamarin
             slEditTone_PCMDrumKit_TVF_TVFEnvTime4VelocitySens.Maximum = 63;
 
             // Put in rows
-            ControlsGrid.Children.Add((new GridRow(0, new View[] { cbEditTone_PCMDrumKit_TVF_TVFFilterType })));
-            ControlsGrid.Children.Add((new GridRow(1, new View[] { tbEditTone_PCMDrumKit_TVF_TVFCutoffFrequency, slEditTone_PCMDrumKit_TVF_TVFCutoffFrequency }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(2, new View[] { tbEditTone_PCMDrumKit_TVF_TVFResonance, slEditTone_PCMDrumKit_TVF_TVFResonance }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(3, new View[] { cbEditTone_PCMDrumKit_TVF_TVFCutoffVelocityCurve })));
-            ControlsGrid.Children.Add((new GridRow(4, new View[] { tbEditTone_PCMDrumKit_TVF_TVFCutoffVelocitySens, slEditTone_PCMDrumKit_TVF_TVFCutoffVelocitySens }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(5, new View[] { tbEditTone_PCMDrumKit_TVF_TVFResonanceVelocitySens, slEditTone_PCMDrumKit_TVF_TVFResonanceVelocitySens }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(6, new View[] { cbEditTone_PCMDrumKit_TVF_TVFEnvVelocityCurveType })));
-            ControlsGrid.Children.Add((new GridRow(7, new View[] { tbEditTone_PCMDrumKit_TVF_TVFEnvVelocitySens, slEditTone_PCMDrumKit_TVF_TVFEnvVelocitySens }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(8, new View[] { tbEditTone_PCMDrumKit_TVF_TVFEnvTime1VelocitySens, slEditTone_PCMDrumKit_TVF_TVFEnvTime1VelocitySens }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(9, new View[] { tbEditTone_PCMDrumKit_TVF_TVFEnvTime4VelocitySens, slEditTone_PCMDrumKit_TVF_TVFEnvTime4VelocitySens }, new byte[] { 1, 2 })));
+            GridRow.CreateRow(ControlsGrid, 0, new View[] { cbEditTone_PCMDrumKit_TVF_TVFFilterType });
+            GridRow.CreateRow(ControlsGrid, 1, new View[] { tbEditTone_PCMDrumKit_TVF_TVFCutoffFrequency, slEditTone_PCMDrumKit_TVF_TVFCutoffFrequency }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 2, new View[] { tbEditTone_PCMDrumKit_TVF_TVFResonance, slEditTone_PCMDrumKit_TVF_TVFResonance }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 3, new View[] { cbEditTone_PCMDrumKit_TVF_TVFCutoffVelocityCurve });
+            GridRow.CreateRow(ControlsGrid, 4, new View[] { tbEditTone_PCMDrumKit_TVF_TVFCutoffVelocitySens, slEditTone_PCMDrumKit_TVF_TVFCutoffVelocitySens }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 5, new View[] { tbEditTone_PCMDrumKit_TVF_TVFResonanceVelocitySens, slEditTone_PCMDrumKit_TVF_TVFResonanceVelocitySens }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 6, new View[] { cbEditTone_PCMDrumKit_TVF_TVFEnvVelocityCurveType });
+            GridRow.CreateRow(ControlsGrid, 7, new View[] { tbEditTone_PCMDrumKit_TVF_TVFEnvVelocitySens, slEditTone_PCMDrumKit_TVF_TVFEnvVelocitySens }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 8, new View[] { tbEditTone_PCMDrumKit_TVF_TVFEnvTime1VelocitySens, slEditTone_PCMDrumKit_TVF_TVFEnvTime1VelocitySens }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 9, new View[] { tbEditTone_PCMDrumKit_TVF_TVFEnvTime4VelocitySens, slEditTone_PCMDrumKit_TVF_TVFEnvTime4VelocitySens }, new byte[] { 1, 2 });
 
             byte row = 10;
             while (row < MAX_ROWS)
             {
                 Grid dummy = new Grid();
                 dummy.BackgroundColor = colorSettings.Background;
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { dummy });
             }
 
             // Set control values
@@ -4566,14 +4527,14 @@ namespace INTEGRA_7_Xamarin
             }
 
             // Put in rows
-            ControlsGrid.Children.Add((new GridRow(0, new View[] { tbEditTone_PCMDrumKit_TVFenv_TVFEnvDepth, slEditTone_PCMDrumKit_TVFenv_TVFEnvDepth }, new byte[] { 1, 2 })));
+            GridRow.CreateRow(ControlsGrid, 0, new View[] { tbEditTone_PCMDrumKit_TVFenv_TVFEnvDepth, slEditTone_PCMDrumKit_TVFenv_TVFEnvDepth }, new byte[] { 1, 2 });
             for (byte i = 0; i < 4; i++)
             {
-                ControlsGrid.Children.Add((new GridRow((byte)(1 + i), new View[] { tbEditTone_PCMDrumKit_TVFenv_TVFEnvTime[i], slEditTone_PCMDrumKit_TVFenv_TVFEnvTime[i] }, new byte[] { 1, 2 })));
+                GridRow.CreateRow(ControlsGrid, (byte)(1 + i), new View[] { tbEditTone_PCMDrumKit_TVFenv_TVFEnvTime[i], slEditTone_PCMDrumKit_TVFenv_TVFEnvTime[i] }, new byte[] { 1, 2 });
             }
             for (byte i = 0; i < 5; i++)
             {
-                ControlsGrid.Children.Add((new GridRow((byte)(5 + i), new View[] { tbEditTone_PCMDrumKit_TVFenv_TVFEnvLevel[i], slEditTone_PCMDrumKit_TVFenv_TVFEnvLevel[i] }, new byte[] { 1, 2 })));
+                GridRow.CreateRow(ControlsGrid, (byte)(5 + i), new View[] { tbEditTone_PCMDrumKit_TVFenv_TVFEnvLevel[i], slEditTone_PCMDrumKit_TVFenv_TVFEnvLevel[i] }, new byte[] { 1, 2 });
             }
 
             byte row = 10;
@@ -4581,7 +4542,7 @@ namespace INTEGRA_7_Xamarin
             {
                 Grid dummy = new Grid();
                 dummy.BackgroundColor = colorSettings.Background;
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { dummy });
             }
 
             // Set control values
@@ -4680,20 +4641,20 @@ namespace INTEGRA_7_Xamarin
             slEditTone_PCMDrumKit_TVA_RelativeLevel.Maximum = 63;
 
             // Put in rows
-            ControlsGrid.Children.Add((new GridRow(0, new View[] { tbEditTone_PCMDrumKit_TVA_PartialLevel, slEditTone_PCMDrumKit_TVA_PartialLevel }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(1, new View[] { cbEditTone_PCMDrumKit_TVA_TVALevelVelocityCurve })));
-            ControlsGrid.Children.Add((new GridRow(2, new View[] { tbEditTone_PCMDrumKit_TVA_TVALevelVelocitySens, slEditTone_PCMDrumKit_TVA_TVALevelVelocitySens }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(3, new View[] { tbEditTone_PCMDrumKit_TVA_PartialPan, slEditTone_PCMDrumKit_TVA_PartialPan }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(4, new View[] { tbEditTone_PCMDrumKit_TVA_PartialRandomPanDepth, slEditTone_PCMDrumKit_TVA_PartialRandomPanDepth }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(5, new View[] { tbEditTone_PCMDrumKit_TVA_PartialAlternatePanDepth, slEditTone_PCMDrumKit_TVA_PartialAlternatePanDepth }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(6, new View[] { tbEditTone_PCMDrumKit_TVA_RelativeLevel, slEditTone_PCMDrumKit_TVA_RelativeLevel }, new byte[] { 1, 2 })));
+            GridRow.CreateRow(ControlsGrid, 0, new View[] { tbEditTone_PCMDrumKit_TVA_PartialLevel, slEditTone_PCMDrumKit_TVA_PartialLevel }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 1, new View[] { cbEditTone_PCMDrumKit_TVA_TVALevelVelocityCurve });
+            GridRow.CreateRow(ControlsGrid, 2, new View[] { tbEditTone_PCMDrumKit_TVA_TVALevelVelocitySens, slEditTone_PCMDrumKit_TVA_TVALevelVelocitySens }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 3, new View[] { tbEditTone_PCMDrumKit_TVA_PartialPan, slEditTone_PCMDrumKit_TVA_PartialPan }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 4, new View[] { tbEditTone_PCMDrumKit_TVA_PartialRandomPanDepth, slEditTone_PCMDrumKit_TVA_PartialRandomPanDepth }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 5, new View[] { tbEditTone_PCMDrumKit_TVA_PartialAlternatePanDepth, slEditTone_PCMDrumKit_TVA_PartialAlternatePanDepth }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 6, new View[] { tbEditTone_PCMDrumKit_TVA_RelativeLevel, slEditTone_PCMDrumKit_TVA_RelativeLevel }, new byte[] { 1, 2 });
 
             byte row = 7;
             while (row < MAX_ROWS)
             {
                 Grid dummy = new Grid();
                 dummy.BackgroundColor = colorSettings.Background;
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { dummy });
             }
 
             // Set control values
@@ -4768,15 +4729,15 @@ namespace INTEGRA_7_Xamarin
             }
 
             // Put in rows
-            ControlsGrid.Children.Add((new GridRow(0, new View[] { tbEditTone_PCMDrumKit_TVA_TVAEnvTime1VelocitySens, slEditTone_PCMDrumKit_TVA_TVAEnvTime1VelocitySens }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(1, new View[] { tbEditTone_PCMDrumKit_TVA_TVAEnvTime4VelocitySens, slEditTone_PCMDrumKit_TVA_TVAEnvTime4VelocitySens }, new byte[] { 1, 2 })));
+            GridRow.CreateRow(ControlsGrid, 0, new View[] { tbEditTone_PCMDrumKit_TVA_TVAEnvTime1VelocitySens, slEditTone_PCMDrumKit_TVA_TVAEnvTime1VelocitySens }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 1, new View[] { tbEditTone_PCMDrumKit_TVA_TVAEnvTime4VelocitySens, slEditTone_PCMDrumKit_TVA_TVAEnvTime4VelocitySens }, new byte[] { 1, 2 });
             for (byte i = 0; i < 4; i++)
             {
-                ControlsGrid.Children.Add((new GridRow((byte)(2 + i), new View[] { tbEditTone_PCMDrumKit_TVA_TVAEnvTime[i], slEditTone_PCMDrumKit_TVA_TVAEnvTime[i] }, new byte[] { 1, 2 })));
+                GridRow.CreateRow(ControlsGrid, (byte)(2 + i), new View[] { tbEditTone_PCMDrumKit_TVA_TVAEnvTime[i], slEditTone_PCMDrumKit_TVA_TVAEnvTime[i] }, new byte[] { 1, 2 });
             }
             for (byte i = 0; i < 3; i++)
             {
-                ControlsGrid.Children.Add((new GridRow((byte)(6 + i), new View[] { tbEditTone_PCMDrumKit_TVA_TVAEnvLevel[i], slEditTone_PCMDrumKit_TVA_TVAEnvLevel[i] }, new byte[] { 1, 2 })));
+                GridRow.CreateRow(ControlsGrid, (byte)(6 + i), new View[] { tbEditTone_PCMDrumKit_TVA_TVAEnvLevel[i], slEditTone_PCMDrumKit_TVA_TVAEnvLevel[i] }, new byte[] { 1, 2 });
             }
 
             byte row = 9;
@@ -4784,7 +4745,7 @@ namespace INTEGRA_7_Xamarin
             {
                 Grid dummy = new Grid();
                 dummy.BackgroundColor = colorSettings.Background;
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { dummy });
             }
 
             // Set control values
@@ -4854,17 +4815,17 @@ namespace INTEGRA_7_Xamarin
             slEditTone_PCMDrumKit_TVA_PartialReverbSendLevel.Maximum = 127;
 
             // Put in rows
-            ControlsGrid.Children.Add((new GridRow(0, new View[] { cbEditTone_PCMDrumKit_TVA_PartialOutputAssign })));
-            ControlsGrid.Children.Add((new GridRow(1, new View[] { tbEditTone_PCMDrumKit_TVA_PartialOutputLevel, slEditTone_PCMDrumKit_TVA_PartialOutputLevel }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(2, new View[] { tbEditTone_PCMDrumKit_TVA_PartialChorusSendLevel, slEditTone_PCMDrumKit_TVA_PartialChorusSendLevel }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(3, new View[] { tbEditTone_PCMDrumKit_TVA_PartialReverbSendLevel, slEditTone_PCMDrumKit_TVA_PartialReverbSendLevel }, new byte[] { 1, 2 })));
+            GridRow.CreateRow(ControlsGrid, 0, new View[] { cbEditTone_PCMDrumKit_TVA_PartialOutputAssign });
+            GridRow.CreateRow(ControlsGrid, 1, new View[] { tbEditTone_PCMDrumKit_TVA_PartialOutputLevel, slEditTone_PCMDrumKit_TVA_PartialOutputLevel }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 2, new View[] { tbEditTone_PCMDrumKit_TVA_PartialChorusSendLevel, slEditTone_PCMDrumKit_TVA_PartialChorusSendLevel }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 3, new View[] { tbEditTone_PCMDrumKit_TVA_PartialReverbSendLevel, slEditTone_PCMDrumKit_TVA_PartialReverbSendLevel }, new byte[] { 1, 2 });
 
             byte row = 4;
             while (row < MAX_ROWS)
             {
                 Grid dummy = new Grid();
                 dummy.BackgroundColor = colorSettings.Background;
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { dummy });
             }
 
             // Set control values
@@ -5034,34 +4995,27 @@ namespace INTEGRA_7_Xamarin
             // Put in rows
             for (byte i = 0; i < 6; i++)
             {
-                ControlsGrid.Children.Add((new GridRow((byte)(0 + i / 3), new View[] {  cbEditTone_PCMDrumKit_CompEq_CompSwitch[i++],
-                cbEditTone_PCMDrumKit_CompEq_CompSwitch[i++], cbEditTone_PCMDrumKit_CompEq_CompSwitch[i]})));
+                GridRow.CreateRow(ControlsGrid, (byte)(0 + i / 3), new View[] { cbEditTone_PCMDrumKit_CompEq_CompSwitch[i++], cbEditTone_PCMDrumKit_CompEq_CompSwitch[i++], cbEditTone_PCMDrumKit_CompEq_CompSwitch[i] });
             }
             for (byte i = 0; i < 6; i++)
             {
-                ControlsGrid.Children.Add((new GridRow((byte)(2 + i / 3), new View[] {  cbEditTone_PCMDrumKit_Compressor_CompAttackTime[i++],
-                    cbEditTone_PCMDrumKit_Compressor_CompAttackTime[i++], cbEditTone_PCMDrumKit_Compressor_CompAttackTime[i] })));
+                GridRow.CreateRow(ControlsGrid, (byte)(2 + i / 3), new View[] { cbEditTone_PCMDrumKit_Compressor_CompAttackTime[i++], cbEditTone_PCMDrumKit_Compressor_CompAttackTime[i++], cbEditTone_PCMDrumKit_Compressor_CompAttackTime[i] });
             }
             for (byte i = 0; i < 6; i++)
             {
-                ControlsGrid.Children.Add((new GridRow((byte)(4 + i / 3), new View[] {  cbEditTone_PCMDrumKit_Compressor_CompReleaseTime[i++],
-                    cbEditTone_PCMDrumKit_Compressor_CompReleaseTime[i++], cbEditTone_PCMDrumKit_Compressor_CompReleaseTime[i] })));
+                GridRow.CreateRow(ControlsGrid, (byte)(4 + i / 3), new View[] { cbEditTone_PCMDrumKit_Compressor_CompReleaseTime[i++], cbEditTone_PCMDrumKit_Compressor_CompReleaseTime[i++], cbEditTone_PCMDrumKit_Compressor_CompReleaseTime[i] });
             }
             for (byte i = 0; i < 6; i++)
             {
-                ControlsGrid.Children.Add((new GridRow((byte)(6 + i / 2), new View[] {  tbEditTone_PCMDrumKit_Compressor_CompThreshold[i], slEditTone_PCMDrumKit_Compressor_CompThreshold[i++],
-                    //tbEditTone_PCMDrumKit_Compressor_CompThreshold[i], slEditTone_PCMDrumKit_Compressor_CompThreshold[i++],
-                    tbEditTone_PCMDrumKit_Compressor_CompThreshold[i], slEditTone_PCMDrumKit_Compressor_CompThreshold[i],}, new byte[] { 1, 2, 1, 2 })));
+                GridRow.CreateRow(ControlsGrid, (byte)(6 + i / 2), new View[] { tbEditTone_PCMDrumKit_Compressor_CompThreshold[i], slEditTone_PCMDrumKit_Compressor_CompThreshold[i++], //tbEditTone_PCMDrumKit_Compressor_CompThreshold[i], slEditTone_PCMDrumKit_Compressor_CompThreshold[i++], tbEditTone_PCMDrumKit_Compressor_CompThreshold[i], slEditTone_PCMDrumKit_Compressor_CompThreshold[i], }, new byte[] { 1, 2, 1, 2 });
             }
             for (byte i = 0; i < 6; i++)
             {
-                ControlsGrid.Children.Add((new GridRow((byte)(9 + i / 3), new View[] {  cbEditTone_PCMDrumKit_Compressor_CompRatio[i++],
-                cbEditTone_PCMDrumKit_Compressor_CompRatio[i++], cbEditTone_PCMDrumKit_Compressor_CompRatio[i]})));
+                GridRow.CreateRow(ControlsGrid, (byte)(9 + i / 3), new View[] { cbEditTone_PCMDrumKit_Compressor_CompRatio[i++], cbEditTone_PCMDrumKit_Compressor_CompRatio[i++], cbEditTone_PCMDrumKit_Compressor_CompRatio[i] });
             }
             for (byte i = 0; i < 6; i++)
             {
-                ControlsGrid.Children.Add((new GridRow((byte)(11 + i / 2), new View[] {  tbEditTone_PCMDrumKit_Compressor_CompOutputGain[i], slEditTone_PCMDrumKit_Compressor_CompOutputGain[i++],
-                 tbEditTone_PCMDrumKit_Compressor_CompOutputGain[i], slEditTone_PCMDrumKit_Compressor_CompOutputGain[i]}, new byte[] { 1, 2, 1, 2 })));
+                GridRow.CreateRow(ControlsGrid, (byte)(11 + i / 2), new View[] { tbEditTone_PCMDrumKit_Compressor_CompOutputGain[i], slEditTone_PCMDrumKit_Compressor_CompOutputGain[i++], tbEditTone_PCMDrumKit_Compressor_CompOutputGain[i], slEditTone_PCMDrumKit_Compressor_CompOutputGain[i] }, new byte[] { 1, 2, 1, 2 });
             }
 
             // Set control values
@@ -5242,41 +5196,23 @@ namespace INTEGRA_7_Xamarin
             }
 
             // Put in rows
-            ControlsGrid.Children.Add((new GridRow(0, new View[] {  tbEditTone_PCMDrumKit_Equalizer_SwitchesHeader,
-                cbEditTone_PCMDrumKit_Equalizer_EqSwitch[0], cbEditTone_PCMDrumKit_Equalizer_EqSwitch[1],
-                cbEditTone_PCMDrumKit_Equalizer_EqSwitch[2], cbEditTone_PCMDrumKit_Equalizer_EqSwitch[3],
-                cbEditTone_PCMDrumKit_Equalizer_EqSwitch[4], cbEditTone_PCMDrumKit_Equalizer_EqSwitch[5] }, new byte[] { 1, 1, 1, 1, 1, 1, 1 })));
-            ControlsGrid.Children.Add((new GridRow(1, new View[] { tbEditTone_PCMDrumKit_Equalizer_FrequencyHeader })));
-            ControlsGrid.Children.Add((new GridRow(2, new View[] {  tbEditTone_PCMDrumKit_Equalizer_Frequencies[0],
-                cbEditTone_PCMDrumKit_Equalizer_EQLowFreq[0], cbEditTone_PCMDrumKit_Equalizer_EQLowFreq[1],
-                cbEditTone_PCMDrumKit_Equalizer_EQLowFreq[2], cbEditTone_PCMDrumKit_Equalizer_EQLowFreq[3],
-                cbEditTone_PCMDrumKit_Equalizer_EQLowFreq[4], cbEditTone_PCMDrumKit_Equalizer_EQLowFreq[5] }, new byte[] { 1, 1, 1, 1, 1, 1, 1 })));
-            ControlsGrid.Children.Add((new GridRow(3, new View[] {  tbEditTone_PCMDrumKit_Equalizer_Frequencies[1],
-                cbEditTone_PCMDrumKit_Equalizer_EQMidFreq[0], cbEditTone_PCMDrumKit_Equalizer_EQMidFreq[1],
-                cbEditTone_PCMDrumKit_Equalizer_EQMidFreq[2], cbEditTone_PCMDrumKit_Equalizer_EQMidFreq[3],
-                cbEditTone_PCMDrumKit_Equalizer_EQMidFreq[4], cbEditTone_PCMDrumKit_Equalizer_EQMidFreq[5] }, new byte[] { 1, 1, 1, 1, 1, 1, 1 })));
-            ControlsGrid.Children.Add((new GridRow(4, new View[] {  tbEditTone_PCMDrumKit_Equalizer_Frequencies[2],
-                cbEditTone_PCMDrumKit_Equalizer_EQMidQ[0], cbEditTone_PCMDrumKit_Equalizer_EQMidQ[1],
-                cbEditTone_PCMDrumKit_Equalizer_EQMidQ[2], cbEditTone_PCMDrumKit_Equalizer_EQMidQ[3],
-                cbEditTone_PCMDrumKit_Equalizer_EQMidQ[4], cbEditTone_PCMDrumKit_Equalizer_EQMidQ[5] }, new byte[] { 1, 1, 1, 1, 1, 1, 1 })));
-            ControlsGrid.Children.Add((new GridRow(5, new View[] {  tbEditTone_PCMDrumKit_Equalizer_Frequencies[3],
-                cbEditTone_PCMDrumKit_Equalizer_EQHighFreq[0], cbEditTone_PCMDrumKit_Equalizer_EQHighFreq[1],
-                cbEditTone_PCMDrumKit_Equalizer_EQHighFreq[2], cbEditTone_PCMDrumKit_Equalizer_EQHighFreq[3],
-                cbEditTone_PCMDrumKit_Equalizer_EQHighFreq[4], cbEditTone_PCMDrumKit_Equalizer_EQHighFreq[5] }, new byte[] { 1, 1, 1, 1, 1, 1, 1 })));
+            GridRow.CreateRow(ControlsGrid, 0, new View[] { tbEditTone_PCMDrumKit_Equalizer_SwitchesHeader, cbEditTone_PCMDrumKit_Equalizer_EqSwitch[0], cbEditTone_PCMDrumKit_Equalizer_EqSwitch[1], cbEditTone_PCMDrumKit_Equalizer_EqSwitch[2], cbEditTone_PCMDrumKit_Equalizer_EqSwitch[3], cbEditTone_PCMDrumKit_Equalizer_EqSwitch[4], cbEditTone_PCMDrumKit_Equalizer_EqSwitch[5] }, new byte[] { 1, 1, 1, 1, 1, 1, 1 });
+            GridRow.CreateRow(ControlsGrid, 1, new View[] { tbEditTone_PCMDrumKit_Equalizer_FrequencyHeader });
+            GridRow.CreateRow(ControlsGrid, 2, new View[] { tbEditTone_PCMDrumKit_Equalizer_Frequencies[0], cbEditTone_PCMDrumKit_Equalizer_EQLowFreq[0], cbEditTone_PCMDrumKit_Equalizer_EQLowFreq[1], cbEditTone_PCMDrumKit_Equalizer_EQLowFreq[2], cbEditTone_PCMDrumKit_Equalizer_EQLowFreq[3], cbEditTone_PCMDrumKit_Equalizer_EQLowFreq[4], cbEditTone_PCMDrumKit_Equalizer_EQLowFreq[5] }, new byte[] { 1, 1, 1, 1, 1, 1, 1 });
+            GridRow.CreateRow(ControlsGrid, 3, new View[] { tbEditTone_PCMDrumKit_Equalizer_Frequencies[1], cbEditTone_PCMDrumKit_Equalizer_EQMidFreq[0], cbEditTone_PCMDrumKit_Equalizer_EQMidFreq[1], cbEditTone_PCMDrumKit_Equalizer_EQMidFreq[2], cbEditTone_PCMDrumKit_Equalizer_EQMidFreq[3], cbEditTone_PCMDrumKit_Equalizer_EQMidFreq[4], cbEditTone_PCMDrumKit_Equalizer_EQMidFreq[5] }, new byte[] { 1, 1, 1, 1, 1, 1, 1 });
+            GridRow.CreateRow(ControlsGrid, 4, new View[] { tbEditTone_PCMDrumKit_Equalizer_Frequencies[2], cbEditTone_PCMDrumKit_Equalizer_EQMidQ[0], cbEditTone_PCMDrumKit_Equalizer_EQMidQ[1], cbEditTone_PCMDrumKit_Equalizer_EQMidQ[2], cbEditTone_PCMDrumKit_Equalizer_EQMidQ[3], cbEditTone_PCMDrumKit_Equalizer_EQMidQ[4], cbEditTone_PCMDrumKit_Equalizer_EQMidQ[5] }, new byte[] { 1, 1, 1, 1, 1, 1, 1 });
+            GridRow.CreateRow(ControlsGrid, 5, new View[] { tbEditTone_PCMDrumKit_Equalizer_Frequencies[3], cbEditTone_PCMDrumKit_Equalizer_EQHighFreq[0], cbEditTone_PCMDrumKit_Equalizer_EQHighFreq[1], cbEditTone_PCMDrumKit_Equalizer_EQHighFreq[2], cbEditTone_PCMDrumKit_Equalizer_EQHighFreq[3], cbEditTone_PCMDrumKit_Equalizer_EQHighFreq[4], cbEditTone_PCMDrumKit_Equalizer_EQHighFreq[5] }, new byte[] { 1, 1, 1, 1, 1, 1, 1 });
             for (byte i = 0; i < 6; i++)
             {
-                ControlsGrid.Children.Add((new GridRow((byte)(6 + i / 2), new View[] {  tbEditTone_PCMDrumKit_Equalizer_EQLowGain[i], slEditTone_PCMDrumKit_Equalizer_EQLowGain[i++],
-                    tbEditTone_PCMDrumKit_Equalizer_EQLowGain[i], slEditTone_PCMDrumKit_Equalizer_EQLowGain[i] }, new byte[] { 1, 2, 1, 2 })));
+                GridRow.CreateRow(ControlsGrid, (byte)(6 + i / 2), new View[] { tbEditTone_PCMDrumKit_Equalizer_EQLowGain[i], slEditTone_PCMDrumKit_Equalizer_EQLowGain[i++], tbEditTone_PCMDrumKit_Equalizer_EQLowGain[i], slEditTone_PCMDrumKit_Equalizer_EQLowGain[i] }, new byte[] { 1, 2, 1, 2 });
             }
             for (byte i = 0; i < 6; i++)
             {
-                ControlsGrid.Children.Add((new GridRow((byte)(9 + i / 2), new View[] {  tbEditTone_PCMDrumKit_Equalizer_EQMidGain[i], slEditTone_PCMDrumKit_Equalizer_EQMidGain[i++],
-                    tbEditTone_PCMDrumKit_Equalizer_EQMidGain[i], slEditTone_PCMDrumKit_Equalizer_EQMidGain[i]}, new byte[] { 1, 2, 1, 2 })));
+                GridRow.CreateRow(ControlsGrid, (byte)(9 + i / 2), new View[] { tbEditTone_PCMDrumKit_Equalizer_EQMidGain[i], slEditTone_PCMDrumKit_Equalizer_EQMidGain[i++], tbEditTone_PCMDrumKit_Equalizer_EQMidGain[i], slEditTone_PCMDrumKit_Equalizer_EQMidGain[i] }, new byte[] { 1, 2, 1, 2 });
             }
             for (byte i = 0; i < 6; i++)
             {
-                ControlsGrid.Children.Add((new GridRow((byte)(12 + i / 2), new View[] {  tbEditTone_PCMDrumKit_Equalizer_EQHighGain[i], slEditTone_PCMDrumKit_Equalizer_EQHighGain[i++],
-                    tbEditTone_PCMDrumKit_Equalizer_EQHighGain[i], slEditTone_PCMDrumKit_Equalizer_EQHighGain[i] }, new byte[] { 1, 2, 1, 2 })));
+                GridRow.CreateRow(ControlsGrid, (byte)(12 + i / 2), new View[] { tbEditTone_PCMDrumKit_Equalizer_EQHighGain[i], slEditTone_PCMDrumKit_Equalizer_EQHighGain[i++], tbEditTone_PCMDrumKit_Equalizer_EQHighGain[i], slEditTone_PCMDrumKit_Equalizer_EQHighGain[i] }, new byte[] { 1, 2, 1, 2 });
             }
 
             byte row = 15;
@@ -5284,7 +5220,7 @@ namespace INTEGRA_7_Xamarin
             {
                 Grid dummy = new Grid();
                 dummy.BackgroundColor = colorSettings.Background;
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { dummy });
             }
 
             // Set control values
@@ -5482,10 +5418,9 @@ namespace INTEGRA_7_Xamarin
             // Put in rows
             for (byte i = 0; i < 4; i++)
             {
-                ControlsGrid.Children.Add((new GridRow((byte)(0 + 3 * i), new View[] { cbEditTone_PCMDrumKit_MFXcontrol_MFXControlSource[i] })));
-                ControlsGrid.Children.Add((new GridRow((byte)(1 + 3 * i), new View[] { cbEditTone_PCMDrumKit_MFXcontrol_MFXControlAssign[i] })));
-                ControlsGrid.Children.Add((new GridRow((byte)(2 + 3 * i), new View[] {  tbEditTone_PCMDrumKit_MFXcontrol_MFXControlSens[i],
-                    slEditTone_PCMDrumKit_MFXcontrol_MFXControlSens[i] }, new byte[] { 1, 2 })));
+                GridRow.CreateRow(ControlsGrid, (byte)(0 + 3 * i), new View[] { cbEditTone_PCMDrumKit_MFXcontrol_MFXControlSource[i] });
+                GridRow.CreateRow(ControlsGrid, (byte)(1 + 3 * i), new View[] { cbEditTone_PCMDrumKit_MFXcontrol_MFXControlAssign[i] });
+                GridRow.CreateRow(ControlsGrid, (byte)(2 + 3 * i), new View[] { tbEditTone_PCMDrumKit_MFXcontrol_MFXControlSens[i], slEditTone_PCMDrumKit_MFXcontrol_MFXControlSens[i] }, new byte[] { 1, 2 });
             }
 
             // Set control values
@@ -5550,9 +5485,7 @@ namespace INTEGRA_7_Xamarin
             }
 
             // Put in rows
-            ControlsGrid.Children.Add((new GridRow((byte)(0), new View[] {  tbEditTone_SaveTone_Title,
-                tbEditTone_SaveTone_TitleText, cbEditTone_SaveTone_SlotNumber, btnEditTone_PCMDrumKit_SaveTitle,
-                btnEditTone_PCMSynthTone_DeleteTone}, new byte[] { 4, 3, 3, 2, 2 })));
+            GridRow.CreateRow(ControlsGrid, (byte)(0), new View[] { tbEditTone_SaveTone_Title, tbEditTone_SaveTone_TitleText, cbEditTone_SaveTone_SlotNumber, btnEditTone_PCMDrumKit_SaveTitle, btnEditTone_PCMSynthTone_DeleteTone }, new byte[] { 4, 3, 3, 2, 2 });
 
             // Set values
             tbEditTone_SaveTone_Title.Text = "Name (max 12 chars):";
@@ -5709,35 +5642,24 @@ namespace INTEGRA_7_Xamarin
             slEditTone_SuperNATURALAcousticTone_Common_VibratoDelay.Maximum = 63;
 
             // Put in rows
-            ControlsGrid.Children.Add((new GridRow(0, new View[] {  cbEditTone_SuperNATURALAcousticTone_Common_PhraseNumber,
-                cbEditTone_SuperNATURALAcousticTone_Common_PhraseOctaveShift })));
-            ControlsGrid.Children.Add((new GridRow(1, new View[] {  tbEditTone_SuperNATURALAcousticTone_Common_ToneLevel,
-                slEditTone_SuperNATURALAcousticTone_Common_ToneLevel }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(2, new View[] {  cbEditTone_SuperNATURALAcousticTone_Common_MonoPoly,
-                cbEditTone_SuperNATURALAcousticTone_Common_OctaveShift})));
-            ControlsGrid.Children.Add((new GridRow(3, new View[] {  tbEditTone_SuperNATURALAcousticTone_Common_CutoffOffset,
-                slEditTone_SuperNATURALAcousticTone_Common_CutoffOffset }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(4, new View[] {  tbEditTone_SuperNATURALAcousticTone_Common_ResonanceOffset,
-                slEditTone_SuperNATURALAcousticTone_Common_ResonanceOffset }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(5, new View[] {  tbEditTone_SuperNATURALAcousticTone_Common_AttackTimeOffset,
-                slEditTone_SuperNATURALAcousticTone_Common_AttackTimeOffset }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(6, new View[] {  tbEditTone_SuperNATURALAcousticTone_Common_ReleaseTimeOffset,
-                slEditTone_SuperNATURALAcousticTone_Common_ReleaseTimeOffset }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(7, new View[] {  tbEditTone_SuperNATURALAcousticTone_Common_PortamentoTimeOffset,
-                slEditTone_SuperNATURALAcousticTone_Common_PortamentoTimeOffset }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(8, new View[] {  tbEditTone_SuperNATURALAcousticTone_Common_VibratoRate,
-                slEditTone_SuperNATURALAcousticTone_Common_VibratoRate }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(9, new View[] {  tbEditTone_SuperNATURALAcousticTone_Common_VibratoDepth,
-                slEditTone_SuperNATURALAcousticTone_Common_VibratoDepth }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(10, new View[] {  tbEditTone_SuperNATURALAcousticTone_Common_VibratoDelay,
-                slEditTone_SuperNATURALAcousticTone_Common_VibratoDelay }, new byte[] { 1, 2 })));
+            GridRow.CreateRow(ControlsGrid, 0, new View[] { cbEditTone_SuperNATURALAcousticTone_Common_PhraseNumber, cbEditTone_SuperNATURALAcousticTone_Common_PhraseOctaveShift });
+            GridRow.CreateRow(ControlsGrid, 1, new View[] { tbEditTone_SuperNATURALAcousticTone_Common_ToneLevel, slEditTone_SuperNATURALAcousticTone_Common_ToneLevel }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 2, new View[] { cbEditTone_SuperNATURALAcousticTone_Common_MonoPoly, cbEditTone_SuperNATURALAcousticTone_Common_OctaveShift });
+            GridRow.CreateRow(ControlsGrid, 3, new View[] { tbEditTone_SuperNATURALAcousticTone_Common_CutoffOffset, slEditTone_SuperNATURALAcousticTone_Common_CutoffOffset }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 4, new View[] { tbEditTone_SuperNATURALAcousticTone_Common_ResonanceOffset, slEditTone_SuperNATURALAcousticTone_Common_ResonanceOffset }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 5, new View[] { tbEditTone_SuperNATURALAcousticTone_Common_AttackTimeOffset, slEditTone_SuperNATURALAcousticTone_Common_AttackTimeOffset }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 6, new View[] { tbEditTone_SuperNATURALAcousticTone_Common_ReleaseTimeOffset, slEditTone_SuperNATURALAcousticTone_Common_ReleaseTimeOffset }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 7, new View[] { tbEditTone_SuperNATURALAcousticTone_Common_PortamentoTimeOffset, slEditTone_SuperNATURALAcousticTone_Common_PortamentoTimeOffset }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 8, new View[] { tbEditTone_SuperNATURALAcousticTone_Common_VibratoRate, slEditTone_SuperNATURALAcousticTone_Common_VibratoRate }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 9, new View[] { tbEditTone_SuperNATURALAcousticTone_Common_VibratoDepth, slEditTone_SuperNATURALAcousticTone_Common_VibratoDepth }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 10, new View[] { tbEditTone_SuperNATURALAcousticTone_Common_VibratoDelay, slEditTone_SuperNATURALAcousticTone_Common_VibratoDelay }, new byte[] { 1, 2 });
 
             byte row = 11;
             while (row < MAX_ROWS)
             {
                 Grid dummy = new Grid();
                 dummy.BackgroundColor = colorSettings.Background;
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { dummy });
             }
 
             // Set control values
@@ -5818,8 +5740,7 @@ namespace INTEGRA_7_Xamarin
             }
 
             // Put in rows
-            ControlsGrid.Children.Add((new GridRow(0, new View[] {  cbEditTone_SuperNATURALAcousticTone_Instrument_Bank,
-                cbEditTone_SuperNATURALAcousticTone_Instrument_InstNumber })));
+            GridRow.CreateRow(ControlsGrid, 0, new View[] { cbEditTone_SuperNATURALAcousticTone_Instrument_Bank, cbEditTone_SuperNATURALAcousticTone_Instrument_InstNumber });
             PushHandleControlEvents();
             cbEditTone_SuperNATURALAcousticTone_Instrument_InstNumber.SelectedIndex = index;
             PopHandleControlEvents();
@@ -6102,9 +6023,7 @@ namespace INTEGRA_7_Xamarin
                 slEditTone_SuperNATURALAcousticTone_Instrument_StringResonance.Maximum = 127;
 
                 // Put in row
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] {
-                    tbEditTone_SuperNATURALAcousticTone_Instrument_StringResonance,
-                    slEditTone_SuperNATURALAcousticTone_Instrument_StringResonance }, new byte[] { 1, 2 })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { tbEditTone_SuperNATURALAcousticTone_Instrument_StringResonance, slEditTone_SuperNATURALAcousticTone_Instrument_StringResonance }, new byte[] { 1, 2 });
 
                 // Set control value
                 slEditTone_SuperNATURALAcousticTone_Instrument_StringResonance.Value =
@@ -6129,9 +6048,7 @@ namespace INTEGRA_7_Xamarin
                 slEditTone_SuperNATURALAcousticTone_Instrument_KeyOffResonance.Maximum = 127;
 
                 // Put in row
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] {
-                    tbEditTone_SuperNATURALAcousticTone_Instrument_KeyOffResonance,
-                    slEditTone_SuperNATURALAcousticTone_Instrument_KeyOffResonance }, new byte[] { 1, 2 })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { tbEditTone_SuperNATURALAcousticTone_Instrument_KeyOffResonance, slEditTone_SuperNATURALAcousticTone_Instrument_KeyOffResonance }, new byte[] { 1, 2 });
 
                 // Set control value
                 slEditTone_SuperNATURALAcousticTone_Instrument_KeyOffResonance.Value =
@@ -6157,8 +6074,7 @@ namespace INTEGRA_7_Xamarin
                 cbEditTone_SuperNATURALAcousticTone_Instrument_HammerNoise.Items.Add("Hammer Noise +2");
 
                 // Put in row
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] {
-                    cbEditTone_SuperNATURALAcousticTone_Instrument_HammerNoise })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { cbEditTone_SuperNATURALAcousticTone_Instrument_HammerNoise });
 
                 // Set control value
                 cbEditTone_SuperNATURALAcousticTone_Instrument_HammerNoise.SelectedIndex =
@@ -6180,9 +6096,7 @@ namespace INTEGRA_7_Xamarin
                 slEditTone_SuperNATURALAcousticTone_Instrument_StereoWidth.Maximum = 63;
 
                 // Put in row
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] {
-                    tbEditTone_SuperNATURALAcousticTone_Instrument_StereoWidth,
-                    slEditTone_SuperNATURALAcousticTone_Instrument_StereoWidth }, new byte[] { 1, 2 })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { tbEditTone_SuperNATURALAcousticTone_Instrument_StereoWidth, slEditTone_SuperNATURALAcousticTone_Instrument_StereoWidth }, new byte[] { 1, 2 });
 
                 // Set control value
                 slEditTone_SuperNATURALAcousticTone_Instrument_StereoWidth.Value =
@@ -6206,8 +6120,7 @@ namespace INTEGRA_7_Xamarin
                 cbEditTone_SuperNATURALAcousticTone_Instrument_Nuance.Items.Add("Nuance type 3");
 
                 // Put in row
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] {
-                    cbEditTone_SuperNATURALAcousticTone_Instrument_Nuance })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { cbEditTone_SuperNATURALAcousticTone_Instrument_Nuance });
 
                 // Set control value
                 cbEditTone_SuperNATURALAcousticTone_Instrument_Nuance.SelectedIndex =
@@ -6237,8 +6150,7 @@ namespace INTEGRA_7_Xamarin
                 cbEditTone_SuperNATURALAcousticTone_Instrument_ToneCharacter.Items.Add("Tone Character +5");
 
                 // Put in row
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] {
-                    cbEditTone_SuperNATURALAcousticTone_Instrument_ToneCharacter })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { cbEditTone_SuperNATURALAcousticTone_Instrument_ToneCharacter });
 
                 // Set control value
                 cbEditTone_SuperNATURALAcousticTone_Instrument_ToneCharacter.SelectedIndex =
@@ -6260,9 +6172,7 @@ namespace INTEGRA_7_Xamarin
                 slEditTone_SuperNATURALAcousticTone_Instrument_NoiseLevelCC16.Minimum = -64;
                 slEditTone_SuperNATURALAcousticTone_Instrument_NoiseLevelCC16.Maximum = 63;
                 // Put in row
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] {
-                    tbEditTone_SuperNATURALAcousticTone_Instrument_NoiseLevelCC16,
-                    slEditTone_SuperNATURALAcousticTone_Instrument_NoiseLevelCC16 }, new byte[] { 1, 2 })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { tbEditTone_SuperNATURALAcousticTone_Instrument_NoiseLevelCC16, slEditTone_SuperNATURALAcousticTone_Instrument_NoiseLevelCC16 }, new byte[] { 1, 2 });
 
                 // Set control value
                 slEditTone_SuperNATURALAcousticTone_Instrument_NoiseLevelCC16.Value =
@@ -6286,8 +6196,7 @@ namespace INTEGRA_7_Xamarin
                 slEditTone_SuperNATURALAcousticTone_Instrument_CrescendoDepthCC17.Minimum = -64;
                 slEditTone_SuperNATURALAcousticTone_Instrument_CrescendoDepthCC17.Maximum = 63;
                 // Put in row
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] {
-                    tbEditTone_SuperNATURALAcousticTone_Instrument_CrescendoDepthCC17, slEditTone_SuperNATURALAcousticTone_Instrument_CrescendoDepthCC17 }, new byte[] { 1, 2 })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { tbEditTone_SuperNATURALAcousticTone_Instrument_CrescendoDepthCC17, slEditTone_SuperNATURALAcousticTone_Instrument_CrescendoDepthCC17 }, new byte[] { 1, 2 });
 
                 // Set control value
                 slEditTone_SuperNATURALAcousticTone_Instrument_CrescendoDepthCC17.Value =
@@ -6310,9 +6219,7 @@ namespace INTEGRA_7_Xamarin
                 slEditTone_SuperNATURALAcousticTone_Instrument_TremoloSpeedCC17.Minimum = -64;
                 slEditTone_SuperNATURALAcousticTone_Instrument_TremoloSpeedCC17.Maximum = 63;
                 // Put in row
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] {
-                    tbEditTone_SuperNATURALAcousticTone_Instrument_TremoloSpeedCC17,
-                    slEditTone_SuperNATURALAcousticTone_Instrument_TremoloSpeedCC17 }, new byte[] { 1, 2 })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { tbEditTone_SuperNATURALAcousticTone_Instrument_TremoloSpeedCC17, slEditTone_SuperNATURALAcousticTone_Instrument_TremoloSpeedCC17 }, new byte[] { 1, 2 });
 
                 // Set control value
                 slEditTone_SuperNATURALAcousticTone_Instrument_TremoloSpeedCC17.Value =
@@ -6336,9 +6243,7 @@ namespace INTEGRA_7_Xamarin
                 slEditTone_SuperNATURALAcousticTone_Instrument_StrumSpeedCC17.Maximum = 63;
 
                 // Put in row
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] {
-                    tbEditTone_SuperNATURALAcousticTone_Instrument_StrumSpeedCC17,
-                    slEditTone_SuperNATURALAcousticTone_Instrument_StrumSpeedCC17 }, new byte[] { 1, 2 })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { tbEditTone_SuperNATURALAcousticTone_Instrument_StrumSpeedCC17, slEditTone_SuperNATURALAcousticTone_Instrument_StrumSpeedCC17 }, new byte[] { 1, 2 });
 
                 // Set control value
                 slEditTone_SuperNATURALAcousticTone_Instrument_StrumSpeedCC17.Value =
@@ -6360,8 +6265,7 @@ namespace INTEGRA_7_Xamarin
                     "cbEditTone_SuperNATURALAcousticTone_StrumModeCC19";
 
                 // Put in row
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] {
-                    cbEditTone_SuperNATURALAcousticTone_Instrument_StrumModeCC19 })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { cbEditTone_SuperNATURALAcousticTone_Instrument_StrumModeCC19 });
 
                 // Set control value
                 cbEditTone_SuperNATURALAcousticTone_Instrument_StrumModeCC19.IsChecked =
@@ -6382,8 +6286,7 @@ namespace INTEGRA_7_Xamarin
                     "cbEditTone_SuperNATURALAcousticTone_PickingHarmonics";
 
                 // Put in row
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] {
-                    cbEditTone_SuperNATURALAcousticTone_Instrument_PickingHarmonics })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { cbEditTone_SuperNATURALAcousticTone_Instrument_PickingHarmonics });
 
                 // Set control value
                 cbEditTone_SuperNATURALAcousticTone_Instrument_PickingHarmonics.IsChecked =
@@ -6405,9 +6308,7 @@ namespace INTEGRA_7_Xamarin
                 slEditTone_SuperNATURALAcousticTone_Instrument_SubStringTune.Minimum = -64;
                 slEditTone_SuperNATURALAcousticTone_Instrument_SubStringTune.Maximum = 63;
                 // Put in row
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] {
-                    tbEditTone_SuperNATURALAcousticTone_Instrument_SubStringTune,
-                    slEditTone_SuperNATURALAcousticTone_Instrument_SubStringTune }, new byte[] { 1, 2 })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { tbEditTone_SuperNATURALAcousticTone_Instrument_SubStringTune, slEditTone_SuperNATURALAcousticTone_Instrument_SubStringTune }, new byte[] { 1, 2 });
 
                 // Set control value
                 slEditTone_SuperNATURALAcousticTone_Instrument_SubStringTune.Value =
@@ -6430,9 +6331,7 @@ namespace INTEGRA_7_Xamarin
                 slEditTone_SuperNATURALAcousticTone_Instrument_GrowlSensCC18.Minimum = 0;
                 slEditTone_SuperNATURALAcousticTone_Instrument_GrowlSensCC18.Maximum = 127;
                 // Put in row
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] {
-                    tbEditTone_SuperNATURALAcousticTone_Instrument_GrowlSensCC18,
-                    slEditTone_SuperNATURALAcousticTone_Instrument_GrowlSensCC18 }, new byte[] { 1, 2 })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { tbEditTone_SuperNATURALAcousticTone_Instrument_GrowlSensCC18, slEditTone_SuperNATURALAcousticTone_Instrument_GrowlSensCC18 }, new byte[] { 1, 2 });
 
                 // Set control value
                 slEditTone_SuperNATURALAcousticTone_Instrument_GrowlSensCC18.Value =
@@ -6501,10 +6400,7 @@ namespace INTEGRA_7_Xamarin
                 cbEditTone_SuperNATURALAcousticTone_Instrument_HarmonicBar8.Items.Add("Harmonic Bar 8' 8");
 
                 // Put in rows
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] {
-                    cbEditTone_SuperNATURALAcousticTone_Instrument_HarmonicBar16,
-                    cbEditTone_SuperNATURALAcousticTone_Instrument_HarmonicBar8,
-                    cbEditTone_SuperNATURALAcousticTone_Instrument_HarmonicBar513 })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { cbEditTone_SuperNATURALAcousticTone_Instrument_HarmonicBar16, cbEditTone_SuperNATURALAcousticTone_Instrument_HarmonicBar8, cbEditTone_SuperNATURALAcousticTone_Instrument_HarmonicBar513 });
 
                 // Set control values
                 cbEditTone_SuperNATURALAcousticTone_Instrument_HarmonicBar16.SelectedIndex =
@@ -6575,10 +6471,7 @@ namespace INTEGRA_7_Xamarin
                 cbEditTone_SuperNATURALAcousticTone_Instrument_HarmonicBar2.Items.Add("Harmonic Bar 2' 8");
 
                 // Put in rows
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] {
-                    cbEditTone_SuperNATURALAcousticTone_Instrument_HarmonicBar4,
-                    cbEditTone_SuperNATURALAcousticTone_Instrument_HarmonicBar223,
-                    cbEditTone_SuperNATURALAcousticTone_Instrument_HarmonicBar2 })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { cbEditTone_SuperNATURALAcousticTone_Instrument_HarmonicBar4, cbEditTone_SuperNATURALAcousticTone_Instrument_HarmonicBar223, cbEditTone_SuperNATURALAcousticTone_Instrument_HarmonicBar2 });
 
                 // Set control value
                 cbEditTone_SuperNATURALAcousticTone_Instrument_HarmonicBar4.SelectedIndex =
@@ -6649,10 +6542,7 @@ namespace INTEGRA_7_Xamarin
                 cbEditTone_SuperNATURALAcousticTone_Instrument_HarmonicBar1.Items.Add("Harmonic Bar 1' 8");
 
                 // Put in rows
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] {
-                    cbEditTone_SuperNATURALAcousticTone_Instrument_HarmonicBar135,
-                    cbEditTone_SuperNATURALAcousticTone_Instrument_HarmonicBar113,
-                    cbEditTone_SuperNATURALAcousticTone_Instrument_HarmonicBar1 })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { cbEditTone_SuperNATURALAcousticTone_Instrument_HarmonicBar135, cbEditTone_SuperNATURALAcousticTone_Instrument_HarmonicBar113, cbEditTone_SuperNATURALAcousticTone_Instrument_HarmonicBar1 });
 
                 // Set control value
                 cbEditTone_SuperNATURALAcousticTone_Instrument_HarmonicBar1.SelectedIndex =
@@ -6679,8 +6569,7 @@ namespace INTEGRA_7_Xamarin
                 slEditTone_SuperNATURALAcousticTone_Instrument_LeakageLevel.Maximum = 127;
 
                 // Put in row
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] {  tbEditTone_SuperNATURALAcousticTone_Instrument_LeakageLevel,
-                    slEditTone_SuperNATURALAcousticTone_Instrument_LeakageLevel }, new byte[] { 1, 2 })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { tbEditTone_SuperNATURALAcousticTone_Instrument_LeakageLevel, slEditTone_SuperNATURALAcousticTone_Instrument_LeakageLevel }, new byte[] { 1, 2 });
 
                 // Set control value
                 slEditTone_SuperNATURALAcousticTone_Instrument_LeakageLevel.Value =
@@ -6701,8 +6590,7 @@ namespace INTEGRA_7_Xamarin
                     "cbEditTone_SuperNATURALAcousticTone_PercussionSwitch";
 
                 // Put in row
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] {
-                    cbEditTone_SuperNATURALAcousticTone_Instrument_PercussionSwitch }, new byte[] { 1, 2 })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { cbEditTone_SuperNATURALAcousticTone_Instrument_PercussionSwitch }, new byte[] { 1, 2 });
 
                 // Set control value
                 cbEditTone_SuperNATURALAcousticTone_Instrument_PercussionSwitch.IsChecked =
@@ -6736,8 +6624,7 @@ namespace INTEGRA_7_Xamarin
                 slEditTone_SuperNATURALAcousticTone_Instrument_PercussionSoftLevel.Minimum = 0;
                 slEditTone_SuperNATURALAcousticTone_Instrument_PercussionSoftLevel.Maximum = 15;
                 // Put in row
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] {  tbEditTone_SuperNATURALAcousticTone_Instrument_PercussionSoftLevel,
-                    slEditTone_SuperNATURALAcousticTone_Instrument_PercussionSoftLevel }, new byte[] { 1, 2 })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { tbEditTone_SuperNATURALAcousticTone_Instrument_PercussionSoftLevel, slEditTone_SuperNATURALAcousticTone_Instrument_PercussionSoftLevel }, new byte[] { 1, 2 });
 
                 // Set control value
                 slEditTone_SuperNATURALAcousticTone_Instrument_PercussionSoftLevel.Value =
@@ -6760,9 +6647,7 @@ namespace INTEGRA_7_Xamarin
                 slEditTone_SuperNATURALAcousticTone_Instrument_PercussionNormalLevel.Minimum = 0;
                 slEditTone_SuperNATURALAcousticTone_Instrument_PercussionNormalLevel.Maximum = 15;
                 // Put in row
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] {
-                    tbEditTone_SuperNATURALAcousticTone_Instrument_PercussionNormalLevel,
-                    slEditTone_SuperNATURALAcousticTone_Instrument_PercussionNormalLevel }, new byte[] { 1, 2 })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { tbEditTone_SuperNATURALAcousticTone_Instrument_PercussionNormalLevel, slEditTone_SuperNATURALAcousticTone_Instrument_PercussionNormalLevel }, new byte[] { 1, 2 });
 
                 // Set control value
                 slEditTone_SuperNATURALAcousticTone_Instrument_PercussionNormalLevel.Value =
@@ -6798,9 +6683,7 @@ namespace INTEGRA_7_Xamarin
                 slEditTone_SuperNATURALAcousticTone_Instrument_PercussionSlowTime.Minimum = 0;
                 slEditTone_SuperNATURALAcousticTone_Instrument_PercussionSlowTime.Maximum = 127;
                 // Put in row
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] {
-                    tbEditTone_SuperNATURALAcousticTone_Instrument_PercussionSlowTime,
-                    slEditTone_SuperNATURALAcousticTone_Instrument_PercussionSlowTime }, new byte[] { 1, 2 })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { tbEditTone_SuperNATURALAcousticTone_Instrument_PercussionSlowTime, slEditTone_SuperNATURALAcousticTone_Instrument_PercussionSlowTime }, new byte[] { 1, 2 });
 
                 // Set control value
                 slEditTone_SuperNATURALAcousticTone_Instrument_PercussionSlowTime.Value =
@@ -6823,9 +6706,7 @@ namespace INTEGRA_7_Xamarin
                 slEditTone_SuperNATURALAcousticTone_Instrument_PercussionFastTime.Maximum = 127;
 
                 // Put in row
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] {
-                    tbEditTone_SuperNATURALAcousticTone_Instrument_PercussionFastTime,
-                    slEditTone_SuperNATURALAcousticTone_Instrument_PercussionFastTime }, new byte[] { 1, 2 })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { tbEditTone_SuperNATURALAcousticTone_Instrument_PercussionFastTime, slEditTone_SuperNATURALAcousticTone_Instrument_PercussionFastTime }, new byte[] { 1, 2 });
 
                 // Set control value
                 slEditTone_SuperNATURALAcousticTone_Instrument_PercussionFastTime.Value =
@@ -6848,10 +6729,7 @@ namespace INTEGRA_7_Xamarin
                 cbEditTone_SuperNATURALAcousticTone_Instrument_PercussionHarmonic.Items.Add("Percussion Harmonic 3rd");
 
                 // Put in row
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] {
-                    cbEditTone_SuperNATURALAcousticTone_Instrument_PercussionSlow,
-                    cbEditTone_SuperNATURALAcousticTone_Instrument_PercussionSoft,
-                    cbEditTone_SuperNATURALAcousticTone_Instrument_PercussionHarmonic })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { cbEditTone_SuperNATURALAcousticTone_Instrument_PercussionSlow, cbEditTone_SuperNATURALAcousticTone_Instrument_PercussionSoft, cbEditTone_SuperNATURALAcousticTone_Instrument_PercussionHarmonic });
 
                 // Set control values
                 cbEditTone_SuperNATURALAcousticTone_Instrument_PercussionSoft.SelectedIndex =
@@ -6877,9 +6755,7 @@ namespace INTEGRA_7_Xamarin
                 slEditTone_SuperNATURALAcousticTone_Instrument_PercussionRechargeTime.Maximum = 15;
 
                 // Put in row
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] {
-                    tbEditTone_SuperNATURALAcousticTone_Instrument_PercussionRechargeTime,
-                    slEditTone_SuperNATURALAcousticTone_Instrument_PercussionRechargeTime }, new byte[] { 1, 2 })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { tbEditTone_SuperNATURALAcousticTone_Instrument_PercussionRechargeTime, slEditTone_SuperNATURALAcousticTone_Instrument_PercussionRechargeTime }, new byte[] { 1, 2 });
 
                 // Set control value
                 slEditTone_SuperNATURALAcousticTone_Instrument_PercussionRechargeTime.Value =
@@ -6903,8 +6779,7 @@ namespace INTEGRA_7_Xamarin
                 slEditTone_SuperNATURALAcousticTone_Instrument_PercussionHarmonicBarLevel.Maximum = 127;
 
                 // Put in row
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] {  tbEditTone_SuperNATURALAcousticTone_Instrument_PercussionHarmonicBarLevel,
-                    slEditTone_SuperNATURALAcousticTone_Instrument_PercussionHarmonicBarLevel }, new byte[] { 1, 2 })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { tbEditTone_SuperNATURALAcousticTone_Instrument_PercussionHarmonicBarLevel, slEditTone_SuperNATURALAcousticTone_Instrument_PercussionHarmonicBarLevel }, new byte[] { 1, 2 });
 
                 // Set control value
                 slEditTone_SuperNATURALAcousticTone_Instrument_PercussionHarmonicBarLevel.Value =
@@ -6928,8 +6803,7 @@ namespace INTEGRA_7_Xamarin
                 slEditTone_SuperNATURALAcousticTone_Instrument_KeyOnClickLevel.Maximum = 31;
 
                 // Put in row
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] {  tbEditTone_SuperNATURALAcousticTone_Instrument_KeyOnClickLevel,
-                    slEditTone_SuperNATURALAcousticTone_Instrument_KeyOnClickLevel }, new byte[] { 1, 2 })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { tbEditTone_SuperNATURALAcousticTone_Instrument_KeyOnClickLevel, slEditTone_SuperNATURALAcousticTone_Instrument_KeyOnClickLevel }, new byte[] { 1, 2 });
 
                 // Set control value
                 slEditTone_SuperNATURALAcousticTone_Instrument_KeyOnClickLevel.Value =
@@ -6953,8 +6827,7 @@ namespace INTEGRA_7_Xamarin
                 slEditTone_SuperNATURALAcousticTone_Instrument_KeyOffClickLevel.Maximum = 31;
 
                 // Put in row
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] {  tbEditTone_SuperNATURALAcousticTone_Instrument_KeyOffClickLevel,
-                    slEditTone_SuperNATURALAcousticTone_Instrument_KeyOffClickLevel }, new byte[] { 1, 2 })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { tbEditTone_SuperNATURALAcousticTone_Instrument_KeyOffClickLevel, slEditTone_SuperNATURALAcousticTone_Instrument_KeyOffClickLevel }, new byte[] { 1, 2 });
 
                 // Set control value
                 slEditTone_SuperNATURALAcousticTone_Instrument_KeyOffClickLevel.Value =
@@ -6977,7 +6850,7 @@ namespace INTEGRA_7_Xamarin
                 slEditTone_SuperNATURALAcousticTone_Instrument_MalletHardnessCC16.Minimum = -64;
                 slEditTone_SuperNATURALAcousticTone_Instrument_MalletHardnessCC16.Maximum = 63;
                 // Put in row
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] { tbEditTone_SuperNATURALAcousticTone_Instrument_MalletHardnessCC16, slEditTone_SuperNATURALAcousticTone_Instrument_MalletHardnessCC16 }, new byte[] { 1, 2 })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { tbEditTone_SuperNATURALAcousticTone_Instrument_MalletHardnessCC16, slEditTone_SuperNATURALAcousticTone_Instrument_MalletHardnessCC16 }, new byte[] { 1, 2 });
 
                 // Set control value
                 slEditTone_SuperNATURALAcousticTone_Instrument_MalletHardnessCC16.Value =
@@ -7000,9 +6873,7 @@ namespace INTEGRA_7_Xamarin
                 slEditTone_SuperNATURALAcousticTone_Instrument_ResonanceLevelCC16.Minimum = -64;
                 slEditTone_SuperNATURALAcousticTone_Instrument_ResonanceLevelCC16.Maximum = 63;
                 // Put in row
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] {
-                    tbEditTone_SuperNATURALAcousticTone_Instrument_ResonanceLevelCC16,
-                    slEditTone_SuperNATURALAcousticTone_Instrument_ResonanceLevelCC16 }, new byte[] { 1, 2 })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { tbEditTone_SuperNATURALAcousticTone_Instrument_ResonanceLevelCC16, slEditTone_SuperNATURALAcousticTone_Instrument_ResonanceLevelCC16 }, new byte[] { 1, 2 });
 
                 // Set control value
                 slEditTone_SuperNATURALAcousticTone_Instrument_ResonanceLevelCC16.Value =
@@ -7025,9 +6896,7 @@ namespace INTEGRA_7_Xamarin
                 slEditTone_SuperNATURALAcousticTone_Instrument_RollSpeedCC17.Minimum = -64;
                 slEditTone_SuperNATURALAcousticTone_Instrument_RollSpeedCC17.Maximum = 63;
                 // Put in row
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] {
-                    tbEditTone_SuperNATURALAcousticTone_Instrument_RollSpeedCC17,
-                    slEditTone_SuperNATURALAcousticTone_Instrument_RollSpeedCC17 }, new byte[] { 1, 2 })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { tbEditTone_SuperNATURALAcousticTone_Instrument_RollSpeedCC17, slEditTone_SuperNATURALAcousticTone_Instrument_RollSpeedCC17 }, new byte[] { 1, 2 });
 
                 // Set control value
                 slEditTone_SuperNATURALAcousticTone_Instrument_RollSpeedCC17.Value =
@@ -7049,8 +6918,7 @@ namespace INTEGRA_7_Xamarin
                     "cbEditTone_SuperNATURALAcousticTone_GlissandoModeCC19";
 
                 // Put in row
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] {
-                    cbEditTone_SuperNATURALAcousticTone_Instrument_GlissandoModeCC19 })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { cbEditTone_SuperNATURALAcousticTone_Instrument_GlissandoModeCC19 });
 
                 // Set control value
                 cbEditTone_SuperNATURALAcousticTone_Instrument_GlissandoModeCC19.IsChecked =
@@ -7077,8 +6945,7 @@ namespace INTEGRA_7_Xamarin
                 cbEditTone_SuperNATURALAcousticTone_Instrument_PlayScale.Items.Add("Play Scale: Hira (Hirajyoshi)");
 
                 // Put in row
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] {
-                    cbEditTone_SuperNATURALAcousticTone_Instrument_PlayScale })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { cbEditTone_SuperNATURALAcousticTone_Instrument_PlayScale });
 
                 // Set control value
                 cbEditTone_SuperNATURALAcousticTone_Instrument_PlayScale.SelectedIndex =
@@ -7109,8 +6976,7 @@ namespace INTEGRA_7_Xamarin
                 cbEditTone_SuperNATURALAcousticTone_Instrument_ScaleKey.Items.Add("Scale Key: B");
 
                 // Put in row
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] {
-                    cbEditTone_SuperNATURALAcousticTone_Instrument_ScaleKey })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { cbEditTone_SuperNATURALAcousticTone_Instrument_ScaleKey });
 
                 // Set control value
                 cbEditTone_SuperNATURALAcousticTone_Instrument_ScaleKey.SelectedIndex =
@@ -7131,8 +6997,7 @@ namespace INTEGRA_7_Xamarin
                 slEditTone_SuperNATURALAcousticTone_Instrument_BendDepth.Minimum = -64;
                 slEditTone_SuperNATURALAcousticTone_Instrument_BendDepth.Maximum = 63;
                 // Put in row
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] {
-                    tbEditTone_SuperNATURALAcousticTone_Instrument_BendDepth, slEditTone_SuperNATURALAcousticTone_Instrument_BendDepth }, new byte[] { 1, 2 })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { tbEditTone_SuperNATURALAcousticTone_Instrument_BendDepth, slEditTone_SuperNATURALAcousticTone_Instrument_BendDepth }, new byte[] { 1, 2 });
 
                 // Set control value
                 slEditTone_SuperNATURALAcousticTone_Instrument_BendDepth.Value =
@@ -7154,8 +7019,7 @@ namespace INTEGRA_7_Xamarin
                     "cbEditTone_SuperNATURALAcousticTone_BuzzKeySwitch";
 
                 // Put in row
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] {
-                    cbEditTone_SuperNATURALAcousticTone_Instrument_BuzzKeySwitch })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { cbEditTone_SuperNATURALAcousticTone_Instrument_BuzzKeySwitch });
 
                 // Set control value
                 cbEditTone_SuperNATURALAcousticTone_Instrument_BuzzKeySwitch.IsChecked =
@@ -7176,9 +7040,7 @@ namespace INTEGRA_7_Xamarin
                 slEditTone_SuperNATURALAcousticTone_Instrument_TamburaLevel.Minimum = -64;
                 slEditTone_SuperNATURALAcousticTone_Instrument_TamburaLevel.Maximum = 63;
                 // Put in row
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] {
-                    tbEditTone_SuperNATURALAcousticTone_Instrument_TamburaLevel,
-                    slEditTone_SuperNATURALAcousticTone_Instrument_TamburaLevel }, new byte[] { 1, 2 })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { tbEditTone_SuperNATURALAcousticTone_Instrument_TamburaLevel, slEditTone_SuperNATURALAcousticTone_Instrument_TamburaLevel }, new byte[] { 1, 2 });
 
                 // Set control value
                 slEditTone_SuperNATURALAcousticTone_Instrument_TamburaLevel.Value =
@@ -7201,8 +7063,7 @@ namespace INTEGRA_7_Xamarin
                 slEditTone_SuperNATURALAcousticTone_Instrument_TamburaPitch.Minimum = -12;
                 slEditTone_SuperNATURALAcousticTone_Instrument_TamburaPitch.Maximum = 12;
                 // Put in row
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] {
-                    tbEditTone_SuperNATURALAcousticTone_Instrument_TamburaPitch, slEditTone_SuperNATURALAcousticTone_Instrument_TamburaPitch }, new byte[] { 1, 2 })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { tbEditTone_SuperNATURALAcousticTone_Instrument_TamburaPitch, slEditTone_SuperNATURALAcousticTone_Instrument_TamburaPitch }, new byte[] { 1, 2 });
 
                 // Set control value
                 slEditTone_SuperNATURALAcousticTone_Instrument_TamburaPitch.Value =
@@ -7224,8 +7085,7 @@ namespace INTEGRA_7_Xamarin
                     "cbEditTone_SuperNATURALAcousticTone_HoldLegatoModeCC19";
 
                 // Put in row
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] {
-                    cbEditTone_SuperNATURALAcousticTone_Instrument_HoldLegatoModeCC19 })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { cbEditTone_SuperNATURALAcousticTone_Instrument_HoldLegatoModeCC19 });
 
                 // Set control value
                 cbEditTone_SuperNATURALAcousticTone_Instrument_HoldLegatoModeCC19.IsChecked =
@@ -7246,9 +7106,7 @@ namespace INTEGRA_7_Xamarin
                 slEditTone_SuperNATURALAcousticTone_Instrument_DroneLevel.Minimum = -64;
                 slEditTone_SuperNATURALAcousticTone_Instrument_DroneLevel.Maximum = 63;
                 // Put in row
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] {
-                    tbEditTone_SuperNATURALAcousticTone_Instrument_DroneLevel,
-                    slEditTone_SuperNATURALAcousticTone_Instrument_DroneLevel }, new byte[] { 1, 2 })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { tbEditTone_SuperNATURALAcousticTone_Instrument_DroneLevel, slEditTone_SuperNATURALAcousticTone_Instrument_DroneLevel }, new byte[] { 1, 2 });
 
                 // Set control value
                 slEditTone_SuperNATURALAcousticTone_Instrument_DroneLevel.Value =
@@ -7271,9 +7129,7 @@ namespace INTEGRA_7_Xamarin
                 slEditTone_SuperNATURALAcousticTone_Instrument_DronePitch.Minimum = -12;
                 slEditTone_SuperNATURALAcousticTone_Instrument_DronePitch.Maximum = 12;
                 // Put in row
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] {
-                    tbEditTone_SuperNATURALAcousticTone_Instrument_DronePitch,
-                    slEditTone_SuperNATURALAcousticTone_Instrument_DronePitch }, new byte[] { 1, 2 })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { tbEditTone_SuperNATURALAcousticTone_Instrument_DronePitch, slEditTone_SuperNATURALAcousticTone_Instrument_DronePitch }, new byte[] { 1, 2 });
 
                 // Set control value
                 slEditTone_SuperNATURALAcousticTone_Instrument_DronePitch.Value =
@@ -7296,8 +7152,7 @@ namespace INTEGRA_7_Xamarin
                 cbEditTone_SuperNATURALAcousticTone_Instrument_Glide.Items.Add("Glide: Glissando");
 
                 // Put in row
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] {
-                    cbEditTone_SuperNATURALAcousticTone_Instrument_Glide })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { cbEditTone_SuperNATURALAcousticTone_Instrument_Glide });
 
                 // Set control value
                 cbEditTone_SuperNATURALAcousticTone_Instrument_Glide.SelectedIndex =
@@ -7325,7 +7180,7 @@ namespace INTEGRA_7_Xamarin
                     }
 
                     // Put in row
-                    ControlsGrid.Children.Add((new GridRow(row++, new View[] { cbEditTone_SuperNATURALAcousticTone_Instrument_InstVariation })));
+                    GridRow.CreateRow(ControlsGrid, row++, new View[] { cbEditTone_SuperNATURALAcousticTone_Instrument_InstVariation });
 
                     // Set control value
                     cbEditTone_SuperNATURALAcousticTone_Instrument_InstVariation.SelectedIndex =
@@ -7340,7 +7195,7 @@ namespace INTEGRA_7_Xamarin
             {
                 Grid dummy = new Grid();
                 dummy.BackgroundColor = colorSettings.Background;
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { dummy });
             }
         }
 
@@ -7494,13 +7349,9 @@ namespace INTEGRA_7_Xamarin
             // Put in rows
             for (byte i = 0; i < 4; i++)
             {
-                ControlsGrid.Children.Add((new GridRow((byte)(0 + 3 * i), new View[] {
-                    cbEditTone_CommonMFX_Control_MFXControlSource[i] })));
-                ControlsGrid.Children.Add((new GridRow((byte)(1 + 3 * i), new View[] {
-                    cbEditTone_CommonMFX_Control_MFXControlAssign[i] })));
-                ControlsGrid.Children.Add((new GridRow((byte)(2 + 3 * i), new View[] {
-                    tbEditTone_CommonMFX_Control_MFXControlSens[i],
-                    slEditTone_CommonMFX_Control_MFXControlSens[i] }, new byte[] { 1, 2 })));
+                GridRow.CreateRow(ControlsGrid, (byte)(0 + 3 * i), new View[] { cbEditTone_CommonMFX_Control_MFXControlSource[i] });
+                GridRow.CreateRow(ControlsGrid, (byte)(1 + 3 * i), new View[] { cbEditTone_CommonMFX_Control_MFXControlAssign[i] });
+                GridRow.CreateRow(ControlsGrid, (byte)(2 + 3 * i), new View[] { tbEditTone_CommonMFX_Control_MFXControlSens[i], slEditTone_CommonMFX_Control_MFXControlSens[i] }, new byte[] { 1, 2 });
             }
 
             // Set values
@@ -7561,9 +7412,7 @@ namespace INTEGRA_7_Xamarin
             }
 
             // Put in rows
-            ControlsGrid.Children.Add((new GridRow((byte)(0), new View[] {  tbEditTone_SaveTone_Title,
-                tbEditTone_SaveTone_TitleText, cbEditTone_SaveTone_SlotNumber, btnEditTone_SuperNaturalAcousticTone_SaveTitle,
-                btnEditTone_PCMSynthTone_DeleteTone}, new byte[] { 4, 3, 3, 2, 2 })));
+            GridRow.CreateRow(ControlsGrid, (byte)(0), new View[] { tbEditTone_SaveTone_Title, tbEditTone_SaveTone_TitleText, cbEditTone_SaveTone_SlotNumber, btnEditTone_SuperNaturalAcousticTone_SaveTitle, btnEditTone_PCMSynthTone_DeleteTone }, new byte[] { 4, 3, 3, 2, 2 });
 
             // Set values
             tbEditTone_SaveTone_Title.Text = "Name (max 12 chars):";
@@ -7708,30 +7557,26 @@ namespace INTEGRA_7_Xamarin
             cbEditTone_superNATURALSynthTone_Common_PortamentoMode.Items.Add("Portamento Mode: Legato");
 
             // Put in rows
-            ControlsGrid.Children.Add((new GridRow(0, new View[] { cbEditTone_SuperNATURALSynthTone_Common_PhraseNumber })));
-            ControlsGrid.Children.Add((new GridRow(1, new View[] { cbEditTone_superNATURALSynthTone_Common_PhraseOctaveShift })));
-            ControlsGrid.Children.Add((new GridRow(2, new View[] {  tbEditTone_superNATURALSynthTone_Common_ToneLevel,
-                slEditTone_superNATURALSynthTone_Common_ToneLevel }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(3, new View[] { cbEditTone_superNATURALSynthTone_Common_RINGSwitch })));
-            ControlsGrid.Children.Add((new GridRow(4, new View[] {  tbEditTone_superNATURALSynthTone_Common_WaveShape,
-                slEditTone_superNATURALSynthTone_Common_WaveShape }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(5, new View[] {  tbEditTone_superNATURALSynthTone_Common_AnalogFeel,
-                slEditTone_superNATURALSynthTone_Common_AnalogFeel }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(6, new View[] { cbEditTone_superNATURALSynthTone_Common_UnisonSwitch })));
-            ControlsGrid.Children.Add((new GridRow(7, new View[] { cbEditTone_superNATURALSynthTone_Common_UnisonSize })));
-            ControlsGrid.Children.Add((new GridRow(8, new View[] { cbEditTone_superNATURALSynthTone_Common_MonoPoly })));
-            ControlsGrid.Children.Add((new GridRow(9, new View[] { cbEditTone_superNATURALSynthTone_Common_LegatoSwitch })));
-            ControlsGrid.Children.Add((new GridRow(10, new View[] { cbEditTone_superNATURALSynthTone_Common_PortamentoSwitch })));
-            ControlsGrid.Children.Add((new GridRow(11, new View[] {  tbEditTone_superNATURALSynthTone_Common_PortamentoTime,
-                slEditTone_superNATURALSynthTone_Common_PortamentoTime }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(12, new View[] { cbEditTone_superNATURALSynthTone_Common_PortamentoMode })));
+            GridRow.CreateRow(ControlsGrid, 0, new View[] { cbEditTone_SuperNATURALSynthTone_Common_PhraseNumber });
+            GridRow.CreateRow(ControlsGrid, 1, new View[] { cbEditTone_superNATURALSynthTone_Common_PhraseOctaveShift });
+            GridRow.CreateRow(ControlsGrid, 2, new View[] { tbEditTone_superNATURALSynthTone_Common_ToneLevel, slEditTone_superNATURALSynthTone_Common_ToneLevel }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 3, new View[] { cbEditTone_superNATURALSynthTone_Common_RINGSwitch });
+            GridRow.CreateRow(ControlsGrid, 4, new View[] { tbEditTone_superNATURALSynthTone_Common_WaveShape, slEditTone_superNATURALSynthTone_Common_WaveShape }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 5, new View[] { tbEditTone_superNATURALSynthTone_Common_AnalogFeel, slEditTone_superNATURALSynthTone_Common_AnalogFeel }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 6, new View[] { cbEditTone_superNATURALSynthTone_Common_UnisonSwitch });
+            GridRow.CreateRow(ControlsGrid, 7, new View[] { cbEditTone_superNATURALSynthTone_Common_UnisonSize });
+            GridRow.CreateRow(ControlsGrid, 8, new View[] { cbEditTone_superNATURALSynthTone_Common_MonoPoly });
+            GridRow.CreateRow(ControlsGrid, 9, new View[] { cbEditTone_superNATURALSynthTone_Common_LegatoSwitch });
+            GridRow.CreateRow(ControlsGrid, 10, new View[] { cbEditTone_superNATURALSynthTone_Common_PortamentoSwitch });
+            GridRow.CreateRow(ControlsGrid, 11, new View[] { tbEditTone_superNATURALSynthTone_Common_PortamentoTime, slEditTone_superNATURALSynthTone_Common_PortamentoTime }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 12, new View[] { cbEditTone_superNATURALSynthTone_Common_PortamentoMode });
 
             byte row = 13;
             while (row < MAX_ROWS)
             {
                 Grid dummy = new Grid();
                 dummy.BackgroundColor = colorSettings.Background;
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { dummy });
             }
 
             // Set control values
@@ -7866,22 +7711,21 @@ namespace INTEGRA_7_Xamarin
             slEditTone_superNATURALSynthTone_Osc_SuperSawDetune.Maximum = 127;
 
             // Put in rows
-            ControlsGrid.Children.Add((new GridRow((byte)(0), new View[] {  cbEditTone_superNATURALSynthTone_Osc_Partial1Switch,
-            cbEditTone_superNATURALSynthTone_Osc_Partial2Switch, cbEditTone_superNATURALSynthTone_Osc_Partial3Switch})));
-            ControlsGrid.Children.Add((new GridRow(1, new View[] { cbEditTone_superNATURALSynthTone_Osc_WaveShape })));
-            ControlsGrid.Children.Add((new GridRow(2, new View[] { cbEditTone_superNATURALSynthTone_Osc_WaveVariation })));
-            ControlsGrid.Children.Add((new GridRow(3, new View[] { cbEditTone_superNATURALSynthTone_Osc_WaveNumber })));
-            ControlsGrid.Children.Add((new GridRow(4, new View[] { cbEditTone_superNATURALSynthTone_Osc_WaveGain })));
-            ControlsGrid.Children.Add((new GridRow(5, new View[] { tbEditTone_superNATURALSynthTone_Osc_PulseWidthModDepth, slEditTone_superNATURALSynthTone_Osc_PulseWidthModDepth }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(6, new View[] { tbEditTone_superNATURALSynthTone_Osc_PulseWidthShift, slEditTone_superNATURALSynthTone_Osc_PulseWidthShift }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(7, new View[] { tbEditTone_superNATURALSynthTone_Osc_SuperSawDetune, slEditTone_superNATURALSynthTone_Osc_SuperSawDetune }, new byte[] { 1, 2 })));
+            GridRow.CreateRow(ControlsGrid, (byte)(0), new View[] { cbEditTone_superNATURALSynthTone_Osc_Partial1Switch, cbEditTone_superNATURALSynthTone_Osc_Partial2Switch, cbEditTone_superNATURALSynthTone_Osc_Partial3Switch });
+            GridRow.CreateRow(ControlsGrid, 1, new View[] { cbEditTone_superNATURALSynthTone_Osc_WaveShape });
+            GridRow.CreateRow(ControlsGrid, 2, new View[] { cbEditTone_superNATURALSynthTone_Osc_WaveVariation });
+            GridRow.CreateRow(ControlsGrid, 3, new View[] { cbEditTone_superNATURALSynthTone_Osc_WaveNumber });
+            GridRow.CreateRow(ControlsGrid, 4, new View[] { cbEditTone_superNATURALSynthTone_Osc_WaveGain });
+            GridRow.CreateRow(ControlsGrid, 5, new View[] { tbEditTone_superNATURALSynthTone_Osc_PulseWidthModDepth, slEditTone_superNATURALSynthTone_Osc_PulseWidthModDepth }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 6, new View[] { tbEditTone_superNATURALSynthTone_Osc_PulseWidthShift, slEditTone_superNATURALSynthTone_Osc_PulseWidthShift }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 7, new View[] { tbEditTone_superNATURALSynthTone_Osc_SuperSawDetune, slEditTone_superNATURALSynthTone_Osc_SuperSawDetune }, new byte[] { 1, 2 });
 
             byte row = 8;
             while (row < MAX_ROWS)
             {
                 Grid dummy = new Grid();
                 dummy.BackgroundColor = colorSettings.Background;
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { dummy });
             }
 
             // Set control values
@@ -8017,23 +7861,22 @@ namespace INTEGRA_7_Xamarin
             slEditTone_superNATURALSynthTone_Pitch_PitchBendRangeDown.Maximum = 24;
 
             // Put in rows
-            ControlsGrid.Children.Add((new GridRow((byte)(0), new View[] {  cbEditTone_superNATURALSynthTone_Pitch_Partial1Switch,
-            cbEditTone_superNATURALSynthTone_Pitch_Partial2Switch, cbEditTone_superNATURALSynthTone_Pitch_Partial3Switch})));
-            ControlsGrid.Children.Add((new GridRow(1, new View[] { tbEditTone_superNATURALSynthTone_Pitch_OSCPitch, slEditTone_superNATURALSynthTone_Pitch_OSCPitch }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(2, new View[] { tbEditTone_superNATURALSynthTone_Pitch_OSCDetune, slEditTone_superNATURALSynthTone_Pitch_OSCDetune }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(3, new View[] { tbEditTone_superNATURALSynthTone_Pitch_PitchEnvAttackTime, slEditTone_superNATURALSynthTone_Pitch_PitchEnvAttackTime }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(4, new View[] { tbEditTone_superNATURALSynthTone_Pitch_OSCPitchEnvDecay, slEditTone_superNATURALSynthTone_Pitch_OSCPitchEnvDecay }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(5, new View[] { tbEditTone_superNATURALSynthTone_Pitch_OSCPitchEnvDepth, slEditTone_superNATURALSynthTone_Pitch_OSCPitchEnvDepth }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(6, new View[] { cbEditTone_superNATURALSynthTone_Pitch_OSCOctaveShift })));
-            ControlsGrid.Children.Add((new GridRow(7, new View[] { tbEditTone_superNATURALSynthTone_Pitch_PitchBendRangeUp, slEditTone_superNATURALSynthTone_Pitch_PitchBendRangeUp }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(8, new View[] { tbEditTone_superNATURALSynthTone_Pitch_PitchBendRangeDown, slEditTone_superNATURALSynthTone_Pitch_PitchBendRangeDown }, new byte[] { 1, 2 })));
+            GridRow.CreateRow(ControlsGrid, (byte)(0), new View[] { cbEditTone_superNATURALSynthTone_Pitch_Partial1Switch, cbEditTone_superNATURALSynthTone_Pitch_Partial2Switch, cbEditTone_superNATURALSynthTone_Pitch_Partial3Switch });
+            GridRow.CreateRow(ControlsGrid, 1, new View[] { tbEditTone_superNATURALSynthTone_Pitch_OSCPitch, slEditTone_superNATURALSynthTone_Pitch_OSCPitch }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 2, new View[] { tbEditTone_superNATURALSynthTone_Pitch_OSCDetune, slEditTone_superNATURALSynthTone_Pitch_OSCDetune }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 3, new View[] { tbEditTone_superNATURALSynthTone_Pitch_PitchEnvAttackTime, slEditTone_superNATURALSynthTone_Pitch_PitchEnvAttackTime }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 4, new View[] { tbEditTone_superNATURALSynthTone_Pitch_OSCPitchEnvDecay, slEditTone_superNATURALSynthTone_Pitch_OSCPitchEnvDecay }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 5, new View[] { tbEditTone_superNATURALSynthTone_Pitch_OSCPitchEnvDepth, slEditTone_superNATURALSynthTone_Pitch_OSCPitchEnvDepth }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 6, new View[] { cbEditTone_superNATURALSynthTone_Pitch_OSCOctaveShift });
+            GridRow.CreateRow(ControlsGrid, 7, new View[] { tbEditTone_superNATURALSynthTone_Pitch_PitchBendRangeUp, slEditTone_superNATURALSynthTone_Pitch_PitchBendRangeUp }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 8, new View[] { tbEditTone_superNATURALSynthTone_Pitch_PitchBendRangeDown, slEditTone_superNATURALSynthTone_Pitch_PitchBendRangeDown }, new byte[] { 1, 2 });
 
             byte row = 9;
             while (row < MAX_ROWS)
             {
                 Grid dummy = new Grid();
                 dummy.BackgroundColor = colorSettings.Background;
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { dummy });
             }
 
             // Set control values
@@ -8214,27 +8057,26 @@ namespace INTEGRA_7_Xamarin
             slEditTone_superNATURALSynthTone_Pitch_HPFCutoff.Maximum = 127;
 
             // Put in rows
-            ControlsGrid.Children.Add((new GridRow((byte)(0), new View[] {  cbEditTone_superNATURALSynthTone_Filter_Partial1Switch,
-            cbEditTone_superNATURALSynthTone_Filter_Partial2Switch, cbEditTone_superNATURALSynthTone_Filter_Partial3Switch})));
-            ControlsGrid.Children.Add((new GridRow(1, new View[] { cbEditTone_superNATURALSynthTone_Pitch_FILTERMode })));
-            ControlsGrid.Children.Add((new GridRow(2, new View[] { cbEditTone_superNATURALSynthTone_Pitch_FILTERSlope })));
-            ControlsGrid.Children.Add((new GridRow(3, new View[] { tbEditTone_superNATURALSynthTone_Pitch_FILTERCutoff, slEditTone_superNATURALSynthTone_Pitch_FILTERCutoff }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(4, new View[] { tbEditTone_superNATURALSynthTone_Pitch_FILTERCutoffKeyfollow, slEditTone_superNATURALSynthTone_Pitch_FILTERCutoffKeyfollow }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(5, new View[] { tbEditTone_superNATURALSynthTone_Pitch_FILTEREnvVelocitySens, slEditTone_superNATURALSynthTone_Pitch_FILTEREnvVelocitySens }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(6, new View[] { tbEditTone_superNATURALSynthTone_Pitch_FILTERResonance, slEditTone_superNATURALSynthTone_Pitch_FILTERResonance }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(7, new View[] { tbEditTone_superNATURALSynthTone_Pitch_FILTEREnvAttackTime, slEditTone_superNATURALSynthTone_Pitch_FILTEREnvAttackTime }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(8, new View[] { tbEditTone_superNATURALSynthTone_Pitch_FILTEREnvDecayTime, slEditTone_superNATURALSynthTone_Pitch_FILTEREnvDecayTime }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(9, new View[] { tbEditTone_superNATURALSynthTone_Pitch_FILTEREnvSustainLevel, slEditTone_superNATURALSynthTone_Pitch_FILTEREnvSustainLevel }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(10, new View[] { tbEditTone_superNATURALSynthTone_Pitch_FILTEREnvReleaseTime, slEditTone_superNATURALSynthTone_Pitch_FILTEREnvReleaseTime }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(11, new View[] { tbEditTone_superNATURALSynthTone_Pitch_FILTEREnvDepth, slEditTone_superNATURALSynthTone_Pitch_FILTEREnvDepth }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(12, new View[] { tbEditTone_superNATURALSynthTone_Pitch_HPFCutoff, slEditTone_superNATURALSynthTone_Pitch_HPFCutoff }, new byte[] { 1, 2 })));
+            GridRow.CreateRow(ControlsGrid, (byte)(0), new View[] { cbEditTone_superNATURALSynthTone_Filter_Partial1Switch, cbEditTone_superNATURALSynthTone_Filter_Partial2Switch, cbEditTone_superNATURALSynthTone_Filter_Partial3Switch });
+            GridRow.CreateRow(ControlsGrid, 1, new View[] { cbEditTone_superNATURALSynthTone_Pitch_FILTERMode });
+            GridRow.CreateRow(ControlsGrid, 2, new View[] { cbEditTone_superNATURALSynthTone_Pitch_FILTERSlope });
+            GridRow.CreateRow(ControlsGrid, 3, new View[] { tbEditTone_superNATURALSynthTone_Pitch_FILTERCutoff, slEditTone_superNATURALSynthTone_Pitch_FILTERCutoff }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 4, new View[] { tbEditTone_superNATURALSynthTone_Pitch_FILTERCutoffKeyfollow, slEditTone_superNATURALSynthTone_Pitch_FILTERCutoffKeyfollow }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 5, new View[] { tbEditTone_superNATURALSynthTone_Pitch_FILTEREnvVelocitySens, slEditTone_superNATURALSynthTone_Pitch_FILTEREnvVelocitySens }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 6, new View[] { tbEditTone_superNATURALSynthTone_Pitch_FILTERResonance, slEditTone_superNATURALSynthTone_Pitch_FILTERResonance }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 7, new View[] { tbEditTone_superNATURALSynthTone_Pitch_FILTEREnvAttackTime, slEditTone_superNATURALSynthTone_Pitch_FILTEREnvAttackTime }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 8, new View[] { tbEditTone_superNATURALSynthTone_Pitch_FILTEREnvDecayTime, slEditTone_superNATURALSynthTone_Pitch_FILTEREnvDecayTime }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 9, new View[] { tbEditTone_superNATURALSynthTone_Pitch_FILTEREnvSustainLevel, slEditTone_superNATURALSynthTone_Pitch_FILTEREnvSustainLevel }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 10, new View[] { tbEditTone_superNATURALSynthTone_Pitch_FILTEREnvReleaseTime, slEditTone_superNATURALSynthTone_Pitch_FILTEREnvReleaseTime }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 11, new View[] { tbEditTone_superNATURALSynthTone_Pitch_FILTEREnvDepth, slEditTone_superNATURALSynthTone_Pitch_FILTEREnvDepth }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 12, new View[] { tbEditTone_superNATURALSynthTone_Pitch_HPFCutoff, slEditTone_superNATURALSynthTone_Pitch_HPFCutoff }, new byte[] { 1, 2 });
 
             byte row = 13;
             while (row < MAX_ROWS)
             {
                 Grid dummy = new Grid();
                 dummy.BackgroundColor = colorSettings.Background;
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { dummy });
             }
 
             // Set control values
@@ -8378,23 +8220,22 @@ namespace INTEGRA_7_Xamarin
             slEditTone_superNATURALSynthTone_Amp_AMPEnvReleaseTime.Maximum = 127;
 
             // Put in rows
-            ControlsGrid.Children.Add((new GridRow((byte)(0), new View[] {  cbEditTone_superNATURALSynthTone_AMP_Partial1Switch,
-            cbEditTone_superNATURALSynthTone_AMP_Partial2Switch, cbEditTone_superNATURALSynthTone_AMP_Partial3Switch})));
-            ControlsGrid.Children.Add((new GridRow(1, new View[] { tbEditTone_superNATURALSynthTone_Amp_AMPLevel, slEditTone_superNATURALSynthTone_Amp_AMPLevel }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(2, new View[] { tbEditTone_superNATURALSynthTone_Amp_AMPLevelVelocitySens, slEditTone_superNATURALSynthTone_Amp_AMPLevelVelocitySens }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(3, new View[] { tbEditTone_superNATURALSynthTone_Amp_AMPPan, slEditTone_superNATURALSynthTone_Amp_AMPPan }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(4, new View[] { tbEditTone_superNATURALSynthTone_Amp_AMPLevelKeyfollow, slEditTone_superNATURALSynthTone_Amp_AMPLevelKeyfollow }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(5, new View[] { tbEditTone_superNATURALSynthTone_Amp_AMPEnvAttackTime, slEditTone_superNATURALSynthTone_Amp_AMPEnvAttackTime }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(6, new View[] { tbEditTone_superNATURALSynthTone_Amp_AMPEnvDecayTime, slEditTone_superNATURALSynthTone_Amp_AMPEnvDecayTime }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(7, new View[] { tbEditTone_superNATURALSynthTone_Amp_AMPEnvSustainLevel, slEditTone_superNATURALSynthTone_Amp_AMPEnvSustainLevel }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(8, new View[] { tbEditTone_superNATURALSynthTone_Amp_AMPEnvReleaseTime, slEditTone_superNATURALSynthTone_Amp_AMPEnvReleaseTime }, new byte[] { 1, 2 })));
+            GridRow.CreateRow(ControlsGrid, (byte)(0), new View[] { cbEditTone_superNATURALSynthTone_AMP_Partial1Switch, cbEditTone_superNATURALSynthTone_AMP_Partial2Switch, cbEditTone_superNATURALSynthTone_AMP_Partial3Switch });
+            GridRow.CreateRow(ControlsGrid, 1, new View[] { tbEditTone_superNATURALSynthTone_Amp_AMPLevel, slEditTone_superNATURALSynthTone_Amp_AMPLevel }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 2, new View[] { tbEditTone_superNATURALSynthTone_Amp_AMPLevelVelocitySens, slEditTone_superNATURALSynthTone_Amp_AMPLevelVelocitySens }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 3, new View[] { tbEditTone_superNATURALSynthTone_Amp_AMPPan, slEditTone_superNATURALSynthTone_Amp_AMPPan }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 4, new View[] { tbEditTone_superNATURALSynthTone_Amp_AMPLevelKeyfollow, slEditTone_superNATURALSynthTone_Amp_AMPLevelKeyfollow }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 5, new View[] { tbEditTone_superNATURALSynthTone_Amp_AMPEnvAttackTime, slEditTone_superNATURALSynthTone_Amp_AMPEnvAttackTime }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 6, new View[] { tbEditTone_superNATURALSynthTone_Amp_AMPEnvDecayTime, slEditTone_superNATURALSynthTone_Amp_AMPEnvDecayTime }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 7, new View[] { tbEditTone_superNATURALSynthTone_Amp_AMPEnvSustainLevel, slEditTone_superNATURALSynthTone_Amp_AMPEnvSustainLevel }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 8, new View[] { tbEditTone_superNATURALSynthTone_Amp_AMPEnvReleaseTime, slEditTone_superNATURALSynthTone_Amp_AMPEnvReleaseTime }, new byte[] { 1, 2 });
 
             byte row = 9;
             while (row < MAX_ROWS)
             {
                 Grid dummy = new Grid();
                 dummy.BackgroundColor = colorSettings.Background;
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { dummy });
             }
 
             // Set control values
@@ -8568,25 +8409,24 @@ namespace INTEGRA_7_Xamarin
             slEditTone_superNATURALSynthTone_LFO_LFOPanDepth.Maximum = 63;
 
             // Put in rows
-            ControlsGrid.Children.Add((new GridRow((byte)(0), new View[] {  cbEditTone_superNATURALSynthTone_LFO_Partial1Switch,
-            cbEditTone_superNATURALSynthTone_LFO_Partial2Switch, cbEditTone_superNATURALSynthTone_LFO_Partial3Switch})));
-            ControlsGrid.Children.Add((new GridRow(1, new View[] { cbEditTone_superNATURALSynthTone_LFO_LFOShape })));
-            ControlsGrid.Children.Add((new GridRow(2, new View[] { tbEditTone_superNATURALSynthTone_LFO_LFORate, slEditTone_superNATURALSynthTone_LFO_LFORate }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(3, new View[] { cbEditTone_superNATURALSynthTone_LFO_LFOTempoSyncSwitch })));
-            ControlsGrid.Children.Add((new GridRow(4, new View[] { cbEditTone_superNATURALSynthTone_LFO_LFOTempoSyncNote })));
-            ControlsGrid.Children.Add((new GridRow(5, new View[] { tbEditTone_superNATURALSynthTone_LFO_LFOFadeTime, slEditTone_superNATURALSynthTone_LFO_LFOFadeTime }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(6, new View[] { cbEditTone_superNATURALSynthTone_LFO_LFOKeyTrigger })));
-            ControlsGrid.Children.Add((new GridRow(7, new View[] { tbEditTone_superNATURALSynthTone_LFO_LFOPitchDepth, slEditTone_superNATURALSynthTone_LFO_LFOPitchDepth }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(8, new View[] { tbEditTone_superNATURALSynthTone_LFO_LFOFilterDepth, slEditTone_superNATURALSynthTone_LFO_LFOFilterDepth }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(9, new View[] { tbEditTone_superNATURALSynthTone_LFO_LFOAMPDepth, slEditTone_superNATURALSynthTone_LFO_LFOAMPDepth }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(10, new View[] { tbEditTone_superNATURALSynthTone_LFO_LFOPanDepth, slEditTone_superNATURALSynthTone_LFO_LFOPanDepth }, new byte[] { 1, 2 })));
+            GridRow.CreateRow(ControlsGrid, (byte)(0), new View[] { cbEditTone_superNATURALSynthTone_LFO_Partial1Switch, cbEditTone_superNATURALSynthTone_LFO_Partial2Switch, cbEditTone_superNATURALSynthTone_LFO_Partial3Switch });
+            GridRow.CreateRow(ControlsGrid, 1, new View[] { cbEditTone_superNATURALSynthTone_LFO_LFOShape });
+            GridRow.CreateRow(ControlsGrid, 2, new View[] { tbEditTone_superNATURALSynthTone_LFO_LFORate, slEditTone_superNATURALSynthTone_LFO_LFORate }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 3, new View[] { cbEditTone_superNATURALSynthTone_LFO_LFOTempoSyncSwitch });
+            GridRow.CreateRow(ControlsGrid, 4, new View[] { cbEditTone_superNATURALSynthTone_LFO_LFOTempoSyncNote });
+            GridRow.CreateRow(ControlsGrid, 5, new View[] { tbEditTone_superNATURALSynthTone_LFO_LFOFadeTime, slEditTone_superNATURALSynthTone_LFO_LFOFadeTime }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 6, new View[] { cbEditTone_superNATURALSynthTone_LFO_LFOKeyTrigger });
+            GridRow.CreateRow(ControlsGrid, 7, new View[] { tbEditTone_superNATURALSynthTone_LFO_LFOPitchDepth, slEditTone_superNATURALSynthTone_LFO_LFOPitchDepth }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 8, new View[] { tbEditTone_superNATURALSynthTone_LFO_LFOFilterDepth, slEditTone_superNATURALSynthTone_LFO_LFOFilterDepth }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 9, new View[] { tbEditTone_superNATURALSynthTone_LFO_LFOAMPDepth, slEditTone_superNATURALSynthTone_LFO_LFOAMPDepth }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 10, new View[] { tbEditTone_superNATURALSynthTone_LFO_LFOPanDepth, slEditTone_superNATURALSynthTone_LFO_LFOPanDepth }, new byte[] { 1, 2 });
 
             byte row = 11;
             while (row < MAX_ROWS)
             {
                 Grid dummy = new Grid();
                 dummy.BackgroundColor = colorSettings.Background;
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { dummy });
             }
 
             // Set control values
@@ -8752,24 +8592,23 @@ namespace INTEGRA_7_Xamarin
             slEditTone_superNATURALSynthTone_LFO_ModulationLFORateControl.Maximum = 63;
 
             // Put in rows
-            ControlsGrid.Children.Add((new GridRow((byte)(0), new View[] {  cbEditTone_superNATURALSynthTone_ModLFO_Partial1Switch,
-            cbEditTone_superNATURALSynthTone_ModLFO_Partial2Switch, cbEditTone_superNATURALSynthTone_ModLFO_Partial3Switch})));
-            ControlsGrid.Children.Add((new GridRow(1, new View[] { cbEditTone_superNATURALSynthTone_LFO_ModulationLFOShape })));
-            ControlsGrid.Children.Add((new GridRow(2, new View[] { tbEditTone_superNATURALSynthTone_LFO_ModulationLFORate, slEditTone_superNATURALSynthTone_LFO_ModulationLFORate }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(3, new View[] { cbEditTone_superNATURALSynthTone_LFO_ModulationLFOTempoSyncSwitch })));
-            ControlsGrid.Children.Add((new GridRow(4, new View[] { cbEditTone_superNATURALSynthTone_LFO_ModulationLFOTempoSyncNote })));
-            ControlsGrid.Children.Add((new GridRow(5, new View[] { tbEditTone_superNATURALSynthTone_LFO_ModulationLFOPitchDepth, slEditTone_superNATURALSynthTone_LFO_ModulationLFOPitchDepth }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(6, new View[] { tbEditTone_superNATURALSynthTone_LFO_ModulationLFOFilterDepth, slEditTone_superNATURALSynthTone_LFO_ModulationLFOFilterDepth }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(7, new View[] { tbEditTone_superNATURALSynthTone_LFO_ModulationLFOAmpDepth, slEditTone_superNATURALSynthTone_LFO_ModulationLFOAmpDepth }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(8, new View[] { tbEditTone_superNATURALSynthTone_LFO_ModulationLFOPanDepth, slEditTone_superNATURALSynthTone_LFO_ModulationLFOPanDepth }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(9, new View[] { tbEditTone_superNATURALSynthTone_LFO_ModulationLFORateControl, slEditTone_superNATURALSynthTone_LFO_ModulationLFORateControl }, new byte[] { 1, 2 })));
+            GridRow.CreateRow(ControlsGrid, (byte)(0), new View[] { cbEditTone_superNATURALSynthTone_ModLFO_Partial1Switch, cbEditTone_superNATURALSynthTone_ModLFO_Partial2Switch, cbEditTone_superNATURALSynthTone_ModLFO_Partial3Switch });
+            GridRow.CreateRow(ControlsGrid, 1, new View[] { cbEditTone_superNATURALSynthTone_LFO_ModulationLFOShape });
+            GridRow.CreateRow(ControlsGrid, 2, new View[] { tbEditTone_superNATURALSynthTone_LFO_ModulationLFORate, slEditTone_superNATURALSynthTone_LFO_ModulationLFORate }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 3, new View[] { cbEditTone_superNATURALSynthTone_LFO_ModulationLFOTempoSyncSwitch });
+            GridRow.CreateRow(ControlsGrid, 4, new View[] { cbEditTone_superNATURALSynthTone_LFO_ModulationLFOTempoSyncNote });
+            GridRow.CreateRow(ControlsGrid, 5, new View[] { tbEditTone_superNATURALSynthTone_LFO_ModulationLFOPitchDepth, slEditTone_superNATURALSynthTone_LFO_ModulationLFOPitchDepth }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 6, new View[] { tbEditTone_superNATURALSynthTone_LFO_ModulationLFOFilterDepth, slEditTone_superNATURALSynthTone_LFO_ModulationLFOFilterDepth }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 7, new View[] { tbEditTone_superNATURALSynthTone_LFO_ModulationLFOAmpDepth, slEditTone_superNATURALSynthTone_LFO_ModulationLFOAmpDepth }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 8, new View[] { tbEditTone_superNATURALSynthTone_LFO_ModulationLFOPanDepth, slEditTone_superNATURALSynthTone_LFO_ModulationLFOPanDepth }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 9, new View[] { tbEditTone_superNATURALSynthTone_LFO_ModulationLFORateControl, slEditTone_superNATURALSynthTone_LFO_ModulationLFORateControl }, new byte[] { 1, 2 });
 
             byte row = 10;
             while (row < MAX_ROWS)
             {
                 Grid dummy = new Grid();
                 dummy.BackgroundColor = colorSettings.Background;
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { dummy });
             }
 
             // Set control values
@@ -8846,17 +8685,16 @@ namespace INTEGRA_7_Xamarin
             slEditTone_superNATURALSynthTone_LFO_LevelAftertouchSens.Maximum = 63;
 
             // Put in rows
-            ControlsGrid.Children.Add((new GridRow((byte)(0), new View[] {  cbEditTone_superNATURALSynthTone_TVAenv_Partial1Switch,
-            cbEditTone_superNATURALSynthTone_TVAenv_Partial2Switch, cbEditTone_superNATURALSynthTone_TVAenv_Partial3Switch})));
-            ControlsGrid.Children.Add((new GridRow(1, new View[] { tbEditTone_superNATURALSynthTone_LFO_CutoffAftertouchSens, slEditTone_superNATURALSynthTone_LFO_CutoffAftertouchSens }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(2, new View[] { tbEditTone_superNATURALSynthTone_LFO_LevelAftertouchSens, slEditTone_superNATURALSynthTone_LFO_LevelAftertouchSens }, new byte[] { 1, 2 })));
+            GridRow.CreateRow(ControlsGrid, (byte)(0), new View[] { cbEditTone_superNATURALSynthTone_TVAenv_Partial1Switch, cbEditTone_superNATURALSynthTone_TVAenv_Partial2Switch, cbEditTone_superNATURALSynthTone_TVAenv_Partial3Switch });
+            GridRow.CreateRow(ControlsGrid, 1, new View[] { tbEditTone_superNATURALSynthTone_LFO_CutoffAftertouchSens, slEditTone_superNATURALSynthTone_LFO_CutoffAftertouchSens }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 2, new View[] { tbEditTone_superNATURALSynthTone_LFO_LevelAftertouchSens, slEditTone_superNATURALSynthTone_LFO_LevelAftertouchSens }, new byte[] { 1, 2 });
 
             byte row = 3;
             while (row < MAX_ROWS)
             {
                 Grid dummy = new Grid();
                 dummy.BackgroundColor = colorSettings.Background;
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { dummy });
             }
 
             // Set control values
@@ -8950,19 +8788,19 @@ namespace INTEGRA_7_Xamarin
             cbEditTone_superNATURALSynthTone_Misc_ChromaticPortamento.Name = "cbEditTone_superNATURALSynthTone_ChromaticPortamento";
 
             // Put in rows
-            ControlsGrid.Children.Add((new GridRow(0, new View[] { tbEditTone_superNATURALSynthTone_Misc_AttackTimeIntervalSens, slEditTone_superNATURALSynthTone_Misc_AttackTimeIntervalSens }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(1, new View[] { tbEditTone_superNATURALSynthTone_Misc_ReleaseTimeIntervalSens, slEditTone_superNATURALSynthTone_Misc_ReleaseTimeIntervalSens }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(2, new View[] { tbEditTone_superNATURALSynthTone_Misc_PortamentoTimeIntervalSens, slEditTone_superNATURALSynthTone_Misc_PortamentoTimeIntervalSens }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(3, new View[] { cbEditTone_superNATURALSynthTone_Misc_EnvelopeLoopMode })));
-            ControlsGrid.Children.Add((new GridRow(4, new View[] { cbEditTone_superNATURALSynthTone_Misc_EnvelopeLoopSyncNote })));
-            ControlsGrid.Children.Add((new GridRow(5, new View[] { cbEditTone_superNATURALSynthTone_Misc_ChromaticPortamento })));
+            GridRow.CreateRow(ControlsGrid, 0, new View[] { tbEditTone_superNATURALSynthTone_Misc_AttackTimeIntervalSens, slEditTone_superNATURALSynthTone_Misc_AttackTimeIntervalSens }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 1, new View[] { tbEditTone_superNATURALSynthTone_Misc_ReleaseTimeIntervalSens, slEditTone_superNATURALSynthTone_Misc_ReleaseTimeIntervalSens }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 2, new View[] { tbEditTone_superNATURALSynthTone_Misc_PortamentoTimeIntervalSens, slEditTone_superNATURALSynthTone_Misc_PortamentoTimeIntervalSens }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 3, new View[] { cbEditTone_superNATURALSynthTone_Misc_EnvelopeLoopMode });
+            GridRow.CreateRow(ControlsGrid, 4, new View[] { cbEditTone_superNATURALSynthTone_Misc_EnvelopeLoopSyncNote });
+            GridRow.CreateRow(ControlsGrid, 5, new View[] { cbEditTone_superNATURALSynthTone_Misc_ChromaticPortamento });
 
             byte row = 6;
             while (row < MAX_ROWS)
             {
                 Grid dummy = new Grid();
                 dummy.BackgroundColor = colorSettings.Background;
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { dummy });
             }
 
             // Set control values
@@ -9125,9 +8963,9 @@ namespace INTEGRA_7_Xamarin
             // Put in rows
             for (byte i = 0; i < 4; i++)
             {
-                ControlsGrid.Children.Add((new GridRow((byte)(0 + 3 * i), new View[] { cbEditTone_CommonMFX_MFXControl_MFXControlSource[i] })));
-                ControlsGrid.Children.Add((new GridRow((byte)(1 + 3 * i), new View[] { cbEditTone_CommonMFX_MFXControl_MFXControlAssign[i] })));
-                ControlsGrid.Children.Add((new GridRow((byte)(2 + 3 * i), new View[] { tbEditTone_CommonMFX_MFXControl_MFXControlSens[i], slEditTone_CommonMFX_MFXControl_MFXControlSens[i] }, new byte[] { 1, 2 })));
+                GridRow.CreateRow(ControlsGrid, (byte)(0 + 3 * i), new View[] { cbEditTone_CommonMFX_MFXControl_MFXControlSource[i] });
+                GridRow.CreateRow(ControlsGrid, (byte)(1 + 3 * i), new View[] { cbEditTone_CommonMFX_MFXControl_MFXControlAssign[i] });
+                GridRow.CreateRow(ControlsGrid, (byte)(2 + 3 * i), new View[] { tbEditTone_CommonMFX_MFXControl_MFXControlSens[i], slEditTone_CommonMFX_MFXControl_MFXControlSens[i] }, new byte[] { 1, 2 });
             }
 
             // Set values
@@ -9187,9 +9025,7 @@ namespace INTEGRA_7_Xamarin
             }
 
             // Put in rows
-            ControlsGrid.Children.Add((new GridRow((byte)(0), new View[] {  tbEditTone_SaveTone_Title,
-                tbEditTone_SaveTone_TitleText, cbEditTone_SaveTone_SlotNumber, btnEditTone_SuperNaturalSynthTone_SaveTitle,
-                btnEditTone_PCMSynthTone_DeleteTone}, new byte[] { 4, 3, 3, 2, 2 })));
+            GridRow.CreateRow(ControlsGrid, (byte)(0), new View[] { tbEditTone_SaveTone_Title, tbEditTone_SaveTone_TitleText, cbEditTone_SaveTone_SlotNumber, btnEditTone_SuperNaturalSynthTone_SaveTitle, btnEditTone_PCMSynthTone_DeleteTone }, new byte[] { 4, 3, 3, 2, 2 });
 
             // Set values
             tbEditTone_SaveTone_Title.Text = "Name (max 12 chars):";
@@ -9252,16 +9088,16 @@ namespace INTEGRA_7_Xamarin
             slEditTone_superNATURALDrumKit_Common_AmbienceLevel.Maximum = 127;
 
             // Put in rows
-            ControlsGrid.Children.Add((new GridRow(0, new View[] { cbEditTone_superNATURALDrumKit_Common_PhraseNumber })));
-            ControlsGrid.Children.Add((new GridRow(1, new View[] { tbEditTone_superNATURALDrumKit_Common_KitLevel, slEditTone_superNATURALDrumKit_Common_KitLevel }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(2, new View[] { tbEditTone_superNATURALDrumKit_Common_AmbienceLevel, slEditTone_superNATURALDrumKit_Common_AmbienceLevel }, new byte[] { 1, 2 })));
+            GridRow.CreateRow(ControlsGrid, 0, new View[] { cbEditTone_superNATURALDrumKit_Common_PhraseNumber });
+            GridRow.CreateRow(ControlsGrid, 1, new View[] { tbEditTone_superNATURALDrumKit_Common_KitLevel, slEditTone_superNATURALDrumKit_Common_KitLevel }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 2, new View[] { tbEditTone_superNATURALDrumKit_Common_AmbienceLevel, slEditTone_superNATURALDrumKit_Common_AmbienceLevel }, new byte[] { 1, 2 });
 
             byte row = 3;
             while (row < MAX_ROWS)
             {
                 Grid dummy = new Grid();
                 dummy.BackgroundColor = colorSettings.Background;
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { dummy });
             }
 
             // Set control values
@@ -9470,27 +9306,27 @@ namespace INTEGRA_7_Xamarin
             cbEditTone_superNATURALDrumKit_Druminstrument_OutputAssign.Items.Add("Output assign: Comp+Eq6");
 
             // Put in rows
-            ControlsGrid.Children.Add((new GridRow(0, new View[] { cbEditTone_superNATURALDrumKit_Druminstrument_BankNumber })));
-            ControlsGrid.Children.Add((new GridRow(1, new View[] { cbEditTone_superNATURALDrumKit_Druminstrument_InstNumber_INT })));
-            ControlsGrid.Children.Add((new GridRow(1, new View[] { cbEditTone_superNATURALDrumKit_Druminstrument_InstNumber_ExSN6 })));
-            ControlsGrid.Children.Add((new GridRow(2, new View[] { tbEditTone_superNATURALDrumKit_Druminstrument_Level, slEditTone_superNATURALDrumKit_Druminstrument_Level }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(3, new View[] { tbEditTone_superNATURALDrumKit_Druminstrument_Pan, slEditTone_superNATURALDrumKit_Druminstrument_Pan }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(4, new View[] { tbEditTone_superNATURALDrumKit_Druminstrument_ChorusSendLevel, slEditTone_superNATURALDrumKit_Druminstrument_ChorusSendLevel }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(5, new View[] { tbEditTone_superNATURALDrumKit_Druminstrument_ReverbSendLevel, slEditTone_superNATURALDrumKit_Druminstrument_ReverbSendLevel }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(6, new View[] { tbEditTone_superNATURALDrumKit_Druminstrument_Tune, slEditTone_superNATURALDrumKit_Druminstrument_Tune }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(7, new View[] { tbEditTone_superNATURALDrumKit_Druminstrument_Attack, slEditTone_superNATURALDrumKit_Druminstrument_Attack }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(8, new View[] { tbEditTone_superNATURALDrumKit_Druminstrument_Decay, slEditTone_superNATURALDrumKit_Druminstrument_Decay }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(9, new View[] { tbEditTone_superNATURALDrumKit_Druminstrument_Brilliance, slEditTone_superNATURALDrumKit_Druminstrument_Brilliance }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(10, new View[] { tbEditTone_superNATURALDrumKit_Druminstrument_DynamicRange, slEditTone_superNATURALDrumKit_Druminstrument_DynamicRange }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(11, new View[] { tbEditTone_superNATURALDrumKit_Druminstrument_StereoWidth, slEditTone_superNATURALDrumKit_Druminstrument_StereoWidth }, new byte[] { 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(12, new View[] { cbEditTone_superNATURALDrumKit_Druminstrument_Variation, cbEditTone_superNATURALDrumKit_Druminstrument_OutputAssign })));
+            GridRow.CreateRow(ControlsGrid, 0, new View[] { cbEditTone_superNATURALDrumKit_Druminstrument_BankNumber });
+            GridRow.CreateRow(ControlsGrid, 1, new View[] { cbEditTone_superNATURALDrumKit_Druminstrument_InstNumber_INT });
+            GridRow.CreateRow(ControlsGrid, 1, new View[] { cbEditTone_superNATURALDrumKit_Druminstrument_InstNumber_ExSN6 });
+            GridRow.CreateRow(ControlsGrid, 2, new View[] { tbEditTone_superNATURALDrumKit_Druminstrument_Level, slEditTone_superNATURALDrumKit_Druminstrument_Level }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 3, new View[] { tbEditTone_superNATURALDrumKit_Druminstrument_Pan, slEditTone_superNATURALDrumKit_Druminstrument_Pan }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 4, new View[] { tbEditTone_superNATURALDrumKit_Druminstrument_ChorusSendLevel, slEditTone_superNATURALDrumKit_Druminstrument_ChorusSendLevel }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 5, new View[] { tbEditTone_superNATURALDrumKit_Druminstrument_ReverbSendLevel, slEditTone_superNATURALDrumKit_Druminstrument_ReverbSendLevel }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 6, new View[] { tbEditTone_superNATURALDrumKit_Druminstrument_Tune, slEditTone_superNATURALDrumKit_Druminstrument_Tune }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 7, new View[] { tbEditTone_superNATURALDrumKit_Druminstrument_Attack, slEditTone_superNATURALDrumKit_Druminstrument_Attack }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 8, new View[] { tbEditTone_superNATURALDrumKit_Druminstrument_Decay, slEditTone_superNATURALDrumKit_Druminstrument_Decay }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 9, new View[] { tbEditTone_superNATURALDrumKit_Druminstrument_Brilliance, slEditTone_superNATURALDrumKit_Druminstrument_Brilliance }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 10, new View[] { tbEditTone_superNATURALDrumKit_Druminstrument_DynamicRange, slEditTone_superNATURALDrumKit_Druminstrument_DynamicRange }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 11, new View[] { tbEditTone_superNATURALDrumKit_Druminstrument_StereoWidth, slEditTone_superNATURALDrumKit_Druminstrument_StereoWidth }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 12, new View[] { cbEditTone_superNATURALDrumKit_Druminstrument_Variation, cbEditTone_superNATURALDrumKit_Druminstrument_OutputAssign });
 
             byte row = 13;
             while (row < MAX_ROWS)
             {
                 Grid dummy = new Grid();
                 dummy.BackgroundColor = colorSettings.Background;
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { dummy });
             }
 
             // Set control values
@@ -9694,47 +9530,26 @@ namespace INTEGRA_7_Xamarin
             }
 
             // Put in rows
-            ControlsGrid.Children.Add((new GridRow(0, new View[] {  cbEditTone_superNATURALDrumKit_Compressor_CompSwitch[0],
-                cbEditTone_superNATURALDrumKit_Compressor_CompSwitch[1], cbEditTone_superNATURALDrumKit_Compressor_CompSwitch[2],
-                cbEditTone_superNATURALDrumKit_Compressor_CompSwitch[3], cbEditTone_superNATURALDrumKit_Compressor_CompSwitch[4],
-                cbEditTone_superNATURALDrumKit_Compressor_CompSwitch[5] })));
-            ControlsGrid.Children.Add((new GridRow(1, new View[] {  cbEditTone_superNATURALDrumKit_Compressor_CompAttackTime[0],
-                cbEditTone_superNATURALDrumKit_Compressor_CompAttackTime[1], cbEditTone_superNATURALDrumKit_Compressor_CompAttackTime[2], })));
-            ControlsGrid.Children.Add((new GridRow(2, new View[] {  cbEditTone_superNATURALDrumKit_Compressor_CompAttackTime[3],
-                cbEditTone_superNATURALDrumKit_Compressor_CompAttackTime[4], cbEditTone_superNATURALDrumKit_Compressor_CompAttackTime[5]})));
-            ControlsGrid.Children.Add((new GridRow(3, new View[] {  cbEditTone_superNATURALDrumKit_Compressor_ReleaseTime[0],
-                cbEditTone_superNATURALDrumKit_Compressor_ReleaseTime[1], cbEditTone_superNATURALDrumKit_Compressor_ReleaseTime[2]})));
-            ControlsGrid.Children.Add((new GridRow(4, new View[] {  cbEditTone_superNATURALDrumKit_Compressor_ReleaseTime[3],
-                cbEditTone_superNATURALDrumKit_Compressor_ReleaseTime[4], cbEditTone_superNATURALDrumKit_Compressor_ReleaseTime[5]})));
-            ControlsGrid.Children.Add((new GridRow((byte)(5), new View[] {  tbEditTone_superNATURALDrumKit_Compressor_CompThreshold[0],
-                slEditTone_superNATURALDrumKit_Compressor_CompThreshold[0], tbEditTone_superNATURALDrumKit_Compressor_CompThreshold[1],
-                slEditTone_superNATURALDrumKit_Compressor_CompThreshold[1], }, new byte[] { 1, 2, 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow((byte)(6), new View[] {  tbEditTone_superNATURALDrumKit_Compressor_CompThreshold[2],
-                slEditTone_superNATURALDrumKit_Compressor_CompThreshold[2], tbEditTone_superNATURALDrumKit_Compressor_CompThreshold[3],
-                slEditTone_superNATURALDrumKit_Compressor_CompThreshold[3], }, new byte[] { 1, 2, 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow((byte)(7), new View[] {  tbEditTone_superNATURALDrumKit_Compressor_CompThreshold[4],
-                slEditTone_superNATURALDrumKit_Compressor_CompThreshold[4], tbEditTone_superNATURALDrumKit_Compressor_CompThreshold[5],
-                slEditTone_superNATURALDrumKit_Compressor_CompThreshold[5], }, new byte[] { 1, 2, 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(8, new View[] {  cbEditTone_superNATURALDrumKit_Compressor_CompRatio[0],
-                cbEditTone_superNATURALDrumKit_Compressor_CompRatio[1], cbEditTone_superNATURALDrumKit_Compressor_CompRatio[2]})));
-            ControlsGrid.Children.Add((new GridRow(9, new View[] {  cbEditTone_superNATURALDrumKit_Compressor_CompRatio[3],
-                cbEditTone_superNATURALDrumKit_Compressor_CompRatio[4], cbEditTone_superNATURALDrumKit_Compressor_CompRatio[5]})));
-            ControlsGrid.Children.Add((new GridRow(10, new View[] {  tbEditTone_superNATURALDrumKit_Compressor_CompOutputGain[0],
-                slEditTone_superNATURALDrumKit_Compressor_CompOutputGain[0], tbEditTone_superNATURALDrumKit_Compressor_CompOutputGain[1],
-                slEditTone_superNATURALDrumKit_Compressor_CompOutputGain[1] }, new byte[] { 1, 2, 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(11, new View[] {  tbEditTone_superNATURALDrumKit_Compressor_CompOutputGain[2],
-                slEditTone_superNATURALDrumKit_Compressor_CompOutputGain[2], tbEditTone_superNATURALDrumKit_Compressor_CompOutputGain[3],
-                slEditTone_superNATURALDrumKit_Compressor_CompOutputGain[3] }, new byte[] { 1, 2, 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(12, new View[] {  tbEditTone_superNATURALDrumKit_Compressor_CompOutputGain[4],
-                slEditTone_superNATURALDrumKit_Compressor_CompOutputGain[4], tbEditTone_superNATURALDrumKit_Compressor_CompOutputGain[5],
-                slEditTone_superNATURALDrumKit_Compressor_CompOutputGain[5] }, new byte[] { 1, 2, 1, 2 })));
+            GridRow.CreateRow(ControlsGrid, 0, new View[] { cbEditTone_superNATURALDrumKit_Compressor_CompSwitch[0], cbEditTone_superNATURALDrumKit_Compressor_CompSwitch[1], cbEditTone_superNATURALDrumKit_Compressor_CompSwitch[2], cbEditTone_superNATURALDrumKit_Compressor_CompSwitch[3], cbEditTone_superNATURALDrumKit_Compressor_CompSwitch[4], cbEditTone_superNATURALDrumKit_Compressor_CompSwitch[5] });
+            GridRow.CreateRow(ControlsGrid, 1, new View[] { cbEditTone_superNATURALDrumKit_Compressor_CompAttackTime[0], cbEditTone_superNATURALDrumKit_Compressor_CompAttackTime[1], cbEditTone_superNATURALDrumKit_Compressor_CompAttackTime[2], });
+            GridRow.CreateRow(ControlsGrid, 2, new View[] { cbEditTone_superNATURALDrumKit_Compressor_CompAttackTime[3], cbEditTone_superNATURALDrumKit_Compressor_CompAttackTime[4], cbEditTone_superNATURALDrumKit_Compressor_CompAttackTime[5] });
+            GridRow.CreateRow(ControlsGrid, 3, new View[] { cbEditTone_superNATURALDrumKit_Compressor_ReleaseTime[0], cbEditTone_superNATURALDrumKit_Compressor_ReleaseTime[1], cbEditTone_superNATURALDrumKit_Compressor_ReleaseTime[2] });
+            GridRow.CreateRow(ControlsGrid, 4, new View[] { cbEditTone_superNATURALDrumKit_Compressor_ReleaseTime[3], cbEditTone_superNATURALDrumKit_Compressor_ReleaseTime[4], cbEditTone_superNATURALDrumKit_Compressor_ReleaseTime[5] });
+            GridRow.CreateRow(ControlsGrid, (byte)(5), new View[] { tbEditTone_superNATURALDrumKit_Compressor_CompThreshold[0], slEditTone_superNATURALDrumKit_Compressor_CompThreshold[0], tbEditTone_superNATURALDrumKit_Compressor_CompThreshold[1], slEditTone_superNATURALDrumKit_Compressor_CompThreshold[1], }, new byte[] { 1, 2, 1, 2 });
+            GridRow.CreateRow(ControlsGrid, (byte)(6), new View[] { tbEditTone_superNATURALDrumKit_Compressor_CompThreshold[2], slEditTone_superNATURALDrumKit_Compressor_CompThreshold[2], tbEditTone_superNATURALDrumKit_Compressor_CompThreshold[3], slEditTone_superNATURALDrumKit_Compressor_CompThreshold[3], }, new byte[] { 1, 2, 1, 2 });
+            GridRow.CreateRow(ControlsGrid, (byte)(7), new View[] { tbEditTone_superNATURALDrumKit_Compressor_CompThreshold[4], slEditTone_superNATURALDrumKit_Compressor_CompThreshold[4], tbEditTone_superNATURALDrumKit_Compressor_CompThreshold[5], slEditTone_superNATURALDrumKit_Compressor_CompThreshold[5], }, new byte[] { 1, 2, 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 8, new View[] { cbEditTone_superNATURALDrumKit_Compressor_CompRatio[0], cbEditTone_superNATURALDrumKit_Compressor_CompRatio[1], cbEditTone_superNATURALDrumKit_Compressor_CompRatio[2] });
+            GridRow.CreateRow(ControlsGrid, 9, new View[] { cbEditTone_superNATURALDrumKit_Compressor_CompRatio[3], cbEditTone_superNATURALDrumKit_Compressor_CompRatio[4], cbEditTone_superNATURALDrumKit_Compressor_CompRatio[5] });
+            GridRow.CreateRow(ControlsGrid, 10, new View[] { tbEditTone_superNATURALDrumKit_Compressor_CompOutputGain[0], slEditTone_superNATURALDrumKit_Compressor_CompOutputGain[0], tbEditTone_superNATURALDrumKit_Compressor_CompOutputGain[1], slEditTone_superNATURALDrumKit_Compressor_CompOutputGain[1] }, new byte[] { 1, 2, 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 11, new View[] { tbEditTone_superNATURALDrumKit_Compressor_CompOutputGain[2], slEditTone_superNATURALDrumKit_Compressor_CompOutputGain[2], tbEditTone_superNATURALDrumKit_Compressor_CompOutputGain[3], slEditTone_superNATURALDrumKit_Compressor_CompOutputGain[3] }, new byte[] { 1, 2, 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 12, new View[] { tbEditTone_superNATURALDrumKit_Compressor_CompOutputGain[4], slEditTone_superNATURALDrumKit_Compressor_CompOutputGain[4], tbEditTone_superNATURALDrumKit_Compressor_CompOutputGain[5], slEditTone_superNATURALDrumKit_Compressor_CompOutputGain[5] }, new byte[] { 1, 2, 1, 2 });
 
             byte row = 13;
             while (row < MAX_ROWS)
             {
                 Grid dummy = new Grid();
                 dummy.BackgroundColor = colorSettings.Background;
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { dummy });
             }
 
             // Set control values
@@ -9891,60 +9706,27 @@ namespace INTEGRA_7_Xamarin
             }
 
             // Put in rows
-            ControlsGrid.Children.Add((new GridRow(0, new View[] {  cbEditTone_superNATURALDrumKit_Equalizer_EQSwitch[0],
-                cbEditTone_superNATURALDrumKit_Equalizer_EQSwitch[1], cbEditTone_superNATURALDrumKit_Equalizer_EQSwitch[2],
-                cbEditTone_superNATURALDrumKit_Equalizer_EQSwitch[3], cbEditTone_superNATURALDrumKit_Equalizer_EQSwitch[4],
-                cbEditTone_superNATURALDrumKit_Equalizer_EQSwitch[5] })));
-            ControlsGrid.Children.Add((new GridRow(1, new View[] {  cbEditTone_superNATURALDrumKit_Equalizer_EQLowFreq[0],
-                cbEditTone_superNATURALDrumKit_Equalizer_EQLowFreq[1], cbEditTone_superNATURALDrumKit_Equalizer_EQLowFreq[2],
-                cbEditTone_superNATURALDrumKit_Equalizer_EQLowFreq[3], cbEditTone_superNATURALDrumKit_Equalizer_EQLowFreq[4],
-                cbEditTone_superNATURALDrumKit_Equalizer_EQLowFreq[5], })));
-            ControlsGrid.Children.Add((new GridRow(2, new View[] {  tbEditTone_superNATURALDrumKit_Equalizer_EQLowGain[0],
-                slEditTone_superNATURALDrumKit_Equalizer_EQLowGain[0], tbEditTone_superNATURALDrumKit_Equalizer_EQLowGain[1],
-                slEditTone_superNATURALDrumKit_Equalizer_EQLowGain[1] }, new byte[] { 1, 2, 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(3, new View[] {  tbEditTone_superNATURALDrumKit_Equalizer_EQLowGain[2],
-                slEditTone_superNATURALDrumKit_Equalizer_EQLowGain[2], tbEditTone_superNATURALDrumKit_Equalizer_EQLowGain[3],
-                slEditTone_superNATURALDrumKit_Equalizer_EQLowGain[3] }, new byte[] { 1, 2, 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(4, new View[] {  tbEditTone_superNATURALDrumKit_Equalizer_EQLowGain[4],
-                slEditTone_superNATURALDrumKit_Equalizer_EQLowGain[4], tbEditTone_superNATURALDrumKit_Equalizer_EQLowGain[5],
-                slEditTone_superNATURALDrumKit_Equalizer_EQLowGain[5] }, new byte[] { 1, 2, 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(5, new View[] {  cbEditTone_superNATURALDrumKit_Equalizer_EQMidFreq[0],
-                cbEditTone_superNATURALDrumKit_Equalizer_EQMidFreq[1], cbEditTone_superNATURALDrumKit_Equalizer_EQMidFreq[2],
-                cbEditTone_superNATURALDrumKit_Equalizer_EQMidFreq[3], cbEditTone_superNATURALDrumKit_Equalizer_EQMidFreq[4],
-                cbEditTone_superNATURALDrumKit_Equalizer_EQMidFreq[5], })));
-            ControlsGrid.Children.Add((new GridRow(6, new View[] {  tbEditTone_superNATURALDrumKit_Equalizer_EQMidGain[0],
-                slEditTone_superNATURALDrumKit_Equalizer_EQMidGain[0], tbEditTone_superNATURALDrumKit_Equalizer_EQMidGain[1],
-                slEditTone_superNATURALDrumKit_Equalizer_EQMidGain[1], }, new byte[] { 1, 2, 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(7, new View[] {  tbEditTone_superNATURALDrumKit_Equalizer_EQMidGain[2],
-                slEditTone_superNATURALDrumKit_Equalizer_EQMidGain[2], tbEditTone_superNATURALDrumKit_Equalizer_EQMidGain[3],
-                slEditTone_superNATURALDrumKit_Equalizer_EQMidGain[3], }, new byte[] { 1, 2, 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(8, new View[] {  tbEditTone_superNATURALDrumKit_Equalizer_EQMidGain[4],
-                slEditTone_superNATURALDrumKit_Equalizer_EQMidGain[4], tbEditTone_superNATURALDrumKit_Equalizer_EQMidGain[5],
-                slEditTone_superNATURALDrumKit_Equalizer_EQMidGain[5], }, new byte[] { 1, 2, 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(9, new View[] {  cbEditTone_superNATURALDrumKit_Equalizer_EQMidQ[0],
-                cbEditTone_superNATURALDrumKit_Equalizer_EQMidQ[1], cbEditTone_superNATURALDrumKit_Equalizer_EQMidQ[2],
-                cbEditTone_superNATURALDrumKit_Equalizer_EQMidQ[3], cbEditTone_superNATURALDrumKit_Equalizer_EQMidQ[4],
-                cbEditTone_superNATURALDrumKit_Equalizer_EQMidQ[5], })));
-            ControlsGrid.Children.Add((new GridRow(10, new View[] {  cbEditTone_superNATURALDrumKit_Equalizer_EQHighFreq[0],
-                cbEditTone_superNATURALDrumKit_Equalizer_EQHighFreq[1], cbEditTone_superNATURALDrumKit_Equalizer_EQHighFreq[2],
-                cbEditTone_superNATURALDrumKit_Equalizer_EQHighFreq[3], cbEditTone_superNATURALDrumKit_Equalizer_EQHighFreq[4],
-                cbEditTone_superNATURALDrumKit_Equalizer_EQHighFreq[5] })));
-            ControlsGrid.Children.Add((new GridRow(11, new View[] {  tbEditTone_superNATURALDrumKit_Equalizer_EQHighGain[0],
-                slEditTone_superNATURALDrumKit_Equalizer_EQHighGain[0], tbEditTone_superNATURALDrumKit_Equalizer_EQHighGain[1],
-                slEditTone_superNATURALDrumKit_Equalizer_EQHighGain[1] }, new byte[] { 1, 2, 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(12, new View[] {  tbEditTone_superNATURALDrumKit_Equalizer_EQHighGain[2],
-                slEditTone_superNATURALDrumKit_Equalizer_EQHighGain[2], tbEditTone_superNATURALDrumKit_Equalizer_EQHighGain[3],
-                slEditTone_superNATURALDrumKit_Equalizer_EQHighGain[3] }, new byte[] { 1, 2, 1, 2 })));
-            ControlsGrid.Children.Add((new GridRow(13, new View[] {  tbEditTone_superNATURALDrumKit_Equalizer_EQHighGain[4],
-                slEditTone_superNATURALDrumKit_Equalizer_EQHighGain[4], tbEditTone_superNATURALDrumKit_Equalizer_EQHighGain[5],
-                slEditTone_superNATURALDrumKit_Equalizer_EQHighGain[5] }, new byte[] { 1, 2, 1, 2 })));
+            GridRow.CreateRow(ControlsGrid, 0, new View[] { cbEditTone_superNATURALDrumKit_Equalizer_EQSwitch[0], cbEditTone_superNATURALDrumKit_Equalizer_EQSwitch[1], cbEditTone_superNATURALDrumKit_Equalizer_EQSwitch[2], cbEditTone_superNATURALDrumKit_Equalizer_EQSwitch[3], cbEditTone_superNATURALDrumKit_Equalizer_EQSwitch[4], cbEditTone_superNATURALDrumKit_Equalizer_EQSwitch[5] });
+            GridRow.CreateRow(ControlsGrid, 1, new View[] { cbEditTone_superNATURALDrumKit_Equalizer_EQLowFreq[0], cbEditTone_superNATURALDrumKit_Equalizer_EQLowFreq[1], cbEditTone_superNATURALDrumKit_Equalizer_EQLowFreq[2], cbEditTone_superNATURALDrumKit_Equalizer_EQLowFreq[3], cbEditTone_superNATURALDrumKit_Equalizer_EQLowFreq[4], cbEditTone_superNATURALDrumKit_Equalizer_EQLowFreq[5], });
+            GridRow.CreateRow(ControlsGrid, 2, new View[] { tbEditTone_superNATURALDrumKit_Equalizer_EQLowGain[0], slEditTone_superNATURALDrumKit_Equalizer_EQLowGain[0], tbEditTone_superNATURALDrumKit_Equalizer_EQLowGain[1], slEditTone_superNATURALDrumKit_Equalizer_EQLowGain[1] }, new byte[] { 1, 2, 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 3, new View[] { tbEditTone_superNATURALDrumKit_Equalizer_EQLowGain[2], slEditTone_superNATURALDrumKit_Equalizer_EQLowGain[2], tbEditTone_superNATURALDrumKit_Equalizer_EQLowGain[3], slEditTone_superNATURALDrumKit_Equalizer_EQLowGain[3] }, new byte[] { 1, 2, 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 4, new View[] { tbEditTone_superNATURALDrumKit_Equalizer_EQLowGain[4], slEditTone_superNATURALDrumKit_Equalizer_EQLowGain[4], tbEditTone_superNATURALDrumKit_Equalizer_EQLowGain[5], slEditTone_superNATURALDrumKit_Equalizer_EQLowGain[5] }, new byte[] { 1, 2, 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 5, new View[] { cbEditTone_superNATURALDrumKit_Equalizer_EQMidFreq[0], cbEditTone_superNATURALDrumKit_Equalizer_EQMidFreq[1], cbEditTone_superNATURALDrumKit_Equalizer_EQMidFreq[2], cbEditTone_superNATURALDrumKit_Equalizer_EQMidFreq[3], cbEditTone_superNATURALDrumKit_Equalizer_EQMidFreq[4], cbEditTone_superNATURALDrumKit_Equalizer_EQMidFreq[5], });
+            GridRow.CreateRow(ControlsGrid, 6, new View[] { tbEditTone_superNATURALDrumKit_Equalizer_EQMidGain[0], slEditTone_superNATURALDrumKit_Equalizer_EQMidGain[0], tbEditTone_superNATURALDrumKit_Equalizer_EQMidGain[1], slEditTone_superNATURALDrumKit_Equalizer_EQMidGain[1], }, new byte[] { 1, 2, 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 7, new View[] { tbEditTone_superNATURALDrumKit_Equalizer_EQMidGain[2], slEditTone_superNATURALDrumKit_Equalizer_EQMidGain[2], tbEditTone_superNATURALDrumKit_Equalizer_EQMidGain[3], slEditTone_superNATURALDrumKit_Equalizer_EQMidGain[3], }, new byte[] { 1, 2, 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 8, new View[] { tbEditTone_superNATURALDrumKit_Equalizer_EQMidGain[4], slEditTone_superNATURALDrumKit_Equalizer_EQMidGain[4], tbEditTone_superNATURALDrumKit_Equalizer_EQMidGain[5], slEditTone_superNATURALDrumKit_Equalizer_EQMidGain[5], }, new byte[] { 1, 2, 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 9, new View[] { cbEditTone_superNATURALDrumKit_Equalizer_EQMidQ[0], cbEditTone_superNATURALDrumKit_Equalizer_EQMidQ[1], cbEditTone_superNATURALDrumKit_Equalizer_EQMidQ[2], cbEditTone_superNATURALDrumKit_Equalizer_EQMidQ[3], cbEditTone_superNATURALDrumKit_Equalizer_EQMidQ[4], cbEditTone_superNATURALDrumKit_Equalizer_EQMidQ[5], });
+            GridRow.CreateRow(ControlsGrid, 10, new View[] { cbEditTone_superNATURALDrumKit_Equalizer_EQHighFreq[0], cbEditTone_superNATURALDrumKit_Equalizer_EQHighFreq[1], cbEditTone_superNATURALDrumKit_Equalizer_EQHighFreq[2], cbEditTone_superNATURALDrumKit_Equalizer_EQHighFreq[3], cbEditTone_superNATURALDrumKit_Equalizer_EQHighFreq[4], cbEditTone_superNATURALDrumKit_Equalizer_EQHighFreq[5] });
+            GridRow.CreateRow(ControlsGrid, 11, new View[] { tbEditTone_superNATURALDrumKit_Equalizer_EQHighGain[0], slEditTone_superNATURALDrumKit_Equalizer_EQHighGain[0], tbEditTone_superNATURALDrumKit_Equalizer_EQHighGain[1], slEditTone_superNATURALDrumKit_Equalizer_EQHighGain[1] }, new byte[] { 1, 2, 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 12, new View[] { tbEditTone_superNATURALDrumKit_Equalizer_EQHighGain[2], slEditTone_superNATURALDrumKit_Equalizer_EQHighGain[2], tbEditTone_superNATURALDrumKit_Equalizer_EQHighGain[3], slEditTone_superNATURALDrumKit_Equalizer_EQHighGain[3] }, new byte[] { 1, 2, 1, 2 });
+            GridRow.CreateRow(ControlsGrid, 13, new View[] { tbEditTone_superNATURALDrumKit_Equalizer_EQHighGain[4], slEditTone_superNATURALDrumKit_Equalizer_EQHighGain[4], tbEditTone_superNATURALDrumKit_Equalizer_EQHighGain[5], slEditTone_superNATURALDrumKit_Equalizer_EQHighGain[5] }, new byte[] { 1, 2, 1, 2 });
 
             byte row = 14;
             while (row < MAX_ROWS)
             {
                 Grid dummy = new Grid();
                 dummy.BackgroundColor = colorSettings.Background;
-                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })));
+                GridRow.CreateRow(ControlsGrid, row++, new View[] { dummy });
             }
 
             // Set control values
@@ -10132,9 +9914,9 @@ namespace INTEGRA_7_Xamarin
             // Put in rows
             for (byte i = 0; i < 4; i++)
             {
-                ControlsGrid.Children.Add((new GridRow((byte)(0 + 3 * i), new View[] { cbEditTone_CommonMFX_MFXControl_MFXControlSource[i] })));
-                ControlsGrid.Children.Add((new GridRow((byte)(1 + 3 * i), new View[] { cbEditTone_CommonMFX_MFXControl_MFXControlAssign[i] })));
-                ControlsGrid.Children.Add((new GridRow((byte)(2 + 3 * i), new View[] { tbEditTone_CommonMFX_MFXControl_MFXControlSens[i], slEditTone_CommonMFX_MFXControl_MFXControlSens[i] }, new byte[] { 1, 2 })));
+                GridRow.CreateRow(ControlsGrid, (byte)(0 + 3 * i), new View[] { cbEditTone_CommonMFX_MFXControl_MFXControlSource[i] });
+                GridRow.CreateRow(ControlsGrid, (byte)(1 + 3 * i), new View[] { cbEditTone_CommonMFX_MFXControl_MFXControlAssign[i] });
+                GridRow.CreateRow(ControlsGrid, (byte)(2 + 3 * i), new View[] { tbEditTone_CommonMFX_MFXControl_MFXControlSens[i], slEditTone_CommonMFX_MFXControl_MFXControlSens[i] }, new byte[] { 1, 2 });
             }
 
             // Set values
@@ -10194,9 +9976,7 @@ namespace INTEGRA_7_Xamarin
             }
 
             // Put in rows
-            ControlsGrid.Children.Add((new GridRow((byte)(0), new View[] {  tbEditTone_SaveTone_Title,
-                tbEditTone_SaveTone_TitleText, cbEditTone_SaveTone_SlotNumber, btnEditTone_SuperNaturalDrumKit_SaveTitle,
-                btnEditTone_PCMSynthTone_DeleteTone}, new byte[] { 4, 3, 3, 2, 2 })));
+            GridRow.CreateRow(ControlsGrid, (byte)(0), new View[] { tbEditTone_SaveTone_Title, tbEditTone_SaveTone_TitleText, cbEditTone_SaveTone_SlotNumber, btnEditTone_SuperNaturalDrumKit_SaveTitle, btnEditTone_PCMSynthTone_DeleteTone }, new byte[] { 4, 3, 3, 2, 2 });
 
             // Set values
             tbEditTone_SaveTone_Title.Text = "Name (max 12 chars):";
@@ -10654,7 +10434,7 @@ namespace INTEGRA_7_Xamarin
             }
 
             // Put MFX type in row 0:
-            ControlsGrid.Children.Add((new GridRow(0, new View[] { cbEditTone_MFXType })));
+            GridRow.CreateRow(ControlsGrid, 0, new View[] { cbEditTone_MFXType });
 
             // Put the rest of the controls in row 1 and on:
             byte sliderIndex = 0;
@@ -10697,8 +10477,7 @@ namespace INTEGRA_7_Xamarin
                         case PARAMETER_TYPE.SLIDER_MINUS_W100_TO_D100_STEP_2:
                         case PARAMETER_TYPE.SLIDER_0_05_TO_10_00_STEP_0_05:
                         case PARAMETER_TYPE.SLIDER_0_10_TO_20_00_STEP_0_10:
-                            ControlsGrid.Children.Add((new GridRow((byte)(parameterNumber + 1 - rowOffset), new View[] {  dynamicTextboxes[textboxIndex++],
-                            dynamicSliders[sliderIndex++] }, new byte[] { 1, 2 })));
+                            GridRow.CreateRow(ControlsGrid, (byte)(parameterNumber + 1 - rowOffset), new View[] { dynamicTextboxes[textboxIndex++], dynamicSliders[sliderIndex++] }, new byte[] { 1, 2 });
                             break;
                         case PARAMETER_TYPE.COMBOBOX_AMPLIFIER_GAIN:
                         case PARAMETER_TYPE.COMBOBOX_AMPLIFIER_TYPE_3:
@@ -10739,18 +10518,14 @@ namespace INTEGRA_7_Xamarin
                         case PARAMETER_TYPE.COMBOBOX_LEGATO_SLASH:
                         case PARAMETER_TYPE.COMBOBOX_RATIO:
                         case PARAMETER_TYPE.COMBOBOX_ROTARY_SPEED:
-                            ControlsGrid.Children.Add((new GridRow((byte)(parameterNumber + 1 - rowOffset), new View[] {  dynamicTextboxes[textboxIndex++],
-                                dynamicComboboxes[comboboxIndex++] }, new byte[] { 1, 2 })));
+                            GridRow.CreateRow(ControlsGrid, (byte)(parameterNumber + 1 - rowOffset), new View[] { dynamicTextboxes[textboxIndex++], dynamicComboboxes[comboboxIndex++] }, new byte[] { 1, 2 });
                             break;
                         case PARAMETER_TYPE.COMBOBOX_HZ_AND_NOTE_LENGTHS:
-                            ControlsGrid.Children.Add((new GridRow((byte)(parameterNumber + 1 - rowOffset), new View[] {  dynamicTextboxes[textboxIndex++],
-                            dynamicComboboxes[comboboxIndex] }, new byte[] { 1, 2 })));
+                            GridRow.CreateRow(ControlsGrid, (byte)(parameterNumber + 1 - rowOffset), new View[] { dynamicTextboxes[textboxIndex++], dynamicComboboxes[comboboxIndex] }, new byte[] { 1, 2 });
                             dynamicComboboxes[comboboxIndex++].Name = (parameterNumber + 2).ToString() + " Hz/Note"; // Something to identify for special functionality (swapping controls on line below).
                             parameterNumber++;
-                            ControlsGrid.Children.Add((new GridRow((byte)(parameterNumber + 1 - rowOffset), new View[] {  dynamicTextboxes[textboxIndex++],
-                            dynamicSliders[sliderIndex++] }, new byte[] { 1, 2 })));
-                            ControlsGrid.Children.Add((new GridRow((byte)(parameterNumber + 1 - rowOffset), new View[] {  dynamicTextboxes[textboxIndex++],
-                            dynamicComboboxes[comboboxIndex++]}, new byte[] { 1, 2 })));
+                            GridRow.CreateRow(ControlsGrid, (byte)(parameterNumber + 1 - rowOffset), new View[] { dynamicTextboxes[textboxIndex++], dynamicSliders[sliderIndex++] }, new byte[] { 1, 2 });
+                            GridRow.CreateRow(ControlsGrid, (byte)(parameterNumber + 1 - rowOffset), new View[] { dynamicTextboxes[textboxIndex++], dynamicComboboxes[comboboxIndex++] }, new byte[] { 1, 2 });
                             try
                             {
                                 if((String)((ComboBox)((Grid)ControlsGrid.Children[parameterNumber]).Children[1]).SelectedItem == "Hz")
@@ -10776,14 +10551,11 @@ namespace INTEGRA_7_Xamarin
                             rowOffset++;
                             break;
                         case PARAMETER_TYPE.COMBOBOX_MS_AND_NOTE_LENGTHS:
-                            ControlsGrid.Children.Add((new GridRow((byte)(parameterNumber + 1 - rowOffset), new View[] {  dynamicTextboxes[textboxIndex++],
-                            dynamicComboboxes[comboboxIndex] }, new byte[] { 1, 2 })));
+                            GridRow.CreateRow(ControlsGrid, (byte)(parameterNumber + 1 - rowOffset), new View[] { dynamicTextboxes[textboxIndex++], dynamicComboboxes[comboboxIndex] }, new byte[] { 1, 2 });
                             dynamicComboboxes[comboboxIndex++].Name = (parameterNumber + 2).ToString() + " Ms/Note"; // Something to identify for special functionality (swapping controls on line below).
                             parameterNumber++;
-                            ControlsGrid.Children.Add((new GridRow((byte)(parameterNumber + 1 - rowOffset), new View[] {  dynamicTextboxes[textboxIndex++],
-                            dynamicSliders[sliderIndex++] }, new byte[] { 1, 2 })));
-                            ControlsGrid.Children.Add((new GridRow((byte)(parameterNumber + 1 - rowOffset), new View[] {  dynamicTextboxes[textboxIndex++],
-                            dynamicComboboxes[comboboxIndex++]}, new byte[] { 1, 2 })));
+                            GridRow.CreateRow(ControlsGrid, (byte)(parameterNumber + 1 - rowOffset), new View[] { dynamicTextboxes[textboxIndex++], dynamicSliders[sliderIndex++] }, new byte[] { 1, 2 });
+                            GridRow.CreateRow(ControlsGrid, (byte)(parameterNumber + 1 - rowOffset), new View[] { dynamicTextboxes[textboxIndex++], dynamicComboboxes[comboboxIndex++] }, new byte[] { 1, 2 });
                             try
                             {
                                 if ((String)((ComboBox)((Grid)ControlsGrid.Children[parameterNumber]).Children[1]).SelectedItem == "Hz")
@@ -10809,7 +10581,7 @@ namespace INTEGRA_7_Xamarin
                             rowOffset++;
                             break;
                         case PARAMETER_TYPE.CHECKBOX:
-                            ControlsGrid.Children.Add((new GridRow((byte)(parameterNumber + 1 - rowOffset), new View[] { dynamicCheckboxes[checkboxIndex++] }, new byte[] { 1 })));
+                            GridRow.CreateRow(ControlsGrid, (byte)(parameterNumber + 1 - rowOffset), new View[] { dynamicCheckboxes[checkboxIndex++] }, new byte[] { 1 });
                             break;
                         case PARAMETER_TYPE.CHECKBOX_1:
                         case PARAMETER_TYPE.CHECKBOX_2:
@@ -10820,8 +10592,7 @@ namespace INTEGRA_7_Xamarin
                                 switch (numberedParametersContent.ParameterTypes[commonMFX.MFXType + currentMFXTypeOffset][parameterNumber + 1])
                                 {
                                     case PARAMETER_TYPE.SLIDER_0_TO_127_R:
-                                        ControlsGrid.Children.Add((new GridRow((byte)(parameterNumber + 1 - rowOffset), new View[] {  dynamicCheckboxes[checkboxIndex++],
-                                    dynamicSliders[sliderIndex++]}, new byte[] { 1, 2 })));
+                                        GridRow.CreateRow(ControlsGrid, (byte)(parameterNumber + 1 - rowOffset), new View[] { dynamicCheckboxes[checkboxIndex++], dynamicSliders[sliderIndex++] }, new byte[] { 1, 2 });
                                         rowOffset++;
                                         parameterNumber++;
                                         break;
@@ -10829,7 +10600,7 @@ namespace INTEGRA_7_Xamarin
                             }
                             else
                             {
-                                ControlsGrid.Children.Add((new GridRow((byte)(parameterNumber + 1 - rowOffset), new View[] { dynamicCheckboxes[checkboxIndex++] }, new byte[] { 1 })));
+                                GridRow.CreateRow(ControlsGrid, (byte)(parameterNumber + 1 - rowOffset), new View[] { dynamicCheckboxes[checkboxIndex++] }, new byte[] { 1 });
                             }
                             break;
                     }

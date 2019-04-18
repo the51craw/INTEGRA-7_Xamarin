@@ -1,3 +1,4 @@
+// File: F:\Users\hbe_000\Projects\INTEGRA_7_Xamarin\INTEGRA_7_Xamarin\INTEGRA_7_Xamarin\StudioSetEditor.cs
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -2005,272 +2006,272 @@ namespace INTEGRA_7_Xamarin
             // Column 1
 
             // Common settings
-            SystemCommonSettings.Children.Add((new GridRow(0, new View[] { tbSystemCommonMasterTune, slSystemCommonMasterTune })));
-            SystemCommonSettings.Children.Add((new GridRow(1, new View[] { tbSystemCommonMasterKeyShift, slSystemCommonMasterKeyShift })));
-            SystemCommonSettings.Children.Add((new GridRow(2, new View[] { tbSystemCommonMasterLevel, slSystemCommonMasterLevel })));
-            SystemCommonSettings.Children.Add((new GridRow(3, new View[] { cbSystemCommonScaleTuneSwitch })));
-            SystemCommonSettings.Children.Add((new GridRow(4, new View[] { tbSystemCommonStudioSetControlChannel, cbSystemCommonStudioSetControlChannel })));
-            SystemCommonSettings.Children.Add((new GridRow(5, new View[] { tbSystemCommonSystemControlSource1, cbSystemCommonSystemControlSource1 })));
-            SystemCommonSettings.Children.Add((new GridRow(6, new View[] { tbSystemCommonSystemControlSource2, cbSystemCommonSystemControlSource2 })));
-            SystemCommonSettings.Children.Add((new GridRow(7, new View[] { tbSystemCommonSystemControlSource3, cbSystemCommonSystemControlSource3 })));
-            SystemCommonSettings.Children.Add((new GridRow(8, new View[] { tbSystemCommonSystemControlSource4, cbSystemCommonSystemControlSource4 })));
-            SystemCommonSettings.Children.Add((new GridRow(9, new View[] { tbSystemCommonControlSource, cbSystemCommonControlSource })));
-            SystemCommonSettings.Children.Add((new GridRow(10, new View[] { tbSystemCommonSystemClockSource, cbSystemCommonSystemClockSource })));
-            SystemCommonSettings.Children.Add((new GridRow(11, new View[] { tbSystemCommonSystemTempo, slSystemCommonSystemTempo })));
-            SystemCommonSettings.Children.Add((new GridRow(12, new View[] { tbTempoAssignSource, cbSystemCommonTempoAssignSource })));
-            SystemCommonSettings.Children.Add((new GridRow(13, new View[] { cbSystemCommonReceiveProgramChange })));
-            SystemCommonSettings.Children.Add((new GridRow(14, new View[] { cbSystemCommonReceiveBankSelect })));
-            SystemCommonSettings.Children.Add((new GridRow(15, new View[] { cbSystemCommonSurroundCenterSpeakerSwitch })));
-            SystemCommonSettings.Children.Add((new GridRow(16, new View[] { cbSystemCommonSurroundSubWooferSwitch })));
-            SystemCommonSettings.Children.Add((new GridRow(17, new View[] { tbSystemCommonStereoOutputMode, cbSystemCommonStereoOutputMode })));
+            GridRow.CreateRow(SystemCommonSettings, 0, new View[] { tbSystemCommonMasterTune, slSystemCommonMasterTune });
+            GridRow.CreateRow(SystemCommonSettings, 1, new View[] { tbSystemCommonMasterKeyShift, slSystemCommonMasterKeyShift });
+            GridRow.CreateRow(SystemCommonSettings, 2, new View[] { tbSystemCommonMasterLevel, slSystemCommonMasterLevel });
+            GridRow.CreateRow(SystemCommonSettings, 3, new View[] { cbSystemCommonScaleTuneSwitch });
+            GridRow.CreateRow(SystemCommonSettings, 4, new View[] { tbSystemCommonStudioSetControlChannel, cbSystemCommonStudioSetControlChannel });
+            GridRow.CreateRow(SystemCommonSettings, 5, new View[] { tbSystemCommonSystemControlSource1, cbSystemCommonSystemControlSource1 });
+            GridRow.CreateRow(SystemCommonSettings, 6, new View[] { tbSystemCommonSystemControlSource2, cbSystemCommonSystemControlSource2 });
+            GridRow.CreateRow(SystemCommonSettings, 7, new View[] { tbSystemCommonSystemControlSource3, cbSystemCommonSystemControlSource3 });
+            GridRow.CreateRow(SystemCommonSettings, 8, new View[] { tbSystemCommonSystemControlSource4, cbSystemCommonSystemControlSource4 });
+            GridRow.CreateRow(SystemCommonSettings, 9, new View[] { tbSystemCommonControlSource, cbSystemCommonControlSource });
+            GridRow.CreateRow(SystemCommonSettings, 10, new View[] { tbSystemCommonSystemClockSource, cbSystemCommonSystemClockSource });
+            GridRow.CreateRow(SystemCommonSettings, 11, new View[] { tbSystemCommonSystemTempo, slSystemCommonSystemTempo });
+            GridRow.CreateRow(SystemCommonSettings, 12, new View[] { tbTempoAssignSource, cbSystemCommonTempoAssignSource });
+            GridRow.CreateRow(SystemCommonSettings, 13, new View[] { cbSystemCommonReceiveProgramChange });
+            GridRow.CreateRow(SystemCommonSettings, 14, new View[] { cbSystemCommonReceiveBankSelect });
+            GridRow.CreateRow(SystemCommonSettings, 15, new View[] { cbSystemCommonSurroundCenterSpeakerSwitch });
+            GridRow.CreateRow(SystemCommonSettings, 16, new View[] { cbSystemCommonSurroundSubWooferSwitch });
+            GridRow.CreateRow(SystemCommonSettings, 17, new View[] { tbSystemCommonStereoOutputMode, cbSystemCommonStereoOutputMode });
 
             // Voice reserve
-            VoiceReserve.Children.Add((new GridRow(0, new View[] { tbVoiceReserve01, slVoiceReserve01 }, new byte[] { 1, 2 })));
-            VoiceReserve.Children.Add((new GridRow(1, new View[] { tbVoiceReserve02, slVoiceReserve02 }, new byte[] { 1, 2 })));
-            VoiceReserve.Children.Add((new GridRow(2, new View[] { tbVoiceReserve03, slVoiceReserve03 }, new byte[] { 1, 2 })));
-            VoiceReserve.Children.Add((new GridRow(3, new View[] { tbVoiceReserve04, slVoiceReserve04 }, new byte[] { 1, 2 })));
-            VoiceReserve.Children.Add((new GridRow(4, new View[] { tbVoiceReserve05, slVoiceReserve05 }, new byte[] { 1, 2 })));
-            VoiceReserve.Children.Add((new GridRow(5, new View[] { tbVoiceReserve06, slVoiceReserve06 }, new byte[] { 1, 2 })));
-            VoiceReserve.Children.Add((new GridRow(6, new View[] { tbVoiceReserve07, slVoiceReserve07 }, new byte[] { 1, 2 })));
-            VoiceReserve.Children.Add((new GridRow(7, new View[] { tbVoiceReserve08, slVoiceReserve08 }, new byte[] { 1, 2 })));
-            VoiceReserve.Children.Add((new GridRow(8, new View[] { tbVoiceReserve09, slVoiceReserve09 }, new byte[] { 1, 2 })));
-            VoiceReserve.Children.Add((new GridRow(9, new View[] { tbVoiceReserve10, slVoiceReserve10 }, new byte[] { 1, 2 })));
-            VoiceReserve.Children.Add((new GridRow(10, new View[] { tbVoiceReserve11, slVoiceReserve11 }, new byte[] { 1, 2 })));
-            VoiceReserve.Children.Add((new GridRow(11, new View[] { tbVoiceReserve12, slVoiceReserve12 }, new byte[] { 1, 2 })));
-            VoiceReserve.Children.Add((new GridRow(12, new View[] { tbVoiceReserve13, slVoiceReserve13 }, new byte[] { 1, 2 })));
-            VoiceReserve.Children.Add((new GridRow(13, new View[] { tbVoiceReserve14, slVoiceReserve14 }, new byte[] { 1, 2 })));
-            VoiceReserve.Children.Add((new GridRow(14, new View[] { tbVoiceReserve15, slVoiceReserve15 }, new byte[] { 1, 2 })));
-            VoiceReserve.Children.Add((new GridRow(15, new View[] { tbVoiceReserve16, slVoiceReserve16 }, new byte[] { 1, 2 })));
+            GridRow.CreateRow(VoiceReserve, 0, new View[] { tbVoiceReserve01, slVoiceReserve01 }, new byte[] { 1, 2 });
+            GridRow.CreateRow(VoiceReserve, 1, new View[] { tbVoiceReserve02, slVoiceReserve02 }, new byte[] { 1, 2 });
+            GridRow.CreateRow(VoiceReserve, 2, new View[] { tbVoiceReserve03, slVoiceReserve03 }, new byte[] { 1, 2 });
+            GridRow.CreateRow(VoiceReserve, 3, new View[] { tbVoiceReserve04, slVoiceReserve04 }, new byte[] { 1, 2 });
+            GridRow.CreateRow(VoiceReserve, 4, new View[] { tbVoiceReserve05, slVoiceReserve05 }, new byte[] { 1, 2 });
+            GridRow.CreateRow(VoiceReserve, 5, new View[] { tbVoiceReserve06, slVoiceReserve06 }, new byte[] { 1, 2 });
+            GridRow.CreateRow(VoiceReserve, 6, new View[] { tbVoiceReserve07, slVoiceReserve07 }, new byte[] { 1, 2 });
+            GridRow.CreateRow(VoiceReserve, 7, new View[] { tbVoiceReserve08, slVoiceReserve08 }, new byte[] { 1, 2 });
+            GridRow.CreateRow(VoiceReserve, 8, new View[] { tbVoiceReserve09, slVoiceReserve09 }, new byte[] { 1, 2 });
+            GridRow.CreateRow(VoiceReserve, 9, new View[] { tbVoiceReserve10, slVoiceReserve10 }, new byte[] { 1, 2 });
+            GridRow.CreateRow(VoiceReserve, 10, new View[] { tbVoiceReserve11, slVoiceReserve11 }, new byte[] { 1, 2 });
+            GridRow.CreateRow(VoiceReserve, 11, new View[] { tbVoiceReserve12, slVoiceReserve12 }, new byte[] { 1, 2 });
+            GridRow.CreateRow(VoiceReserve, 12, new View[] { tbVoiceReserve13, slVoiceReserve13 }, new byte[] { 1, 2 });
+            GridRow.CreateRow(VoiceReserve, 13, new View[] { tbVoiceReserve14, slVoiceReserve14 }, new byte[] { 1, 2 });
+            GridRow.CreateRow(VoiceReserve, 14, new View[] { tbVoiceReserve15, slVoiceReserve15 }, new byte[] { 1, 2 });
+            GridRow.CreateRow(VoiceReserve, 15, new View[] { tbVoiceReserve16, slVoiceReserve16 }, new byte[] { 1, 2 });
 
             // Chorus
-            Chorus.Children.Add((new GridRow(0, new View[] { tbStudioSetChorusType, cbStudioSetChorusType }, new byte[] { 2, 1 })));
-            Chorus.Children.Add((new GridRow(1, new View[] { tbChorusLevel, slChorusLevel })));
-            Chorus.Children.Add((new GridRow(2, new View[] { tbStudioSetChorusOutputAssign, cbChorusOutputAssign }, new byte[] { 2, 1 })));
-            Chorus.Children.Add((new GridRow(3, new View[] { tbChorusOutputSelect, cbChorusOutputSelect }, new byte[] { 2, 1 })));
+            GridRow.CreateRow(Chorus, 0, new View[] { tbStudioSetChorusType, cbStudioSetChorusType }, new byte[] { 2, 1 });
+            GridRow.CreateRow(Chorus, 1, new View[] { tbChorusLevel, slChorusLevel });
+            GridRow.CreateRow(Chorus, 2, new View[] { tbStudioSetChorusOutputAssign, cbChorusOutputAssign }, new byte[] { 2, 1 });
+            GridRow.CreateRow(Chorus, 3, new View[] { tbChorusOutputSelect, cbChorusOutputSelect }, new byte[] { 2, 1 });
             // Chorus chorus
-            ChorusChorus.Children.Add((new GridRow(0, new View[] { tbChorusChorusFilterType, cbChorusChorusFilterType }, new byte[] { 2, 1 })));
-            ChorusChorus.Children.Add((new GridRow(1, new View[] { tbChorusChorusFilterCutoffFrequency, cbChorusChorusFilterCutoffFrequency }, new byte[] { 2, 1 })));
-            ChorusChorus.Children.Add((new GridRow(2, new View[] { tbChorusChorusPreDelay, slChorusChorusPreDelay })));
-            ChorusChorus.Children.Add((new GridRow(3, new View[] { tbChorusChorusRateHzNote, cbChorusChorusRateHzNote }, new byte[] { 2, 1 })));
-            ChorusChorus.Children.Add((new GridRow(4, new View[] { tbChorusChorusRateHz, slChorusChorusRateHz })));
-            ChorusChorus.Children.Add((new GridRow(5, new View[] { tbChorusChorusRateNote, slChorusChorusRateNote })));
-            ChorusChorus.Children.Add((new GridRow(6, new View[] { tbChorusChorusDepth, slChorusChorusDepth })));
-            ChorusChorus.Children.Add((new GridRow(7, new View[] { tbChorusChorusPhase, slChorusChorusPhase })));
-            ChorusChorus.Children.Add((new GridRow(8, new View[] { tbChorusChorusFeedback, slChorusChorusFeedback })));
+            GridRow.CreateRow(ChorusChorus, 0, new View[] { tbChorusChorusFilterType, cbChorusChorusFilterType }, new byte[] { 2, 1 });
+            GridRow.CreateRow(ChorusChorus, 1, new View[] { tbChorusChorusFilterCutoffFrequency, cbChorusChorusFilterCutoffFrequency }, new byte[] { 2, 1 });
+            GridRow.CreateRow(ChorusChorus, 2, new View[] { tbChorusChorusPreDelay, slChorusChorusPreDelay });
+            GridRow.CreateRow(ChorusChorus, 3, new View[] { tbChorusChorusRateHzNote, cbChorusChorusRateHzNote }, new byte[] { 2, 1 });
+            GridRow.CreateRow(ChorusChorus, 4, new View[] { tbChorusChorusRateHz, slChorusChorusRateHz });
+            GridRow.CreateRow(ChorusChorus, 5, new View[] { tbChorusChorusRateNote, slChorusChorusRateNote });
+            GridRow.CreateRow(ChorusChorus, 6, new View[] { tbChorusChorusDepth, slChorusChorusDepth });
+            GridRow.CreateRow(ChorusChorus, 7, new View[] { tbChorusChorusPhase, slChorusChorusPhase });
+            GridRow.CreateRow(ChorusChorus, 8, new View[] { tbChorusChorusFeedback, slChorusChorusFeedback });
             // Chorus delay
-            ChorusDelay.Children.Add((new GridRow(0, new View[] { tbChorusDelayLeftMsNote, cbChorusDelayLeftMsNote }, new byte[] { 2, 1 })));
-            ChorusDelay.Children.Add((new GridRow(1, new View[] { tbChorusDelayLeftHz, slChorusDelayLeftHz }, new byte[] { 1, 2 })));
-            ChorusDelay.Children.Add((new GridRow(2, new View[] { tbChorusDelayLeftNote, slChorusDelayLeftNote }, new byte[] { 1, 2 })));
-            ChorusDelay.Children.Add((new GridRow(3, new View[] { tbChorusDelayRightMsNote, cbChorusDelayRightMsNote }, new byte[] { 2, 1 })));
-            ChorusDelay.Children.Add((new GridRow(4, new View[] { tbChorusDelayRightHz, slChorusDelayRightHz }, new byte[] { 1, 2 })));
-            ChorusDelay.Children.Add((new GridRow(5, new View[] { tbChorusDelayRightNote, slChorusDelayRightNote }, new byte[] { 1, 2 })));
-            ChorusDelay.Children.Add((new GridRow(6, new View[] { tbChorusDelayCenterMsNote, cbChorusDelayCenterMsNote }, new byte[] { 2, 1 })));
-            ChorusDelay.Children.Add((new GridRow(7, new View[] { tbChorusDelayCenterHz, slChorusDelayCenterHz }, new byte[] { 1, 2 })));
-            ChorusDelay.Children.Add((new GridRow(8, new View[] { tbChorusDelayCenterNote, slChorusDelayCenterNote }, new byte[] { 1, 2 })));
-            ChorusDelay.Children.Add((new GridRow(9, new View[] { tbChorusDelayCenterFeedback, slChorusDelayCenterFeedback }, new byte[] { 1, 2 })));
-            ChorusDelay.Children.Add((new GridRow(10, new View[] { tbChorusDelayHFDamp, cbChorusDelayHFDamp }, new byte[] { 2, 1 })));
-            ChorusDelay.Children.Add((new GridRow(11, new View[] { tbChorusDelayLeftLevel, slChorusDelayLeftLevel }, new byte[] { 1, 2 })));
-            ChorusDelay.Children.Add((new GridRow(12, new View[] { tbChorusDelayRightLevel, slChorusDelayRightLevel }, new byte[] { 1, 2 })));
-            ChorusDelay.Children.Add((new GridRow(13, new View[] { tbChorusDelayCenterLevel, slChorusDelayCenterLevel }, new byte[] { 1, 2 })));
+            GridRow.CreateRow(ChorusDelay, 0, new View[] { tbChorusDelayLeftMsNote, cbChorusDelayLeftMsNote }, new byte[] { 2, 1 });
+            GridRow.CreateRow(ChorusDelay, 1, new View[] { tbChorusDelayLeftHz, slChorusDelayLeftHz }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ChorusDelay, 2, new View[] { tbChorusDelayLeftNote, slChorusDelayLeftNote }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ChorusDelay, 3, new View[] { tbChorusDelayRightMsNote, cbChorusDelayRightMsNote }, new byte[] { 2, 1 });
+            GridRow.CreateRow(ChorusDelay, 4, new View[] { tbChorusDelayRightHz, slChorusDelayRightHz }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ChorusDelay, 5, new View[] { tbChorusDelayRightNote, slChorusDelayRightNote }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ChorusDelay, 6, new View[] { tbChorusDelayCenterMsNote, cbChorusDelayCenterMsNote }, new byte[] { 2, 1 });
+            GridRow.CreateRow(ChorusDelay, 7, new View[] { tbChorusDelayCenterHz, slChorusDelayCenterHz }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ChorusDelay, 8, new View[] { tbChorusDelayCenterNote, slChorusDelayCenterNote }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ChorusDelay, 9, new View[] { tbChorusDelayCenterFeedback, slChorusDelayCenterFeedback }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ChorusDelay, 10, new View[] { tbChorusDelayHFDamp, cbChorusDelayHFDamp }, new byte[] { 2, 1 });
+            GridRow.CreateRow(ChorusDelay, 11, new View[] { tbChorusDelayLeftLevel, slChorusDelayLeftLevel }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ChorusDelay, 12, new View[] { tbChorusDelayRightLevel, slChorusDelayRightLevel }, new byte[] { 1, 2 });
+            GridRow.CreateRow(ChorusDelay, 13, new View[] { tbChorusDelayCenterLevel, slChorusDelayCenterLevel }, new byte[] { 1, 2 });
             // Chorus GM2 chorus
-            ChorusGM2Chorus.Children.Add((new GridRow(0, new View[] { tbChorusGM2ChorusPreLPF, slChorusGM2ChorusPreLPF })));
-            ChorusGM2Chorus.Children.Add((new GridRow(1, new View[] { tbChorusGM2ChorusLevel, slChorusGM2ChorusLevel })));
-            ChorusGM2Chorus.Children.Add((new GridRow(2, new View[] { tbChorusGM2ChorusFeedback, slChorusGM2ChorusFeedback })));
-            ChorusGM2Chorus.Children.Add((new GridRow(3, new View[] { tbChorusGM2ChorusDelay, slChorusGM2ChorusDelay })));
-            ChorusGM2Chorus.Children.Add((new GridRow(4, new View[] { tbChorusGM2ChorusRate, slChorusGM2ChorusRate })));
-            ChorusGM2Chorus.Children.Add((new GridRow(5, new View[] { tbChorusGM2ChorusDepth, slChorusGM2ChorusDepth })));
-            ChorusGM2Chorus.Children.Add((new GridRow(6, new View[] { tbChorusGM2ChorusSendLevelToReverb, slChorusGM2ChorusSendLevelToReverb })));
+            GridRow.CreateRow(ChorusGM2Chorus, 0, new View[] { tbChorusGM2ChorusPreLPF, slChorusGM2ChorusPreLPF });
+            GridRow.CreateRow(ChorusGM2Chorus, 1, new View[] { tbChorusGM2ChorusLevel, slChorusGM2ChorusLevel });
+            GridRow.CreateRow(ChorusGM2Chorus, 2, new View[] { tbChorusGM2ChorusFeedback, slChorusGM2ChorusFeedback });
+            GridRow.CreateRow(ChorusGM2Chorus, 3, new View[] { tbChorusGM2ChorusDelay, slChorusGM2ChorusDelay });
+            GridRow.CreateRow(ChorusGM2Chorus, 4, new View[] { tbChorusGM2ChorusRate, slChorusGM2ChorusRate });
+            GridRow.CreateRow(ChorusGM2Chorus, 5, new View[] { tbChorusGM2ChorusDepth, slChorusGM2ChorusDepth });
+            GridRow.CreateRow(ChorusGM2Chorus, 6, new View[] { tbChorusGM2ChorusSendLevelToReverb, slChorusGM2ChorusSendLevelToReverb });
             // Assemble chorus subpages
-            Chorus.Children.Add((new GridRow(4, new View[] { ChorusChorus }, null, false, true, 9)));
-            Chorus.Children.Add((new GridRow(4, new View[] { ChorusDelay }, null, false, true, 14)));
-            Chorus.Children.Add((new GridRow(4, new View[] { ChorusGM2Chorus }, null, false, true, 7)));
+            GridRow.CreateRow(Chorus, 4, new View[] { ChorusChorus }, null, 9);
+            GridRow.CreateRow(Chorus, 4, new View[] { ChorusDelay }, null, 14);
+            GridRow.CreateRow(Chorus, 4, new View[] { ChorusGM2Chorus }, null, 7);
 
             // Reverb
-            Reverb.Children.Add((new GridRow(0, new View[] { tbStudioSetReverbType, cbStudioSetReverbType }, new byte[] { 2, 3 })));
-            Reverb.Children.Add((new GridRow(1, new View[] { tbStudioSetReverbLevel, slStudioSetReverbLevel }, new byte[] { 2, 3 })));
-            Reverb.Children.Add((new GridRow(2, new View[] { tbStudioSetReverbOutputAssign, cbStudioSetReverbOutputAssign }, new byte[] { 2, 3 })));
+            GridRow.CreateRow(Reverb, 0, new View[] { tbStudioSetReverbType, cbStudioSetReverbType }, new byte[] { 2, 3 });
+            GridRow.CreateRow(Reverb, 1, new View[] { tbStudioSetReverbLevel, slStudioSetReverbLevel }, new byte[] { 2, 3 });
+            GridRow.CreateRow(Reverb, 2, new View[] { tbStudioSetReverbOutputAssign, cbStudioSetReverbOutputAssign }, new byte[] { 2, 3 });
             // Reverb all except GM2
-            StudioSetReverbReverb.Children.Add((new GridRow(0, new View[] { tbStudioSetReverbPreDelay, slStudioSetReverbPreDelay }, new byte[] { 1, 2 })));
-            StudioSetReverbReverb.Children.Add((new GridRow(1, new View[] { tbStudioSetReverbTime, slStudioSetReverbTime }, new byte[] { 1, 2 })));
-            StudioSetReverbReverb.Children.Add((new GridRow(2, new View[] { tbStudioSetReverbDensity, slStudioSetReverbDensity }, new byte[] { 1, 2 })));
-            StudioSetReverbReverb.Children.Add((new GridRow(3, new View[] { tbStudioSetReverbDiffusion, slStudioSetReverbDiffusion }, new byte[] { 1, 2 })));
-            StudioSetReverbReverb.Children.Add((new GridRow(4, new View[] { tbStudioSetReverbLFDamp, slStudioSetReverbLFDamp }, new byte[] { 1, 2 })));
-            StudioSetReverbReverb.Children.Add((new GridRow(5, new View[] { tbStudioSetReverbHFDamp, slStudioSetReverbHFDamp }, new byte[] { 1, 2 })));
-            StudioSetReverbReverb.Children.Add((new GridRow(6, new View[] { tbStudioSetReverbSpread, slStudioSetReverbSpread }, new byte[] { 1, 2 })));
-            StudioSetReverbReverb.Children.Add((new GridRow(7, new View[] { tbStudioSetReverbTone, slStudioSetReverbTone }, new byte[] { 1, 2 })));
+            GridRow.CreateRow(StudioSetReverbReverb, 0, new View[] { tbStudioSetReverbPreDelay, slStudioSetReverbPreDelay }, new byte[] { 1, 2 });
+            GridRow.CreateRow(StudioSetReverbReverb, 1, new View[] { tbStudioSetReverbTime, slStudioSetReverbTime }, new byte[] { 1, 2 });
+            GridRow.CreateRow(StudioSetReverbReverb, 2, new View[] { tbStudioSetReverbDensity, slStudioSetReverbDensity }, new byte[] { 1, 2 });
+            GridRow.CreateRow(StudioSetReverbReverb, 3, new View[] { tbStudioSetReverbDiffusion, slStudioSetReverbDiffusion }, new byte[] { 1, 2 });
+            GridRow.CreateRow(StudioSetReverbReverb, 4, new View[] { tbStudioSetReverbLFDamp, slStudioSetReverbLFDamp }, new byte[] { 1, 2 });
+            GridRow.CreateRow(StudioSetReverbReverb, 5, new View[] { tbStudioSetReverbHFDamp, slStudioSetReverbHFDamp }, new byte[] { 1, 2 });
+            GridRow.CreateRow(StudioSetReverbReverb, 6, new View[] { tbStudioSetReverbSpread, slStudioSetReverbSpread }, new byte[] { 1, 2 });
+            GridRow.CreateRow(StudioSetReverbReverb, 7, new View[] { tbStudioSetReverbTone, slStudioSetReverbTone }, new byte[] { 1, 2 });
             // Reverb GM2
-            StudioSetReverbGM2.Children.Add((new GridRow(0, new View[] { tbStudioSetReverbGM2Character, slStudioSetReverbGM2Character }, new byte[] { 1, 2 })));
-            StudioSetReverbGM2.Children.Add((new GridRow(1, new View[] { tbStudioSetReverbGM2Time, slStudioSetReverbGM2Time }, new byte[] { 1, 2 })));
+            GridRow.CreateRow(StudioSetReverbGM2, 0, new View[] { tbStudioSetReverbGM2Character, slStudioSetReverbGM2Character }, new byte[] { 1, 2 });
+            GridRow.CreateRow(StudioSetReverbGM2, 1, new View[] { tbStudioSetReverbGM2Time, slStudioSetReverbGM2Time }, new byte[] { 1, 2 });
             // Add the sub-pages
-            Reverb.Children.Add((new GridRow(3, new View[] { StudioSetReverbReverb }, null, false, true, 8)));
-            Reverb.Children.Add((new GridRow(3, new View[] { StudioSetReverbGM2 }, null, false, true, 2)));
+            GridRow.CreateRow(Reverb, 3, new View[] { StudioSetReverbReverb }, null, 8);
+            GridRow.CreateRow(Reverb, 3, new View[] { StudioSetReverbGM2 }, null, 2);
 
             // Motional surround
 
-            StudioSetMotionalSurround.Children.Add((new GridRow(0, new View[] { tbStudioSetMotionalSurroundCommon, cbStudioSetMotionalSurround })));
-            StudioSetMotionalSurround.Children.Add((new GridRow(1, new View[] { tbStudioSetMotionalSurroundRoomType, cbStudioSetMotionalSurroundRoomType })));
-            StudioSetMotionalSurround.Children.Add((new GridRow(2, new View[] { tbStudioSetMotionalSurroundRoomSize, cbStudioSetMotionalSurroundRoomSize })));
-            StudioSetMotionalSurround.Children.Add((new GridRow(3, new View[] { tbStudioSetMotionalSurroundDepth, slStudioSetMotionalSurroundDepth })));
-            StudioSetMotionalSurround.Children.Add((new GridRow(4, new View[] { tbStudioSetMotionalSurroundAmbienceLevel, slStudioSetMotionalSurroundAmbienceLevel })));
-            StudioSetMotionalSurround.Children.Add((new GridRow(5, new View[] { tbStudioSetMotionalSurroundAmbienceTime, slStudioSetMotionalSurroundAmbienceTime })));
-            StudioSetMotionalSurround.Children.Add((new GridRow(6, new View[] { tbStudioSetMotionalSurroundAmbienceDensity, slStudioSetMotionalSurroundAmbienceDensity })));
-            StudioSetMotionalSurround.Children.Add((new GridRow(7, new View[] { tbStudioSetMotionalSurroundAmbienceHFDamp, slStudioSetMotionalSurroundAmbienceHFDamp })));
-            StudioSetMotionalSurround.Children.Add((new GridRow(8, new View[] { tbStudioSetMotionalSurroundExt })));
-            StudioSetMotionalSurround.Children.Add((new GridRow(9, new View[] { tbStudioSetMotionalSurroundExternalPartLR, slStudioSetMotionalSurroundExternalPartLR })));
-            StudioSetMotionalSurround.Children.Add((new GridRow(10, new View[] { tbStudioSetMotionalSurroundExternalPartFB, slStudioSetMotionalSurroundExternalPartFB })));
-            StudioSetMotionalSurround.Children.Add((new GridRow(11, new View[] { tbStudioSetMotionalSurroundExtPartWidth, slStudioSetMotionalSurroundExtPartWidth })));
-            StudioSetMotionalSurround.Children.Add((new GridRow(12, new View[] { tbStudioSetMotionalSurroundExtpartAmbienceSend, slStudioSetMotionalSurroundExtpartAmbienceSend })));
-            StudioSetMotionalSurround.Children.Add((new GridRow(13, new View[] { tbStudioSetMotionalSurroundControl })));
-            StudioSetMotionalSurround.Children.Add((new GridRow(14, new View[] { tbStudioSetMotionalSurroundExtPartControl, cbStudioSetMotionalSurroundExtPartControl })));
+            GridRow.CreateRow(StudioSetMotionalSurround, 0, new View[] { tbStudioSetMotionalSurroundCommon, cbStudioSetMotionalSurround });
+            GridRow.CreateRow(StudioSetMotionalSurround, 1, new View[] { tbStudioSetMotionalSurroundRoomType, cbStudioSetMotionalSurroundRoomType });
+            GridRow.CreateRow(StudioSetMotionalSurround, 2, new View[] { tbStudioSetMotionalSurroundRoomSize, cbStudioSetMotionalSurroundRoomSize });
+            GridRow.CreateRow(StudioSetMotionalSurround, 3, new View[] { tbStudioSetMotionalSurroundDepth, slStudioSetMotionalSurroundDepth });
+            GridRow.CreateRow(StudioSetMotionalSurround, 4, new View[] { tbStudioSetMotionalSurroundAmbienceLevel, slStudioSetMotionalSurroundAmbienceLevel });
+            GridRow.CreateRow(StudioSetMotionalSurround, 5, new View[] { tbStudioSetMotionalSurroundAmbienceTime, slStudioSetMotionalSurroundAmbienceTime });
+            GridRow.CreateRow(StudioSetMotionalSurround, 6, new View[] { tbStudioSetMotionalSurroundAmbienceDensity, slStudioSetMotionalSurroundAmbienceDensity });
+            GridRow.CreateRow(StudioSetMotionalSurround, 7, new View[] { tbStudioSetMotionalSurroundAmbienceHFDamp, slStudioSetMotionalSurroundAmbienceHFDamp });
+            GridRow.CreateRow(StudioSetMotionalSurround, 8, new View[] { tbStudioSetMotionalSurroundExt });
+            GridRow.CreateRow(StudioSetMotionalSurround, 9, new View[] { tbStudioSetMotionalSurroundExternalPartLR, slStudioSetMotionalSurroundExternalPartLR });
+            GridRow.CreateRow(StudioSetMotionalSurround, 10, new View[] { tbStudioSetMotionalSurroundExternalPartFB, slStudioSetMotionalSurroundExternalPartFB });
+            GridRow.CreateRow(StudioSetMotionalSurround, 11, new View[] { tbStudioSetMotionalSurroundExtPartWidth, slStudioSetMotionalSurroundExtPartWidth });
+            GridRow.CreateRow(StudioSetMotionalSurround, 12, new View[] { tbStudioSetMotionalSurroundExtpartAmbienceSend, slStudioSetMotionalSurroundExtpartAmbienceSend });
+            GridRow.CreateRow(StudioSetMotionalSurround, 13, new View[] { tbStudioSetMotionalSurroundControl });
+            GridRow.CreateRow(StudioSetMotionalSurround, 14, new View[] { tbStudioSetMotionalSurroundExtPartControl, cbStudioSetMotionalSurroundExtPartControl });
 
             // Master EQ
-            StudioSetMasterEQ.Children.Add((new GridRow(0, new View[] { tbStudioSetMasterEqLowFreq, cbStudioSetMasterEqLowFreq })));
-            StudioSetMasterEQ.Children.Add((new GridRow(1, new View[] { tbStudioSetMasterEqLowGain, slStudioSetMasterEqLowGain })));
-            StudioSetMasterEQ.Children.Add((new GridRow(2, new View[] { tbStudioSetMasterEqMidFreq, cbStudioSetMasterEqMidFreq })));
-            StudioSetMasterEQ.Children.Add((new GridRow(3, new View[] { tbStudioSetMasterEqMidGain, slStudioSetMasterEqMidGain })));
-            StudioSetMasterEQ.Children.Add((new GridRow(4, new View[] { tbStudioSetMasterEqMidQ, cbStudioSetMasterEqMidQ })));
-            StudioSetMasterEQ.Children.Add((new GridRow(5, new View[] { tbStudioSetMasterEqHighFreq, cbStudioSetMasterEqHighFreq })));
-            StudioSetMasterEQ.Children.Add((new GridRow(6, new View[] { tbStudioSetMasterEqHighGain, slStudioSetMasterEqHighGain })));
+            GridRow.CreateRow(StudioSetMasterEQ, 0, new View[] { tbStudioSetMasterEqLowFreq, cbStudioSetMasterEqLowFreq });
+            GridRow.CreateRow(StudioSetMasterEQ, 1, new View[] { tbStudioSetMasterEqLowGain, slStudioSetMasterEqLowGain });
+            GridRow.CreateRow(StudioSetMasterEQ, 2, new View[] { tbStudioSetMasterEqMidFreq, cbStudioSetMasterEqMidFreq });
+            GridRow.CreateRow(StudioSetMasterEQ, 3, new View[] { tbStudioSetMasterEqMidGain, slStudioSetMasterEqMidGain });
+            GridRow.CreateRow(StudioSetMasterEQ, 4, new View[] { tbStudioSetMasterEqMidQ, cbStudioSetMasterEqMidQ });
+            GridRow.CreateRow(StudioSetMasterEQ, 5, new View[] { tbStudioSetMasterEqHighFreq, cbStudioSetMasterEqHighFreq });
+            GridRow.CreateRow(StudioSetMasterEQ, 6, new View[] { tbStudioSetMasterEqHighGain, slStudioSetMasterEqHighGain });
 
             //---------------------------------------------------------------------------------------
             // Column 2
 
-            grid_StudioSet_Column2.Children.Add((new GridRow(0, new View[] { cbStudioSetPartSelector })));
-            grid_StudioSet_Column2.Children.Add((new GridRow(1, new View[] { cbStudioSetPartSubSelector })));
-            grid_StudioSet_Column2.Children.Add((new GridRow(2, new View[] { StudioSetCurrentToneName })));
-            grid_StudioSet_Column2.Children.Add((new GridRow(3, new View[] { grid_PartSettings }, null, false, true, 14)));
-            grid_StudioSet_Column2.Children.Add((new GridRow(17, new View[] { grid_Buttons }, null, false, true, 2)));
+            GridRow.CreateRow(grid_StudioSet_Column2, 0, new View[] { cbStudioSetPartSelector });
+            GridRow.CreateRow(grid_StudioSet_Column2, 1, new View[] { cbStudioSetPartSubSelector });
+            GridRow.CreateRow(grid_StudioSet_Column2, 2, new View[] { StudioSetCurrentToneName });
+            GridRow.CreateRow(grid_StudioSet_Column2, 3, new View[] { grid_PartSettings }, null, 14);
+            GridRow.CreateRow(grid_StudioSet_Column2, 17, new View[] { grid_Buttons }, null, 2);
 
-            grid_PartSettings.Children.Add((new GridRow(0, new View[] { StudioSetPartSettings1 }, null, false, true, 14)));
-            grid_PartSettings.Children.Add((new GridRow(0, new View[] { StudioSetPartSettings2 }, null, false, true, 8)));
-            grid_PartSettings.Children.Add((new GridRow(0, new View[] { StudioSetPartEffects }, null, false, true, 3)));
-            grid_PartSettings.Children.Add((new GridRow(0, new View[] { StudioSetPartKeyboard }, null, false, true, 10)));
-            grid_PartSettings.Children.Add((new GridRow(0, new View[] { StudioSetPartScaleTune }, null, false, true, 14)));
-            grid_PartSettings.Children.Add((new GridRow(0, new View[] { StudioSetPartMidi }, null, false, true, 14)));
-            grid_PartSettings.Children.Add((new GridRow(0, new View[] { StudioSetPartMotionalSurround }, null, false, true, 4)));
-            grid_PartSettings.Children.Add((new GridRow(0, new View[] { StudioSetPartEQ }, null, false, true, 8)));
+            GridRow.CreateRow(grid_PartSettings, 0, new View[] { StudioSetPartSettings1 }, null, 14);
+            GridRow.CreateRow(grid_PartSettings, 0, new View[] { StudioSetPartSettings2 }, null, 8);
+            GridRow.CreateRow(grid_PartSettings, 0, new View[] { StudioSetPartEffects }, null, 3);
+            GridRow.CreateRow(grid_PartSettings, 0, new View[] { StudioSetPartKeyboard }, null, 10);
+            GridRow.CreateRow(grid_PartSettings, 0, new View[] { StudioSetPartScaleTune }, null, 14);
+            GridRow.CreateRow(grid_PartSettings, 0, new View[] { StudioSetPartMidi }, null, 14);
+            GridRow.CreateRow(grid_PartSettings, 0, new View[] { StudioSetPartMotionalSurround }, null, 4);
+            GridRow.CreateRow(grid_PartSettings, 0, new View[] { StudioSetPartEQ }, null, 8);
 
-            StudioSetPartSettings1.Children.Add((new GridRow(0, new View[] { cbStudioSetPartSettings1Receive, cbStudioSetPartSettings1ReceiveChannel })));
-            StudioSetPartSettings1.Children.Add((new GridRow(1, new View[] { tbStudioSetPartSettings1Group, cbStudioSetPartSettings1Group })));
-            StudioSetPartSettings1.Children.Add((new GridRow(2, new View[] { tbStudioSetPartSettings1Category, cbStudioSetPartSettings1Category }, new byte[] { 96, 71 })));
-            StudioSetPartSettings1.Children.Add((new GridRow(3, new View[] { tbStudioSetPartSettings1Program, cbStudioSetPartSettings1Program })));
-            StudioSetPartSettings1.Children.Add((new GridRow(4, new View[] { tbStudioSetPartSettings1Search, cbStudioSetPartSettings1Search }, new byte[] { 1, 4 })));
-            StudioSetPartSettings1.Children.Add((new GridRow(5, new View[] { tbStudioSetPartSettings1Level, slStudioSetPartSettings1Level })));
-            StudioSetPartSettings1.Children.Add((new GridRow(6, new View[] { tbStudioSetPartSettings1Pan, slStudioSetPartSettings1Pan })));
-            StudioSetPartSettings1.Children.Add((new GridRow(7, new View[] { tbStudioSetPartSettings1CoarseTune, slStudioSetPartSettings1CoarseTune })));
-            StudioSetPartSettings1.Children.Add((new GridRow(8, new View[] { tbStudioSetPartSettings1FineTune, slStudioSetPartSettings1FineTune })));
-            StudioSetPartSettings1.Children.Add((new GridRow(9, new View[] { tbStudioSetPartSettings1MonoPoly, cbStudioSetPartSettings1MonoPoly })));
-            StudioSetPartSettings1.Children.Add((new GridRow(10, new View[] { tbStudioSetPartSettings1Legato, cbStudioSetPartSettings1Legato })));
-            StudioSetPartSettings1.Children.Add((new GridRow(11, new View[] { tbStudioSetPartSettings1PitchBendRange, slStudioSetPartSettings1PitchBendRange })));
-            StudioSetPartSettings1.Children.Add((new GridRow(12, new View[] { tbStudioSetPartSettings1Portamento, cbStudioSetPartSettings1Portamento })));
-            StudioSetPartSettings1.Children.Add((new GridRow(13, new View[] { tbStudioSetPartSettings1PortamentoTime, slStudioSetPartSettings1PortamentoTime })));
+            GridRow.CreateRow(StudioSetPartSettings1, 0, new View[] { cbStudioSetPartSettings1Receive, cbStudioSetPartSettings1ReceiveChannel });
+            GridRow.CreateRow(StudioSetPartSettings1, 1, new View[] { tbStudioSetPartSettings1Group, cbStudioSetPartSettings1Group });
+            GridRow.CreateRow(StudioSetPartSettings1, 2, new View[] { tbStudioSetPartSettings1Category, cbStudioSetPartSettings1Category }, new byte[] { 96, 71 });
+            GridRow.CreateRow(StudioSetPartSettings1, 3, new View[] { tbStudioSetPartSettings1Program, cbStudioSetPartSettings1Program });
+            GridRow.CreateRow(StudioSetPartSettings1, 4, new View[] { tbStudioSetPartSettings1Search, cbStudioSetPartSettings1Search }, new byte[] { 1, 4 });
+            GridRow.CreateRow(StudioSetPartSettings1, 5, new View[] { tbStudioSetPartSettings1Level, slStudioSetPartSettings1Level });
+            GridRow.CreateRow(StudioSetPartSettings1, 6, new View[] { tbStudioSetPartSettings1Pan, slStudioSetPartSettings1Pan });
+            GridRow.CreateRow(StudioSetPartSettings1, 7, new View[] { tbStudioSetPartSettings1CoarseTune, slStudioSetPartSettings1CoarseTune });
+            GridRow.CreateRow(StudioSetPartSettings1, 8, new View[] { tbStudioSetPartSettings1FineTune, slStudioSetPartSettings1FineTune });
+            GridRow.CreateRow(StudioSetPartSettings1, 9, new View[] { tbStudioSetPartSettings1MonoPoly, cbStudioSetPartSettings1MonoPoly });
+            GridRow.CreateRow(StudioSetPartSettings1, 10, new View[] { tbStudioSetPartSettings1Legato, cbStudioSetPartSettings1Legato });
+            GridRow.CreateRow(StudioSetPartSettings1, 11, new View[] { tbStudioSetPartSettings1PitchBendRange, slStudioSetPartSettings1PitchBendRange });
+            GridRow.CreateRow(StudioSetPartSettings1, 12, new View[] { tbStudioSetPartSettings1Portamento, cbStudioSetPartSettings1Portamento });
+            GridRow.CreateRow(StudioSetPartSettings1, 13, new View[] { tbStudioSetPartSettings1PortamentoTime, slStudioSetPartSettings1PortamentoTime });
 
-            StudioSetPartSettings2.Children.Add((new GridRow(0, new View[] { tbStudioSetPartSettings2CutoffOffset, slStudioSetPartSettings2CutoffOffset })));
-            StudioSetPartSettings2.Children.Add((new GridRow(1, new View[] { tbStudioSetPartSettings2ResonanceOffset, slStudioSetPartSettings2ResonanceOffset })));
-            StudioSetPartSettings2.Children.Add((new GridRow(2, new View[] { tbStudioSetPartSettings2AttackTimeOffset, slStudioSetPartSettings2AttackTimeOffset })));
-            StudioSetPartSettings2.Children.Add((new GridRow(3, new View[] { tbStudioSetPartSettings2DecayTimeOffset, slStudioSetPartSettings2DecayTimeOffset })));
-            StudioSetPartSettings2.Children.Add((new GridRow(4, new View[] { tbStudioSetPartSettings2ReleaseTimeOffset, slStudioSetPartSettings2ReleaseTimeOffset })));
-            StudioSetPartSettings2.Children.Add((new GridRow(5, new View[] { tbStudioSetPartSettings2VibratoRate, slStudioSetPartSettings2VibratoRate })));
-            StudioSetPartSettings2.Children.Add((new GridRow(6, new View[] { tbStudioSetPartSettings2VibratoDepth, slStudioSetPartSettings2VibratoDepth })));
-            StudioSetPartSettings2.Children.Add((new GridRow(7, new View[] { tbStudioSetPartSettings2VibratoDelay, slStudioSetPartSettings2VibratoDelay })));
+            GridRow.CreateRow(StudioSetPartSettings2, 0, new View[] { tbStudioSetPartSettings2CutoffOffset, slStudioSetPartSettings2CutoffOffset });
+            GridRow.CreateRow(StudioSetPartSettings2, 1, new View[] { tbStudioSetPartSettings2ResonanceOffset, slStudioSetPartSettings2ResonanceOffset });
+            GridRow.CreateRow(StudioSetPartSettings2, 2, new View[] { tbStudioSetPartSettings2AttackTimeOffset, slStudioSetPartSettings2AttackTimeOffset });
+            GridRow.CreateRow(StudioSetPartSettings2, 3, new View[] { tbStudioSetPartSettings2DecayTimeOffset, slStudioSetPartSettings2DecayTimeOffset });
+            GridRow.CreateRow(StudioSetPartSettings2, 4, new View[] { tbStudioSetPartSettings2ReleaseTimeOffset, slStudioSetPartSettings2ReleaseTimeOffset });
+            GridRow.CreateRow(StudioSetPartSettings2, 5, new View[] { tbStudioSetPartSettings2VibratoRate, slStudioSetPartSettings2VibratoRate });
+            GridRow.CreateRow(StudioSetPartSettings2, 6, new View[] { tbStudioSetPartSettings2VibratoDepth, slStudioSetPartSettings2VibratoDepth });
+            GridRow.CreateRow(StudioSetPartSettings2, 7, new View[] { tbStudioSetPartSettings2VibratoDelay, slStudioSetPartSettings2VibratoDelay });
 
-            StudioSetPartEffects.Children.Add((new GridRow(0, new View[] { tbStudioSetPartEffectsChorusSendLevel, slStudioSetPartEffectsChorusSendLevel })));
-            StudioSetPartEffects.Children.Add((new GridRow(1, new View[] { tbStudioSetPartEffectsReverbSendLevel, slStudioSetPartEffectsReverbSendLevel })));
-            StudioSetPartEffects.Children.Add((new GridRow(2, new View[] { tbStudioSetPartEffectsOutputAssign, cbStudioSetPartEffectsOutputAssign })));
+            GridRow.CreateRow(StudioSetPartEffects, 0, new View[] { tbStudioSetPartEffectsChorusSendLevel, slStudioSetPartEffectsChorusSendLevel });
+            GridRow.CreateRow(StudioSetPartEffects, 1, new View[] { tbStudioSetPartEffectsReverbSendLevel, slStudioSetPartEffectsReverbSendLevel });
+            GridRow.CreateRow(StudioSetPartEffects, 2, new View[] { tbStudioSetPartEffectsOutputAssign, cbStudioSetPartEffectsOutputAssign });
 
-            StudioSetPartKeyboard.Children.Add((new GridRow(0, new View[] { tbStudioSetPartKeyboardOctaveShift, slStudioSetPartKeyboardOctaveShift })));
-            StudioSetPartKeyboard.Children.Add((new GridRow(1, new View[] { tbStudioSetPartKeyboardVelocitySenseOffset, slStudioSetPartKeyboardVelocitySenseOffset })));
-            StudioSetPartKeyboard.Children.Add((new GridRow(2, new View[] { tbStudioSetPartKeyboardRangeLower, slStudioSetPartKeyboardRangeLower })));
-            StudioSetPartKeyboard.Children.Add((new GridRow(3, new View[] { tbStudioSetPartKeyboardRangeUpper, slStudioSetPartKeyboardRangeUpper })));
-            StudioSetPartKeyboard.Children.Add((new GridRow(4, new View[] { tbStudioSetPartKeyboardFadeWidthLower, slStudioSetPartKeyboardFadeWidthLower })));
-            StudioSetPartKeyboard.Children.Add((new GridRow(5, new View[] { tbStudioSetPartKeyboardFadeWidthUpper, slStudioSetPartKeyboardFadeWidthUpper })));
-            StudioSetPartKeyboard.Children.Add((new GridRow(6, new View[] { tbStudioSetPartKeyboardVelocityRangeLower, slStudioSetPartKeyboardVelocityRangeLower })));
-            StudioSetPartKeyboard.Children.Add((new GridRow(7, new View[] { tbStudioSetPartKeyboardVelocityRangeUpper, slStudioSetPartKeyboardVelocityRangeUpper })));
-            StudioSetPartKeyboard.Children.Add((new GridRow(8, new View[] { tbStudioSetPartKeyboardVelocityFadeWidthLower, slStudioSetPartKeyboardVelocityFadeWidthLower })));
-            StudioSetPartKeyboard.Children.Add((new GridRow(9, new View[] { tbStudioSetPartKeyboardVelocityFadeWidthUpper, slStudioSetPartKeyboardVelocityFadeWidthUpper })));
-            StudioSetPartKeyboard.Children.Add((new GridRow(10, new View[] { cbStudioSetPartKeyboardMute })));
+            GridRow.CreateRow(StudioSetPartKeyboard, 0, new View[] { tbStudioSetPartKeyboardOctaveShift, slStudioSetPartKeyboardOctaveShift });
+            GridRow.CreateRow(StudioSetPartKeyboard, 1, new View[] { tbStudioSetPartKeyboardVelocitySenseOffset, slStudioSetPartKeyboardVelocitySenseOffset });
+            GridRow.CreateRow(StudioSetPartKeyboard, 2, new View[] { tbStudioSetPartKeyboardRangeLower, slStudioSetPartKeyboardRangeLower });
+            GridRow.CreateRow(StudioSetPartKeyboard, 3, new View[] { tbStudioSetPartKeyboardRangeUpper, slStudioSetPartKeyboardRangeUpper });
+            GridRow.CreateRow(StudioSetPartKeyboard, 4, new View[] { tbStudioSetPartKeyboardFadeWidthLower, slStudioSetPartKeyboardFadeWidthLower });
+            GridRow.CreateRow(StudioSetPartKeyboard, 5, new View[] { tbStudioSetPartKeyboardFadeWidthUpper, slStudioSetPartKeyboardFadeWidthUpper });
+            GridRow.CreateRow(StudioSetPartKeyboard, 6, new View[] { tbStudioSetPartKeyboardVelocityRangeLower, slStudioSetPartKeyboardVelocityRangeLower });
+            GridRow.CreateRow(StudioSetPartKeyboard, 7, new View[] { tbStudioSetPartKeyboardVelocityRangeUpper, slStudioSetPartKeyboardVelocityRangeUpper });
+            GridRow.CreateRow(StudioSetPartKeyboard, 8, new View[] { tbStudioSetPartKeyboardVelocityFadeWidthLower, slStudioSetPartKeyboardVelocityFadeWidthLower });
+            GridRow.CreateRow(StudioSetPartKeyboard, 9, new View[] { tbStudioSetPartKeyboardVelocityFadeWidthUpper, slStudioSetPartKeyboardVelocityFadeWidthUpper });
+            GridRow.CreateRow(StudioSetPartKeyboard, 10, new View[] { cbStudioSetPartKeyboardMute });
 
-            StudioSetPartScaleTune.Children.Add((new GridRow(0, new View[] { tbStudioSetPartScaleTuneType, cbStudioSetPartScaleTuneType })));
-            StudioSetPartScaleTune.Children.Add((new GridRow(1, new View[] { tbStudioSetPartScaleTuneKey, cbStudioSetPartScaleTuneKey })));
-            StudioSetPartScaleTune.Children.Add((new GridRow(2, new View[] { tbStudioSetPartScaleTuneC, slStudioSetPartScaleTuneC })));
-            StudioSetPartScaleTune.Children.Add((new GridRow(3, new View[] { tbStudioSetPartScaleTuneCi, slStudioSetPartScaleTuneCi })));
-            StudioSetPartScaleTune.Children.Add((new GridRow(4, new View[] { tbStudioSetPartScaleTuneD, slStudioSetPartScaleTuneD })));
-            StudioSetPartScaleTune.Children.Add((new GridRow(5, new View[] { tbStudioSetPartScaleTuneDi, slStudioSetPartScaleTuneDi })));
-            StudioSetPartScaleTune.Children.Add((new GridRow(6, new View[] { tbStudioSetPartScaleTuneE, slStudioSetPartScaleTuneE })));
-            StudioSetPartScaleTune.Children.Add((new GridRow(7, new View[] { tbStudioSetPartScaleTuneF, slStudioSetPartScaleTuneF })));
-            StudioSetPartScaleTune.Children.Add((new GridRow(8, new View[] { tbStudioSetPartScaleTuneFi, slStudioSetPartScaleTuneFi })));
-            StudioSetPartScaleTune.Children.Add((new GridRow(9, new View[] { tbStudioSetPartScaleTuneG, slStudioSetPartScaleTuneG })));
-            StudioSetPartScaleTune.Children.Add((new GridRow(10, new View[] { tbStudioSetPartScaleTuneGi, slStudioSetPartScaleTuneGi })));
-            StudioSetPartScaleTune.Children.Add((new GridRow(11, new View[] { tbStudioSetPartScaleTuneA, slStudioSetPartScaleTuneA })));
-            StudioSetPartScaleTune.Children.Add((new GridRow(12, new View[] { tbStudioSetPartScaleTuneAi, slStudioSetPartScaleTuneAi })));
-            StudioSetPartScaleTune.Children.Add((new GridRow(13, new View[] { tbStudioSetPartScaleTuneB, slStudioSetPartScaleTuneB })));
+            GridRow.CreateRow(StudioSetPartScaleTune, 0, new View[] { tbStudioSetPartScaleTuneType, cbStudioSetPartScaleTuneType });
+            GridRow.CreateRow(StudioSetPartScaleTune, 1, new View[] { tbStudioSetPartScaleTuneKey, cbStudioSetPartScaleTuneKey });
+            GridRow.CreateRow(StudioSetPartScaleTune, 2, new View[] { tbStudioSetPartScaleTuneC, slStudioSetPartScaleTuneC });
+            GridRow.CreateRow(StudioSetPartScaleTune, 3, new View[] { tbStudioSetPartScaleTuneCi, slStudioSetPartScaleTuneCi });
+            GridRow.CreateRow(StudioSetPartScaleTune, 4, new View[] { tbStudioSetPartScaleTuneD, slStudioSetPartScaleTuneD });
+            GridRow.CreateRow(StudioSetPartScaleTune, 5, new View[] { tbStudioSetPartScaleTuneDi, slStudioSetPartScaleTuneDi });
+            GridRow.CreateRow(StudioSetPartScaleTune, 6, new View[] { tbStudioSetPartScaleTuneE, slStudioSetPartScaleTuneE });
+            GridRow.CreateRow(StudioSetPartScaleTune, 7, new View[] { tbStudioSetPartScaleTuneF, slStudioSetPartScaleTuneF });
+            GridRow.CreateRow(StudioSetPartScaleTune, 8, new View[] { tbStudioSetPartScaleTuneFi, slStudioSetPartScaleTuneFi });
+            GridRow.CreateRow(StudioSetPartScaleTune, 9, new View[] { tbStudioSetPartScaleTuneG, slStudioSetPartScaleTuneG });
+            GridRow.CreateRow(StudioSetPartScaleTune, 10, new View[] { tbStudioSetPartScaleTuneGi, slStudioSetPartScaleTuneGi });
+            GridRow.CreateRow(StudioSetPartScaleTune, 11, new View[] { tbStudioSetPartScaleTuneA, slStudioSetPartScaleTuneA });
+            GridRow.CreateRow(StudioSetPartScaleTune, 12, new View[] { tbStudioSetPartScaleTuneAi, slStudioSetPartScaleTuneAi });
+            GridRow.CreateRow(StudioSetPartScaleTune, 13, new View[] { tbStudioSetPartScaleTuneB, slStudioSetPartScaleTuneB });
 
-            StudioSetPartMidi.Children.Add((new GridRow(0, new View[] { cbStudioSetPartMidiPhaseLock })));
-            StudioSetPartMidi.Children.Add((new GridRow(1, new View[] { cbStudioSetPartMidiReceiveProgramChange })));
-            StudioSetPartMidi.Children.Add((new GridRow(2, new View[] { cbStudioSetPartMidiReceiveBankSelect })));
-            StudioSetPartMidi.Children.Add((new GridRow(3, new View[] { cbStudioSetPartMidiReceivePitchBend })));
-            StudioSetPartMidi.Children.Add((new GridRow(4, new View[] { cbStudioSetPartMidiReceivePolyphonicKeyPressure })));
-            StudioSetPartMidi.Children.Add((new GridRow(5, new View[] { cbStudioSetPartMidiReceiveChannelPressure })));
-            StudioSetPartMidi.Children.Add((new GridRow(6, new View[] { cbStudioSetPartMidiReceiveModulation })));
-            StudioSetPartMidi.Children.Add((new GridRow(7, new View[] { cbStudioSetPartMidiReceiveVolume })));
-            StudioSetPartMidi.Children.Add((new GridRow(8, new View[] { cbStudioSetPartMidiReceivePan })));
-            StudioSetPartMidi.Children.Add((new GridRow(9, new View[] { cbStudioSetPartMidiReceiveExpression })));
-            StudioSetPartMidi.Children.Add((new GridRow(10, new View[] { cbStudioSetPartMidiReceiveHold1 })));
-            StudioSetPartMidi.Children.Add((new GridRow(11, new View[] { tbStudioSetPartKeyboardVelocityCurveType, cbStudioSetPartKeyboardVelocityCurveType })));
-            StudioSetPartMidi.Children.Add((new GridRow(12, new View[] { gStudioSetPartVelocityCurve }, null, false, false, 2)));
+            GridRow.CreateRow(StudioSetPartMidi, 0, new View[] { cbStudioSetPartMidiPhaseLock });
+            GridRow.CreateRow(StudioSetPartMidi, 1, new View[] { cbStudioSetPartMidiReceiveProgramChange });
+            GridRow.CreateRow(StudioSetPartMidi, 2, new View[] { cbStudioSetPartMidiReceiveBankSelect });
+            GridRow.CreateRow(StudioSetPartMidi, 3, new View[] { cbStudioSetPartMidiReceivePitchBend });
+            GridRow.CreateRow(StudioSetPartMidi, 4, new View[] { cbStudioSetPartMidiReceivePolyphonicKeyPressure });
+            GridRow.CreateRow(StudioSetPartMidi, 5, new View[] { cbStudioSetPartMidiReceiveChannelPressure });
+            GridRow.CreateRow(StudioSetPartMidi, 6, new View[] { cbStudioSetPartMidiReceiveModulation });
+            GridRow.CreateRow(StudioSetPartMidi, 7, new View[] { cbStudioSetPartMidiReceiveVolume });
+            GridRow.CreateRow(StudioSetPartMidi, 8, new View[] { cbStudioSetPartMidiReceivePan });
+            GridRow.CreateRow(StudioSetPartMidi, 9, new View[] { cbStudioSetPartMidiReceiveExpression });
+            GridRow.CreateRow(StudioSetPartMidi, 10, new View[] { cbStudioSetPartMidiReceiveHold1 });
+            GridRow.CreateRow(StudioSetPartMidi, 11, new View[] { tbStudioSetPartKeyboardVelocityCurveType, cbStudioSetPartKeyboardVelocityCurveType });
+            GridRow.CreateRow(StudioSetPartMidi, 12, new View[] { gStudioSetPartVelocityCurve }, null, 2);
 
-            StudioSetPartMotionalSurround.Children.Add((new GridRow(0, new View[] { tbStudioSetPartMotionalSurroundLR, slStudioSetPartMotionalSurroundLR })));
-            StudioSetPartMotionalSurround.Children.Add((new GridRow(1, new View[] { tbStudioSetPartMotionalSurroundFB, slStudioSetPartMotionalSurroundFB })));
-            StudioSetPartMotionalSurround.Children.Add((new GridRow(2, new View[] { tbStudioSetPartMotionalSurroundWidth, slStudioSetPartMotionalSurroundWidth })));
-            StudioSetPartMotionalSurround.Children.Add((new GridRow(3, new View[] { tbStudioSetPartMotionalSurroundAmbienceSendLevel, slStudioSetPartMotionalSurroundAmbienceSendLevel })));
+            GridRow.CreateRow(StudioSetPartMotionalSurround, 0, new View[] { tbStudioSetPartMotionalSurroundLR, slStudioSetPartMotionalSurroundLR });
+            GridRow.CreateRow(StudioSetPartMotionalSurround, 1, new View[] { tbStudioSetPartMotionalSurroundFB, slStudioSetPartMotionalSurroundFB });
+            GridRow.CreateRow(StudioSetPartMotionalSurround, 2, new View[] { tbStudioSetPartMotionalSurroundWidth, slStudioSetPartMotionalSurroundWidth });
+            GridRow.CreateRow(StudioSetPartMotionalSurround, 3, new View[] { tbStudioSetPartMotionalSurroundAmbienceSendLevel, slStudioSetPartMotionalSurroundAmbienceSendLevel });
 
-            StudioSetPartEQ.Children.Add((new GridRow(0, new View[] { cbStudioSetPartEQSwitch })));
-            StudioSetPartEQ.Children.Add((new GridRow(1, new View[] { tbStudioSetPartEQLowFreq, cbStudioSetPartEQLowFreq })));
-            StudioSetPartEQ.Children.Add((new GridRow(2, new View[] { tbStudioSetPartEQLowGain, slStudioSetPartEQLowGain })));
-            StudioSetPartEQ.Children.Add((new GridRow(3, new View[] { tbStudioSetPartEQMidFreq, cbStudioSetPartEQMidFreq })));
-            StudioSetPartEQ.Children.Add((new GridRow(4, new View[] { tbStudioSetPartEQMidGain, slStudioSetPartEQMidGain })));
-            StudioSetPartEQ.Children.Add((new GridRow(5, new View[] { tbStudioSetPartEQMidQ, cbStudioSetPartEQMidQ })));
-            StudioSetPartEQ.Children.Add((new GridRow(6, new View[] { tbStudioSetPartEQHighFreq, cbStudioSetPartEQHighFreq })));
-            StudioSetPartEQ.Children.Add((new GridRow(7, new View[] { tbStudioSetPartEQHighGain, slStudioSetPartEQHighGain })));
+            GridRow.CreateRow(StudioSetPartEQ, 0, new View[] { cbStudioSetPartEQSwitch });
+            GridRow.CreateRow(StudioSetPartEQ, 1, new View[] { tbStudioSetPartEQLowFreq, cbStudioSetPartEQLowFreq });
+            GridRow.CreateRow(StudioSetPartEQ, 2, new View[] { tbStudioSetPartEQLowGain, slStudioSetPartEQLowGain });
+            GridRow.CreateRow(StudioSetPartEQ, 3, new View[] { tbStudioSetPartEQMidFreq, cbStudioSetPartEQMidFreq });
+            GridRow.CreateRow(StudioSetPartEQ, 4, new View[] { tbStudioSetPartEQMidGain, slStudioSetPartEQMidGain });
+            GridRow.CreateRow(StudioSetPartEQ, 5, new View[] { tbStudioSetPartEQMidQ, cbStudioSetPartEQMidQ });
+            GridRow.CreateRow(StudioSetPartEQ, 6, new View[] { tbStudioSetPartEQHighFreq, cbStudioSetPartEQHighFreq });
+            GridRow.CreateRow(StudioSetPartEQ, 7, new View[] { tbStudioSetPartEQHighGain, slStudioSetPartEQHighGain });
 
-            grid_Buttons.Children.Add((new GridRow(0, new View[] { cbStudioSetSlot, lblStudioSetName, tbStudioSetName }, new byte[] { 5, 3, 8 })));
-            grid_Buttons.Children.Add((new GridRow(1, new View[] { btnFileSave, btnFileLoad, btnStudioSetSave, btnStudioSetDelete, btnStudioSetReturn }, new byte[] { 3, 3, 2, 2, 2 })));
+            GridRow.CreateRow(grid_Buttons, 0, new View[] { cbStudioSetSlot, lblStudioSetName, tbStudioSetName }, new byte[] { 5, 3, 8 });
+            GridRow.CreateRow(grid_Buttons, 1, new View[] { btnFileSave, btnFileLoad, btnStudioSetSave, btnStudioSetDelete, btnStudioSetReturn }, new byte[] { 3, 3, 2, 2, 2 });
 
             //---------------------------------------------------------------------------------------
             // Assemble column 0 
             //---------------------------------------------------------------------------------------
 
-            grid_StudioSet_Column0.Children.Add((new GridRow(0, new View[] { cbStudioSetSelector })));
-            grid_StudioSet_Column0.Children.Add((new GridRow(1, new View[] { tbToneControl1, cbToneControl1 })));
-            grid_StudioSet_Column0.Children.Add((new GridRow(2, new View[] { tbToneControl2, cbToneControl2 })));
-            grid_StudioSet_Column0.Children.Add((new GridRow(3, new View[] { tbToneControl3, cbToneControl3 })));
-            grid_StudioSet_Column0.Children.Add((new GridRow(4, new View[] { tbToneControl4, cbToneControl4 })));
-            grid_StudioSet_Column0.Children.Add((new GridRow(5, new View[] { tbTempo, slTempo })));
-            grid_StudioSet_Column0.Children.Add((new GridRow(6, new View[] { tbSoloPart, cbSoloPart })));
-            grid_StudioSet_Column0.Children.Add((new GridRow(7, new View[] { cbReverb, cbChorus, cbMasterEQ }, new byte[] { 1, 1, 1 })));
-            grid_StudioSet_Column0.Children.Add((new GridRow(8, new View[] { tbDrumCompEQPart, cbDrumCompEQPart }, new byte[] { 2, 1 })));
-            grid_StudioSet_Column0.Children.Add((new GridRow(9, new View[] { tbDrumCompEQ1OutputAssign, cbDrumCompEQ1OutputAssign }, new byte[] { 2, 1 })));
-            grid_StudioSet_Column0.Children.Add((new GridRow(10, new View[] { tbDrumCompEQ2OutputAssign, cbDrumCompEQ2OutputAssign }, new byte[] { 2, 1 })));
-            grid_StudioSet_Column0.Children.Add((new GridRow(11, new View[] { tbDrumCompEQ3OutputAssign, cbDrumCompEQ3OutputAssign }, new byte[] { 2, 1 })));
-            grid_StudioSet_Column0.Children.Add((new GridRow(12, new View[] { tbDrumCompEQ4OutputAssign, cbDrumCompEQ4OutputAssign }, new byte[] { 2, 1 })));
-            grid_StudioSet_Column0.Children.Add((new GridRow(13, new View[] { tbDrumCompEQ5OutputAssign, cbDrumCompEQ5OutputAssign }, new byte[] { 2, 1 })));
-            grid_StudioSet_Column0.Children.Add((new GridRow(14, new View[] { tbDrumCompEQ6OutputAssign, cbDrumCompEQ6OutputAssign }, new byte[] { 2, 1 })));
-            grid_StudioSet_Column0.Children.Add((new GridRow(15, new View[] { cbDrumCompEQ, cbExtPartMute }, new byte[] { 7, 6 })));
-            grid_StudioSet_Column0.Children.Add((new GridRow(16, new View[] { tbExtPartLevel, slExtPartLevel })));
-            grid_StudioSet_Column0.Children.Add((new GridRow(17, new View[] { tbExtPartChorusSend, slExtPartChorusSend })));
-            grid_StudioSet_Column0.Children.Add((new GridRow(18, new View[] { tbExtPartReverbSend, slExtPartReverbSend })));
+            GridRow.CreateRow(grid_StudioSet_Column0, 0, new View[] { cbStudioSetSelector });
+            GridRow.CreateRow(grid_StudioSet_Column0, 1, new View[] { tbToneControl1, cbToneControl1 });
+            GridRow.CreateRow(grid_StudioSet_Column0, 2, new View[] { tbToneControl2, cbToneControl2 });
+            GridRow.CreateRow(grid_StudioSet_Column0, 3, new View[] { tbToneControl3, cbToneControl3 });
+            GridRow.CreateRow(grid_StudioSet_Column0, 4, new View[] { tbToneControl4, cbToneControl4 });
+            GridRow.CreateRow(grid_StudioSet_Column0, 5, new View[] { tbTempo, slTempo });
+            GridRow.CreateRow(grid_StudioSet_Column0, 6, new View[] { tbSoloPart, cbSoloPart });
+            GridRow.CreateRow(grid_StudioSet_Column0, 7, new View[] { cbReverb, cbChorus, cbMasterEQ }, new byte[] { 1, 1, 1 });
+            GridRow.CreateRow(grid_StudioSet_Column0, 8, new View[] { tbDrumCompEQPart, cbDrumCompEQPart }, new byte[] { 2, 1 });
+            GridRow.CreateRow(grid_StudioSet_Column0, 9, new View[] { tbDrumCompEQ1OutputAssign, cbDrumCompEQ1OutputAssign }, new byte[] { 2, 1 });
+            GridRow.CreateRow(grid_StudioSet_Column0, 10, new View[] { tbDrumCompEQ2OutputAssign, cbDrumCompEQ2OutputAssign }, new byte[] { 2, 1 });
+            GridRow.CreateRow(grid_StudioSet_Column0, 11, new View[] { tbDrumCompEQ3OutputAssign, cbDrumCompEQ3OutputAssign }, new byte[] { 2, 1 });
+            GridRow.CreateRow(grid_StudioSet_Column0, 12, new View[] { tbDrumCompEQ4OutputAssign, cbDrumCompEQ4OutputAssign }, new byte[] { 2, 1 });
+            GridRow.CreateRow(grid_StudioSet_Column0, 13, new View[] { tbDrumCompEQ5OutputAssign, cbDrumCompEQ5OutputAssign }, new byte[] { 2, 1 });
+            GridRow.CreateRow(grid_StudioSet_Column0, 14, new View[] { tbDrumCompEQ6OutputAssign, cbDrumCompEQ6OutputAssign }, new byte[] { 2, 1 });
+            GridRow.CreateRow(grid_StudioSet_Column0, 15, new View[] { cbDrumCompEQ, cbExtPartMute }, new byte[] { 7, 6 });
+            GridRow.CreateRow(grid_StudioSet_Column0, 16, new View[] { tbExtPartLevel, slExtPartLevel });
+            GridRow.CreateRow(grid_StudioSet_Column0, 17, new View[] { tbExtPartChorusSend, slExtPartChorusSend });
+            GridRow.CreateRow(grid_StudioSet_Column0, 18, new View[] { tbExtPartReverbSend, slExtPartReverbSend });
 
             //---------------------------------------------------------------------------------------
             // Assemble column 1 
             //---------------------------------------------------------------------------------------
 
-            gStudioSet_Column1.Children.Add((new GridRow(0, new View[] { cbColumn1Selector })));
-            gStudioSet_Column1.Children.Add((new GridRow(1, new View[] { SystemCommonSettings }, null, false, true, 18)));
-            gStudioSet_Column1.Children.Add((new GridRow(1, new View[] { VoiceReserve }, null, false, true, 18)));
-            gStudioSet_Column1.Children.Add((new GridRow(1, new View[] { Chorus }, null, false, true, 18)));
-            gStudioSet_Column1.Children.Add((new GridRow(1, new View[] { Reverb }, null, false, true, 18)));
-            gStudioSet_Column1.Children.Add((new GridRow(1, new View[] { StudioSetMotionalSurround }, null, false, true, 15)));
-            gStudioSet_Column1.Children.Add((new GridRow(1, new View[] { StudioSetMasterEQ }, null, false, true, 7)));
+            GridRow.CreateRow(gStudioSet_Column1, 0, new View[] { cbColumn1Selector });
+            GridRow.CreateRow(gStudioSet_Column1, 1, new View[] { SystemCommonSettings }, null, 18);
+            GridRow.CreateRow(gStudioSet_Column1, 1, new View[] { VoiceReserve }, null, 18);
+            GridRow.CreateRow(gStudioSet_Column1, 1, new View[] { Chorus }, null, 18);
+            GridRow.CreateRow(gStudioSet_Column1, 1, new View[] { Reverb }, null, 18);
+            GridRow.CreateRow(gStudioSet_Column1, 1, new View[] { StudioSetMotionalSurround }, null, 15);
+            GridRow.CreateRow(gStudioSet_Column1, 1, new View[] { StudioSetMasterEQ }, null, 7);
             //GridRow.CreateRow(gStudioSet_Column1, 1, new View[] { SystemCommonSettings }, null, 18);
             //GridRow.CreateRow(gStudioSet_Column1, 1, new View[] { VoiceReserve }, null, 18);
             //GridRow.CreateRow(gStudioSet_Column1, 1, new View[] { Chorus }, null, 18);
@@ -2278,7 +2279,7 @@ namespace INTEGRA_7_Xamarin
             //GridRow.CreateRow(gStudioSet_Column1, 1, new View[] { StudioSetMotionalSurround }, null, 15);
             //GridRow.CreateRow(gStudioSet_Column1, 1, new View[] { StudioSetMasterEQ }, null, 7);
 
-            gEditStudioSetSearchResult.Children.Add((new GridRow(0, new View[] { lvSearchResults })));
+            GridRow.CreateRow(gEditStudioSetSearchResult, 0, new View[] { lvSearchResults });
 
             //Grid temp1 = new Grid();
             //Grid temp2 = new Grid();
@@ -2293,8 +2294,8 @@ namespace INTEGRA_7_Xamarin
             ////gEditStudioSetSearchResult.IsVisible = false;
             ////temp2.IsVisible = false;
 
-            grid_StudioSet_Column1.Children.Add((new GridRow(0, new View[] { gStudioSet_Column1 }, null, false, true, 19)));
-            grid_StudioSet_Column1.Children.Add((new GridRow(0, new View[] { gEditStudioSetSearchResult }, null, false, true, 19)));
+            GridRow.CreateRow(grid_StudioSet_Column1, 0, new View[] { gStudioSet_Column1 }, null, 19);
+            GridRow.CreateRow(grid_StudioSet_Column1, 0, new View[] { gEditStudioSetSearchResult }, null, 19);
             GridRow.CreateRow(grid_StudioSet_Column1, 0, new View[] { gStudioSet_Column1 }, null, 19);
             GridRow.CreateRow(grid_StudioSet_Column1, 0, new View[] { gEditStudioSetSearchResult }, null, 19);
 
@@ -2302,9 +2303,9 @@ namespace INTEGRA_7_Xamarin
             // Assemble column 2 
             //---------------------------------------------------------------------------------------
 
-            //grid_StudioSet_Column2.Children.Add((new GridRow(1, new View[] { grid_0712 })));
+            //grid_StudioSet_Column2.Children.Add((new GridRow(1, new View[] { grid_0712 })).Row);
             //gEditStudioSetColumn2.Children.Add((new GridRow(1, new View[] { grid_PartSelector, grid_PartSettings, grid_StudioSetPartSubSelector, StudioSetPartSettings1, StudioSetPartSettings2,
-            //    StudioSetPartKeyboard, StudioSetPartScaleTune, StudioSetPartMidi, StudioSetPartMotionalSurround, StudioSetPartEQ, Buttons })));
+            //    StudioSetPartKeyboard, StudioSetPartScaleTune, StudioSetPartMidi, StudioSetPartMotionalSurround, StudioSetPartEQ, Buttons })).Row);
 
             //---------------------------------------------------------------------------------------
             // Assemble StudioSetEditorStackLayout 
@@ -2330,7 +2331,7 @@ namespace INTEGRA_7_Xamarin
             grid_StudioSet_Column2_Container.Children.Add(grid_StudioSet_Column2);
             StudioSetEditor_StackLayout.Children.Add((new GridRow(0, new View[] {
                 grid_StudioSet_Column0_Container, grid_StudioSet_Column1_Container,
-                grid_StudioSet_Column2_Container }, null, true, false)));
+                grid_StudioSet_Column2_Container }, null, true, false)).Row);
 
             //StudioSetEditor_StackLayout.BackgroundColor = Color.Black;
             // Disable buttons:
@@ -8174,7 +8175,7 @@ namespace INTEGRA_7_Xamarin
         private void slStudioSetPartEffectsReverbSendLevel_ValueChanged(object sender, EventArgs e)
         {
             t.Trace("private void slStudioSetPartEffectsReverbSendLevel_ValueChanged (" + "object" + sender + ", " + "EventArgs" + e + ", " + ")");
-            if (initDone && handleControlEvents) // Gör färdig även denna!
+            if (initDone && handleControlEvents) // Gï¿½r fï¿½rdig ï¿½ven denna!
             {
                 SetStudioSetStudioSetPartEffectsReverbSendLevel((Int32)slStudioSetPartEffectsReverbSendLevel.Value, cbStudioSetPartSelector.SelectedIndex);
             }

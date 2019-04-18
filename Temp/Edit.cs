@@ -1,4 +1,5 @@
-﻿using System;
+// File: F:\Users\hbe_000\Projects\INTEGRA_7_Xamarin\INTEGRA_7_Xamarin\INTEGRA_7_Xamarin\Edit.cs
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -827,11 +828,7 @@ namespace INTEGRA_7_Xamarin
 
             EditTonesLeftColumnGrid.Children.Clear();
             GridRow.CreateRow(EditTonesLeftColumnGrid, 0, new View[] { cbEditTone_PartSelector, cbEditTone_SynthesizerType, tbEditTone_Instrument });
-
-            Grid.SetColumnSpan(gridSecondRow, 3);
             GridRow.CreateRow(EditTonesLeftColumnGrid, 1, new View[] { gridSecondRow });
-
-            Grid.SetColumnSpan(ControlsGrid, 3);
             GridRow.CreateRow(EditTonesLeftColumnGrid, 2, new View[] { ControlsGrid }, null, 15);
 
             // Assemle right column -----------------------------------------------------------------------
@@ -839,16 +836,16 @@ namespace INTEGRA_7_Xamarin
             Edit_RenderRightColumn(null);
 
             //EditTonesRightColumnGrid.Children.Clear();
-            //EditTonesRightColumnGrid.Children.Add((new GridRow(0, new View[] { tbEditToneChorusSendLevel, slEditToneChorusSendLevel }, new byte[] { 2, 3 }, false, false, 1)));
-            //EditTonesRightColumnGrid.Children.Add((new GridRow(1, new View[] { tbEditToneReverbSendLevel, slEditToneReverbSendLevel }, new byte[] { 2, 3 }, false, false, 1)));
-            //EditTonesRightColumnGrid.Children.Add((new GridRow(16, new View[] { btnEditTone_Play, btnEditTone_Reset, btnEditToneMainHelp, btnEditTone_Return })));
+            //EditTonesRightColumnGrid.Children.Add((new GridRow(0, new View[] { tbEditToneChorusSendLevel, slEditToneChorusSendLevel }, new byte[] { 2, 3 }, false, false, 1)).Row);
+            //EditTonesRightColumnGrid.Children.Add((new GridRow(1, new View[] { tbEditToneReverbSendLevel, slEditToneReverbSendLevel }, new byte[] { 2, 3 }, false, false, 1)).Row);
+            //EditTonesRightColumnGrid.Children.Add((new GridRow(16, new View[] { btnEditTone_Play, btnEditTone_Reset, btnEditToneMainHelp, btnEditTone_Return })).Row);
 
             // Assemle main layout ------------------------------------------------------------------------
 
             EditTonesGrid.Children.Clear();
             GridRow.CreateRow(EditTonesGrid, 0, new View[] { EditTonesLeftColumnGrid, EditTonesRightColumnGrid }, new byte[] { 3, 2 });
-            //EditTonesGrid.Children.Add((new GridRow(0, new View[] { EditTonesLeftColumnGrid })));
-            //EditTonesGrid.Children.Add((new GridRow(0, new View[] { EditTonesRightColumnGrid })));
+            //EditTonesGrid.Children.Add((new GridRow(0, new View[] { EditTonesLeftColumnGrid })).Row);
+            //EditTonesGrid.Children.Add((new GridRow(0, new View[] { EditTonesRightColumnGrid })).Row);
 
             // Create and asemble EditorStackLayout ------------------------------------------------------
 
@@ -857,7 +854,7 @@ namespace INTEGRA_7_Xamarin
             Edit_StackLayout = new StackLayout();
             Edit_StackLayout.BackgroundColor = colorSettings.Background;
             Edit_StackLayout.VerticalOptions = LayoutOptions.FillAndExpand;
-            Edit_StackLayout.Children.Add((new GridRow(0, new View[] { EditTonesGrid })));
+            Edit_StackLayout.Children.Add((new GridRow(0, new View[] { EditTonesGrid })).Row);
         }
 
 

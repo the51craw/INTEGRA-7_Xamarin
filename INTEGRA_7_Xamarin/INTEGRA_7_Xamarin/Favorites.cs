@@ -199,8 +199,8 @@ namespace INTEGRA_7_Xamarin
 
             // A grid for the left column:
             Favorites_grLeftColumn = new Grid();
-            Favorites_grLeftColumn.Children.Add(new GridRow(0, new View[] { Favorites_lblFolders }, null, false, false).Row);
-            Favorites_grLeftColumn.Children.Add(new GridRow(1, new View[] { Favorites_lvFolderList }, null, false, false).Row);
+            GridRow.CreateRow(Favorites_grLeftColumn, 0, new View[] {  Favorites_lblFolders });
+            GridRow.CreateRow(Favorites_grLeftColumn, 1, new View[] {  Favorites_lvFolderList });
 
             RowDefinitionCollection Favorites_rdcLeft = new RowDefinitionCollection();
             Favorites_rdcLeft.Add(new RowDefinition());
@@ -213,8 +213,8 @@ namespace INTEGRA_7_Xamarin
 
             // A grid for the middle column:
             Favorites_grMiddleColumn = new Grid();
-            Favorites_grMiddleColumn.Children.Add(new GridRow(0, new View[] { Favorites_lblFavorites }, null, false, false).Row);
-            Favorites_grMiddleColumn.Children.Add(new GridRow(1, new View[] { Favorites_lvFavoriteList }, null, false, false).Row);
+            GridRow.CreateRow(Favorites_grMiddleColumn, 0, new View[] {  Favorites_lblFavorites });
+            GridRow.CreateRow(Favorites_grMiddleColumn, 1, new View[] {  Favorites_lvFavoriteList });
 
             RowDefinitionCollection Favorites_rdcMiddle = new RowDefinitionCollection();
             Favorites_rdcMiddle.Add(new RowDefinition());
@@ -226,11 +226,11 @@ namespace INTEGRA_7_Xamarin
             Favorites_grMiddleColumn.RowDefinitions.Add(Favorites_rdcMiddle[1]);
 
             // Create the new folder grid:
-            gNewFolder.Children.Add(new GridRow(0, new View[] { Favorites_edNewFolderName }).Row);
-            //gNewFolder.Children.Add(new GridRow(1, new View[] { btnOk, null, btnNok }).Row);
-            //gNewFolder.Children.Add(new GridRow(1, new View[] { imgOk, Favorites_btnAddFolder, imgNok }).Row);
-            gNewFolder.Children.Add(new GridRow(1, new View[] { Favorites_btnAddFolder }).Row);
-            //gNewFolder.Children.Add(new GridRow(0, new View[] { Favorites_btnAddFolder }, null, false, false, 2).Row);
+            GridRow.CreateRow(gNewFolder, 0, new View[] {  Favorites_edNewFolderName });
+            //gNewFolder.Children.Add(new GridRow(1, new View[] { btnOk, null, btnNok }));
+            //gNewFolder.Children.Add(new GridRow(1, new View[] { imgOk, Favorites_btnAddFolder, imgNok }));
+            GridRow.CreateRow(gNewFolder, 1, new View[] {  Favorites_btnAddFolder });
+            //gNewFolder.Children.Add(new GridRow(0, new View[] { Favorites_btnAddFolder }, null, false, false, 2));
             Favorites_btnAddFolder.IsEnabled = false;
             Favorites_edNewFolderName.VerticalOptions = LayoutOptions.FillAndExpand;
             //Favorites_edNewFolderName.IsVisible = false;
@@ -266,28 +266,28 @@ namespace INTEGRA_7_Xamarin
                 Favorites_grRightColumn.RowDefinitions.Add(Favorites_rdcRight[i]);
             }
 
-            Favorites_grRightColumn.Children.Add(new GridRow(0, new View[] { gNewFolder }, null, false, false, 2).Row);
-            Favorites_grRightColumn.Children.Add(new GridRow(2, new View[] { Favorites_btnDeleteFolder }).Row);
-            Favorites_grRightColumn.Children.Add(new GridRow(3, new View[] { Favorites_tbHelp }, null, false, false).Row);
-            Favorites_grRightColumn.Children.Add(new GridRow(4, new View[] { Favorites_btnAddFavorite }).Row);
-            Favorites_grRightColumn.Children.Add(new GridRow(5, new View[] { Favorites_btnDeleteFavorite }).Row);
-            Favorites_grRightColumn.Children.Add(new GridRow(6, new View[] { Favorites_btnSelectFavorite }).Row);
-            Favorites_grRightColumn.Children.Add(new GridRow(7, new View[] { Favorites_btnPlay }).Row);
+            GridRow.CreateRow(Favorites_grRightColumn, 0, new View[] {  gNewFolder }, null,  2);
+            GridRow.CreateRow(Favorites_grRightColumn, 2, new View[] {  Favorites_btnDeleteFolder });
+            GridRow.CreateRow(Favorites_grRightColumn, 3, new View[] {  Favorites_tbHelp });
+            GridRow.CreateRow(Favorites_grRightColumn, 4, new View[] {  Favorites_btnAddFavorite });
+            GridRow.CreateRow(Favorites_grRightColumn, 5, new View[] {  Favorites_btnDeleteFavorite });
+            GridRow.CreateRow(Favorites_grRightColumn, 6, new View[] {  Favorites_btnSelectFavorite });
+            GridRow.CreateRow(Favorites_grRightColumn, 7, new View[] {  Favorites_btnPlay });
             if (appType == _appType.MacOS)
             {
-                Favorites_grRightColumn.Children.Add(new GridRow(8, new View[] { Favorites_btnReturn }).Row);
+                GridRow.CreateRow(Favorites_grRightColumn, 8, new View[] {  Favorites_btnReturn });
             }
             else
             {
-                Favorites_grRightColumn.Children.Add(new GridRow(8, new View[] { Favorites_btnBackup }).Row);
-                Favorites_grRightColumn.Children.Add(new GridRow(9, new View[] { Favorites_btnRestore }).Row);
-                Favorites_grRightColumn.Children.Add(new GridRow(10, new View[] { Favorites_btnReturn }).Row);
+                GridRow.CreateRow(Favorites_grRightColumn, 8, new View[] {  Favorites_btnBackup });
+                GridRow.CreateRow(Favorites_grRightColumn, 9, new View[] {  Favorites_btnRestore });
+                GridRow.CreateRow(Favorites_grRightColumn, 10, new View[] {  Favorites_btnReturn });
             }
 
             // Assemble FavoritesStackLayout --------------------------------------------------------------
 
             Favorites_StackLayout = new StackLayout();
-            Favorites_StackLayout.Children.Add((new GridRow(0, new View[] { Favorites_grLeftColumn, Favorites_grMiddleColumn, Favorites_grRightColumn })).Row);
+            Favorites_StackLayout.Children.Add((new GridRow(0, new View[] { Favorites_grLeftColumn, Favorites_grMiddleColumn, Favorites_grRightColumn })));
             Favorites_StackLayout.BackgroundColor = colorSettings.Background;
             Favorites_UpdateFoldersList();
 

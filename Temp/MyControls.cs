@@ -1,4 +1,5 @@
-﻿using System;
+// File: F:\Users\hbe_000\Projects\INTEGRA_7_Xamarin\INTEGRA_7_Xamarin\INTEGRA_7_Xamarin\MyControls.cs
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -85,7 +86,7 @@ namespace INTEGRA_7_Xamarin
             this.Label.BorderWidth = 0;
             this.Label.BackgroundColor = UIHandler.colorSettings.Background;
             this.Label.BorderWidth = 0;
-            this.Children.Add((new GridRow(0, new View[] { this.Label })));
+            GridRow.CreateRow(this, 0, new View[] { this.Label });
 
         }
     }
@@ -122,7 +123,11 @@ namespace INTEGRA_7_Xamarin
 
             CBLabel.BackgroundColor = UIHandler.colorSettings.Background;
             CBLabel.TextColor = UIHandler.colorSettings.Text;
-            Children.Add(new GridRow(0, new View[] { CBLabel, CBSwitch }));
+            GridRow.CreateRow(this, 0, new View[] { CBLabel, CBSwitch });
+            //SetColumn(CBLabel, 0);
+            //SetColumn(CBSwitch, 1);
+            //Children.Add(CBLabel);
+            //Children.Add(CBSwitch);
         }
 
         //public CheckBox(Grid g)
@@ -257,13 +262,13 @@ namespace INTEGRA_7_Xamarin
                 {
                     this.Label.HorizontalOptions = LayoutOptions.End;
                     this.text.HorizontalOptions = LayoutOptions.Start;
-                    this.Children.Add((new GridRow(0, new View[] { this.Label, this.text }, sizes, true)));
+                    GridRow.CreateRow(this, 0, new View[] { this.Label, this.text });
                 }
                 else
                 {
                     this.Label.HorizontalOptions = LayoutOptions.Start;
                     this.text.HorizontalOptions = LayoutOptions.End;
-                    this.Children.Add((new GridRow(0, new View[] { this.text, this.Label }, sizes, true)));
+                    GridRow.CreateRow(this, 0, new View[] { this.text, this.Label });
                 }
             }
             else
@@ -272,19 +277,19 @@ namespace INTEGRA_7_Xamarin
                 {
                     this.Label.HorizontalOptions = LayoutOptions.Start;
                     this.text.HorizontalOptions = LayoutOptions.End;
-                    this.Children.Add((new GridRow(0, new View[] { this.Label }, sizes, true)));
-                    this.Children.Add((new GridRow(1, new View[] { this.text }, sizes, true)));
+                    GridRow.CreateRow(this, 0, new View[] { this.Label });
+                    GridRow.CreateRow(this, 1, new View[] { this.text });
                 }
                 else
                 {
                     this.text.HorizontalOptions = LayoutOptions.Start;
                     this.Label.HorizontalOptions = LayoutOptions.End;
-                    this.Children.Add((new GridRow(0, new View[] { this.text }, sizes, true)));
-                    this.Children.Add((new GridRow(1, new View[] { this.Label }, sizes, true)));
+                    GridRow.CreateRow(this, 0, new View[] { this.text });
+                    GridRow.CreateRow(this, 1, new View[] { this.Label });
                 }
             }
-            this.Children[0].Margin = new Thickness(0);
-            text.Margin = new Thickness(0);
+            this.Children[0].Margin = new Thickness(0)
+;            text.Margin = new Thickness(0);
             Label.Margin = new Thickness(0);
         }
     }
@@ -348,12 +353,12 @@ namespace INTEGRA_7_Xamarin
                 if (LabelPosition == _labelPosition.BEFORE)
                 {
                     this.Label.HorizontalOptions = LayoutOptions.End;
-                    this.Children.Add((new GridRow(0, new View[] { this.Label, this.Picker }, sizes, true)));
+                    GridRow.CreateRow(this, 0, new View[] { this.Label, this.Picker });
                 }
                 else
                 {
                     this.Picker.HorizontalOptions = LayoutOptions.Start;
-                    this.Children.Add((new GridRow(0, new View[] { this.Picker, this.Label }, sizes, true)));
+                    GridRow.CreateRow(this, 0, new View[] { this.Picker, this.Label });
                 }
             }
             else
@@ -362,15 +367,15 @@ namespace INTEGRA_7_Xamarin
                 {
                     this.Label.HorizontalOptions = LayoutOptions.Start;
                     this.Picker.HorizontalOptions = LayoutOptions.End;
-                    this.Children.Add((new GridRow(0, new View[] { this.Label }, null, true)));
-                    this.Children.Add((new GridRow(1, new View[] { this.Picker }, null, true)));
+                    GridRow.CreateRow(this, 0, new View[] { this.Label });
+                    GridRow.CreateRow(this, 1, new View[] { this.Picker });
                 }
                 else
                 {
                     this.Label.HorizontalOptions = LayoutOptions.End;
                     this.Picker.HorizontalOptions = LayoutOptions.Start;
-                    this.Children.Add((new GridRow(0, new View[] { this.Picker }, null, true)));
-                    this.Children.Add((new GridRow(1, new View[] { this.Label }, null, true)));
+                    GridRow.CreateRow(this, 0, new View[] { this.Picker });
+                    GridRow.CreateRow(this, 1, new View[] { this.Label });
                 }
             }
             this.Picker.SelectedIndex = SelectedIndex;
@@ -442,13 +447,15 @@ namespace INTEGRA_7_Xamarin
                 if (LabelPosition == _labelPosition.BEFORE)
                 {
                     //LSLabel.HorizontalOptions = LayoutOptions.End;
-                    Children.Add((new GridRow(0, new View[] { LSLabel, this.LSSwitch }, sizes, false)));
+                    Children.Add((new GridRow(0, new View[] { LSLabel, this.LSSwitch }, sizes, false)).Row);
                 }
                 else
                 {
                     //this.LSSwitch.HorizontalOptions = LayoutOptions.Start;
-                    Children.Add((new GridRow(0, new View[] { this.LSSwitch, LSLabel }, sizes, false)));
+                    Children.Add((new GridRow(0, new View[] { this.LSSwitch, LSLabel }, sizes, false)).Row);
                 }
+                //this.LSLabel.VerticalOptions = LayoutOptions.Center;
+                //this.LSSwitch.VerticalOptions = LayoutOptions.Center;
             }
             else
             {
@@ -456,15 +463,15 @@ namespace INTEGRA_7_Xamarin
                 {
                     LSLabel.HorizontalOptions = LayoutOptions.Start;
                     this.LSSwitch.HorizontalOptions = LayoutOptions.End;
-                    Children.Add((new GridRow(0, new View[] { LSLabel }, null, false)));
-                    Children.Add((new GridRow(1, new View[] { this.LSSwitch }, null, false)));
+                    Children.Add((new GridRow(0, new View[] { LSLabel }, null, false)).Row);
+                    Children.Add((new GridRow(1, new View[] { this.LSSwitch }, null, false)).Row);
                 }
                 else
                 {
                     LSLabel.HorizontalOptions = LayoutOptions.End;
                     this.LSSwitch.HorizontalOptions = LayoutOptions.Start;
-                    Children.Add((new GridRow(0, new View[] { this.LSSwitch }, null, false)));
-                    Children.Add((new GridRow(1, new View[] { LSLabel }, null, false)));
+                    Children.Add((new GridRow(0, new View[] { this.LSSwitch }, null, false)).Row);
+                    Children.Add((new GridRow(1, new View[] { LSLabel }, null, false)).Row);
                 }
                 LSLabel.HorizontalOptions = LayoutOptions.Center;
                 LSLabel.Margin = new Thickness(0);
@@ -787,7 +794,8 @@ public class MotionalSurroundPartLabel : Button
             Editor.VerticalOptions = LayoutOptions.FillAndExpand;
             HorizontalOptions = LayoutOptions.FillAndExpand;
             VerticalOptions = LayoutOptions.FillAndExpand;
-            Children.Add(new GridRow(0, new View[] { Switch, Editor }, new byte[] { 2, 3 }));
+            GridRow.CreateRow(this, 0, new View[] { Switch, Editor }, new byte[] { 2, 3 });
+            //Children.Add(new GridRow(0, new View[] { Switch, Editor }, new byte[] { 2, 3 }).Row);
         }
     }
 }

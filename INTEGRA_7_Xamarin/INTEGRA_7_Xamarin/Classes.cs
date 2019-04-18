@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -8456,11 +8456,40 @@ private ParameterSets sets;
     /// <summary>
     /// XAML layout classes
     /// </summary>
-    class GridRow
+    class GridRow : Grid
     {
         HBTrace t = new HBTrace("class GridRow");
-        public Grid Row { get; set; }
+        //public Grid Row { get; set; }
         public Grid[] Columns { get; set; }
+
+        public static void CreateRow(INTEGRA_7_Xamarin.CheckBox grid, byte row, View[] controls, byte[] columnWidths = null, byte rowspan = 1)
+        {
+            if (columnWidths == null || columnWidths.Length != controls.Length)
+            {
+                columnWidths = new byte[controls.Length];
+                for (byte i = 0; i < controls.Length; i++)
+                {
+                    columnWidths[i] = 1;
+                }
+            }
+
+            grid.ColumnDefinitions = new ColumnDefinitionCollection();
+
+            for (byte i = 0; i < controls.Length; i++)
+            {
+                Grid.SetRow(controls[i], row);
+                Grid.SetRowSpan(controls[i], rowspan);
+                Grid.SetColumn(controls[i], i);
+                grid.ColumnDefinitions.Add(new ColumnDefinition());
+                grid.ColumnDefinitions[i].Width = new GridLength(columnWidths[i], GridUnitType.Star);
+                controls[i].Margin = new Thickness(2);
+            }
+
+            for (byte i = 0; i < controls.Length; i++)
+            {
+                grid.Children.Add(controls[i]);
+            }
+        }
 
         public static void CreateRow(Grid grid, byte row, View[] controls, byte[] columnWidths = null, byte rowspan = 1)
         {
@@ -8479,8 +8508,10 @@ private ParameterSets sets;
             {
                 Grid.SetRow(controls[i], row);
                 Grid.SetRowSpan(controls[i], rowspan);
+                Grid.SetColumn(controls[i], i);
                 grid.ColumnDefinitions.Add(new ColumnDefinition());
                 grid.ColumnDefinitions[i].Width = new GridLength(columnWidths[i], GridUnitType.Star);
+                controls[i].Margin = new Thickness(2);
             }
 
             for (byte i = 0; i < controls.Length; i++)
@@ -8494,21 +8525,21 @@ private ParameterSets sets;
             t.Trace("public GridRow ()");
             try
             {
-                Row = new Grid();
-                Grid.SetRow(Row, row);
-                Row.SetValue(Grid.HorizontalOptionsProperty, LayoutOptions.FillAndExpand);
-                Row.SetValue(Grid.VerticalOptionsProperty, LayoutOptions.FillAndExpand);
+                //Row = new Grid();
+                SetRow(this, row);
+                SetValue(Grid.HorizontalOptionsProperty, LayoutOptions.FillAndExpand);
+                SetValue(Grid.VerticalOptionsProperty, LayoutOptions.FillAndExpand);
                 //Row.SetValue(Grid.ColumnSpacingProperty, 0);
                 //Row.SetValue(Grid.RowSpacingProperty, 0);
                 //Row.SetValue(Grid.PaddingProperty, new Thickness(2));
-                Row.SetValue(Grid.MarginProperty, new Thickness(2));
-                Row.SetValue(Grid.MinimumHeightRequestProperty, UIHandler.minimumHeightRequest);
-                Row.SetValue(Grid.MinimumWidthRequestProperty, 1);
+                SetValue(Grid.MarginProperty, new Thickness(2));
+                SetValue(Grid.MinimumHeightRequestProperty, UIHandler.minimumHeightRequest);
+                SetValue(Grid.MinimumWidthRequestProperty, 1);
                 if (rowspan > 1)
                 {
-                    Grid.SetRowSpan(Row, rowspan);
+                    SetRowSpan(this, rowspan);
                 }
-                Row.ColumnDefinitions = new ColumnDefinitionCollection();
+                ColumnDefinitions = new ColumnDefinitionCollection();
                 ColumnDefinition[] columnDefinitions = new ColumnDefinition[controls.Length];
 
                 if (controls != null)
@@ -8521,15 +8552,15 @@ private ParameterSets sets;
                         {
                             controls[i].VerticalOptions = LayoutOptions.FillAndExpand;
                             controls[i].HorizontalOptions = LayoutOptions.FillAndExpand;
-                            Row.Children.Add(controls[i]);
+                            Children.Add(controls[i]);
                         }
                         catch (Exception e)
                         {
                             GC.Collect(10, GCCollectionMode.Forced);
-                            Row.Children.Add(Columns[i]);
+                            Children.Add(Columns[i]);
                         }
                         columnDefinitions[i] = new ColumnDefinition();
-                        Row.ColumnDefinitions.Add(columnDefinitions[i]);
+                        ColumnDefinitions.Add(columnDefinitions[i]);
                         if (columnWidths == null || columnWidths.Length < i - 1)
                         {
                             columnDefinitions[i].Width = new GridLength(1, GridUnitType.Star);

@@ -1,4 +1,5 @@
-﻿using System;
+// File: F:\Users\hbe_000\Projects\INTEGRA_7_Xamarin\INTEGRA_7_Xamarin\INTEGRA_7_Xamarin\PleaseWait.cs
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -116,11 +117,11 @@ namespace INTEGRA_7_Xamarin
             PleaseWait_StackLayout.IsVisible = false;
 
             // Assemble grids with controls ---------------------------------------------------------------
-            grid_PleaseWait.Children.Add(new GridRow(0, new View[] { tbPleaseWait }));
-            grid_PleaseWait.Children.Add(new GridRow(1, new View[] { pb_WaitingProgress }));
+            GridRow.CreateRow(grid_PleaseWait, 0, new View[] { tbPleaseWait });
+            GridRow.CreateRow(grid_PleaseWait, 1, new View[] { pb_WaitingProgress });
 
             // Assemble PleaseWait_StackLayout --------------------------------------------------------------
-            PleaseWait_StackLayout.Children.Add(new GridRow(0, new View[] { grid_PleaseWait }));
+            PleaseWait_StackLayout.Children.Add(new GridRow(0, new View[] { grid_PleaseWait }).Row);
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
