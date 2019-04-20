@@ -287,6 +287,8 @@ namespace INTEGRA_7_Xamarin
             // Assemble FavoritesStackLayout --------------------------------------------------------------
 
             Favorites_StackLayout = new StackLayout();
+            Favorites_StackLayout.HorizontalOptions = LayoutOptions.FillAndExpand;
+            Favorites_StackLayout.VerticalOptions = LayoutOptions.FillAndExpand;
             Favorites_StackLayout.Children.Add((new GridRow(0, new View[] { Favorites_grLeftColumn, Favorites_grMiddleColumn, Favorites_grRightColumn })));
             Favorites_StackLayout.BackgroundColor = colorSettings.Background;
             Favorites_UpdateFoldersList();

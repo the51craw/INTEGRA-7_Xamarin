@@ -90,13 +90,13 @@ namespace INTEGRA_7_Xamarin
         }
     }
 
-    public class TextBox: Editor
+    public class TextBox : Editor
     {
         public Object Tag { get; set; }
         public String Name { get; set; }
-        Editor _editor = new Editor();
+        //public Editor Editor = new Editor();
 
-        public new Boolean IsEnabled { get { return _editor.IsEnabled; } set { _editor.IsEnabled = value; } }
+        //public new Boolean IsEnabled { get { return Editor.IsEnabled; } set { Editor.IsEnabled = value; } }
     }
 
     public class CheckBox : Xamarin.Forms.Grid
@@ -536,7 +536,23 @@ namespace INTEGRA_7_Xamarin
 
     public partial class Picker : Xamarin.Forms.Picker
     {
+        //public Color TextColor { get; set; }
 
+        //protected override void OnElementChanged(ElementChangedEventArgs<Xamarin.Forms.Picker> e)
+        //{
+        //    base.OnElementChanged(e);
+
+        //    this.Control.TextAlignment = MonoTouch.UIKit.UITextAlignment.Center;
+
+        //    this.Control.TextColor = UIColor.White;
+
+        //    this.Control.BackgroundColor = UIColor.Clear;
+        //    this.Control.BorderStyle = UITextBorderStyle.RoundedRect;
+        //    this.Layer.BorderWidth = 1.0f;
+        //    this.Layer.CornerRadius = 4.0f;
+        //    this.Layer.MasksToBounds = true;
+        //    this.Layer.BorderColor = UIColor.White.CGColor;
+        //}
     }
 
     public class TaggedGrid : Xamarin.Forms.Grid

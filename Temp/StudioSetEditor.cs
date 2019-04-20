@@ -2294,8 +2294,8 @@ namespace INTEGRA_7_Xamarin
             ////gEditStudioSetSearchResult.IsVisible = false;
             ////temp2.IsVisible = false;
 
-            GridRow.CreateRow(grid_StudioSet_Column1, 0, new View[] { gStudioSet_Column1 }, null, 19);
-            GridRow.CreateRow(grid_StudioSet_Column1, 0, new View[] { gEditStudioSetSearchResult }, null, 19);
+            //grid_StudioSet_Column1.Children.Add((new GridRow(0, new View[] { gStudioSet_Column1 }, null, false, true, 19)));
+            //grid_StudioSet_Column1.Children.Add((new GridRow(0, new View[] { gEditStudioSetSearchResult }, null, false, true, 19)));
             GridRow.CreateRow(grid_StudioSet_Column1, 0, new View[] { gStudioSet_Column1 }, null, 19);
             GridRow.CreateRow(grid_StudioSet_Column1, 0, new View[] { gEditStudioSetSearchResult }, null, 19);
 

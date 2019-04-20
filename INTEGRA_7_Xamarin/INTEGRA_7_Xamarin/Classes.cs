@@ -8348,7 +8348,7 @@ private ParameterSets sets;
     {
         LIGHT,
         DARK,
-        USER,
+        //USER,
     }
 
     public class ColorSettings
@@ -8363,7 +8363,7 @@ private ParameterSets sets;
         public Color BlackPianoKey { get; set; }
         public Color WhitePianoKeyText { get; set; }
         public Color BlackPianoKeyText { get; set; }
-        public Color PianoKeyCover { get; set; }
+        public Color Progressbar { get; set; }
         public Color MotionalSurroundPartLabelText { get; set; }
         public Color MotionalSurroundPartLabelFocused { get; set; }
         public Color MotionalSurroundPartLabelUnfocused { get; set; }
@@ -8378,7 +8378,7 @@ private ParameterSets sets;
             {
                 case _colorSettings.LIGHT:
                     ControlBorder = Color.Black;
-                    FrameBorder = Color.Black;
+                    FrameBorder = new Color(0.8, 0.8, 0.8, 1);
                     Background = Color.White;
                     Text = Color.Black;
                     ListViewTextColor.SetValue(TextCell.TextColorProperty, new Color(0, 0, 0, 1));
@@ -8388,15 +8388,15 @@ private ParameterSets sets;
                     BlackPianoKey = Color.Black;
                     WhitePianoKeyText = Color.Black;
                     BlackPianoKeyText = Color.FloralWhite;
-                    PianoKeyCover = Color.DarkGreen;
+                    Progressbar = Color.DarkGreen;
                     MotionalSurroundPartLabelText = new Color(1, 1, 0.5, 1);
                     MotionalSurroundPartLabelFocused = new Color(0, 0.5, 0, 0.25);
                     MotionalSurroundPartLabelUnfocused = new Color(0.5, 0.5, 0, 0.25);
                     break;
                 case _colorSettings.DARK:
                     ControlBorder = new Color(1, 1, 1, 1);
-                    FrameBorder = new Color(0.5, 0.5, 0.5, 1);
-                    Background = new Color(0, 0, 0, 1);
+                    FrameBorder = new Color(0.2, 0.2, 0.2, 1);
+                    Background = new Color(0.15, 0.15, 0.15, 1);
                     Text = new Color(1, 1, 0.5, 1);
                     ListViewTextColor.SetValue(TextCell.TextColorProperty, new Color(0.5, 1, 1, 1));
                     IsFavorite = Color.DarkGreen;
@@ -8405,24 +8405,7 @@ private ParameterSets sets;
                     BlackPianoKey = new Color(0.35, 0.1, 0, 1);
                     WhitePianoKeyText = new Color(1, 1, 0.5, 1);
                     BlackPianoKeyText = Color.FloralWhite;
-                    PianoKeyCover = Color.DarkOrange;
-                    MotionalSurroundPartLabelText = new Color(1, 1, 0.5, 1);
-                    MotionalSurroundPartLabelFocused = new Color(0, 0.5, 0, 0.25);
-                    MotionalSurroundPartLabelUnfocused = new Color(0.5, 0.5, 0, 0.25);
-                    break;
-                case _colorSettings.USER:
-                    ControlBorder = Color.ForestGreen;
-                    FrameBorder = Color.ForestGreen;
-                    Background = Color.LightGreen;
-                    Text = Color.White;
-                    ListViewTextColor.SetValue(TextCell.TextColorProperty, new Color(0.5, 0.1, 0, 1));
-                    IsFavorite = Color.LightGreen;
-                    Transparent = new Color(0, 0, 0, 0);
-                    WhitePianoKey = Color.FloralWhite;
-                    BlackPianoKey = Color.Black;
-                    WhitePianoKeyText = Color.Black;
-                    BlackPianoKeyText = Color.FloralWhite;
-                    PianoKeyCover = Color.DarkOrange;
+                    Progressbar = Color.DarkOrange;
                     MotionalSurroundPartLabelText = new Color(1, 1, 0.5, 1);
                     MotionalSurroundPartLabelFocused = new Color(0, 0.5, 0, 0.25);
                     MotionalSurroundPartLabelUnfocused = new Color(0.5, 0.5, 0, 0.25);
@@ -8446,7 +8429,7 @@ private ParameterSets sets;
             BlackPianoKey = colorSettings.BlackPianoKey;
             WhitePianoKeyText = colorSettings.WhitePianoKeyText;
             BlackPianoKeyText = colorSettings.BlackPianoKeyText;
-            PianoKeyCover = colorSettings.PianoKeyCover;
+            Progressbar = colorSettings.Progressbar;
             MotionalSurroundPartLabelText = colorSettings.MotionalSurroundPartLabelText;
             MotionalSurroundPartLabelFocused = colorSettings.MotionalSurroundPartLabelFocused;
             MotionalSurroundPartLabelUnfocused = colorSettings.MotionalSurroundPartLabelUnfocused;

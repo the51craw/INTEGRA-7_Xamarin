@@ -21,7 +21,7 @@ Some edit controls are too high.
 
 * Edit SN-D crashes in UpdateSuperNaturalDrumKitKeySelector().
 
-Fix the store images.
+* Fix the store images.
 
 // Implement a close function in all device-dependent project, empty for tablets but closes apps for desktops.
 	// Use when vender driver is detected. No!
@@ -108,9 +108,9 @@ Continue on the Studio set editor.
 			* All sliders has the int problem.
 			* Switch is missing.
 
-Test these now that they exist:
+* Test these now that they exist:
 * There is no return button in studio set editor!
-Save/SaveFile/LoadFile buttons missing
+* Save/SaveFile/LoadFile buttons missing
 	Save and SaveFile are ok. LoadFile not yet fully implemented (see 6 lines below)
 * Save slot selector is missing
 * Save slot name input field s missing
@@ -131,7 +131,7 @@ Add saving/loading settings in xml files (for all platforms!)
 
 * Studio set part selector returns to part 1 when other is selected!
 
-When selecting studio set editor after startup, and then return to librarian, 
+* When selecting studio set editor after startup, and then return to librarian, 
 	motional surround is not fully read in. It is read in only when:
 	1) Motional surround is selected before studio set editor after startup.
 	2) Studio set editor is selected after startup and part subpage motional
@@ -140,7 +140,7 @@ When selecting studio set editor after startup, and then return to librarian,
 
 * Maybe add a switch for turning motional surround on/off?
 
-Debug session is sometimes not closed after closing main window!
+* Debug session is sometimes not closed after closing main window!
 	This was 'always' until I added a way to avoid initializing MIDI more than
 	once, and get more than one input and/or one output device. Those were
 	not terminated, and the app never stopped running. This also caused
@@ -183,7 +183,7 @@ Debug session is sometimes not closed after closing main window!
 * Try to remove the space between that sometime occurs images in Motional surround.
 	They are now overlapping, which means that this must be tested on all platforms!
 
-Changing studio set from librarian does not update what is seen in motional surround and edit studio set.
+* Changing studio set from librarian does not update what is seen in motional surround and edit studio set.
 	Always read studio set (but not names if already read) when entering motional surround.
 	Always read studio set (but not names if already read) when entering edit studio set.
 
@@ -199,9 +199,9 @@ Changing sub-pages in tone edit creates all controls everytime. Why not keep the
 
 * Motional Surround switch is not initially set as in I-7.
 
-Remove padding from buttons.
+* Remove padding from buttons.
 
-Edit uses text input as labels, can that be replaced with labels?
+* Edit uses text input as labels, can that be replaced with labels?
 
 Help column in Edit uses too much vertical space with two images,
 	Example, edit a SN-S tone and select Unison Size. 
@@ -213,17 +213,30 @@ Help column in Edit uses too much vertical space with two images,
 
 * Save color preferences.
 
-Add Motional surround labels in Settings page.
+* Add Motional surround labels in Settings page.
 
 Change logo images to higher resolution.
 
-Colorsettings does not work if more than one View is added to the same GridRow!
+* Colorsettings does not work if more than one View is added to the same GridRow!
 
-I will now pause colorsettings and temporarily remove the settings button since
+* I will now pause colorsettings and temporarily remove the settings button since
 	this seems to be rather complex and holds the project that is almost
 	ready for beta test and test on other platforms.
 
-Thought I had fixed the color problem, but no. Anyway, reintroduced color
+* Thought I had fixed the color problem, but no. Anyway, reintroduced color
 	settings but do not use them for the editors.
 
-Restore custom edit colors restores some old colors.
+* Restore custom edit colors restores some old colors.
+
+* Librarian -> Studio set editor -> Librarian -> settings -> librarian -> studio set editor
+	Stops with a white screen.
+
+Fix margins.
+
+* Adjust default margin colors to be closer to background colors.
+
+* Remove default user scheme.
+
+* Change 'Piano key cover color' to 'progress bar color'
+
+Se if progress bar can be better.

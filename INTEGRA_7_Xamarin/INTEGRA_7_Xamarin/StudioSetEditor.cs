@@ -91,7 +91,7 @@ namespace INTEGRA_7_Xamarin
                                               // two subgrids, gStudioSet_Column1 and
                                               // gEditStudioSetSearchResult, one visible
                                               // at each time depending on search mode
-        Grid grid_StudioSet_Column2;
+        public Grid grid_StudioSet_Column2;
 
         //---------------------------------------------------------------------------------------
         // Column 0 
@@ -618,9 +618,9 @@ namespace INTEGRA_7_Xamarin
                 setVisibility = true;
                 needsToSetFontSizes = NeedsToSetFontSizes.EDIT_STUDIO_SET;
             }
-            //SetStackLayoutColors(StudioSetEditor_StackLayout);
+            SetStackLayoutColors(StudioSetEditor_StackLayout);
             needsToUpdateControls = true;
-            StudioSetEditor_StackLayout.IsVisible = false;
+            StudioSetEditor_StackLayout.IsVisible = true;
         }
 
         /*
@@ -2081,9 +2081,9 @@ namespace INTEGRA_7_Xamarin
             ChorusGM2Chorus.Children.Add((new GridRow(5, new View[] { tbChorusGM2ChorusDepth, slChorusGM2ChorusDepth })));
             ChorusGM2Chorus.Children.Add((new GridRow(6, new View[] { tbChorusGM2ChorusSendLevelToReverb, slChorusGM2ChorusSendLevelToReverb })));
             // Assemble chorus subpages
-            Chorus.Children.Add((new GridRow(4, new View[] { ChorusChorus }, null, false, true, 9)));
-            Chorus.Children.Add((new GridRow(4, new View[] { ChorusDelay }, null, false, true, 14)));
-            Chorus.Children.Add((new GridRow(4, new View[] { ChorusGM2Chorus }, null, false, true, 7)));
+            GridRow.CreateRow(Chorus, 4, new View[] { ChorusChorus }, null, 9);
+            GridRow.CreateRow(Chorus, 4, new View[] { ChorusDelay }, null, 14);
+            GridRow.CreateRow(Chorus, 4, new View[] { ChorusGM2Chorus }, null, 7);
 
             // Reverb
             Reverb.Children.Add((new GridRow(0, new View[] { tbStudioSetReverbType, cbStudioSetReverbType }, new byte[] { 2, 3 })));
@@ -2102,8 +2102,8 @@ namespace INTEGRA_7_Xamarin
             StudioSetReverbGM2.Children.Add((new GridRow(0, new View[] { tbStudioSetReverbGM2Character, slStudioSetReverbGM2Character }, new byte[] { 1, 2 })));
             StudioSetReverbGM2.Children.Add((new GridRow(1, new View[] { tbStudioSetReverbGM2Time, slStudioSetReverbGM2Time }, new byte[] { 1, 2 })));
             // Add the sub-pages
-            Reverb.Children.Add((new GridRow(3, new View[] { StudioSetReverbReverb }, null, false, true, 8)));
-            Reverb.Children.Add((new GridRow(3, new View[] { StudioSetReverbGM2 }, null, false, true, 2)));
+            GridRow.CreateRow(Reverb, 3, new View[] { StudioSetReverbReverb }, null, 8);
+            GridRow.CreateRow(Reverb, 3, new View[] { StudioSetReverbGM2 }, null, 2);
 
             // Motional surround
 
@@ -2141,14 +2141,14 @@ namespace INTEGRA_7_Xamarin
             grid_StudioSet_Column2.Children.Add((new GridRow(3, new View[] { grid_PartSettings }, null, false, true, 14)));
             grid_StudioSet_Column2.Children.Add((new GridRow(17, new View[] { grid_Buttons }, null, false, true, 2)));
 
-            grid_PartSettings.Children.Add((new GridRow(0, new View[] { StudioSetPartSettings1 }, null, false, true, 14)));
-            grid_PartSettings.Children.Add((new GridRow(0, new View[] { StudioSetPartSettings2 }, null, false, true, 8)));
-            grid_PartSettings.Children.Add((new GridRow(0, new View[] { StudioSetPartEffects }, null, false, true, 3)));
-            grid_PartSettings.Children.Add((new GridRow(0, new View[] { StudioSetPartKeyboard }, null, false, true, 10)));
-            grid_PartSettings.Children.Add((new GridRow(0, new View[] { StudioSetPartScaleTune }, null, false, true, 14)));
-            grid_PartSettings.Children.Add((new GridRow(0, new View[] { StudioSetPartMidi }, null, false, true, 14)));
-            grid_PartSettings.Children.Add((new GridRow(0, new View[] { StudioSetPartMotionalSurround }, null, false, true, 4)));
-            grid_PartSettings.Children.Add((new GridRow(0, new View[] { StudioSetPartEQ }, null, false, true, 8)));
+            GridRow.CreateRow(grid_PartSettings, 0, new View[] { StudioSetPartSettings1 }, null, 14);
+            GridRow.CreateRow(grid_PartSettings, 0, new View[] { StudioSetPartSettings2 }, null, 8);
+            GridRow.CreateRow(grid_PartSettings, 0, new View[] { StudioSetPartEffects }, null, 3);
+            GridRow.CreateRow(grid_PartSettings, 0, new View[] { StudioSetPartKeyboard }, null, 10);
+            GridRow.CreateRow(grid_PartSettings, 0, new View[] { StudioSetPartScaleTune }, null, 14);
+            GridRow.CreateRow(grid_PartSettings, 0, new View[] { StudioSetPartMidi }, null, 14);
+            GridRow.CreateRow(grid_PartSettings, 0, new View[] { StudioSetPartMotionalSurround }, null, 4);
+            GridRow.CreateRow(grid_PartSettings, 0, new View[] { StudioSetPartEQ }, null, 8);
 
             StudioSetPartSettings1.Children.Add((new GridRow(0, new View[] { cbStudioSetPartSettings1Receive, cbStudioSetPartSettings1ReceiveChannel })));
             StudioSetPartSettings1.Children.Add((new GridRow(1, new View[] { tbStudioSetPartSettings1Group, cbStudioSetPartSettings1Group })));
@@ -2264,13 +2264,13 @@ namespace INTEGRA_7_Xamarin
             // Assemble column 1 
             //---------------------------------------------------------------------------------------
 
-            gStudioSet_Column1.Children.Add((new GridRow(0, new View[] { cbColumn1Selector })));
-            gStudioSet_Column1.Children.Add((new GridRow(1, new View[] { SystemCommonSettings }, null, false, true, 18)));
-            gStudioSet_Column1.Children.Add((new GridRow(1, new View[] { VoiceReserve }, null, false, true, 18)));
-            gStudioSet_Column1.Children.Add((new GridRow(1, new View[] { Chorus }, null, false, true, 18)));
-            gStudioSet_Column1.Children.Add((new GridRow(1, new View[] { Reverb }, null, false, true, 18)));
-            gStudioSet_Column1.Children.Add((new GridRow(1, new View[] { StudioSetMotionalSurround }, null, false, true, 15)));
-            gStudioSet_Column1.Children.Add((new GridRow(1, new View[] { StudioSetMasterEQ }, null, false, true, 7)));
+            GridRow.CreateRow(gStudioSet_Column1, 0, new View[] { cbColumn1Selector });
+            GridRow.CreateRow(gStudioSet_Column1, 1, new View[] { SystemCommonSettings }, null, 18);
+            GridRow.CreateRow(gStudioSet_Column1, 1, new View[] { VoiceReserve }, null, 18);
+            GridRow.CreateRow(gStudioSet_Column1, 1, new View[] { Chorus }, null, 18);
+            GridRow.CreateRow(gStudioSet_Column1, 1, new View[] { Reverb }, null, 18);
+            GridRow.CreateRow(gStudioSet_Column1, 1, new View[] { StudioSetMotionalSurround }, null, 15);
+            GridRow.CreateRow(gStudioSet_Column1, 1, new View[] { StudioSetMasterEQ }, null, 7);
             //GridRow.CreateRow(gStudioSet_Column1, 1, new View[] { SystemCommonSettings }, null, 18);
             //GridRow.CreateRow(gStudioSet_Column1, 1, new View[] { VoiceReserve }, null, 18);
             //GridRow.CreateRow(gStudioSet_Column1, 1, new View[] { Chorus }, null, 18);
@@ -2278,7 +2278,7 @@ namespace INTEGRA_7_Xamarin
             //GridRow.CreateRow(gStudioSet_Column1, 1, new View[] { StudioSetMotionalSurround }, null, 15);
             //GridRow.CreateRow(gStudioSet_Column1, 1, new View[] { StudioSetMasterEQ }, null, 7);
 
-            gEditStudioSetSearchResult.Children.Add((new GridRow(0, new View[] { lvSearchResults })));
+            GridRow.CreateRow(gEditStudioSetSearchResult, 0, new View[] { lvSearchResults });
 
             //Grid temp1 = new Grid();
             //Grid temp2 = new Grid();
@@ -2293,8 +2293,8 @@ namespace INTEGRA_7_Xamarin
             ////gEditStudioSetSearchResult.IsVisible = false;
             ////temp2.IsVisible = false;
 
-            grid_StudioSet_Column1.Children.Add((new GridRow(0, new View[] { gStudioSet_Column1 }, null, false, true, 19)));
-            grid_StudioSet_Column1.Children.Add((new GridRow(0, new View[] { gEditStudioSetSearchResult }, null, false, true, 19)));
+            //grid_StudioSet_Column1.Children.Add((new GridRow(0, new View[] { gStudioSet_Column1 }, null, false, true, 19)));
+            //grid_StudioSet_Column1.Children.Add((new GridRow(0, new View[] { gEditStudioSetSearchResult }, null, false, true, 19)));
             GridRow.CreateRow(grid_StudioSet_Column1, 0, new View[] { gStudioSet_Column1 }, null, 19);
             GridRow.CreateRow(grid_StudioSet_Column1, 0, new View[] { gEditStudioSetSearchResult }, null, 19);
 
@@ -2311,6 +2311,8 @@ namespace INTEGRA_7_Xamarin
             //---------------------------------------------------------------------------------------
 
             StudioSetEditor_StackLayout = new StackLayout();
+            StudioSetEditor_StackLayout.HorizontalOptions = LayoutOptions.FillAndExpand;
+            StudioSetEditor_StackLayout.VerticalOptions = LayoutOptions.FillAndExpand;
             // put the 3 columns together. The column gEditStudioSetSearchResult will replace gEditStudioSetColumn1 in StudioSetEditor_StackLayout.Children[1]
             // when searching is active, and gEditStudioSetColumn1 will be put back when seach ends.
             grid_StudioSet_Column0_Container = new Grid();
@@ -2323,8 +2325,8 @@ namespace INTEGRA_7_Xamarin
             grid_StudioSet_Column1.BackgroundColor = colorSettings.Background;
             grid_StudioSet_Column2.BackgroundColor = colorSettings.Background;
             grid_StudioSet_Column0.Margin = new Thickness(2, 2, 2, 2);
-            grid_StudioSet_Column1.Margin = new Thickness(2, 2, 2, 2);
-            grid_StudioSet_Column2.Margin = new Thickness(2, 2, 2, 2);
+            grid_StudioSet_Column1.Margin = new Thickness(2, 2, 0, 2);
+            grid_StudioSet_Column2.Margin = new Thickness(2, 2, 0, 2);
             grid_StudioSet_Column0_Container.Children.Add(grid_StudioSet_Column0);
             grid_StudioSet_Column1_Container.Children.Add(grid_StudioSet_Column1);
             grid_StudioSet_Column2_Container.Children.Add(grid_StudioSet_Column2);

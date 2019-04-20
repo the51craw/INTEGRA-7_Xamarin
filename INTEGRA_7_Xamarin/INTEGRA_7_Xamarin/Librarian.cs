@@ -36,11 +36,6 @@ namespace INTEGRA_7_Xamarin
 
         Dictionary<String, String> localSettings = new Dictionary<String, String>();
 
-        // Please Wait controls:
-        public Grid grid_PleaseWait;
-        public ProgressBar pb_WaitingProgress;
-        public TextBlock tbPleaseWait;
-
         // Librarian controls:
         //public Picker Librarian_midiOutputDevice { get; set; }
         //public Picker Librarian_midiInputDevice { get; set; }
@@ -270,53 +265,25 @@ namespace INTEGRA_7_Xamarin
                 mainPage.SaveLocalValue("PutBankInClipboard", false);
                 putBankInClipboard = false;
             }
-            //if (mainPage.LoadLocalValue("ColorSettings") != null)
-            //{
-            //    try
-            //    {
-            //        switch ((String)mainPage.LoadLocalValue("ColorSettings"))
-            //        {
-            //            case "LIGHT":
-            //                colorSettings = new ColorSettings(_colorSettings.LIGHT);
-            //                break;
-            //            case "DARK":
-            //                colorSettings = new ColorSettings(_colorSettings.DARK);
-            //                break;
-            //            case "USER":
-            //                colorSettings = new ColorSettings(_colorSettings.USER);
-            //                break;
-            //        }
-            //    }
-            //    catch
-            //    {
-            //        mainPage.SaveLocalValue("ColorSettings", _colorSettings.LIGHT.ToString());
-            //        colorSettings = new ColorSettings(_colorSettings.LIGHT);
-            //    }
-            //}
-            //else
-            //{
-            //    mainPage.SaveLocalValue("ColorSettings", _colorSettings.LIGHT.ToString());
-            //    colorSettings = new ColorSettings(_colorSettings.LIGHT);
-            //}
-
-            //Settings_ReadColorSettings();
+            Settings_ReadUserColorSettings();
+            switch (CurrentColorScheme)
+            {
+                case 0:
+                    colorSettings = new ColorSettings(_colorSettings.LIGHT);
+                    break;
+                case 1:
+                    colorSettings = new ColorSettings(_colorSettings.DARK);
+                    break;
+                case 2:
+                    colorSettings = Settings_UserColorSettings;
+                    break;
+            }
+            SetStackLayoutColors(Librarian_StackLayout);
         }
-
-        //private void SaveSettings()
-        //{
-        //    Settings.GeneralSettings = "";
-        //    foreach (KeyValuePair<String, String> kvp in localSettings)
-        //    {
-        //        Settings.GeneralSettings += kvp.Key + "|" + kvp.Value + "GridRow(";
-        //        Settings.GeneralSettings.TrimEnd('GridRow(');
-        //    }
-        //}
 
         public void DrawLibrarianPage()
         {
             HBTrace t = new HBTrace("DrawLibrarianPage");
-            //x = -1;
-            //y = -1;
 
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Librarian 
@@ -535,7 +502,7 @@ namespace INTEGRA_7_Xamarin
             Grid.SetRowSpan(cover, 22 * 16);
             Grid.SetColumn(cover, 0);
             cover.Tag = "PianoKeyCover";
-            cover.BackgroundColor = colorSettings.PianoKeyCover;
+            cover.BackgroundColor = colorSettings.Progressbar;
             Librarian_gridKeyboard.Children.Add(cover);
 
             // Add the buttons
@@ -1720,7 +1687,6 @@ namespace INTEGRA_7_Xamarin
             {
                 // If studio set editor is created, studio set and studio set must already
                 // have been read, and it is only to go there:
-                currentPage = CurrentPage.EDIT_STUDIO_SET;
                 //QueryCurrentStudioSetNumber(false);
                 ShowStudioSetEditorPage();
                 //StudioSetEditor_StackLayout.IsVisible = true;

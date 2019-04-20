@@ -73,32 +73,9 @@ namespace INTEGRA_7_Xamarin
                 PopHandleControlEvents();
                 needsToSetFontSizes = NeedsToSetFontSizes.MOTIONAL_SURROUND;
             }
+            SetStackLayoutColors(MotionalSurround_StackLayout);
             MotionalSurround_StackLayout.IsVisible = true;
             motionalSurroundInitializationState = MotionalSurroundInitializationState.INITIALIZING;
-            //if (commonState.StudioSet.PartMotionalSurround != null
-            //    && commonState.StudioSet.PartMotionalSurround[0] != null
-            //    && commonState.StudioSet.PartMotionalSurround[1] != null
-            //    && commonState.StudioSet.PartMotionalSurround[2] != null
-            //    && commonState.StudioSet.PartMotionalSurround[3] != null
-            //    && commonState.StudioSet.PartMotionalSurround[4] != null
-            //    && commonState.StudioSet.PartMotionalSurround[5] != null
-            //    && commonState.StudioSet.PartMotionalSurround[6] != null
-            //    && commonState.StudioSet.PartMotionalSurround[7] != null
-            //    && commonState.StudioSet.PartMotionalSurround[8] != null
-            //    && commonState.StudioSet.PartMotionalSurround[9] != null
-            //    && commonState.StudioSet.PartMotionalSurround[10] != null
-            //    && commonState.StudioSet.PartMotionalSurround[11] != null
-            //    && commonState.StudioSet.PartMotionalSurround[12] != null
-            //    && commonState.StudioSet.PartMotionalSurround[13] != null
-            //    && commonState.StudioSet.PartMotionalSurround[14] != null
-            //    && commonState.StudioSet.PartMotionalSurround[15] != null
-            //    && commonState.StudioSet.MotionalSurround != null)
-            {
-                // Studio set might have been changed, so classes has other data, tell TimerTick to update controls:
-                //motionalSurroundInitializationState = MotionalSurroundInitializationState.INITIALIZING;
-                //commonState.StudioSet = new StudioSet();
-                //QueryStudioSetMotionalSurround(); // This will be caught in MotionalSurround_MidiInPort_MessageReceived()
-            }
         }
 
         public void DrawMotinalSurroundPage()
@@ -358,6 +335,8 @@ namespace INTEGRA_7_Xamarin
             gParts.Children.Add(new GridRow(17, new View[] { cbMotionalSurroundSwitch, btnMotionalSurroundReturn }));
 
             MotionalSurround_StackLayout = new StackLayout();
+            MotionalSurround_StackLayout.HorizontalOptions = LayoutOptions.FillAndExpand;
+            MotionalSurround_StackLayout.VerticalOptions = LayoutOptions.FillAndExpand;
             MotionalSurround_StackLayout.Children.Add(new GridRow(0, new View[] { gArrows, gParts }, new byte[] { 5, 3 }));
         }
 

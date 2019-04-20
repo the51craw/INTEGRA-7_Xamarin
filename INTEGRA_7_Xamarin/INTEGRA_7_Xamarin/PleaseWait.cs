@@ -35,7 +35,13 @@ namespace INTEGRA_7_Xamarin
 
     public partial class UIHandler
     {
-        //public ProgressBar ProgressBar { get; set; }
+
+        // Please Wait controls:
+        public Grid grid_PleaseWait;
+        public Grid grid_PleaseWaitTop;
+        public Grid grid_PleaseWaitBottom;
+        public ProgressBar pb_WaitingProgress;
+        public Button btnPleaseWait;
 
         private WaitingFor waitingFor;
         private WaitingState waitingState;
@@ -63,10 +69,13 @@ namespace INTEGRA_7_Xamarin
                 mainStackLayout.Children.Add(PleaseWait_StackLayout);
                 PleaseWait_IsCreated = true;
             }
+            SetStackLayoutColors(PleaseWait_StackLayout);
             PleaseWait_StackLayout.IsVisible = true;
             this.waitingFor = waitingFor;
             waitingState = WaitingState.INITIALIZING;
             uiAction = UIAction.NONE;
+            grid_PleaseWaitTop.BackgroundColor = colorSettings.Background;
+            grid_PleaseWaitBottom.BackgroundColor = colorSettings.Background;
             PleaseWait_Init();
             //this.o = o;
         }
@@ -77,27 +86,27 @@ namespace INTEGRA_7_Xamarin
             {
                 case WaitingFor.MIDI:
                     waitCount = 15;
-                    tbPleaseWait.Text = "Please wait while looking for MIDI devices...";
+                    btnPleaseWait.Text = "Please wait while looking for MIDI devices...";
                     pb_WaitingProgress.Progress = 0;
                     break;
                 case WaitingFor.INTEGRA_7:
-                    tbPleaseWait.Text = "Please wait while finding INTEGRA-7 module(s)...";
+                    btnPleaseWait.Text = "Please wait while finding INTEGRA-7 module(s)...";
                     break;
                 case WaitingFor.EDIT:
-                    tbPleaseWait.Text = "Please wait while initiating editor form...";
+                    btnPleaseWait.Text = "Please wait while initiating editor form...";
                     break;
                 case WaitingFor.READING_STUDIO_SET:
-                    tbPleaseWait.Text = "Please wait while reading studio set.";
+                    btnPleaseWait.Text = "Please wait while reading studio set.";
                     pb_WaitingProgress.Progress = 0;
                     break;
                 case WaitingFor.READING_STUDIO_SET_NAMES:
                     if (continueTo == CurrentPage.EDIT_STUDIO_SET)
                     {
-                        tbPleaseWait.Text = "Please wait while scanning Studio set names and initiating studio set editor form...";
+                        btnPleaseWait.Text = "Please wait while scanning Studio set names and initiating studio set editor form...";
                     }
                     else
                     {
-                        tbPleaseWait.Text = "Please wait while scanning Studio set names...";
+                        btnPleaseWait.Text = "Please wait while scanning Studio set names...";
                     }
                     pb_WaitingProgress.Progress = 0;
                     studioSetNumber = 0;
@@ -109,15 +118,32 @@ namespace INTEGRA_7_Xamarin
         {
             // Create all controls ------------------------------------------------------------------------
             grid_PleaseWait = new Grid();
+            grid_PleaseWait.VerticalOptions = LayoutOptions.FillAndExpand;
+            for (Int32 i = 0; i < 18; i++)
+            {
+                grid_PleaseWait.RowDefinitions.Add(new RowDefinition());
+            }
+            grid_PleaseWaitTop = new Grid();
+            grid_PleaseWaitTop.VerticalOptions = LayoutOptions.FillAndExpand;
+            grid_PleaseWaitBottom = new Grid();
+            grid_PleaseWaitBottom.VerticalOptions = LayoutOptions.FillAndExpand;
             pb_WaitingProgress = new ProgressBar();
             pb_WaitingProgress.IsEnabled = true;
-            tbPleaseWait = new TextBlock();
+            btnPleaseWait = new Button();
             PleaseWait_StackLayout = new StackLayout();
+            PleaseWait_StackLayout.HorizontalOptions = LayoutOptions.FillAndExpand;
+            PleaseWait_StackLayout.VerticalOptions = LayoutOptions.FillAndExpand;
             PleaseWait_StackLayout.IsVisible = false;
 
             // Assemble grids with controls ---------------------------------------------------------------
-            grid_PleaseWait.Children.Add(new GridRow(0, new View[] { tbPleaseWait }));
-            grid_PleaseWait.Children.Add(new GridRow(1, new View[] { pb_WaitingProgress }));
+            grid_PleaseWait.Children.Add(new GridRow(0, new View[] { grid_PleaseWaitTop }, null, false, false, 8));
+            grid_PleaseWait.Children.Add(new GridRow(8, new View[] { btnPleaseWait }));
+            grid_PleaseWait.Children.Add(new GridRow(9, new View[] { pb_WaitingProgress }));
+            grid_PleaseWait.Children.Add(new GridRow(10, new View[] { grid_PleaseWaitBottom }, null, false, false, 8));
+            btnPleaseWait.HorizontalOptions = LayoutOptions.FillAndExpand;
+            btnPleaseWait.VerticalOptions = LayoutOptions.FillAndExpand;
+            btnPleaseWait.Margin = new Thickness(0);
+            grid_PleaseWait.Margin = new Thickness(2);
 
             // Assemble PleaseWait_StackLayout --------------------------------------------------------------
             PleaseWait_StackLayout.Children.Add(new GridRow(0, new View[] { grid_PleaseWait }));
@@ -566,7 +592,7 @@ namespace INTEGRA_7_Xamarin
                     {
                         waitingFor = WaitingFor.READING_STUDIO_SET_NAMES;
                         waitingState = WaitingState.INITIALIZING;
-                        tbPleaseWait.Text = "Please wait while scanning Studio set names and initiating studio set editor form...";
+                        btnPleaseWait.Text = "Please wait while scanning Studio set names and initiating studio set editor form...";
                         PleaseWait_ReadStudioSetNames();
                     }
                     else

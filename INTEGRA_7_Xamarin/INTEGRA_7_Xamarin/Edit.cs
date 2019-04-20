@@ -136,12 +136,12 @@ namespace INTEGRA_7_Xamarin
         public Grid EditTonesLeftColumnGrid = null;
         public Grid EditTonesRightColumnGrid = null;
         public Grid gridSecondRow = new Grid();
-        public ColumnDefinition cdEditTone_ParameterPages;
+        //public ColumnDefinition cdEditTone_ParameterPages;
         public ColumnDefinition cdEditTone_PartialSelector;
         public ColumnDefinition cdEditTone_InstrumentCategorySelector;
         public ColumnDefinition cdEditTone_KeySelector;
         public Grid ControlsGrid = null;
-        public Grid HelpGrid = null;
+        //public Grid HelpGrid = null;
         public RowDefinition rdHelpHeader = null;
         public RowDefinition rdHelpHeaderImage = null;
         public RowDefinition rdHelpText = null;
@@ -728,8 +728,8 @@ namespace INTEGRA_7_Xamarin
             ControlsGrid.MinimumHeightRequest = UIHandler.minimumHeightRequest;
             ControlsGrid.MinimumWidthRequest = 1;
             ControlsGrid.VerticalOptions = LayoutOptions.FillAndExpand;
-            HelpGrid = new Grid();
-            HelpGrid.VerticalOptions = LayoutOptions.FillAndExpand;
+            //HelpGrid = new Grid();
+            //HelpGrid.VerticalOptions = LayoutOptions.FillAndExpand;
 
             // Row 0 controls:
             cbEditTone_PartSelector = new ComboBox();
@@ -744,7 +744,7 @@ namespace INTEGRA_7_Xamarin
             // We need columndefinitions i order to hide/show the controls above!
             gridSecondRow = new Grid();
             gridSecondRow.ColumnDefinitions = new ColumnDefinitionCollection();
-            cdEditTone_ParameterPages = new ColumnDefinition();
+            //cdEditTone_ParameterPages = new ColumnDefinition();
             cdEditTone_PartialSelector = new ColumnDefinition();
             cdEditTone_InstrumentCategorySelector = new ColumnDefinition();
             cdEditTone_KeySelector = new ColumnDefinition();
@@ -856,6 +856,7 @@ namespace INTEGRA_7_Xamarin
             //Edit_StackLayout.MinimumWidthRequest = 1;
             Edit_StackLayout = new StackLayout();
             Edit_StackLayout.BackgroundColor = colorSettings.Background;
+            Edit_StackLayout.HorizontalOptions = LayoutOptions.FillAndExpand;
             Edit_StackLayout.VerticalOptions = LayoutOptions.FillAndExpand;
             Edit_StackLayout.Children.Add((new GridRow(0, new View[] { EditTonesGrid })));
         }
@@ -873,18 +874,18 @@ namespace INTEGRA_7_Xamarin
             //    EditTonesRightColumnGrid.Children.RemoveAt(2);
             //    EditTonesRightColumnGrid.Children.RemoveAt(2);
             //}
-            GridRow.CreateRow(EditTonesRightColumnGrid, row++, new View[] { tbEditToneChorusSendLevel, slEditToneChorusSendLevel }, new byte[] { 2, 3 });
-            GridRow.CreateRow(EditTonesRightColumnGrid, row++, new View[] { tbEditToneReverbSendLevel, slEditToneReverbSendLevel }, new byte[] { 2, 3 });
+            EditTonesRightColumnGrid.Children.Add((new GridRow(row++, new View[] { tbEditToneChorusSendLevel, slEditToneChorusSendLevel }, new byte[] { 2, 3 }, false, true, 1)));
+            EditTonesRightColumnGrid.Children.Add((new GridRow(row++, new View[] { tbEditToneReverbSendLevel, slEditToneReverbSendLevel }, new byte[] { 2, 3 }, false, true, 1)));
             if (helpItem != null)
             {
                 tbEditToneHelpsHeading.Text = helpItem.Heading;
                 imgEditToneHeadingImage.Source = helpItem.HeadingImage;
                 tbEditToneHelpsText.Text = helpItem.Text;
                 imgEditToneImage.Source = helpItem.Image;
-                GridRow.CreateRow(EditTonesRightColumnGrid, row++, new View[] { tbEditToneHelpsHeading }, null, helpItem.spaceForHeading);
-                GridRow.CreateRow(EditTonesRightColumnGrid, row += helpItem.spaceForHeading, new View[] { imgEditToneHeadingImage }, null, helpItem.spaceForHeadingImage);
-                GridRow.CreateRow(EditTonesRightColumnGrid, row += helpItem.spaceForHeadingImage, new View[] { tbEditToneHelpsText }, null, helpItem.spaceForText);
-                GridRow.CreateRow(EditTonesRightColumnGrid, row += helpItem.spaceForText, new View[] { imgEditToneImage }, null, helpItem.spaceForImage);
+                EditTonesRightColumnGrid.Children.Add((new GridRow(row++, new View[] { tbEditToneHelpsHeading }, null, false, false, helpItem.spaceForHeading)));
+                EditTonesRightColumnGrid.Children.Add((new GridRow(row += helpItem.spaceForHeading, new View[] { imgEditToneHeadingImage }, null, false, true, helpItem.spaceForHeadingImage)));
+                EditTonesRightColumnGrid.Children.Add((new GridRow(row += helpItem.spaceForHeadingImage, new View[] { tbEditToneHelpsText }, null, false, true, helpItem.spaceForText)));
+                EditTonesRightColumnGrid.Children.Add((new GridRow(row += helpItem.spaceForText, new View[] { imgEditToneImage }, null, false, true, helpItem.spaceForImage)));
             }
             else
             {
@@ -892,20 +893,20 @@ namespace INTEGRA_7_Xamarin
                 imgEditToneHeadingImage.Source = null;
                 tbEditToneHelpsText.Text = "Sorry, no help available";
                 imgEditToneImage.Source = null;
-                GridRow.CreateRow(EditTonesRightColumnGrid, row++, new View[] { tbEditToneHelpsHeading }, null, 2);
-                GridRow.CreateRow(EditTonesRightColumnGrid, row += 2, new View[] { imgEditToneHeadingImage }, null, 6);
-                GridRow.CreateRow(EditTonesRightColumnGrid, row += 6, new View[] { tbEditToneHelpsText }, null, 2);
-                GridRow.CreateRow(EditTonesRightColumnGrid, row += 2, new View[] { imgEditToneImage }, null, 3);
+                EditTonesRightColumnGrid.Children.Add((new GridRow(row++, new View[] { tbEditToneHelpsHeading }, null, false, true, 2)));
+                EditTonesRightColumnGrid.Children.Add((new GridRow(row += 2, new View[] { imgEditToneHeadingImage }, null, false, true, 6)));
+                EditTonesRightColumnGrid.Children.Add((new GridRow(row += 6, new View[] { tbEditToneHelpsText }, null, false, true, 2)));
+                EditTonesRightColumnGrid.Children.Add((new GridRow(row += 2, new View[] { imgEditToneImage }, null, false, true, 3)));
             }
 
             while (row < MAX_ROWS - 1)
             {
                 Grid dummy = new Grid();
                 dummy.BackgroundColor = colorSettings.Background;
-                GridRow.CreateRow(ControlsGrid, row++, new View[] { dummy });
+                ControlsGrid.Children.Add((new GridRow(row++, new View[] { dummy })));
             }
 
-            GridRow.CreateRow(EditTonesRightColumnGrid, row++, new View[] { btnEditTone_Play, btnEditTone_Reset, btnEditToneMainHelp, btnEditTone_Return }, new byte[] { 1, 1, 5, 1 });
+            EditTonesRightColumnGrid.Children.Add((new GridRow(row++, new View[] { btnEditTone_Play, btnEditTone_Reset, btnEditToneMainHelp, btnEditTone_Return }, new byte[] { 1, 1, 5, 1 })));
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1083,6 +1084,7 @@ namespace INTEGRA_7_Xamarin
                 needsToSetFontSizes = NeedsToSetFontSizes.EDIT;
                 //Edit_StartTimer();
             }
+            SetStackLayoutColors(Edit_StackLayout);
             cbEditTone_PartSelector.SelectedIndex = commonState.CurrentPart;
             // Current tone is in commonState.currentTone but we also need all parameters, 
             // so use QueryToneType which in turn will read all parameters:
