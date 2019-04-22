@@ -224,7 +224,7 @@ namespace INTEGRA_7_Xamarin
             this.Label = new Button();
             //this.Label.IsEnabled = false;
             this.Label.Text = LabelText;
-            this.Label.Margin = new Thickness(0, 0, 2, 0);
+            this.Label.Margin = new Thickness(0, 0, 0, 0);
             this.Label.BackgroundColor = UIHandler.colorSettings.Background;
             this.Label.BorderWidth = 0;
             this.text = new Button();

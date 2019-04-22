@@ -9,7 +9,11 @@ namespace INTEGRA_7_Xamarin
     public enum WaitingFor
     {
         MIDI,
-        INTEGRA_7,
+        SEARCH_INTEGRA_7_ON_5_PIN,
+        SEARCH_MIDI_DEVICES,
+        WAITING_FOR_INTEGRA_7_ON_5_PIN,
+        INTEGRA_7_FOUND,
+        INTEGRA_7_NOT_FOUND,
         EDIT,
         READING_STUDIO_SET,
         READING_STUDIO_SET_NAMES,
@@ -51,6 +55,8 @@ namespace INTEGRA_7_Xamarin
         private Object deviceSpecifics;
         private UIAction uiAction;
         private Double progressStep;
+        private Boolean holdTimer = false;
+        private List<String> midiInterfaces;
 
         /// <summary>
         /// Call to show a wait page with a progress bar
@@ -85,13 +91,13 @@ namespace INTEGRA_7_Xamarin
             switch (waitingFor)
             {
                 case WaitingFor.MIDI:
-                    waitCount = 15;
-                    btnPleaseWait.Text = "Please wait while looking for MIDI devices...";
+                    waitCount = 5;
+                    btnPleaseWait.Text = "Please wait while looking for INTEGRA-7 on USB...";
                     pb_WaitingProgress.Progress = 0;
                     break;
-                case WaitingFor.INTEGRA_7:
-                    btnPleaseWait.Text = "Please wait while finding INTEGRA-7 module(s)...";
-                    break;
+                //case WaitingFor.INTEGRA_7:
+                //    btnPleaseWait.Text = "Please wait while finding INTEGRA-7 module(s)...";
+                //    break;
                 case WaitingFor.EDIT:
                     btnPleaseWait.Text = "Please wait while initiating editor form...";
                     break;
@@ -153,252 +159,211 @@ namespace INTEGRA_7_Xamarin
         // Handlers
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        public void PleaseWait_Timer_Tick()
+        public async void PleaseWait_Timer_Tick()
         {
-            switch (waitingFor)
+            //if (!holdTimer)
             {
-                case WaitingFor.MIDI:
-                    divider--;
-                    if (divider < 1)
-                    {
-                        divider = 10;
-                    }
-                    if (MidiState != MIDIState.WAITING_FOR_INITIONALIZATION)
-                    {
-                        // There are await calls in some MIDI implementations, so this thread
-                        // must not call again before the await calls finishes, thus the
-                        // test above.
-                        if (divider % 10 == 0)
-                        {
-                            PleaseWait_FindMidiInterfaces();
-                        }
-                    }
-                    break;
-                case WaitingFor.INTEGRA_7:
-                    if (waitingState == WaitingState.DONE)
-                    {
-                        ContinueToPage();
-                    }
-                    divider--;
-                    if (divider < 1)
-                    {
-                        divider = 10;
-                    }
-                    if (divider % 10 == 0)
-                    {
-                        PleaseWait_WaitForIntegra_7();
-                    }
-                    break;
-                case WaitingFor.EDIT:
-                    PleaseWait_InitializeEditorForm();
-                    break;
-                case WaitingFor.READING_STUDIO_SET:
-                    if (waitingState == WaitingState.INITIALIZING)
-                    {
-                        PleaseWait_ReadStudioSet();
-                    }
-                    else if (waitingState == WaitingState.PROCESSING)
-                    {
-                        EditStudioSet_Timer_Tick();
-                    }
-                    else if (waitingState == WaitingState.DONE)
-                    {
-                        ContinueToPage();
-                        //ShowMotionalSurroundPage();
-                    }
-                    break;
-                case WaitingFor.READING_STUDIO_SET_NAMES:
-                    if (waitingState == WaitingState.DONE)
-                    {
-                        ContinueToPage();
-                    }
-                    else
-                    {
-                        PleaseWait_ReadStudioSetNames();
-                    }
-                    break;
-            }
-
-            switch (uiAction)
-            {
-                case UIAction.PROGRESS:
-                    pb_WaitingProgress.Progress += progressStep; // 1F / 64F;
-                    uiAction = UIAction.NONE;
-                    break;
-                case UIAction.GOTO_LIBRARIAN:
-                    PleaseWait_StackLayout.IsVisible = false;
-                    Librarian_StackLayout.IsVisible = true;
-                    currentPage = CurrentPage.LIBRARIAN;
-                    studioSetNamesJustRead = StudioSetNames.READ_BUT_NOT_LISTED;
-                    initDone = true;
-                    break;
-                case UIAction.GOTO_MOTIONAL_SURROUND:
-                    PleaseWait_StackLayout.IsVisible = false;
-                    MotionalSurround_StackLayout.IsVisible = true;
-                    currentPage = CurrentPage.MOTIONAL_SURROUND;
-                    break;
-                case UIAction.GOTO_EDIT_STUDIO_SET:
-                    PleaseWait_StackLayout.IsVisible = false;
-                    StudioSetEditor_StackLayout.IsVisible = true;
-                    currentPage = CurrentPage.EDIT_STUDIO_SET;
-                    PopulateStudioSetSelector();
-                    break;
-            }
-            uiAction = UIAction.NONE;
-        }
-
-        private async void PleaseWait_FindMidiInterfaces()
-        {
-            if (commonState.Midi == null)
-            {
-                // This should have been done in UIHandler.Init() but sometimes fails.
-                commonState.Midi = DependencyService.Get<IMidi>();
-                MidiState = MIDIState.NOT_INITIALIZED;
-            }
-            else if (MidiState == MIDIState.NOT_INITIALIZED)
-            {
-                waitCount--;
-                pb_WaitingProgress.Progress += ((1 - pb_WaitingProgress.Progress) / 10000);
-                if (waitCount > 10)
+                switch (waitingFor)
                 {
-                    // Try to find I-7 via USB interface:
-                    if (appType == _appType.ANDROID)
-                    {
-                        if (!commonState.Midi.MidiIsReady())
+                    case WaitingFor.MIDI:
+                        waitCount--;
+                        pb_WaitingProgress.Progress += ((1 - pb_WaitingProgress.Progress) / 10000);
+                        if (waitCount > 0)
                         {
-                            MidiState = MIDIState.WAITING_FOR_INITIONALIZATION;
-                            commonState.Midi.Init(mainPage, "INTEGRA-7", deviceSpecifics, 0, 0);
-                            MidiState = MIDIState.INITIALIZING;
-                        }
-                    }
-                    else
-                    {
-                        MidiState = MIDIState.WAITING_FOR_INITIONALIZATION;
-                        commonState.Midi.Init(mainPage, "INTEGRA-7", 0, 0);
-                        MidiState = MIDIState.INITIALIZING;
-                    }
-                    pb_WaitingProgress.Progress += ((1 - pb_WaitingProgress.Progress) / 10000);
-                    if (commonState.Midi.MidiIsReady())
-                    {
-                        pb_WaitingProgress.Progress = 1;
-                        MidiState = MIDIState.INITIALIZED;
-                    }
-                }
-                else
-                {
-                    commonState.Midi.MakeMidiDeviceList();
-                    if (commonState.Midi.GetMidiDeviceList().Count > 0)
-                    {
-                        String MidiInterfaceName;
-                        if (mainPage.LoadLocalValue("MidiDevice") != null && waitCount > 5)
-                        {
-                            // See if a connection via 5-pin connector and another MIDI device has worked before
-                            MidiInterfaceName = (String)mainPage.LoadLocalValue("MidiDevice");
-                            commonState.Midi.Init(mainPage, MidiInterfaceName, 0, 0);
-                            if (commonState.Midi.MidiIsReady())
+                            // Try to find I-7 via USB interface:
+                            if (appType == _appType.ANDROID)
                             {
-                                MidiState = MIDIState. INITIALIZED;
-                            }
-                            pb_WaitingProgress.Progress += ((1 - pb_WaitingProgress.Progress) / 10000);
-                        }
-                        else
-                        {
-                            // Hold this timer loop (MIDIState.WAITING_FOR_I7 does not do anything) and ask the user
-                            // for a MIDI interface to use:
-                            MidiState = MIDIState.WAITING_FOR_I7;
-                            mainPage.SaveLocalValue("MidiDevice", null);
-                            commonState.Midi.MakeMidiDeviceList();
-                            MidiInterfaceName = await mainPage.DisplayActionSheet("Please select MIDI interface:",
-                                "Close", null, commonState.Midi.GetMidiDeviceList().ToArray());
-                            if (MidiInterfaceName == "Close")
-                            {
-                                MidiState = MIDIState.NO_MIDI_INTERFACE_AVAILABLE;
+                                if (!commonState.Midi.MidiIsReady())
+                                {
+                                    //MidiState = MIDIState.WAITING_FOR_INITIONALIZATION;
+                                    HoldTimer();
+                                    //await commonState.Midi.Init(mainPage, "INTEGRA-7", deviceSpecifics, 0, 0);
+                                    ReleaseTimer();
+                                    //MidiState = MIDIState.INITIALIZING;
+                                }
                             }
                             else
                             {
-                                mainPage.SaveLocalValue("MidiDevice", MidiInterfaceName);
-                                commonState.Midi.Init(mainPage, MidiInterfaceName, 0, 0);
-                                pb_WaitingProgress.Progress += ((1 - pb_WaitingProgress.Progress) / 10000);
+                                //MidiState = MIDIState.WAITING_FOR_INITIONALIZATION;
+                                HoldTimer();
+                                await commonState.Midi.Init(mainPage, "INTEGRA-7", 0, 0);
+                                ReleaseTimer();
+                                //MidiState = MIDIState.INITIALIZING;
+                            }
+                            pb_WaitingProgress.Progress += ((1 - pb_WaitingProgress.Progress) / 50);
+                            if (commonState.Midi.MidiIsReady())
+                            {
+                                pb_WaitingProgress.Progress = 1;
+                                //MidiState = MIDIState.INITIALIZED;
+                                CheckForIntegra_7_readiness();
+                                waitingFor = WaitingFor.INTEGRA_7_FOUND;
+                            }
+                        }
+                        else
+                        {
+                            // Seems like there is no USB connection.
+                            // Make a list of MIDI devices and set state WAITING_FOR_MIDI_DEVICE
+                            // to have the devices tested for connection with I-7:
+                            HoldTimer();
+                            waitCount = 10;
+                            btnPleaseWait.Text = "Please wait while looking for INTEGRA-7 on 5-pin MIDI...";
+                            waitingFor = WaitingFor.SEARCH_MIDI_DEVICES;
+                            await commonState.Midi.MakeMidiDeviceList();
+                            midiInterfaces = commonState.Midi.GetMidiDeviceList();
+                            if (midiInterfaces.Count < 1)
+                            {
+                                waitingFor = WaitingFor.INTEGRA_7_NOT_FOUND;
+                            }
+                            else
+                            {
+                                midiInterfaces[0] = midiInterfaces[1]; // Test only, to see if it can find  i-7 on second device
+                                midiInterfaces[1] = "MIDI";            // Remove these two lines!
+                                String midiDevice = midiInterfaces[0];
+                                await commonState.Midi.Init(mainPage, midiDevice, 0, 0);
+                                midiInterfaces.RemoveAt(0);
+                            }
+                            ReleaseTimer();
+                        }
+                        break;
+                    case WaitingFor.SEARCH_MIDI_DEVICES:
+                        {
+                            waitCount--;
+                            if (waitCount > 0)
+                            {
                                 if (commonState.Midi.MidiIsReady())
                                 {
-                                    MidiState = MIDIState.INITIALIZED;
-                                }
-                                else
-                                {
-                                    MidiState = MIDIState.NOT_INITIALIZED;
+                                    // MIDI device is now ready. send a request for a byte.
+                                    // If I-7 is on this device we will get a response in 
+                                    // PleaseWait_MidiInPort_MessageReceived()
+                                    waitingFor = WaitingFor.SEARCH_INTEGRA_7_ON_5_PIN;
+                                    CheckForIntegra_7_readiness();
                                 }
                             }
                         }
-                    }
-                    else
-                    {
-                        // No MIDI devices found!
-                    }
+                        break;
+                    case WaitingFor.SEARCH_INTEGRA_7_ON_5_PIN:
+                        HoldTimer();
+                        waitCount--;
+                        if (waitCount < 1)
+                        {
+                            // Seems like we did not get a response via this device.
+                            // Get next device from the list,  if any.
+                            if (midiInterfaces.Count > 0)
+                            {
+                                if (commonState.Midi.MidiIsReady())
+                                {
+                                    // Dispose of the previous device:
+                                    await commonState.Midi.ResetMidi();
+                                }
+                                // Take next device:
+                                String midiDevice = midiInterfaces[0];
+                                await commonState.Midi.Init(mainPage, midiDevice, 0, 0);
+                                midiInterfaces.RemoveAt(0);
+                                waitingFor = WaitingFor.SEARCH_MIDI_DEVICES;
+                                waitCount = 10;
+                            }
+                        }
+                        ReleaseTimer();
+                        break;
+                    case WaitingFor.WAITING_FOR_INTEGRA_7_ON_5_PIN:
+                        waitCount--;
+                        if (waitCount > 0)
+                        {
+                            if (waitCount < 1)
+                            {
+                                if (commonState.Midi.MidiIsReady())
+                                {
+                                    waitCount = 10;
+                                    CheckForIntegra_7_readiness();
+                                    midiInterfaces.RemoveAt(0);
+                                    waitingFor = WaitingFor.SEARCH_INTEGRA_7_ON_5_PIN;
+                               }
+                            }
+                        }
+                        break;
+                    case WaitingFor.INTEGRA_7_NOT_FOUND:
+                        HoldTimer();
+                        await mainPage.DisplayAlert("INTEGRA-7 Librarian and Editor",
+                            "There was no way to contact INTEGRA-7. Please close the app. " +
+                            "Then check your equipment. The INTEGRA-7 needs to have either a USB " +
+                            "connection, or a connection via a MIDI interface with both MIDI IN " +
+                            "and MIDI OUT connected. Then start the app, and if asked for a MIDI " +
+                            "interface, select the one that is connected to the INTEGRA-7.", "Ok");
+                        btnPleaseWait.Text = "Please close the app.";
+                        pb_WaitingProgress.Progress = 1;
+                        waitingFor = WaitingFor.IDLE;
+                        break;
+                    case WaitingFor.INTEGRA_7_FOUND:
+                        ContinueToPage();
+                        break;
+                    case WaitingFor.EDIT:
+                        PleaseWait_InitializeEditorForm();
+                        break;
+                    case WaitingFor.READING_STUDIO_SET:
+                        if (waitingState == WaitingState.INITIALIZING)
+                        {
+                            PleaseWait_ReadStudioSet();
+                        }
+                        else if (waitingState == WaitingState.PROCESSING)
+                        {
+                            EditStudioSet_Timer_Tick();
+                        }
+                        else if (waitingState == WaitingState.DONE)
+                        {
+                            ContinueToPage();
+                            //ShowMotionalSurroundPage();
+                        }
+                        break;
+                    case WaitingFor.READING_STUDIO_SET_NAMES:
+                        if (waitingState == WaitingState.DONE)
+                        {
+                            ContinueToPage();
+                        }
+                        else
+                        {
+                            PleaseWait_ReadStudioSetNames();
+                        }
+                        break;
                 }
-            }
-            else if (MidiState == MIDIState.INITIALIZING)
-            {
-                if (commonState.Midi.MidiIsReady())
+
+                switch (uiAction)
                 {
-                    pb_WaitingProgress.Progress = 1;
-                    MidiState = MIDIState.INITIALIZED;
+                    case UIAction.PROGRESS:
+                        pb_WaitingProgress.Progress += progressStep; // 1F / 64F;
+                        uiAction = UIAction.NONE;
+                        break;
+                    case UIAction.GOTO_LIBRARIAN:
+                        PleaseWait_StackLayout.IsVisible = false;
+                        Librarian_StackLayout.IsVisible = true;
+                        currentPage = CurrentPage.LIBRARIAN;
+                        studioSetNamesJustRead = StudioSetNames.READ_BUT_NOT_LISTED;
+                        initDone = true;
+                        break;
+                    case UIAction.GOTO_MOTIONAL_SURROUND:
+                        PleaseWait_StackLayout.IsVisible = false;
+                        MotionalSurround_StackLayout.IsVisible = true;
+                        currentPage = CurrentPage.MOTIONAL_SURROUND;
+                        break;
+                    case UIAction.GOTO_EDIT_STUDIO_SET:
+                        PleaseWait_StackLayout.IsVisible = false;
+                        StudioSetEditor_StackLayout.IsVisible = true;
+                        currentPage = CurrentPage.EDIT_STUDIO_SET;
+                        PopulateStudioSetSelector();
+                        break;
                 }
-                else
-                {
-                    waitCount--;
-                    if (waitCount < 5)
-                    {
-                        MidiState = MIDIState.NO_MIDI_INTERFACE_AVAILABLE;
-                    }
-                    else
-                    {
-                        waitCount = 15;
-                        MidiState = MIDIState.NOT_INITIALIZED;
-                    }
-                }
-            }
-
-            else if (MidiState == MIDIState.WAITING_FOR_I7)
-            {
-                pb_WaitingProgress.Progress += ((1 - pb_WaitingProgress.Progress) / 10000);
-            }
-
-            else if (MidiState == MIDIState.INITIALIZED)
-            {
-                waitingFor = WaitingFor.INTEGRA_7;
-                CheckForIntegra_7_readiness();
-            }
-
-            else if (MidiState == MIDIState.NO_MIDI_INTERFACE_AVAILABLE)
-            {
-                PleaseWait_StackLayout.IsVisible = false;
-                waitingState = WaitingState.DONE;
-                currentPage = CurrentPage.LIBRARIAN;
+                uiAction = UIAction.NONE;
             }
         }
 
         private void PleaseWait_WaitForIntegra_7()
         {
             waitCount--;
-            if (integra_7Ready)
+            btnPleaseWait.Text = "Please wait while finding INTEGRA-7 module(s)...";
+            if (waitingFor == WaitingFor.INTEGRA_7_FOUND)
             {
                 // We got a response from I-7, so we are ready to show the Librarian page now:
                 PleaseWait_StackLayout.IsVisible = false;
                 ShowLibrarianPage();
-            }
-            else if (waitCount > 0)
-            {
-                // No response, ask again and wait bit more:
-                CheckForIntegra_7_readiness();
-            }
-            else
-            {
-                // We got no response. In case we have a saved MIDI
-                // interface name, it is no longer valid, erase it...
-                mainPage.SaveLocalValue("MidiDevice", null);
-                // ...and try again:
-                MidiState = MIDIState.NOT_INITIALIZED;
-                waitingFor = WaitingFor.MIDI;
             }
         }
 
@@ -467,7 +432,8 @@ namespace INTEGRA_7_Xamarin
             if (queryType == QueryType.CHECKING_I_7_READINESS)
             {
                 // Got response from the I-7, just set the integra_7Ready flag:
-                integra_7Ready = true;
+                //integra_7Ready = true;
+                waitingFor = WaitingFor.INTEGRA_7_FOUND;
             }
             else if (waitingFor == WaitingFor.READING_STUDIO_SET_NAMES
                 && waitingState == WaitingState.PROCESSING)
@@ -613,7 +579,8 @@ namespace INTEGRA_7_Xamarin
                 case CurrentPage.LIBRARIAN:
                     currentPage = CurrentPage.LIBRARIAN;
                     PleaseWait_StackLayout.IsVisible = false;
-                    Librarian_StackLayout.IsVisible = true;
+                    //Librarian_StackLayout.IsVisible = true;
+                    ShowLibrarianPage();
                     if (waitingFor == WaitingFor.READING_STUDIO_SET_NAMES)
                     {
                         Librarian_PopulateStudioSetListview();
@@ -633,6 +600,16 @@ namespace INTEGRA_7_Xamarin
             byte[] length = new byte[] { 0x00, 0x00, 0x00, 0x01 };
             byte[] message = commonState.Midi.SystemExclusiveRQ1Message(address, length);
             commonState.Midi.SendSystemExclusive(message);
+        }
+
+        private void HoldTimer()
+        {
+            holdTimer = true;
+        }
+
+        private void ReleaseTimer()
+        {
+            holdTimer = false;
         }
     }
 }

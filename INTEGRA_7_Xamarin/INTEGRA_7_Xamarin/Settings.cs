@@ -494,7 +494,10 @@ namespace INTEGRA_7_Xamarin
             serializationText += Settings_SerializeColor(Settings_UserColorSettings.MotionalSurroundPartLabelFocused);
             serializationText += Settings_SerializeColor(Settings_UserColorSettings.MotionalSurroundPartLabelUnfocused).TrimEnd(';');
             mainPage.SaveLocalValue("UserColorSettings", serializationText);
-            mainPage.SaveLocalValue("ColorScheme", Settings_pColorSchemeSelector.SelectedIndex);
+            if (Settings_pColorSchemeSelector != null)
+            {
+                mainPage.SaveLocalValue("ColorScheme", Settings_pColorSchemeSelector.SelectedIndex);
+            }
         }
 
         private String Settings_SerializeColor(Color color)

@@ -9,11 +9,13 @@ namespace INTEGRA_7_Xamarin
 {
     public interface IMidi
     {
-        void Init(INTEGRA_7_Xamarin.MainPage mainPage, String deviceName,
+        Task Init(INTEGRA_7_Xamarin.MainPage mainPage, String deviceName,
             byte MidiOutPortChannel, byte MidiInPortChannel);
 
-        void Init(INTEGRA_7_Xamarin.MainPage mainPage, String deviceName,
-            object DeviceSpecificObject, byte MidiOutPortChannel, byte MidiInPortChannel);
+        //void Init(INTEGRA_7_Xamarin.MainPage mainPage, String deviceName,
+        //    object DeviceSpecificObject, byte MidiOutPortChannel, byte MidiInPortChannel);
+
+        Task ResetMidi();
 
         Boolean MidiIsReady();
 
@@ -53,7 +55,7 @@ namespace INTEGRA_7_Xamarin
 
         Boolean VenderDriverDetected();
 
-        void MakeMidiDeviceList();
+        Task MakeMidiDeviceList();
 
         List<String> GetMidiDeviceList();
     }

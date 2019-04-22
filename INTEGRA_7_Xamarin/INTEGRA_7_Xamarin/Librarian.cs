@@ -645,10 +645,10 @@ namespace INTEGRA_7_Xamarin
                 new byte[] { 5, 5, 5, 3 }, false, true)));
 
             // Make the entire grid background black to show as borders around controls by using margins:
-            Librarian_gridGroups.Margin = new Thickness(0);
-            Librarian_gridCategories.Margin = new Thickness(-6, 0, 0, 0);
-            Librarian_gridTones.Margin = new Thickness(-6, 0, 0, 0);
-            Librarian_gridKeyboard.Margin = new Thickness(-6, 0, 0, 0);
+            //Librarian_gridGroups.Margin = new Thickness(2);
+            //Librarian_gridCategories.Margin = new Thickness(0, 0, 0, 0);
+            //Librarian_gridTones.Margin = new Thickness(0, 0, 0, 0);
+            //Librarian_gridKeyboard.Margin = new Thickness(0, 0, 0, 0);
             SetStackLayoutColors(Librarian_StackLayout);
             t.Trace("Librarian created ");
         }
@@ -1895,7 +1895,7 @@ namespace INTEGRA_7_Xamarin
         private void Librarian_btnWhiteKey_Pressed(object sender, EventArgs e)
         {
             byte[] keyNumbers = new byte[] { 36, 35, 33, 31, 30, 28, 26, 24, 23, 21, 19, 17, 16, 14, 12, 11, 9, 7, 5, 4, 2, 0 };
-            byte noteNumber = (byte)(keyNumbers[Int32.Parse(((Button)sender).StyleId)] + lowKey);
+            byte noteNumber = (byte)(keyNumbers[Int32.Parse(((PianoKey)sender).StyleId)] + lowKey);
             if (noteNumber == currentNote)
             {
                 commonState.Midi.NoteOff(commonState.CurrentPart, currentNote);
@@ -1915,7 +1915,7 @@ namespace INTEGRA_7_Xamarin
         private void Librarian_btnWhiteKey_Released(object sender, EventArgs e)
         {
             byte[] keyNumbers = new byte[] { 36, 35, 33, 31, 30, 28, 26, 24, 23, 21, 19, 17, 16, 14, 12, 11, 9, 7, 5, 4, 2, 0 };
-            byte noteNumber = (byte)(keyNumbers[Int32.Parse(((Button)sender).StyleId)] + lowKey);
+            byte noteNumber = (byte)(keyNumbers[Int32.Parse(((PianoKey)sender).StyleId)] + lowKey);
             if (noteNumber == currentNote)
             {
                 commonState.Midi.NoteOff(commonState.CurrentPart, currentNote);
@@ -1935,7 +1935,7 @@ namespace INTEGRA_7_Xamarin
         private void Librarian_btnBlackKey_Pressed(object sender, EventArgs e)
         {
             byte[] keyNumbers = new byte[] { 34, 32, 29, 27, 25, 22, 20, 18, 15, 13, 10, 8, 6, 3, 1 };
-            byte noteNumber = (byte)(keyNumbers[Int32.Parse(((Button)sender).StyleId)] + lowKey);
+            byte noteNumber = (byte)(keyNumbers[Int32.Parse(((PianoKey)sender).StyleId)] + lowKey);
             if (noteNumber == currentNote)
             {
                 commonState.Midi.NoteOff(commonState.CurrentPart, currentNote);
@@ -1955,7 +1955,7 @@ namespace INTEGRA_7_Xamarin
         private void Librarian_btnBlackKey_Released(object sender, EventArgs e)
         {
             byte[] keyNumbers = new byte[] { 34, 32, 29, 27, 25, 22, 20, 18, 15, 13, 10, 8, 6, 3, 1 };
-            byte noteNumber = (byte)(keyNumbers[Int32.Parse(((Button)sender).StyleId)] + lowKey);
+            byte noteNumber = (byte)(keyNumbers[Int32.Parse(((PianoKey)sender).StyleId)] + lowKey);
             if (noteNumber == currentNote)
             {
                 commonState.Midi.NoteOff(commonState.CurrentPart, currentNote);

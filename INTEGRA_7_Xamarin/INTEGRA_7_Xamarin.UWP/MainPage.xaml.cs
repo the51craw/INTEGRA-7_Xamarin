@@ -72,11 +72,11 @@ namespace INTEGRA_7_Xamarin.UWP
             //MainPage_Portable.uIHandler.ShowLibrarianPage();
         }
 
-        public void InitMidi()
-        {
-            //MainPage_Portable.uIHandler.commonState.Midi.Init(MainPage_Portable, "INTEGRA-7", (object)Dispatcher_UWP, 0, 0);
-            MainPage_Portable.uIHandler.commonState.Midi.Init(MainPage_Portable, "INTEGRA-7", (object)Dispatcher_UWP, 0, 0);
-        }
+        //public void InitMidi()
+        //{
+        //    //MainPage_Portable.uIHandler.commonState.Midi.Init(MainPage_Portable, "INTEGRA-7", (object)Dispatcher_UWP, 0, 0);
+        //    MainPage_Portable.uIHandler.commonState.Midi.Init(MainPage_Portable, "INTEGRA-7", (object)Dispatcher_UWP, 0, 0);
+        //}
 
         public void Waiting(Boolean on)
         {

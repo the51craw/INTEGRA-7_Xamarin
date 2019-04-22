@@ -41,17 +41,17 @@ namespace INTEGRA_7_Xamarin
             SETTINGS,
         }
 
-        public enum MIDIState
-        {
-            NOT_INITIALIZED,
-            WAITING_FOR_INITIONALIZATION,
-            INITIALIZING,
-            WAITING_FOR_I7,
-            INITIALIZING_FAILED,
-            MIDI_NOT_AVAILABLE,
-            INITIALIZED,
-            NO_MIDI_INTERFACE_AVAILABLE
-        }
+        //public enum MIDIState
+        //{
+        //    NOT_INITIALIZED,
+        //    WAITING_FOR_INITIONALIZATION,
+        //    INITIALIZING,
+        //    WAITING_FOR_I7,
+        //    INITIALIZING_FAILED,
+        //    MIDI_NOT_AVAILABLE,
+        //    INITIALIZED,
+        //    NO_MIDI_INTERFACE_AVAILABLE
+        //}
 
         public enum QueryType
         {
@@ -112,7 +112,7 @@ namespace INTEGRA_7_Xamarin
         private byte key;
         byte toneCategory;
         Int32 userToneIndex;
-        Boolean integra_7Ready = false;
+        //Boolean integra_7Ready = false;
         Boolean waitingForMidiResponse = false;
         UInt16[] userToneNumbers;
         public QueryType queryType { get; set; }
@@ -142,13 +142,13 @@ namespace INTEGRA_7_Xamarin
         public Boolean MotionalSurround_IsCreated = false;
         public Boolean Favorites_IsCreated = false;
         public Boolean Settings_IsCreated = false;
-        public MIDIState MidiState { get; set; }
+        //public MIDIState MidiState { get; set; }
         public IMyFileIO myFileIO { get; set; }
 
 
         public static _appType appType;
         public static ColorSettings colorSettings = new ColorSettings(_colorSettings.LIGHT);
-        public static BorderThicknesSettings borderThicknesSettings = new BorderThicknesSettings(2);
+        //public static BorderThicknesSettings borderThicknesSettings = new BorderThicknesSettings(2);
         CurrentPage currentPage;
         Int32 divider = 1; // Used to make timer slower by skipping ticks
 
@@ -163,8 +163,8 @@ namespace INTEGRA_7_Xamarin
         public void Init()
         {
             currentPage = CurrentPage.LIBRARIAN;
-            MidiState = MIDIState.NOT_INITIALIZED;
-            borderThicknesSettings = new BorderThicknesSettings(2);
+            //MidiState = MIDIState.NOT_INITIALIZED;
+            //borderThicknesSettings = new BorderThicknesSettings(2);
             DrawLibrarianPage();
             commonState = new CommonState(ref Librarian_btnPlay);
             ShowKeyNumbering();
@@ -201,54 +201,57 @@ namespace INTEGRA_7_Xamarin
                     {
                         return false;
                     }
-                    switch (currentPage)
+                    if (!holdTimer)
                     {
-                        case CurrentPage.PLEASE_WAIT:
-                            PleaseWait_Timer_Tick();
-                            break;
-                        case CurrentPage.LIBRARIAN:
-                            Librarian_Timer_Tick();
-                            break;
-                        case CurrentPage.EDIT_TONE:
-                            Edit_Timer_Tick();
-                            break;
-                        case CurrentPage.EDIT_STUDIO_SET:
-                            EditStudioSet_Timer_Tick();
-                            break;
-                        case CurrentPage.MOTIONAL_SURROUND:
-                            MotionalSurround_Timer_Tick();
-                            break;
-                        case CurrentPage.SETTINGS:
-                            Settings_Timer_Tick();
-                            break;
-                    }
+                        switch (currentPage)
+                        {
+                            case CurrentPage.PLEASE_WAIT:
+                                PleaseWait_Timer_Tick();
+                                break;
+                            case CurrentPage.LIBRARIAN:
+                                Librarian_Timer_Tick();
+                                break;
+                            case CurrentPage.EDIT_TONE:
+                                Edit_Timer_Tick();
+                                break;
+                            case CurrentPage.EDIT_STUDIO_SET:
+                                EditStudioSet_Timer_Tick();
+                                break;
+                            case CurrentPage.MOTIONAL_SURROUND:
+                                MotionalSurround_Timer_Tick();
+                                break;
+                            case CurrentPage.SETTINGS:
+                                Settings_Timer_Tick();
+                                break;
+                        }
 
-                    switch (needsToSetFontSizes)
-                    {
-                        case NeedsToSetFontSizes.LIBRARIAN:
-                            needsToSetFontSizes = NeedsToSetFontSizes.NONE;
-                            SetFontSizes(Librarian_StackLayout);
-                            break;
-                        case NeedsToSetFontSizes.FAVORITES:
-                            needsToSetFontSizes = NeedsToSetFontSizes.NONE;
-                            SetFontSizes(Favorites_StackLayout);
-                            break;
-                        case NeedsToSetFontSizes.EDIT:
-                            needsToSetFontSizes = NeedsToSetFontSizes.NONE;
-                            SetFontSizes(Edit_StackLayout);
-                            break;
-                        case NeedsToSetFontSizes.EDIT_STUDIO_SET:
-                            needsToSetFontSizes = NeedsToSetFontSizes.NONE;
-                            SetFontSizes(StudioSetEditor_StackLayout);
-                            break;
-                        case NeedsToSetFontSizes.MOTIONAL_SURROUND:
-                            needsToSetFontSizes = NeedsToSetFontSizes.NONE;
-                            SetFontSizes(MotionalSurround_StackLayout);
-                            break;
-                        case NeedsToSetFontSizes.SETTINGS:
-                            needsToSetFontSizes = NeedsToSetFontSizes.NONE;
-                            SetFontSizes(Settings_StackLayout);
-                            break;
+                        switch (needsToSetFontSizes)
+                        {
+                            case NeedsToSetFontSizes.LIBRARIAN:
+                                needsToSetFontSizes = NeedsToSetFontSizes.NONE;
+                                SetFontSizes(Librarian_StackLayout);
+                                break;
+                            case NeedsToSetFontSizes.FAVORITES:
+                                needsToSetFontSizes = NeedsToSetFontSizes.NONE;
+                                SetFontSizes(Favorites_StackLayout);
+                                break;
+                            case NeedsToSetFontSizes.EDIT:
+                                needsToSetFontSizes = NeedsToSetFontSizes.NONE;
+                                SetFontSizes(Edit_StackLayout);
+                                break;
+                            case NeedsToSetFontSizes.EDIT_STUDIO_SET:
+                                needsToSetFontSizes = NeedsToSetFontSizes.NONE;
+                                SetFontSizes(StudioSetEditor_StackLayout);
+                                break;
+                            case NeedsToSetFontSizes.MOTIONAL_SURROUND:
+                                needsToSetFontSizes = NeedsToSetFontSizes.NONE;
+                                SetFontSizes(MotionalSurround_StackLayout);
+                                break;
+                            case NeedsToSetFontSizes.SETTINGS:
+                                needsToSetFontSizes = NeedsToSetFontSizes.NONE;
+                                SetFontSizes(Settings_StackLayout);
+                                break;
+                        }
                     }
 
                     return true;

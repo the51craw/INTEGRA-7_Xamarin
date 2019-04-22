@@ -99,18 +99,7 @@ namespace INTEGRA_7_Xamarin.UWP
             byte MidiOutPortChannel, byte MidiInPortChannel)
         {
             MidiDevices = new List<String>();
-            Init(mainPage, "INTEGRA-7", MidiOutPortChannel, MidiInPortChannel);
-        }
-
-        // Constructor using a combobox for full device watch:
-        public MIDI(INTEGRA_7_Xamarin.MainPage mainPage, MainPage mainPage_UWP, byte MidiOutPortChannel, byte MidiInPortChannel)
-        {
-            throw new NotImplementedException();
-            MidiDevices = new List<String>();
-            this.mainPage = mainPage;
-            this.MainPage_UWP = mainPage_UWP;
-            this.MidiOutPortChannel = MidiOutPortChannel;
-            this.MidiInPortChannel = MidiInPortChannel;
+            //Init(mainPage, "INTEGRA-7", MidiOutPortChannel, MidiInPortChannel);
         }
 
         ~MIDI()
@@ -125,34 +114,18 @@ namespace INTEGRA_7_Xamarin.UWP
             } catch { }
         }
 
-        // Simpleconstructor that takes the name of the device:
-        public MIDI(String deviceName)
+        public async Task Init(INTEGRA_7_Xamarin.MainPage mainPage, String deviceName, byte MidiOutPortChannel, byte MidiInPortChannel)
         {
-            Init(deviceName);
-        }
+            if (deviceName == null)
+            {
+                return;
+            }
 
-        public void Init(INTEGRA_7_Xamarin.MainPage mainPage, String deviceName, byte MidiOutPortChannel, byte MidiInPortChannel)
-        {
-            Init(mainPage, deviceName, null, MidiOutPortChannel, MidiInPortChannel);
-        }
-
-        public void Init(INTEGRA_7_Xamarin.MainPage mainPage, String deviceName, CoreDispatcher Dispatcher, byte MidiOutPortChannel, byte MidiInPortChannel)
-        {
             this.mainPage = mainPage;
             this.MidiOutPortChannel = MidiOutPortChannel;
             this.MidiInPortChannel = MidiInPortChannel;
-            Init(deviceName);
-        }
 
-        public void Init(String deviceName, INTEGRA_7_Xamarin.MainPage mainPage)
-        {
-            this.mainPage = mainPage;
-            Init(deviceName);
-        }
-
-        public async void Init(String deviceName)
-        {
-            // If the user has connected the I-7 via 5-pin connections, we cannot identify it. Therefore, we fill out
+            // If the user has connected the I-7 via 5-pin connections, we cannot easily identify it. Therefore, we fill out
             // the selectors and let the user selects the correct one. We set the selector to first line.
             // If the user has connected the I-7 via USB, we will still populate the selectors, and we will
             // have the name in there, so we can select it.
@@ -211,6 +184,32 @@ namespace INTEGRA_7_Xamarin.UWP
                 StartTimer();
             }
         }
+
+        public async Task ResetMidi()
+        {
+            try
+            {
+                midiInPort.MessageReceived -= MidiInPort_MessageReceived;
+            } catch { }
+            try
+            {
+                midiOutPort.Dispose();
+            } catch { }
+            try
+            {
+                midiInPort.Dispose();
+            }
+            catch { }
+            try
+            {
+                midiOutPort = null;
+            } catch { }
+            try
+            {
+                midiInPort = null;
+            } catch { }
+        }
+
 
         public Boolean MidiIsReady()
         {
@@ -331,7 +330,7 @@ namespace INTEGRA_7_Xamarin.UWP
             return MidiDevices;
         }
 
-        public async void MakeMidiDeviceList()
+        public async Task MakeMidiDeviceList()
         {
             DeviceInformationCollection midiInputDevices = await DeviceInformation.FindAllAsync(MidiInPort.GetDeviceSelector());
             MidiDevices.Clear();

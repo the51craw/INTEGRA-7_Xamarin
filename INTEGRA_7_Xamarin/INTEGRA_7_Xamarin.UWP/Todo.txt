@@ -187,7 +187,7 @@ Add saving/loading settings in xml files (for all platforms!)
 	Always read studio set (but not names if already read) when entering motional surround.
 	Always read studio set (but not names if already read) when entering edit studio set.
 
-Finish color settings.
+Finish color settings, some colors does not work on MacOS.
 
 * Add settings:
 	* Swap surround button with edit buttons and make a setting button to the right of the surround button.
@@ -240,3 +240,5 @@ Fix margins.
 * Change 'Piano key cover color' to 'progress bar color'
 
 Se if progress bar can be better.
+
+* key presses uses type button. Needs to use pianokey type!
