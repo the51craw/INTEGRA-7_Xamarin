@@ -216,8 +216,11 @@ namespace INTEGRA_7_Xamarin
                             }
                             else
                             {
-                                midiInterfaces[0] = midiInterfaces[1]; // Test only, to see if it can find  i-7 on second device
-                                midiInterfaces[1] = "MIDI";            // Remove these two lines!
+                                if (midiInterfaces.Count > 1)
+                                {
+                                    midiInterfaces[0] = midiInterfaces[1]; // Test only, to see if it can find  i-7 on second device
+                                    midiInterfaces[1] = "MIDI";            // Remove these five lines!
+                                }
                                 String midiDevice = midiInterfaces[0];
                                 await commonState.Midi.Init(mainPage, midiDevice, 0, 0);
                                 midiInterfaces.RemoveAt(0);
@@ -262,6 +265,10 @@ namespace INTEGRA_7_Xamarin
                                 waitingFor = WaitingFor.SEARCH_MIDI_DEVICES;
                                 waitCount = 10;
                             }
+                            else
+                            {
+                                waitingFor = WaitingFor.INTEGRA_7_NOT_FOUND;
+                            }
                         }
                         ReleaseTimer();
                         break;
@@ -283,15 +290,23 @@ namespace INTEGRA_7_Xamarin
                         break;
                     case WaitingFor.INTEGRA_7_NOT_FOUND:
                         HoldTimer();
-                        await mainPage.DisplayAlert("INTEGRA-7 Librarian and Editor",
-                            "There was no way to contact INTEGRA-7. Please close the app. " +
-                            "Then check your equipment. The INTEGRA-7 needs to have either a USB " +
+                        if (await mainPage.DisplayAlert("INTEGRA-7 Librarian and Editor",
+                            "There was no way to contact INTEGRA-7. Please check your equipment. " +
+                            "The INTEGRA-7 needs to have either a USB " +
                             "connection, or a connection via a MIDI interface with both MIDI IN " +
-                            "and MIDI OUT connected. Then start the app, and if asked for a MIDI " +
-                            "interface, select the one that is connected to the INTEGRA-7.", "Ok");
-                        btnPleaseWait.Text = "Please close the app.";
-                        pb_WaitingProgress.Progress = 1;
-                        waitingFor = WaitingFor.IDLE;
+                            "and MIDI OUT connected.", "Try again", "Give up"))
+                        {
+                            await commonState.Midi.ResetMidi();
+                            pb_WaitingProgress.Progress = 0;
+                            waitingFor = WaitingFor.MIDI;
+                        }
+                        else
+                        {
+                            btnPleaseWait.Text = "Please close the app.";
+                            pb_WaitingProgress.Progress = 1;
+                            waitingFor = WaitingFor.IDLE;
+                        }
+                        ReleaseTimer();
                         break;
                     case WaitingFor.INTEGRA_7_FOUND:
                         ContinueToPage();

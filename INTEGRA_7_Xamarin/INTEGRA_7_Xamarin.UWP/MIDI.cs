@@ -89,10 +89,10 @@ namespace INTEGRA_7_Xamarin.UWP
             MessageReceived = true;
         }
 
-        public void Init(INTEGRA_7_Xamarin.MainPage mainPage, string deviceName, object DeviceSpecificObject, byte MidiOutPortChannel, byte MidiInPortChannel)
+        public async Task Init(INTEGRA_7_Xamarin.MainPage mainPage, string deviceName, object DeviceSpecificObject, byte MidiOutPortChannel, byte MidiInPortChannel)
         {
             MidiDevices = new List<String>();
-            Init(mainPage, "INTEGRA-7", MidiOutPortChannel, MidiInPortChannel);
+            await Init(mainPage, "INTEGRA-7", MidiOutPortChannel, MidiInPortChannel);
         }
 
         public MIDI(INTEGRA_7_Xamarin.MainPage mainPage, 
@@ -193,20 +193,32 @@ namespace INTEGRA_7_Xamarin.UWP
             } catch { }
             try
             {
-                midiOutPort.Dispose();
+                if (midiOutPort != null)
+                {
+                    midiOutPort.Dispose();
+                }
             } catch { }
             try
             {
-                midiInPort.Dispose();
+                if (midiInPort != null)
+                {
+                    midiInPort.Dispose();
+                }
             }
             catch { }
             try
             {
-                midiOutPort = null;
+                if (midiOutPort != null)
+                {
+                    midiOutPort = null;
+                }
             } catch { }
             try
             {
-                midiInPort = null;
+                if (midiInPort != null)
+                {
+                    midiInPort = null;
+                }
             } catch { }
         }
 
