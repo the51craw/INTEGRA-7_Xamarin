@@ -16,6 +16,7 @@ namespace INTEGRA_7_Xamarin
         private Grid Settings_gridControls;
         private Grid Settings_gridSamples;
 
+        private LabeledSwitch Settings_lsAutomaticSelectConnection;
         private LabeledSwitch Settings_lsBankNumberToClipboard;
         private Label Settings_lblColorSchemeSelector;
         private Picker Settings_pColorTypeSelector;
@@ -125,7 +126,19 @@ namespace INTEGRA_7_Xamarin
             Settings_gridControls.VerticalOptions = LayoutOptions.FillAndExpand;
             Settings_gridSamples.VerticalOptions = LayoutOptions.FillAndExpand;
 
+            if (!String.IsNullOrEmpty(preferredConnection))
+            {
+                Settings_lsAutomaticSelectConnection = new LabeledSwitch("Automatically select " + preferredConnection, null, new byte[] { 3, 1 });
+            }
+            else
+            {
+                Settings_lsAutomaticSelectConnection = new LabeledSwitch("Automatically select connection", null, new byte[] { 3, 1 });
+            }
+            Settings_lsAutomaticSelectConnection.LSSwitch.IsToggled = automaticSelectConnection;
+            Settings_lsAutomaticSelectConnection.LSSwitch.Toggled += AutomaticSelectConnection_Toggled;
             Settings_lsBankNumberToClipboard = new LabeledSwitch("Put combined bank number in clipboard", null, new byte[] { 3, 1 });
+            Settings_lsBankNumberToClipboard.LSSwitch.IsToggled = putBankInClipboard;
+            Settings_lsBankNumberToClipboard.LSSwitch.Toggled += BankNumberToClipboard_Toggled; ;
             Settings_lblColorTypeSelector = new Label();
             Settings_lblColorTypeSelector.Text = "Element to set: ";
             Settings_pColorTypeSelector = new Picker();
@@ -246,10 +259,14 @@ namespace INTEGRA_7_Xamarin
                 Settings_gridRightFiller.RowDefinitions.Add(new RowDefinition());
             }
 
+            //Settings_gridControls.RowSpacing = 2;
+
             Settings_gridControls.Children.Add(new GridRow(0, new View[] 
-                { Settings_gridTopLeft }, null, false, false, 5));
-            byte rowOffset = 5;
-            Settings_gridControls.Children.Add(new GridRow(rowOffset++, new View[] 
+                { Settings_gridTopLeft }, null, false, false, 4));
+            byte rowOffset = 4;
+            Settings_gridControls.Children.Add(new GridRow(rowOffset++, new View[]
+                { Settings_lsAutomaticSelectConnection }));
+            Settings_gridControls.Children.Add(new GridRow(rowOffset++, new View[]
                 { Settings_lsBankNumberToClipboard }));
             Settings_gridControls.Children.Add(new GridRow(rowOffset++, new View[] 
                 { Settings_lblColorTypeSelector, Settings_pColorSchemeSelector }));
@@ -270,16 +287,19 @@ namespace INTEGRA_7_Xamarin
             Settings_gridControls.Children.Add(new GridRow(rowOffset++, new View[] 
                 { Settings_gridBottomLeft }, null, false, false, 5));
 
-            Settings_gridSamples.Children.Add(new GridRow(0, new View[] 
-                { Settings_gridTopRight }, null, false, false, 5));
+            //Settings_gridSamples.RowSpacing = 2;
 
-            rowOffset = 5;
+            Settings_gridSamples.Children.Add(new GridRow(0, new View[] 
+                { Settings_gridTopRight }, null, false, false, 4));
+
+            rowOffset = 4;
             Settings_gridSamples.Children.Add(new GridRow(rowOffset++, new View[] 
                 { Settings_lblLabel, Settings_sSwitch, Settings_btnButton }));
             Settings_gridSamples.Children.Add(new GridRow(rowOffset++, new View[] 
                 { Settings_lblSlider, Settings_slSlider }, new byte[] { 1, 2 }));
             Settings_gridSamples.Children.Add(new GridRow(rowOffset++, new View[] 
-                { Settings_lvListView }, null, false, false, 2));
+                { Settings_lvListView }, null, false, false, 3));
+            rowOffset++;
             rowOffset++;
             Settings_gridSamples.Children.Add(new GridRow(rowOffset++, new View[] 
                 { Settings_pPicker }));
@@ -306,8 +326,12 @@ namespace INTEGRA_7_Xamarin
             Settings_btnRandomColors.IsEnabled = false;
             Settings_btnRestore.IsEnabled = false;
 
-            Settings_gridSamples.Margin = new Thickness(2, 0, 2, 0);
-            Settings_gridSamples.Padding = new Thickness(2, 0, 2, 0);
+            Settings_gridControls.RowSpacing = Margins;
+            Settings_gridSamples.RowSpacing = Margins;
+            Settings_gridMain.ColumnSpacing = Margins;
+
+            Settings_gridControls.Margin = new Thickness(0, 0, 0, 0);
+            Settings_gridSamples.Margin = new Thickness(0, 0, 0, 0);
             Settings_gridTopLeft.Margin = new Thickness(-10, -2, -10, 0);
             Settings_gridTopRight.Margin = new Thickness(-10, -2, -14, 0);
             Settings_gridBottomLeft.Margin = new Thickness(-10, 0, -10, -2);
@@ -318,6 +342,18 @@ namespace INTEGRA_7_Xamarin
             Settings_StackLayout.HorizontalOptions = LayoutOptions.FillAndExpand;
             Settings_StackLayout.VerticalOptions = LayoutOptions.FillAndExpand;
             Settings_StackLayout.Children.Add(Settings_gridMain);
+        }
+
+        private void BankNumberToClipboard_Toggled(object sender, ToggledEventArgs e)
+        {
+            putBankInClipboard = Settings_lsBankNumberToClipboard.LSSwitch.IsToggled;
+            mainPage.SaveLocalValue("PutBankInClipboard", putBankInClipboard);
+        }
+
+        private void AutomaticSelectConnection_Toggled(object sender, ToggledEventArgs e)
+        {
+            automaticSelectConnection = Settings_lsAutomaticSelectConnection.LSSwitch.IsToggled;
+            mainPage.SaveLocalValue("AutomaticSelectConnection", automaticSelectConnection ? "True" : "False");
         }
 
         private void Settings_mslMotionalSurroundPartLabel_Clicked(object sender, EventArgs e)

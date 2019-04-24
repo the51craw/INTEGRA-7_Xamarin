@@ -121,7 +121,7 @@ namespace INTEGRA_7_Xamarin.Droid
             //InputSelector = MainPage_Portable.uIHandler.Librarian_midiInputDevice;
 
             //MainPage_Portable.uIHandler.commonState.Midi.Init(MainPage_Portable, "INTEGRA-7", OutputSelector, InputSelector, this, 0, 0);
-            MainPage_Portable.uIHandler.ShowPleaseWaitPage(WaitingFor.MIDI, UIHandler.CurrentPage.LIBRARIAN, this);
+            MainPage_Portable.uIHandler.ShowPleaseWaitPage(WaitingFor.CONNECTION, UIHandler.CurrentPage.LIBRARIAN, this);
 
             // Wait for MIDI to get ready:
             //timer = new Timer();

@@ -15,7 +15,7 @@ namespace INTEGRA_7_Xamarin
         //void Init(INTEGRA_7_Xamarin.MainPage mainPage, String deviceName,
         //    object DeviceSpecificObject, byte MidiOutPortChannel, byte MidiInPortChannel);
 
-        Task ResetMidi();
+        void ResetMidi();
 
         Boolean MidiIsReady();
 

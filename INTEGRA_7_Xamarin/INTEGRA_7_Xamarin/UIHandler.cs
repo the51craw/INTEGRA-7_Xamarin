@@ -56,7 +56,7 @@ namespace INTEGRA_7_Xamarin
         public enum QueryType
         {
             NONE,
-            CHECKING_I_7_READINESS,
+            CHECKING_FOR_I7_RESPONSE,
             PCM_SYNTH_TONE_COMMON,
             PCM_SYNTH_TONE_COMMON2,
             PCM_DRUM_KIT_COMMON,
@@ -125,6 +125,9 @@ namespace INTEGRA_7_Xamarin
         public static Int32 minimumHeightRequest = 14;
         private NeedsToSetFontSizes needsToSetFontSizes = NeedsToSetFontSizes.NONE;
         private Boolean needsToUpdateControls = false;
+        private String preferredConnection; // Preffered midi device name or "USB" to use to connect to I-7
+        private Boolean automaticSelectConnection; // Allows user to select connection when multiple connections are available.
+        private Int32 Margins = 4;
 
         MainPage mainPage;
         public StackLayout mainStackLayout { get; set; }
@@ -201,57 +204,54 @@ namespace INTEGRA_7_Xamarin
                     {
                         return false;
                     }
-                    if (!holdTimer)
+                    switch (currentPage)
                     {
-                        switch (currentPage)
-                        {
-                            case CurrentPage.PLEASE_WAIT:
-                                PleaseWait_Timer_Tick();
-                                break;
-                            case CurrentPage.LIBRARIAN:
-                                Librarian_Timer_Tick();
-                                break;
-                            case CurrentPage.EDIT_TONE:
-                                Edit_Timer_Tick();
-                                break;
-                            case CurrentPage.EDIT_STUDIO_SET:
-                                EditStudioSet_Timer_Tick();
-                                break;
-                            case CurrentPage.MOTIONAL_SURROUND:
-                                MotionalSurround_Timer_Tick();
-                                break;
-                            case CurrentPage.SETTINGS:
-                                Settings_Timer_Tick();
-                                break;
-                        }
+                        case CurrentPage.PLEASE_WAIT:
+                            PleaseWait_Timer_Tick();
+                            break;
+                        case CurrentPage.LIBRARIAN:
+                            Librarian_Timer_Tick();
+                            break;
+                        case CurrentPage.EDIT_TONE:
+                            Edit_Timer_Tick();
+                            break;
+                        case CurrentPage.EDIT_STUDIO_SET:
+                            EditStudioSet_Timer_Tick();
+                            break;
+                        case CurrentPage.MOTIONAL_SURROUND:
+                            MotionalSurround_Timer_Tick();
+                            break;
+                        case CurrentPage.SETTINGS:
+                            Settings_Timer_Tick();
+                            break;
+                    }
 
-                        switch (needsToSetFontSizes)
-                        {
-                            case NeedsToSetFontSizes.LIBRARIAN:
-                                needsToSetFontSizes = NeedsToSetFontSizes.NONE;
-                                SetFontSizes(Librarian_StackLayout);
-                                break;
-                            case NeedsToSetFontSizes.FAVORITES:
-                                needsToSetFontSizes = NeedsToSetFontSizes.NONE;
-                                SetFontSizes(Favorites_StackLayout);
-                                break;
-                            case NeedsToSetFontSizes.EDIT:
-                                needsToSetFontSizes = NeedsToSetFontSizes.NONE;
-                                SetFontSizes(Edit_StackLayout);
-                                break;
-                            case NeedsToSetFontSizes.EDIT_STUDIO_SET:
-                                needsToSetFontSizes = NeedsToSetFontSizes.NONE;
-                                SetFontSizes(StudioSetEditor_StackLayout);
-                                break;
-                            case NeedsToSetFontSizes.MOTIONAL_SURROUND:
-                                needsToSetFontSizes = NeedsToSetFontSizes.NONE;
-                                SetFontSizes(MotionalSurround_StackLayout);
-                                break;
-                            case NeedsToSetFontSizes.SETTINGS:
-                                needsToSetFontSizes = NeedsToSetFontSizes.NONE;
-                                SetFontSizes(Settings_StackLayout);
-                                break;
-                        }
+                    switch (needsToSetFontSizes)
+                    {
+                        case NeedsToSetFontSizes.LIBRARIAN:
+                            needsToSetFontSizes = NeedsToSetFontSizes.NONE;
+                            SetFontSizes(Librarian_StackLayout);
+                            break;
+                        case NeedsToSetFontSizes.FAVORITES:
+                            needsToSetFontSizes = NeedsToSetFontSizes.NONE;
+                            SetFontSizes(Favorites_StackLayout);
+                            break;
+                        case NeedsToSetFontSizes.EDIT:
+                            needsToSetFontSizes = NeedsToSetFontSizes.NONE;
+                            SetFontSizes(Edit_StackLayout);
+                            break;
+                        case NeedsToSetFontSizes.EDIT_STUDIO_SET:
+                            needsToSetFontSizes = NeedsToSetFontSizes.NONE;
+                            SetFontSizes(StudioSetEditor_StackLayout);
+                            break;
+                        case NeedsToSetFontSizes.MOTIONAL_SURROUND:
+                            needsToSetFontSizes = NeedsToSetFontSizes.NONE;
+                            SetFontSizes(MotionalSurround_StackLayout);
+                            break;
+                        case NeedsToSetFontSizes.SETTINGS:
+                            needsToSetFontSizes = NeedsToSetFontSizes.NONE;
+                            SetFontSizes(Settings_StackLayout);
+                            break;
                     }
 
                     return true;

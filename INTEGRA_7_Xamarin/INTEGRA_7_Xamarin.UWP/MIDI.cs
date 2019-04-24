@@ -185,11 +185,14 @@ namespace INTEGRA_7_Xamarin.UWP
             }
         }
 
-        public async Task ResetMidi()
+        public void ResetMidi()
         {
             try
             {
-                midiInPort.MessageReceived -= MidiInPort_MessageReceived;
+                if (midiInPort != null)
+                {
+                    midiInPort.MessageReceived -= MidiInPort_MessageReceived;
+                }
             } catch { }
             try
             {

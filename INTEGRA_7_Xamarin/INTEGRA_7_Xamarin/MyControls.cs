@@ -628,132 +628,157 @@ public class MotionalSurroundPartLabel : Button
             switch (direction)
             {
                 case 0:
+                    // Up left
                     hsteps = 10;
                     vsteps = 10;
                     Horizontal = Horizontal > hsteps ? (byte)(Horizontal - hsteps) : (byte)0;
                     Vertical = Vertical > vsteps ? (byte)(Vertical - vsteps) : (byte)0;
                     break;
                 case 1:
+                    // Up left
                     hsteps = 5;
                     vsteps = 10;
                     Horizontal = Horizontal > hsteps ? (byte)(Horizontal - hsteps) : (byte)0;
                     Vertical = Vertical > vsteps ? (byte)(Vertical - vsteps) : (byte)0;
                     break;
                 case 2:
+                    // Up
                     vsteps = 10;
                     Vertical = Vertical > vsteps ? (byte)(Vertical - vsteps) : (byte)0;
                     break;
                 case 3:
+                    // Up right
                     hsteps = 5;
                     vsteps = 10;
                     Horizontal = Horizontal < 127 - hsteps ? (byte)(Horizontal + hsteps) : (byte)127;
                     Vertical = Vertical > vsteps ? (byte)(Vertical - vsteps) : (byte)0;
                     break;
                 case 4:
+                    // Up right
                     hsteps = 10;
                     vsteps = 10;
                     Horizontal = Horizontal < 127 - hsteps ? (byte)(Horizontal + hsteps) : (byte)127;
                     Vertical = Vertical > vsteps ? (byte)(Vertical - vsteps) : (byte)0;
                     break;
                 case 5:
+                    // Up left
                     hsteps = 10;
                     vsteps = 5;
                     Horizontal = Horizontal > hsteps ? (byte)(Horizontal - hsteps) : (byte)0;
                     Vertical = Vertical > vsteps ? (byte)(Vertical - vsteps) : (byte)0;
                     break;
                 case 6:
+                    // Up left
                     hsteps = 1;
                     vsteps = 1;
                     Horizontal = Horizontal > hsteps ? (byte)(Horizontal - hsteps) : (byte)0;
                     Vertical = Vertical > vsteps ? (byte)(Vertical - vsteps) : (byte)0;
                     break;
                 case 7:
+                    // Up
                     vsteps = 1;
                     Vertical = Vertical > vsteps ? (byte)(Vertical - vsteps) : (byte)0;
                     break;
                 case 8:
+                    // Up right
                     hsteps = 1;
                     vsteps = 1;
                     Horizontal = Horizontal < 127 - hsteps ? (byte)(Horizontal + hsteps) : (byte)127;
                     Vertical = Vertical > vsteps ? (byte)(Vertical - vsteps) : (byte)0;
                     break;
                 case 9:
+                    // Up right
                     hsteps = 10;
                     vsteps = 5;
                     Horizontal = Horizontal < 127 - hsteps ? (byte)(Horizontal + hsteps) : (byte)127;
                     Vertical = Vertical > vsteps ? (byte)(Vertical - vsteps) : (byte)0;
                     break;
                 case 10:
+                    // Left
                     hsteps = 10;
                     Horizontal = Horizontal > hsteps ? (byte)(Horizontal - hsteps) : (byte)0;
                     break;
                 case 11:
+                    // Left
                     hsteps = 1;
                     Horizontal = Horizontal > hsteps ? (byte)(Horizontal - hsteps) : (byte)0;
                     break;
                 case 12:
+                    // Center
                     Horizontal = 63;
                     Vertical = 63;
                     break;
                 case 13:
+                    // Right
                     hsteps = 1;
                     Horizontal = Horizontal < 127 - hsteps ? (byte)(Horizontal + hsteps) : (byte)127;
                     break;
                 case 14:
+                    // Right
                     hsteps = 10;
                     Horizontal = Horizontal < 127 - hsteps ? (byte)(Horizontal + hsteps) : (byte)127;
                     break;
                 case 15:
+                    // Down left
                     hsteps = 10;
                     vsteps = 5;
                     Horizontal = Horizontal > hsteps ? (byte)(Horizontal - hsteps) : (byte)0;
                     Vertical = Vertical < 127 - vsteps ? (byte)(Vertical + vsteps) : (byte)127;
                     break;
                 case 16:
+                    // Down left
                     hsteps = 1;
                     vsteps = 1;
                     Horizontal = Horizontal > hsteps ? (byte)(Horizontal - hsteps) : (byte)0;
                     Vertical = Vertical < 127 - vsteps ? (byte)(Vertical + vsteps) : (byte)127;
                     break;
                 case 17:
+                    // Down
                     vsteps = 1;
                     Vertical = Vertical < 127 - vsteps ? (byte)(Vertical + vsteps) : (byte)127;
                     break;
                 case 18:
+                    // Down right
                     hsteps = 1;
                     vsteps = 1;
                     Horizontal = Horizontal < 127 - hsteps ? (byte)(Horizontal + hsteps) : (byte)127;
                     Vertical = Vertical < 127 - vsteps ? (byte)(Vertical + vsteps) : (byte)127;
                     break;
                 case 19:
+                    // Down right
                     hsteps = 10;
                     vsteps = 5;
                     Horizontal = Horizontal < 127 - hsteps ? (byte)(Horizontal + hsteps) : (byte)127;
                     Vertical = Vertical < 127 - vsteps ? (byte)(Vertical + vsteps) : (byte)127;
                     break;
                 case 20:
+                    // Down left
                     hsteps = 10;
                     vsteps = 10;
                     Horizontal = Horizontal > hsteps ? (byte)(Horizontal - hsteps) : (byte)0;
                     Vertical = Vertical < 127 - vsteps ? (byte)(Vertical + vsteps) : (byte)127;
                     break;
                 case 21:
+                    // Down left
                     hsteps = 5;
                     vsteps = 10;
                     Horizontal = Horizontal > hsteps ? (byte)(Horizontal - hsteps) : (byte)0;
                     Vertical = Vertical < 127 - vsteps ? (byte)(Vertical + vsteps) : (byte)127;
                     break;
                 case 22:
+                    // Down
                     vsteps = 10;
                     Vertical = Vertical < 127 - vsteps ? (byte)(Vertical + vsteps) : (byte)127;
                     break;
                 case 23:
+                    // Down right
                     hsteps = 5;
                     vsteps = 10;
                     Horizontal = Horizontal < 127 - hsteps ? (byte)(Horizontal + hsteps) : (byte)127;
                     Vertical = Vertical < 127 - vsteps ? (byte)(Vertical + vsteps) : (byte)127;
                     break;
                 case 24:
+                    // Down right
                     hsteps = 10;
                     vsteps = 10;
                     Horizontal = Horizontal < 127 - hsteps ? (byte)(Horizontal + hsteps) : (byte)127;

@@ -13,6 +13,8 @@ namespace INTEGRA_7_Xamarin
         INITIALIZING,
         INITIALIZING_1,
         INITIALIZING_2,
+        INITIALIZING_3,
+        INITIALIZING_4,
         INITIALIZED
     }
 
@@ -319,6 +321,7 @@ namespace INTEGRA_7_Xamarin
                 msePart[i].Editor.TextChanged += msePartEditor_TextChanged;
                 GridRow.CreateRow(gParts, (byte)i, new View[] { msePart[i] });
             }
+            gParts.RowSpacing = Margins;
 
             cbMotionalSurroundSwitch = new CheckBox();
             cbMotionalSurroundSwitch.HorizontalOptions = LayoutOptions.FillAndExpand;
@@ -403,17 +406,30 @@ namespace INTEGRA_7_Xamarin
             }
             else if (initDone && motionalSurroundInitializationState == MotionalSurroundInitializationState.INITIALIZING_2)
             {
+                {
+                    motionalSurroundInitializationState =
+                        MotionalSurroundInitializationState.INITIALIZING_3;
+                }
+            }
+            else if (initDone && motionalSurroundInitializationState == MotionalSurroundInitializationState.INITIALIZING_3)
+            {
+                {
+                    motionalSurroundInitializationState =
+                        MotionalSurroundInitializationState.INITIALIZING_4;
+                }
+            }
+            else if (initDone && motionalSurroundInitializationState == MotionalSurroundInitializationState.INITIALIZING_4)
+            {
                 motionalSurroundInitializationState =
                     MotionalSurroundInitializationState.INITIALIZED;
-
                 // Place part labels:
                 for (currentMotionalSurroundPart = 0; currentMotionalSurroundPart < 16; currentMotionalSurroundPart++)
                 {
-                    mslPart[currentMotionalSurroundPart].Horizontal = 
+                    mslPart[currentMotionalSurroundPart].Horizontal =
                         commonState.StudioSet.PartMotionalSurround[currentMotionalSurroundPart].LR;
-                    mslPart[currentMotionalSurroundPart].Vertical = 
+                    mslPart[currentMotionalSurroundPart].Vertical =
                         (byte)(127 - commonState.StudioSet.PartMotionalSurround[currentMotionalSurroundPart].FB);
-                    mslPart[currentMotionalSurroundPart].IsVisible = 
+                    mslPart[currentMotionalSurroundPart].IsVisible =
                         msePart[currentMotionalSurroundPart].Switch.LSSwitch.IsToggled;
                     Int32 index = commonState.ToneList.Get(commonState.StudioSet
                         .PartMainSettings[currentMotionalSurroundPart].ToneBankSelectMSB,
@@ -437,13 +453,13 @@ namespace INTEGRA_7_Xamarin
                             "Ok");
                     }
                 }
-                mslPart[currentMotionalSurroundPart].Horizontal = 
+                mslPart[currentMotionalSurroundPart].Horizontal =
                     commonState.StudioSet.MotionalSurround.ExtPartLR;
-                mslPart[currentMotionalSurroundPart].Vertical = 
-                    (byte)(127 -commonState.StudioSet.MotionalSurround.ExtPartFB);
-                mslPart[currentMotionalSurroundPart].IsVisible = 
+                mslPart[currentMotionalSurroundPart].Vertical =
+                    (byte)(127 - commonState.StudioSet.MotionalSurround.ExtPartFB);
+                mslPart[currentMotionalSurroundPart].IsVisible =
                     msePart[currentMotionalSurroundPart].Switch.LSSwitch.IsToggled;
-                mslPart[currentMotionalSurroundPart].Text = 
+                mslPart[currentMotionalSurroundPart].Text =
                     msePart[currentMotionalSurroundPart].Editor.Text;
                 //msePart[currentMotionalSurroundPart].Switch.IsChecked = 
                 //    commonState.StudioSet.MotionalSurround.MotionalSurroundSwitch;

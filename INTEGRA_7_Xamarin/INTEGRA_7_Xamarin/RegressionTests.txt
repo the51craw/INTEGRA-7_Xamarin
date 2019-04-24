@@ -1,0 +1,38 @@
+﻿Navigation tests
+	Navigation should be possible in all sequencies as defined below, from app start.
+	Listing studio set in librarian or starting studio set editorcauses studio set names
+	to be read, but only if not already read. Test that it works both ways.
+
+	L = Librarian
+	S = Settings
+	M = Motional surround
+	T = Tone edit
+	E = Edit studio set
+
+	L-S-L
+	  `-M
+	   `-T
+	    `-E
+	L - M
+	L - T
+	L - E
+	etc.
+
+Parameter tests
+	Known is that many parameters does not show initial value in their labels,
+	but those who does, check the value.
+	All controls must have correct initial value.
+	All controls must update I-7.
+	All controls must operate in correct range (probably only applies to sliders).
+
+Functional tests
+	Functions like Save Load Play etc must work.
+
+===============================================================================================
+
+Bugs
+
+* App-start -> select group Studio sets -> Select a studio set: Nothing happens!
+
+* Motional surround: Whatever label is focused, Ext moves, and then immediately moves back!
+

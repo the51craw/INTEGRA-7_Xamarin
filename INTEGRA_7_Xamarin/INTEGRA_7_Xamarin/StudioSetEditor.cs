@@ -2144,7 +2144,7 @@ namespace INTEGRA_7_Xamarin
             GridRow.CreateRow(grid_PartSettings, 0, new View[] { StudioSetPartSettings1 }, null, 14);
             GridRow.CreateRow(grid_PartSettings, 0, new View[] { StudioSetPartSettings2 }, null, 8);
             GridRow.CreateRow(grid_PartSettings, 0, new View[] { StudioSetPartEffects }, null, 3);
-            GridRow.CreateRow(grid_PartSettings, 0, new View[] { StudioSetPartKeyboard }, null, 10);
+            GridRow.CreateRow(grid_PartSettings, 0, new View[] { StudioSetPartKeyboard }, null, 11);
             GridRow.CreateRow(grid_PartSettings, 0, new View[] { StudioSetPartScaleTune }, null, 14);
             GridRow.CreateRow(grid_PartSettings, 0, new View[] { StudioSetPartMidi }, null, 14);
             GridRow.CreateRow(grid_PartSettings, 0, new View[] { StudioSetPartMotionalSurround }, null, 4);

@@ -43,6 +43,7 @@ namespace INTEGRA_7_Xamarin
         public Picker Librarian_midiInputChannel { get; set; }
         //public Image Librarian_Keyboard { get; set; }
 
+        Grid Librarian_gridMain;
         Grid Librarian_gridGroups;
         Button Librarian_lblGroups;
         ListView Librarian_lvGroups;
@@ -207,6 +208,39 @@ namespace INTEGRA_7_Xamarin
         private void ReadSettings()
         {
             t.Trace("private void ReadSettings()");
+        //private String PreferredConnection; // Preffered midi device name or "USB" to use to connect to I-7
+        //private Boolean AutomaticSelectConnection; // Allows user to select connection when multiple connections are available.
+            if (mainPage.LoadLocalValue("PreferredConnection") != null)
+            {
+                try
+                {
+                    String temp = (String)mainPage.LoadLocalValue("PreferredConnection");
+                    preferredConnection = temp;
+                }
+                catch
+                {
+                    preferredConnection = "";
+                    mainPage.SaveLocalValue("PreferredConnection", preferredConnection);
+                }
+            }
+            if (mainPage.LoadLocalValue("AutomaticSelectConnection") != null)
+            {
+                try
+                {
+                    String temp = (String)mainPage.LoadLocalValue("AutomaticSelectConnection");
+                    automaticSelectConnection = temp == "True";
+                }
+                catch
+                {
+                    automaticSelectConnection = true;
+                    mainPage.SaveLocalValue("AutomaticSelectConnection", "False");
+                }
+            }
+            else
+            {
+                automaticSelectConnection = true;
+                mainPage.SaveLocalValue("AutomaticSelectConnection", "False");
+            }
             if (mainPage.LoadLocalValue("MidiChannel") != null)
             {
                 try
@@ -346,6 +380,8 @@ namespace INTEGRA_7_Xamarin
             //Librarian_lvStudioSets.ItemsSource = Librarian_ocStudioSets;
 
             // Make Grids for column 0 - 2:
+            Librarian_gridMain = new Grid();
+            Librarian_gridMain.VerticalOptions = LayoutOptions.FillAndExpand;
             Librarian_gridGroups = new Grid();
             Librarian_gridGroups.VerticalOptions = LayoutOptions.FillAndExpand;
             Librarian_gridCategories = new Grid();
@@ -496,6 +532,9 @@ namespace INTEGRA_7_Xamarin
                 Librarian_btnBlackKeys[i].BorderWidth = 0;
             }
 
+            //Librarian_gridKeyboard.RowSpacing = 0;
+            //Librarian_gridKeyboard.ColumnSpacing = 0;
+
             // Put an unused white key that spans and covers the leftmost rounded
             // corners of the white keys:
             Button cover = new Button();
@@ -639,16 +678,24 @@ namespace INTEGRA_7_Xamarin
             Librarian_gridCategories.BackgroundColor = colorSettings.FrameBorder;
             Librarian_gridTones.BackgroundColor = colorSettings.FrameBorder;
             Librarian_gridKeyboard.BackgroundColor = colorSettings.FrameBorder;
-            Librarian_StackLayout.Children.Add((new GridRow(
+            Librarian_gridMain.Children.Add((new GridRow(
                 0, new View[]
                 { Librarian_gridGroups, Librarian_gridCategories, Librarian_gridTones, Librarian_gridKeyboard },
                 new byte[] { 5, 5, 5, 3 }, false, true)));
+            Librarian_StackLayout.Children.Add(Librarian_gridMain);
 
-            // Make the entire grid background black to show as borders around controls by using margins:
-            //Librarian_gridGroups.Margin = new Thickness(2);
-            //Librarian_gridCategories.Margin = new Thickness(0, 0, 0, 0);
-            //Librarian_gridTones.Margin = new Thickness(0, 0, 0, 0);
-            //Librarian_gridKeyboard.Margin = new Thickness(0, 0, 0, 0);
+            Librarian_gridMain.RowSpacing = Margins;
+            Librarian_gridMain.ColumnSpacing = Margins;
+            Librarian_gridMain.Margin = new Thickness(0);
+            Librarian_gridKeyboard.RowSpacing = 0;
+            Librarian_gridKeyboard.ColumnSpacing = 0;
+            Librarian_gridGroups.RowSpacing = Margins;
+            Librarian_gridGroups.ColumnSpacing = Margins;
+            Librarian_gridCategories.RowSpacing = Margins;
+            Librarian_gridCategories.ColumnSpacing = Margins;
+            Librarian_gridTones.RowSpacing = Margins;
+            Librarian_gridTones.ColumnSpacing = Margins;
+
             SetStackLayoutColors(Librarian_StackLayout);
             t.Trace("Librarian created ");
         }
